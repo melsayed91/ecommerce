@@ -9,4 +9,5 @@ declare var $: any;
 })
 export class AppComponent {
   //$.material.init();
+  //test
 }
