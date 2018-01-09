@@ -1,0 +1,75 @@
+@charset 'UTF-8';
+
+// 1. Configuration and helpers
+@import
+  'abstracts/variables',
+  'abstracts/functions',
+  'abstracts/mixins',
+  'abstracts/flex',
+  'abstracts/shadows',
+  '../../node_modules/@angular/material/theming';
+
+// 2. Vendors
+@import
+  'vendor/normalize',
+  'vendor/plugin-nouislider',
+  'vendor/animate',
+  'vendor/sweetalert2',
+  'vendor/datatables.net',
+  'vendor/jquery.jvectormap',
+  'vendor/plugin-datetime-picker',
+  'vendor/fullcalendar',
+  'vendor/wizard-card',
+  'vendor/chartist',
+  'vendor/select-bootstrap';
+  
+
+// 3. Base stuff
+@import
+  'base/base',
+  'base/fonts',
+  'base/typography',
+  'base/helpers';
+
+// 4. Layout-related sections
+@import
+  'layout/header',
+  'layout/footer';
+
+// 5. Components
+@import
+'components/sidebar-and-main-panel',
+'components/buttons',
+'components/misc',
+'components/inputs',
+'components/fileupload',
+'components/alerts',
+'components/tables',
+'components/forms',
+'components/checkboxes',
+'components/radios',
+'components/progress',
+'components/togglebutton',
+'components/tags',
+'components/timeline',
+'components/ripples',
+'components/panels',
+'components/pagination',
+'components/labels',
+'components/pills',
+'components/dialogs',
+'components/navbars',
+'components/popups',
+'components/dropdown',
+'components/cards',
+'components/tabs',
+'components/responsive';
+
+// 6. Page-specific styles
+@import
+  'pages/home',
+  'pages/pages';
+
+// 7. Themes
+@import
+'themes/default';

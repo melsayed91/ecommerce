@@ -1,0 +1,73 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the header of the site/application.
+// -----------------------------------------------------------------------------
+
+header{ 
+    display: flex;
+
+    nav{
+        display: flex;
+        width: 100%;
+        max-width: 1500px;
+        flex-flow: row wrap;
+        align-content:  space-between;
+        padding: 10px;
+        margin: 0 auto;
+        
+        .left{
+            .logo{ 
+                width: 120px;                         
+                .american{
+                    font-family: 'Dawning of a New Day';
+                    font-size: 34px;
+                    margin-bottom: 5px;
+                    color: #9c9c9c;
+                }          
+                .made{
+                    font-family: 'Archivo';
+                    font-size: 35px;       
+                }
+            }
+        }
+        
+        .middle{
+            flex: 1 auto; 
+            text-align: center;
+            a{
+                cursor: pointer;
+                font-size: 15px;
+                font-weight: 400;
+                padding: 0 10px;
+                color: rgb(29, 29, 29);
+                .fa{
+                    transition: transform 300ms ease-in-out;
+                }
+
+                &:hover .fa{
+                 transform: rotate(180deg);
+                }
+            }
+
+        }
+        
+        .right{
+            display: flex;
+        }
+        
+    }
+
+}
+
+.button-with-icon{
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    padding: 5px 10px 0;
+    border-radius: 10px;
+    transition: border-radius 100ms ease-in-out;
+
+    &:hover{
+        border-bottom: 3px solid #ffffff;
+        border-radius: 0;
+    }
+}

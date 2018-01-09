@@ -1,0 +1,121 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+/**
+ * Set up a decent box model on the root element
+ */
+html {
+  box-sizing: border-box;
+  margin: 0;
+  height: 100%;
+}
+
+/**
+ * Make all elements from the DOM inherit from the parent box-sizing
+ * Since `*` has a specificity of 0, it does not override the `html` value
+ * making all elements inheriting from the root box-sizing value
+ * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+
+
+body {
+  width: 100%;
+  min-height: 100%;
+  @include bg-radial-gradient(white, 33%, #f0f0f0 , 100%);
+  color: $black-color;
+  &.inverse {
+    background: #333333;
+    &, .form-control {
+      color: $mdb-text-color-light;
+    }
+    .modal,
+    .panel-default,
+    .card {
+      &,
+      .form-control {
+        background-color: initial;
+        color: initial;
+      }
+    }
+
+  }
+}
+
+.wrapper{
+
+    &.wrapper-full-page{
+        height: auto;
+        min-height: 100vh;
+    }
+}
+
+
+blockquote{
+    p{
+        font-style: italic;
+    }
+}
+
+.life-of-material-dashboard{
+    background: #FFFFFF;
+}
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+  font-family: $font-family-sans-serif;
+  font-weight: 400;
+  line-height: 1.5em;
+}
+
+.serif-font{
+    font-family: $font-family-serif;
+}
+
+.page-header {
+    height: 60vh;
+    background-position: center center;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+a{
+  color: $link-color;
+  &:hover,
+  &:focus{
+      color: darken($link-color, 5%);
+      text-decoration: none;
+  }
+
+  &.text-info{
+      &:hover, &:focus{
+          color: darken($brand-info, 5%);
+      }
+  }
+
+  & .material-icons {
+    vertical-align: middle;
+  }
+}
+
+a[data-toggle="collapse"][aria-expanded="true"] .caret,
+.dropdown.open .caret,
+.dropup.open .caret,
+.btn-group.bootstrap-select.open .caret{
+    @include rotate-180();
+}
+
+.caret,
+.bootstrap-tagsinput .tag,
+.bootstrap-tagsinput [data-role="remove"] {
+    @include transition($fast-transition-time, $transition-ease-in);
+}
