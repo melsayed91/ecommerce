@@ -1,3 +1,16 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the home page.
 // -----------------------------------------------------------------------------
+.logo{ 
+    width: 120px;                         
+    .american{
+        font-family: 'Dawning of a New Day';
+        font-size: 34px;
+        margin-bottom: 5px;
+        color: #9c9c9c;
+    }          
+    .made{
+        font-family: 'Archivo';
+        font-size: 35px;       
+    }
+}
