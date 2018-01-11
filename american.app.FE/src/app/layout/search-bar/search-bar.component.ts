@@ -8,10 +8,15 @@ declare var $: any;
   styleUrls: ['./search-bar.component.scss']
 })
 export class SearchBarComponent implements OnInit {
-  serachMode;
+  private serachMode;
+  private searchPlaceHolder= "Search for Products and Suppliers...";
+  private SearchText;
+
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() { 
 
+    console.log(this.searchPlaceHolder.length)
+  }
 
 }

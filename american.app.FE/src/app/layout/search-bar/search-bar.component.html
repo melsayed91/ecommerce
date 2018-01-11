@@ -2,7 +2,9 @@
     <div class="x" (click)="searchMode = false;"></div>
     <div class="searchInput">
         <span class="fa fa-search"></span>
-        <input (click)="searchMode = true;" placeholder="SEARCH FOR PRODUCTS AND SUPPLIERS...">   
+        <input id="SearchBarInput" name="SearchBarInput" (click)="searchMode = true;" 
+        [placeholder]="searchPlaceHolder"
+        [(ngModel)]="SearchText">   
     </div>
 
     <div *ngIf="searchMode" class="searchResults">

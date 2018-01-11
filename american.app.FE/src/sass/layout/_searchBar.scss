@@ -6,7 +6,7 @@ search-bar div.overlay{
     width: 100%;
     height: 60px;
     background: white;
-    transition: all 0.35s cubic-bezier(0.35, 0.66, 0.68, 0.93);
+    transition: all .5s cubic-bezier(0.35, 0.66, 0.68, 0.93);
 
     .x {
         display: none;
@@ -67,14 +67,14 @@ search-bar div.overlay{
         }
         
         input{
+            width: 500px;
             font-size: 33px;
             color: #1d1d1d;
             margin: 0;
             border: none;
             font-family: 'abel';
-            width: 50%;
-            max-width: 535px;
             padding-top: 2px;
+            transition: all .4s cubic-bezier(0, 1.08, 0.52, 1.25);
 
             &::placeholder{
                 color: #000000;
@@ -85,13 +85,20 @@ search-bar div.overlay{
      
     &.open{
         height: 100%;
-        padding-top: 100px;
+        padding-top: 40px;
         top: 0;
         z-index: 999;
 
         .searchInput{
-            height: 100px;
+            height: 120px;
 
+            input{
+                font-size: 50px;
+                width: 700px;
+            }
+            .fa{
+                font-size: 50px
+            }
         }
         .x{
             display: block;
