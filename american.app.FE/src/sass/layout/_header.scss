@@ -47,7 +47,6 @@ header{
                  transform: rotate(180deg);
                 }
             }
-
         }
         
         .right{
@@ -65,7 +64,4 @@ header{
     padding: 5px 10px 0;
     outline-color: rgb(241, 241, 241);
     transition: outline-color 1s ease-in-out;
-    &:hover{
-        outline: 1px dashed rgb(219, 219, 219);
-    }
 }
