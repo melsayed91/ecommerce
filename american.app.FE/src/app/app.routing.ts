@@ -7,15 +7,20 @@ export const AppRoutes: Routes = [
         path: '',
         redirectTo: 'Home',
         pathMatch: 'full',
-    }, 
+    },
     {
         path: '',
         component: MainLayoutComponent,
         children: [
+          {
+            path: 'Register',
+            loadChildren: './register/register.module#RegisterModule'
+          },
             {
                 path: 'Home',
                 loadChildren: './home/home.module#HomeModule'
             }
+
         ]
     }
     // {
