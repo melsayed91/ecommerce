@@ -1,0 +1,44 @@
+<div class="overlay" [class.open]="searchMode">
+    <div class="x" (click)="searchMode = false;"></div>
+    <div class="searchInput">
+        <span class="fa fa-search"></span>
+        <input (click)="searchMode = true;" placeholder="SEARCH FOR PRODUCTS AND SUPPLIERS...">   
+    </div>
+
+    <div *ngIf="searchMode" class="searchResults">
+            <div class="section">
+                <h3>History</h3>
+                <div class="searchItem animated fadeIn">Enim sapiente est eius</div>
+                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
+                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                <div class="searchItem animated fadeIn">Voluptatum</div>
+                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
+                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                <div class="searchItem animated fadeIn">Sapiente aut delectus</div>
+                
+            </div>
+            <div class="section">
+                    <h3>Saved Items</h3>
+                    <div class="searchItem animated fadeIn">Repellendus Voluptatum</div>
+                    <div class="searchItem animated fadeIn">Accusamus fugiat voluptas et rerum</div>
+                    <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
+                    <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+
+                    
+                </div>
+                <div class="section">
+                        <h3>Popular Products</h3>
+                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                        <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
+                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                        <div class="searchItem animated fadeIn">Repellendus Voluptatum</div>
+                        <div class="searchItem animated fadeIn">Accusamus fugiat voluptas et rerum</div>
+                        <div class="searchItem animated fadeIn">Voluptatum</div>
+                        <div class="searchItem animated fadeIn">Enim sapiente est eius</div>
+                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+                    </div>
+
+    </div>
+</div>

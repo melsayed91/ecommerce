@@ -63,11 +63,9 @@ header{
     cursor: pointer;
     text-align: center;
     padding: 5px 10px 0;
-    border-radius: 10px;
-    transition: border-radius 100ms ease-in-out;
-
+    outline-color: rgb(241, 241, 241);
+    transition: outline-color 1s ease-in-out;
     &:hover{
-        border-bottom: 3px solid #ffffff;
-        border-radius: 0;
+        outline: 1px dashed rgb(219, 219, 219);
     }
 }

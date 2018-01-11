@@ -1,0 +1,122 @@
+search-bar div.overlay{
+    position: fixed;
+    top: 80px;
+    padding-top: 11px;
+    display: block;
+    width: 100%;
+    height: 60px;
+    background: white;
+    transition: all 0.35s cubic-bezier(0.35, 0.66, 0.68, 0.93);
+
+    .x {
+        display: none;
+        width: 64px;
+        height: 64px;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        cursor: pointer;
+        transition: transform 300ms;
+
+        &:hover {
+            transform: rotate(90deg);
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            display: block;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            height: 0;
+            border-top: 1px solid rgba(0,0,0,0.5);
+            transform: rotate(45deg);
+            transform-origin: center;
+        }
+        
+        &:after {
+            content: "";
+            position: absolute;
+            display: block;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 60px;
+            height: 0;
+            border-top: 1px solid rgba(0,0,0,0.5);
+            transform: rotate(-45deg);
+            transform-origin: center;
+        }
+    }
+    
+    .searchInput{
+        text-align: center;
+
+        .fa{
+            font-size: 36px;
+            color: #efefef;
+            border-right: 1px solid;
+            padding-right: 15px;
+            margin-right: 15px; 
+        }
+        
+        input{
+            font-size: 33px;
+            color: #1d1d1d;
+            margin: 0;
+            border: none;
+            font-family: 'abel';
+            width: 50%;
+            max-width: 535px;
+            padding-top: 2px;
+
+            &::placeholder{
+                color: #000000;
+            }
+        }
+    }
+    
+     
+    &.open{
+        height: 100%;
+        padding-top: 100px;
+        top: 0;
+        z-index: 999;
+
+        .searchInput{
+            height: 100px;
+
+        }
+        .x{
+            display: block;
+        }
+    }
+
+    .searchResults{
+        width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: space-evenly;
+
+        .section{
+
+            & .searchItem{
+                color: #868686;
+                padding: 10px 0;
+                margin-bottom: 5px;
+                font-size: 16px;
+                cursor: pointer;
+
+                &:hover{
+                    color: #4100ff;
+                }
+            }
+        }
+    }
+}
