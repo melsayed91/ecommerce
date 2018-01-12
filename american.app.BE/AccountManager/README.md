@@ -5,9 +5,9 @@
 Welcome to Planet Venus where we register new comers. This is the first station in the user journey. 
 
 My Job is to:
->Register new accounts__
->Edit existing Account__
->Set new Password__
++ Register new accounts
++ Edit existing Account
++ Set new Password
 
 ## Install 
 npm install 
