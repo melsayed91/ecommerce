@@ -1,5 +1,5 @@
 {
-  "name": "okcUser",
+  "name": "sharedUser",
   "base": "User",
   "idInjection": true,
   "options": {
