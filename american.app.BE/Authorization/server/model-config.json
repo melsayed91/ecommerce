@@ -3,6 +3,7 @@
     "sources": [
       "loopback/common/models",
       "loopback/server/models",
+      "../../common/models",
       "../common/models",
       "./models"
     ],
@@ -13,9 +14,13 @@
       "./mixins"
     ]
   },
-  "okcUser": {
+  "sysUser": {
     "dataSource": "americanBizDB",
     "public": true
+  },
+  "sharedUser": {
+    "dataSource": "americanBizDB",
+    "public": false
   },
   "AccessToken": {
     "dataSource": "americanBizDB",
@@ -23,7 +28,7 @@
     "relations": {
       "user": {
         "type": "belongsTo",
-        "model": "okcUser",
+        "model": "sharedUser",
         "foreignKey": "userId"
       }
     }
