@@ -7,7 +7,49 @@ footer {
     right: 0;
     bottom: 0;
     left: 0;
-    padding: 1rem;
     text-align: center;
-    border-top: 1px dashed gray;
+
+    .links{
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-evenly;
+      max-width: 1200px;
+      margin: 20px auto;
+
+      .links-list{
+        text-align: start;
+        p.title{
+          text-indent: 5px;
+        }
+        p.footer-link {
+          @include brackets-on-hover();
+          margin: 0;
+          cursor: pointer;
+          
+          &:hover{
+            color: #5c00ff;
+          }
+        }
+      }
+    }
+
+
+    .copyright{
+      background: #212121;
+      padding: 0px 35px;
+      color: white;
+      height: 25px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      & span{
+          margin: 0 5px;
+          cursor: pointer;
+      }
+    }
   }
+
+
+

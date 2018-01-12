@@ -518,6 +518,33 @@
   background: radial-gradient(circle at center, $start-colour $start-position,$end-colour $end-position);
 }
 
+//Brackets on hover Effect: by Youness Zahir
+@mixin brackets-on-hover() {
+
+  &::before {
+    margin-right: 5px;
+    content: '[';
+    transform: translateX(20px);
+  }
+  &::after {
+    margin-left: 5px;
+    content: ']';
+    transform: translateX(-20px);
+  }
+
+  &::before, &::after {
+    display: inline-block;
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.2s;
+  }
+  &:hover{
+        &::before, &::after {
+          opacity: 1;
+          transform: translateX(0px);
+        }
+  }
+}
+
 /// Event wrapper
 /// @author Harry Roberts
 /// @param {Bool} $self [false] - Whether or not to include current selector

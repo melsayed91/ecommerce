@@ -7,12 +7,13 @@ import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
+import { AppComponent } from './app.component';
+import { AppRoutes } from './app.routing';
 
 import { MainLayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
-import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routing';
+import { SearchBarComponent } from './layout/search-bar/search-bar.component';
 
 
 import {
@@ -101,6 +102,7 @@ export class MaterialModule {}
       AppComponent,
       HeaderComponent,
       FooterComponent,
+      SearchBarComponent,
       MainLayoutComponent
   ],
   bootstrap:    [ AppComponent ]
