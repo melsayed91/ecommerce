@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
+import { NgModel } from '@angular/forms';
+import { RegisterModule } from '../register.module';
 
 @Component({
   selector: 'app-register',
@@ -6,11 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-
+  @Input()
+  model: any = {firstName:'fff'};
+  loading = false;
   constructor() { }
 
   ngOnInit() {
-    alert('c')
   }
+  submitted = false;
+
+  onSubmit() { this.submitted = true; }
+
 
 }
