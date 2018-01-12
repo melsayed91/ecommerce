@@ -4,11 +4,11 @@
 
 Welcome to Planet Venus where we register new comers. This is the first station in the user journey. 
 
-My Job is to:
+**My Mission**
 
-* Register new accounts
-* Edit existing Account
-* Set new Password
+1. Register new accounts
+2. Edit existing Account
+3. Set new Password
 
 ## Install 
 npm install 
