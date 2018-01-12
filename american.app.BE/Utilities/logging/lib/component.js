@@ -2,6 +2,8 @@ let winston = require('winston');
 let os = require('os');
 let utility = require('./utility');
 require('winston-mongodb').MongoDB
+require('winston-elasticsearch')
+
 winston.emitErrs = true;
 let errorMeta = {
     hostname: os.hostname(),

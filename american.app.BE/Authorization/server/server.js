@@ -14,8 +14,8 @@ app.start = function () {
     if (app.get('loopback-component-explorer')) {
       var explorerPath = app.get('loopback-component-explorer').mountPath;
       //test logging
-      // app.log.error('test', { data: 'error' });
-      // app.log.info('test', { data: 'info' });
+       app.log.error('test', { data: 'error' });
+       app.log.info('test', { data: 'info' });
       console.log('Browse your REST API at %s%s', baseUrl, explorerPath);
     }
   });
