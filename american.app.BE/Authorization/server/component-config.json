@@ -35,6 +35,13 @@
         "handleExceptions": true,
         "level": "error",
         "colorize": true
+      },
+      {
+        "type": "Elasticsearch",
+        "name": "elk",
+        "index": "log",
+        "handleExceptions": true,
+        "levels": "error,info"
       }
     ]
   }
