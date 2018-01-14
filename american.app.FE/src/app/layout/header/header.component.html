@@ -1,6 +1,6 @@
 <nav>
   <div class="left">
-    <div class="logo">
+    <div class="logo" routerLink="/Home">
       <p class="american">American</p>
       <p class="made">Made</p>
     </div>
@@ -16,16 +16,16 @@
   </div>
 
   <div class="right">
-    <div class="button-with-icon">
+    <div class="button-with-icon" routerLink="/auth/signin">
       <span>
         <i class="fa fa-sign-in"></i>
         <p>Sign in</p>
       </span>
     </div>
-    <div class="button-with-icon">
+    <div class="button-with-icon" routerLink="/auth/register" >
       <span>
         <i class="fa fa-pencil"></i>
-          <a routerLink="/Register">Join For Free</a>
+        <p>Join For Free</p>
       </span>
     </div>
   </div>

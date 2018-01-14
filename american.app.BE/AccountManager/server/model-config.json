@@ -21,5 +21,16 @@
   "sharedUser": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Email": {
+    "dataSource": "emailDs"
   }
 }

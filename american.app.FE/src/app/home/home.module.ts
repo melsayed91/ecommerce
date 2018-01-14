@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { HomeRoutes } from './routing';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './welcome/home.component';
 
 @NgModule({
   imports: [

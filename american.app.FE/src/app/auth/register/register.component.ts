@@ -1,0 +1,252 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { SysUserApi } from '../../common/BE.SDKs/AccountManager';
+import { NotifyService } from '../../core/services/notify.service/notify.service';
+
+import swal from 'sweetalert2';
+declare var $: any;
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
+})
+export class RegisterComponent implements OnInit {
+  loading: boolean;
+  cities = [
+    { value: "Afghanistan", viewValue: "Afghanistan" },
+    { value: "Albania", viewValue: "Albania" },
+    { value: "Algeria", viewValue: "Algeria" },
+    { value: "Andorra", viewValue: "Andorra" },
+    { value: "Angola", viewValue: "Angola" },
+    { value: "Anguilla", viewValue: "Anguilla" },
+    { value: "Antigua & Barbuda", viewValue: "Antigua & Barbuda" },
+    { value: "Argentina", viewValue: "Argentina" },
+    { value: "Armenia", viewValue: "Armenia" },
+    { value: "Australia", viewValue: "Australia" },
+    { value: "Austria", viewValue: "Austria" },
+    { value: "Azerbaijan", viewValue: "Azerbaijan" },
+    { value: "Bahamas", viewValue: "Bahamas" },
+    { value: "Bahrain", viewValue: "Bahrain" },
+    { value: "Bangladesh", viewValue: "Bangladesh" },
+    { value: "Barbados", viewValue: "Barbados" },
+    { value: "Belarus", viewValue: "Belarus" },
+    { value: "Belgium", viewValue: "Belgium" },
+    { value: "Belize", viewValue: "Belize" },
+    { value: "Benin", viewValue: "Benin" },
+    { value: "Bermuda", viewValue: "Bermuda" },
+    { value: "Bhutan", viewValue: "Bhutan" },
+    { value: "Bolivia", viewValue: "Bolivia" },
+    { value: "Bosnia & Herzegovina", viewValue: "Bosnia & Herzegovina" },
+    { value: "Botswana", viewValue: "Botswana" },
+    { value: "Brazil", viewValue: "Brazil" },
+    { value: "Brunei Darussalam", viewValue: "Brunei Darussalam" },
+    { value: "Bulgaria", viewValue: "Bulgaria" },
+    { value: "Burkina Faso", viewValue: "Burkina Faso" },
+    { value: "Myanmar/Burma", viewValue: "Myanmar/Burma" },
+    { value: "Burundi", viewValue: "Burundi" },
+    { value: "Cambodia", viewValue: "Cambodia" },
+    { value: "Cameroon", viewValue: "Cameroon" },
+    { value: "Canada", viewValue: "Canada" },
+    { value: "Cape Verde", viewValue: "Cape Verde" },
+    { value: "Cayman Islands", viewValue: "Cayman Islands" },
+    { value: "Central African Republic", viewValue: "Central African Republic" },
+    { value: "Chad", viewValue: "Chad" },
+    { value: "Chile", viewValue: "Chile" },
+    { value: "China", viewValue: "China" },
+    { value: "Colombia", viewValue: "Colombia" },
+    { value: "Comoros", viewValue: "Comoros" },
+    { value: "Congo", viewValue: "Congo" },
+    { value: "Costa Rica", viewValue: "Costa Rica" },
+    { value: "Croatia", viewValue: "Croatia" },
+    { value: "Cuba", viewValue: "Cuba" },
+    { value: "Cyprus", viewValue: "Cyprus" },
+    { value: "Czech Republic", viewValue: "Czech Republic" },
+    { value: "Democratic Republic of the Congo", viewValue: "Democratic Republic of the Congo" },
+    { value: "Denmark", viewValue: "Denmark" },
+    { value: "Djibouti", viewValue: "Djibouti" },
+    { value: "Dominican Republic", viewValue: "Dominican Republic" },
+    { value: "Dominica", viewValue: "Dominica" },
+    { value: "Ecuador", viewValue: "Ecuador" },
+    { value: "Egypt", viewValue: "Egypt" },
+    { value: "El Salvador", viewValue: "El Salvador" },
+    { value: "Equatorial Guinea", viewValue: "Equatorial Guinea" },
+    { value: "Eritrea", viewValue: "Eritrea" },
+    { value: "Estonia", viewValue: "Estonia" },
+    { value: "Ethiopia", viewValue: "Ethiopia" },
+    { value: "Fiji", viewValue: "Fiji" },
+    { value: "Finland", viewValue: "Finland" },
+    { value: "France", viewValue: "France" },
+    { value: "French Guiana", viewValue: "French Guiana" },
+    { value: "Gabon", viewValue: "Gabon" },
+    { value: "Gambia", viewValue: "Gambia" },
+    { value: "Georgia", viewValue: "Georgia" },
+    { value: "Germany", viewValue: "Germany" },
+    { value: "Ghana", viewValue: "Ghana" },
+    { value: "Great Britain", viewValue: "Great Britain" },
+    { value: "Greece", viewValue: "Greece" },
+    { value: "Grenada", viewValue: "Grenada" },
+    { value: "Guadeloupe", viewValue: "Guadeloupe" },
+    { value: "Guatemala", viewValue: "Guatemala" },
+    { value: "Guinea", viewValue: "Guinea" },
+    { value: "Guinea-Bissau", viewValue: "Guinea-Bissau" },
+    { value: "Guyana", viewValue: "Guyana" },
+    { value: "Haiti", viewValue: "Haiti" },
+    { value: "Honduras", viewValue: "Honduras" },
+    { value: "Hungary", viewValue: "Hungary" },
+    { value: "Iceland", viewValue: "Iceland" },
+    { value: "India", viewValue: "India" },
+    { value: "Indonesia", viewValue: "Indonesia" },
+    { value: "Iran", viewValue: "Iran" },
+    { value: "Iraq", viewValue: "Iraq" },
+    { value: "Israel and the Occupied Territories", viewValue: "Israel and the Occupied Territories" },
+    { value: "Italy", viewValue: "Italy" },
+    { value: "Ivory Coast (Cote d'Ivoire)", viewValue: "Ivory Coast (Cote d'Ivoire)" },
+    { value: "Jamaica", viewValue: "Jamaica" },
+    { value: "Japan", viewValue: "Japan" },
+    { value: "Jordan", viewValue: "Jordan" },
+    { value: "Kazakhstan", viewValue: "Kazakhstan" },
+    { value: "Kenya", viewValue: "Kenya" },
+    { value: "Kosovo", viewValue: "Kosovo" },
+    { value: "Kuwait", viewValue: "Kuwait" },
+    { value: "Kyrgyz Republic (Kyrgyzstan)", viewValue: "Kyrgyz Republic (Kyrgyzstan)" },
+    { value: "Laos", viewValue: "Laos" },
+    { value: "Latvia", viewValue: "Latvia" },
+    { value: "Lebanon", viewValue: "Lebanon" },
+    { value: "Lesotho", viewValue: "Lesotho" },
+    { value: "Liberia", viewValue: "Liberia" },
+    { value: "Libya", viewValue: "Libya" },
+    { value: "Liechtenstein", viewValue: "Liechtenstein" },
+    { value: "Lithuania", viewValue: "Lithuania" },
+    { value: "Luxembourg", viewValue: "Luxembourg" },
+    { value: "Republic of Macedonia", viewValue: "Republic of Macedonia" },
+    { value: "Madagascar", viewValue: "Madagascar" },
+    { value: "Malawi", viewValue: "Malawi" },
+    { value: "Malaysia", viewValue: "Malaysia" },
+    { value: "Maldives", viewValue: "Maldives" },
+    { value: "Mali", viewValue: "Mali" },
+    { value: "Malta", viewValue: "Malta" },
+    { value: "Martinique", viewValue: "Martinique" },
+    { value: "Mauritania", viewValue: "Mauritania" },
+    { value: "Mauritius", viewValue: "Mauritius" },
+    { value: "Mayotte", viewValue: "Mayotte" },
+    { value: "Mexico", viewValue: "Mexico" },
+    { value: "Moldova, Republic of", viewValue: "Moldova, Republic of" },
+    { value: "Monaco", viewValue: "Monaco" },
+    { value: "Mongolia", viewValue: "Mongolia" },
+    { value: "Montenegro", viewValue: "Montenegro" },
+    { value: "Montserrat", viewValue: "Montserrat" },
+    { value: "Morocco", viewValue: "Morocco" },
+    { value: "Mozambique", viewValue: "Mozambique" },
+    { value: "Namibia", viewValue: "Namibia" },
+    { value: "Nepal", viewValue: "Nepal" },
+    { value: "Netherlands", viewValue: "Netherlands" },
+    { value: "New Zealand", viewValue: "New Zealand" },
+    { value: "Nicaragua", viewValue: "Nicaragua" },
+    { value: "Niger", viewValue: "Niger" },
+    { value: "Nigeria", viewValue: "Nigeria" },
+    { value: "Korea, Democratic Republic of (North Korea)", viewValue: "Korea, Democratic Republic of (North Korea)" },
+    { value: "Norway", viewValue: "Norway" },
+    { value: "Oman", viewValue: "Oman" },
+    { value: "Pacific Islands", viewValue: "Pacific Islands" },
+    { value: "Pakistan", viewValue: "Pakistan" },
+    { value: "Panama", viewValue: "Panama" },
+    { value: "Papua New Guinea", viewValue: "Papua New Guinea" },
+    { value: "Paraguay", viewValue: "Paraguay" },
+    { value: "Peru", viewValue: "Peru" },
+    { value: "Philippines", viewValue: "Philippines" },
+    { value: "Poland", viewValue: "Poland" },
+    { value: "Portugal", viewValue: "Portugal" },
+    { value: "Puerto Rico", viewValue: "Puerto Rico" },
+    { value: "Qatar", viewValue: "Qatar" },
+    { value: "Reunion", viewValue: "Reunion" },
+    { value: "Romania", viewValue: "Romania" },
+    { value: "Russian Federation", viewValue: "Russian Federation" },
+    { value: "Rwanda", viewValue: "Rwanda" },
+    { value: "Saint Kitts and Nevis", viewValue: "Saint Kitts and Nevis" },
+    { value: "Saint Lucia", viewValue: "Saint Lucia" },
+    { value: "Saint Vincent's & Grenadines", viewValue: "Saint Vincent's & Grenadines" },
+    { value: "Samoa", viewValue: "Samoa" },
+    { value: "Sao Tome and Principe", viewValue: "Sao Tome and Principe" },
+    { value: "Saudi Arabia", viewValue: "Saudi Arabia" },
+    { value: "Senegal", viewValue: "Senegal" },
+    { value: "Serbia", viewValue: "Serbia" },
+    { value: "Seychelles", viewValue: "Seychelles" },
+    { value: "Sierra Leone", viewValue: "Sierra Leone" },
+    { value: "Singapore", viewValue: "Singapore" },
+    { value: "Slovak Republic (Slovakia)", viewValue: "Slovak Republic (Slovakia)" },
+    { value: "Slovenia", viewValue: "Slovenia" },
+    { value: "Solomon Islands", viewValue: "Solomon Islands" },
+    { value: "Somalia", viewValue: "Somalia" },
+    { value: "South Africa", viewValue: "South Africa" },
+    { value: "Korea, Republic of (South Korea)", viewValue: "Korea, Republic of (South Korea)" },
+    { value: "South Sudan", viewValue: "South Sudan" },
+    { value: "Spain", viewValue: "Spain" },
+    { value: "Sri Lanka", viewValue: "Sri Lanka" },
+    { value: "Sudan", viewValue: "Sudan" },
+    { value: "Suriname", viewValue: "Suriname" },
+    { value: "Swaziland", viewValue: "Swaziland" },
+    { value: "Sweden", viewValue: "Sweden" },
+    { value: "Switzerland", viewValue: "Switzerland" },
+    { value: "Syria", viewValue: "Syria" },
+    { value: "Tajikistan", viewValue: "Tajikistan" },
+    { value: "Tanzania", viewValue: "Tanzania" },
+    { value: "Thailand", viewValue: "Thailand" },
+    { value: "Timor Leste", viewValue: "Timor Leste" },
+    { value: "Togo", viewValue: "Togo" },
+    { value: "Trinidad & Tobago", viewValue: "Trinidad & Tobago" },
+    { value: "Tunisia", viewValue: "Tunisia" },
+    { value: "Turkey", viewValue: "Turkey" },
+    { value: "Turkmenistan", viewValue: "Turkmenistan" },
+    { value: "Turks & Caicos Islands", viewValue: "Turks & Caicos Islands" },
+    { value: "Uganda", viewValue: "Uganda" },
+    { value: "Ukraine", viewValue: "Ukraine" },
+    { value: "United Arab Emirates", viewValue: "United Arab Emirates" },
+    { value: "United States of America (USA)", viewValue: "United States of America (USA)" },
+    { value: "Uruguay", viewValue: "Uruguay" },
+    { value: "Uzbekistan", viewValue: "Uzbekistan" },
+    { value: "Venezuela", viewValue: "Venezuela" },
+    { value: "Vietnam", viewValue: "Vietnam" },
+    { value: "Virgin Islands (UK)", viewValue: "Virgin Islands (UK)" },
+    { value: "Virgin Islands (US)", viewValue: "Virgin Islands (US)" },
+    { value: "Yemen", viewValue: "Yemen" },
+    { value: "Zambia", viewValue: "Zambia" },
+    { value: "Zimbabwe", viewValue: "Zimbabwe" }]
+
+
+  userData = {};
+  userCredentials = {};
+  userType = "Individual";
+  passwordsMatching = true;
+  confirmPassword;
+  constructor(private userService: SysUserApi,
+    private router: Router,
+    private NotifyService: NotifyService) { }
+
+
+  ngOnInit() {
+  }
+
+  register() {
+
+    let user = {
+      credentials: this.userCredentials,
+      data: this.userData,
+      type: this.userType
+    }
+    this.loading = true;
+    this.userService.register(user).subscribe((response) => {
+      this.loading = false;
+      this.NotifyService.showSuccessMessage('Your account is created!', 'Please check your inbox to activate your account.');
+      this.router.navigate(['/auth/signin']);
+    }, (err) => {
+      this.loading = false;
+      if (err.message.includes('Email already exists')) {
+        $('#fg-email').addClass("has-error");
+        this.NotifyService.showErrorMessage('Oops!', 'This email address is already taken');
+      }
+    })
+  }
+
+}

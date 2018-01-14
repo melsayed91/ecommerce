@@ -1,0 +1,102 @@
+<div class="card signin row">
+    <div class="col-xs-12 col-sm-6 animated fadeInRight">
+        <div class="registerPanel">
+            <div>
+                <h2>One of us?</h2>
+                <p>If you already have an account just sign in and access your profile. We've missed you!</p>
+            </div>
+            <div class="register-links">
+                <div class="link" routerLink="/auth/signin">
+                    <span class="fa fa-sign-in">
+                    </span>
+                    <p>Sign In</p>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-6">
+        <h2 class="text-center">Join now for free!</h2>
+        <div class="social-links">
+            <h4 class="fb">
+                <i class="fa fa-facebook"></i> &nbsp; Join with Facebook</h4>
+            <h4 class="google">
+                <i class="fa fa-google"></i> &nbsp; Join with Google</h4>
+        </div>
+        <form>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Full Name * </label>
+                        <input type="text" class="form-control" name="name" [(ngModel)]="userData.name" required>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Password * </label>
+                        <input type="password" class="form-control" name="password" [(ngModel)]="userCredentials.password" required>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group label-floating" id="fg-email">
+                        <label class="control-label">Email address * </label>
+                        <input type="email" class="form-control" name="email" [(ngModel)]="userCredentials.email" required>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Confirm Password * </label>
+                        <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group countries label-floating">
+                        <mat-form-field>
+                            <mat-select placeholder="Country of residence" name="country" [(ngModel)]="userData.country">
+                                <mat-option *ngFor="let city of cities" [value]="city.value">
+                                    {{ city.viewValue }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-group label-floating">
+                        <label class="control-label">City * </label>
+                        <input type="text" class="form-control" name="City" [(ngModel)]="userData.City" required>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label">State * </label>
+                        <input type="text" class="form-control" name="State" [(ngModel)]="userData.State" required>
+                    </div>
+                    <div class="form-group label-floating">
+                        <label class="control-label">Zip Code * </label>
+                        <input type="number" class="form-control" name="zip" [(ngModel)]="userData.zipCode" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Phone * </label>
+                        <input type="number" class="form-control" name="Phone" [(ngModel)]="userData.Phone" required>
+                    </div>
+
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="form-group label-floating">
+                        <label class="control-label">Mobile * </label>
+                        <input type="number" class="form-control" name="Mobile" [(ngModel)]="userData.Mobile" required>
+                    </div>
+
+                </div>
+            </div>
+            <button class="btn btn-raised btn-primary" type="button" (click)="register()">
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>{{loading? '&nbsp;&nbsp;&nbsp;We are setting up your account...':'Register now!'}}
+            </button>
+
+        </form>
+    </div>
+
+</div>

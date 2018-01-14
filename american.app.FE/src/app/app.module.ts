@@ -6,106 +6,53 @@ import { HttpModule } from '@angular/http';
 import { APP_BASE_HREF } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatNativeDateModule } from '@angular/material';
 
+
+// Backend SDKs
+import * as authSDK from './common/BE.SDKs/Authorization';
+import * as accountSDK from './common/BE.SDKs/AccountManager';
+
+// ------------------------------------
+
+/* Feature Modules */
+import { CoreModule } from './core/core.module';
+
+/* Routing Module */
+import { AppRoutingModule } from './app-routing.module';
+
+// ------------------------------------
+
+/* App Root */
 import { AppComponent } from './app.component';
-import { AppRoutes } from './app.routing';
 
+//Layout
 import { MainLayoutComponent } from './layout/layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SearchBarComponent } from './layout/search-bar/search-bar.component';
 
 
-import {
-  MatAutocompleteModule,
-  MatButtonModule,
-  MatButtonToggleModule,
-  MatCardModule,
-  MatCheckboxModule,
-  MatChipsModule,
-  MatDatepickerModule,
-  MatDialogModule,
-  MatExpansionModule,
-  MatGridListModule,
-  MatIconModule,
-  MatInputModule,
-  MatListModule,
-  MatMenuModule,
-  MatNativeDateModule,
-  MatPaginatorModule,
-  MatProgressBarModule,
-  MatProgressSpinnerModule,
-  MatRadioModule,
-  MatRippleModule,
-  MatSelectModule,
-  MatSidenavModule,
-  MatSliderModule,
-  MatSlideToggleModule,
-  MatSnackBarModule,
-  MatSortModule,
-  MatTableModule,
-  MatTabsModule,
-  MatToolbarModule,
-  MatTooltipModule,
-  MatStepperModule,
-} from '@angular/material';
-
-
 @NgModule({
-  exports: [
-    MatAutocompleteModule,
-    MatButtonModule,
-    MatButtonToggleModule,
-    MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatStepperModule,
-    MatDatepickerModule,
-    MatDialogModule,
-    MatExpansionModule,
-    MatGridListModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatMenuModule,
+  imports: [
+    CommonModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule,
+    CoreModule,
     MatNativeDateModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatRadioModule,
-    MatRippleModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatSliderModule,
-    MatSlideToggleModule,
-    MatSnackBarModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule,
-    MatToolbarModule,
-    MatTooltipModule
-  ]
-})
-export class MaterialModule {}
-
-@NgModule({
-  imports:      [
-      CommonModule,
-      BrowserAnimationsModule,
-      FormsModule,
-      RouterModule.forRoot(AppRoutes),
-      HttpModule,
-      MaterialModule,
-      MatNativeDateModule
+    authSDK.SDKBrowserModule.forRoot(),
+    accountSDK.SDKBrowserModule.forRoot()
   ],
   declarations: [
-      AppComponent,
-      HeaderComponent,
-      FooterComponent,
-      SearchBarComponent,
-      MainLayoutComponent
+    AppComponent,
+    HeaderComponent,
+    FooterComponent,
+    SearchBarComponent,
+    MainLayoutComponent
   ],
-  bootstrap:    [ AppComponent ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 
