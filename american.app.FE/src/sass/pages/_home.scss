@@ -2,6 +2,7 @@
 // This file contains styles that are specific to the home page.
 // -----------------------------------------------------------------------------
 .logo{ 
+    cursor: pointer;
     width: 120px;                         
     .american{
         font-family: 'Dawning of a New Day';
@@ -13,4 +14,9 @@
         font-family: 'Archivo';
         font-size: 35px;       
     }
+}
+
+.mat-input-placeholder.mat-form-field-placeholder{
+    color: #AAAAAA;
+    font-family: 'Abel' !important;
 }

@@ -1,4 +1,5 @@
-import { Routes } from '@angular/router';
+import { NgModule }             from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { MainLayoutComponent } from './layout/layout.component';
 
 
@@ -12,10 +13,10 @@ export const AppRoutes: Routes = [
         path: '',
         component: MainLayoutComponent,
         children: [
-          {
-            path: 'Register',
-            loadChildren: './register/register.module#RegisterModule'
-          },
+            {
+                path: 'auth',
+                loadChildren: './auth/auth.module#AuthModule'
+            },
             {
                 path: 'Home',
                 loadChildren: './home/home.module#HomeModule'
@@ -23,12 +24,10 @@ export const AppRoutes: Routes = [
 
         ]
     }
-    // {
-    //     path: '',
-    //     component: AdminLayoutComponent,
-    //     children: [{
-    //         path: 'admin',
-    //         loadChildren: './pages/pages.module#PagesModule'
-    //     }]
-    // }
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(AppRoutes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule {}

@@ -15,8 +15,6 @@ export class SearchBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() { 
-
-    console.log(this.searchPlaceHolder.length)
   }
 
 }

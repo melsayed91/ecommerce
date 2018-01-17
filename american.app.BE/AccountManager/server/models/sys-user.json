@@ -7,14 +7,20 @@
   },
   "properties": {},
   "validations": [],
-  "relations": {},
+  "relations": {
+    "Account": {
+      "type": "hasOne",
+      "model": "Account",
+      "foreignKey": "userId"
+    }
+  },
   "acls": [
     {
-      "property": "greet",
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
-      "permission": "ALLOW"
+      "permission": "ALLOW",
+      "property": "greet"
     }
   ],
   "methods": {}

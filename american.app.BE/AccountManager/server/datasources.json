@@ -4,5 +4,24 @@
     "database": "americanBizDB",
     "name": "americanBizDB",
     "connector": "mongodb"
+  },
+  "emailDs": {
+    "name": "emailDs",
+    "connector": "mail",
+    "transports": [
+      {
+        "type": "smtp",
+        "host": "smtp.gmail.com",
+        "secure": true,
+        "port": 465,
+        "tls": {
+          "rejectUnauthorized": false
+        },
+        "auth": {
+          "user": "no.reply.okc@gmail.com",
+          "pass": "mail@okc"
+        }
+      }
+    ]
   }
 }

@@ -2,6 +2,8 @@
   "name": "sharedUser",
   "base": "User",
   "idInjection": true,
+  "restrictResetPasswordTokenScope": true,
+  "emailVerificationRequired": true,
   "options": {
     "validateUpsert": true
   },
