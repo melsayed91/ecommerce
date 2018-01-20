@@ -10,12 +10,38 @@
       "type": "string",
       "required": true
     },
-    "accountType":{
+    "accountType": {
       "type": "string"
     },
-    "data":{
-      "type": "object"
-    }
+    "data": {
+      "name": "string",
+      "city": "string",
+      "state": "string",
+      "address": "string",
+      "countriesOfOperation": "string",
+      "zipCode": "string",
+      "Phone": "string",
+      "mobile": "string"
+    },
+    "categories": [
+      {
+        "categrotyId": "number",
+        "subCategories": [
+          "number"
+        ]
+      }
+    ],
+    "disabledCategories": [
+      {
+        "categrotyId": "number",
+        "subCategories": [
+          "number"
+        ]
+      }
+    ],
+    "customers": [
+      "string"
+    ]
   },
   "validations": [],
   "relations": {},
