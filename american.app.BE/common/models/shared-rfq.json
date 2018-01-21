@@ -6,16 +6,8 @@
     "validateUpsert": true
   },
   "properties": {
-    "categoryId": {
-      "type": "number",
-      "required": true
-    },
     "description": {
       "type": "string",
-      "required": true
-    },
-    "statusId": {
-      "type": "Number",
       "required": true
     },
     "creationDate": {
@@ -27,7 +19,8 @@
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+  },
   "acls": [],
   "methods": {}
 }
