@@ -3,6 +3,7 @@
     "sources": [
       "loopback/common/models",
       "loopback/server/models",
+      "../../common/enums",
       "../../common/models",
       "../common/models",
       "./models"

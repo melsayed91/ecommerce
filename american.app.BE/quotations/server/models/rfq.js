@@ -34,7 +34,7 @@ module.exports = function(Rfq) {
   }
 
   Rfq.remoteMethod('getRFQs', {
-    accepts: { arg: 'catId', type: 'Number', required: true },
+    accepts: { arg: 'catId', type: 'string', required: true },
     returns: { arg: 'rfq', type: 'any' },
     http: { path: '/getrfq', verb: 'post' }
   });
@@ -55,5 +55,22 @@ module.exports = function(Rfq) {
     accepts: { arg: 'rfqId', type: 'String', required: true },
     returns: { arg: 'rfq', type: 'any' },
     http: { path: '/updaterfqstatus', verb: 'post' }
+  });
+
+  Rfq.updateRFQBusinessStatus = function (query, next) {
+
+    Rfq.update({_id:query.rfqId} , {statusId:2}, function (error, createdRfq) {
+      if (error)
+        return next(error);
+
+      return next(null, createdRfq);
+
+    });
+  }
+
+  Rfq.remoteMethod('updateRFQBusinessStatus', {
+    accepts: { arg: 'businessrfq', type: 'object', required: true },
+    returns: { arg: 'rfq', type: 'any' },
+    http: { path: '/businessrfq', verb: 'post' }
   });
 };
