@@ -1,0 +1,11 @@
+{
+    "americanBizDB": {
+        "url": "mongodb://cluster0-shard-00-00-u7gvr.mongodb.net:27017,cluster0-shard-00-01-u7gvr.mongodb.net:27017,cluster0-shard-00-02-u7gvr.mongodb.net:27017/admin?readPreference=primary&ssl=true",
+        "database": "americanBizDB",
+        "username":"amtigerteam",
+        "password":"%nUyQmzop!",
+        "name": "americanBizDB",
+        "connector": "mongodb",
+        "replicaSet":"Cluster0-shard-0"
+    }
+}

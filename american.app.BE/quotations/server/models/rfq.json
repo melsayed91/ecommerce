@@ -1,0 +1,13 @@
+{
+  "name": "rfq",
+  "base": "sharedRFQ",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
