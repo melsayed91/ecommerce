@@ -24,7 +24,7 @@ module.exports = function(Rfq) {
 
   Rfq.getRFQs = function (catId, next) {
 
-    Rfq.find({where:{categoryId:catId}}, function (error, createdRfq) {
+    Rfq.find({ where: { categoryId: catId }, include: ['status', 'category']}, function (error, createdRfq) {
       if (error)
         return next(error);
 
