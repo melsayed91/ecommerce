@@ -3,6 +3,7 @@
     "sources": [
       "loopback/common/models",
       "loopback/server/models",
+      "../../common/models",
       "../common/models",
       "./models"
     ],
@@ -12,5 +13,13 @@
       "../common/mixins",
       "./mixins"
     ]
+  },
+  "rfq": {
+  "dataSource": "americanBizDB",
+  "public": true
+},
+  "sharedRFQ": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }
