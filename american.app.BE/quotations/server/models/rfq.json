@@ -8,16 +8,7 @@
   "properties": {},
   "validations": [],
   "relations": {
-    "status": {
-      "type": "belongsTo",
-      "model": "sysCode",
-      "foreignKey":"statusId"
-    },
-    "category": {
-      "type": "belongsTo",
-      "model": "sysCode",
-      "foreignKey": "categoryId"
-    }
+
   },
   "acls": [],
   "methods": {}
