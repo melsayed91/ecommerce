@@ -1,0 +1,33 @@
+{
+  "name": "sharedRFQ",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "categoryId": {
+      "type": "number",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "statusId": {
+      "type": "Number",
+      "required": true
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "updateDate": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
