@@ -10,12 +10,23 @@
             "type": "string",
             "required": true
         },
-        "parentId": {
-            "type": "string"
+        "creationDate": {
+            "type": "Date",
+            "defaultFn": "now"
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
         }
     },
     "validations": [],
-    "relations": {},
+    "relations": {
+        "parent": {
+            "type": "belongsTo",
+            "model": "sysCode",
+            "foreignKey": "parentId"
+        }
+    },
     "acls": [],
     "methods": {}
 }

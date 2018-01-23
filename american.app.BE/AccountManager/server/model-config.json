@@ -32,5 +32,21 @@
   },
   "Email": {
     "dataSource": "emailDs"
+  },
+  "sharedSysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }
