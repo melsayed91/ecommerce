@@ -18,6 +18,10 @@
     "dataSource": "storage",
     "public": true
   },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "attachment": {
     "dataSource": "americanBizDB",
     "public": true

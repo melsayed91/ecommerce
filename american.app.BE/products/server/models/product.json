@@ -1,6 +1,6 @@
 {
-  "name": "attachment",
-  "base": "sharedAttachment",
+  "name": "product",
+  "base": "sharedProduct",
   "idInjection": true,
   "options": {
     "validateUpsert": true
@@ -8,6 +8,10 @@
   "properties": {},
   "validations": [],
   "relations": {},
-  "acls": [],
+  "acls": [
+   
+  ],
   "methods": {}
 }
+
+

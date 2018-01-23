@@ -18,33 +18,69 @@
       "city": "string",
       "state": "string",
       "address": "string",
-      "countriesOfOperation": "string",
       "zipCode": "string",
       "Phone": "string",
       "mobile": "string"
-    },
-    "categories": [
-      {
-        "categrotyId": "number",
-        "subCategories": [
-          "number"
-        ]
-      }
-    ],
-    "disabledCategories": [
-      {
-        "categrotyId": "number",
-        "subCategories": [
-          "number"
-        ]
-      }
-    ],
-    "customers": [
-      "string"
-    ]
+    }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "customers": {
+      "type": "referencesMany",
+      "model": "Account",
+      "foreignKey": "customerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "countriesOfOperation": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "countriesOfOperationIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "gallery": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "galleryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "profileImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "profileImageId"
+    },
+    "bannerImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "bannerImageId"
+    },
+    "disabledCategories": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "disabledCategoriesIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "categories": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "categoryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }
