@@ -25,7 +25,7 @@ module.exports = function (Rfq) {
 
   Rfq.getRFQs = function (catId, next) {
 
-    Rfq.find({where: {categoryId: catId}, include: ['status', 'category']}, function (error, result) {
+    Rfq.find({where: {categoryId: catId}, include: ['offers','status', 'category']}, function (error, result) {
       if (error)
         return next(error);
 
@@ -65,7 +65,7 @@ module.exports = function (Rfq) {
       if (error)
         return next(error);
 
-      Rfq.update({_id: query.rfqId}, {"$addToSet": {"offers": createdOffer.id.toString()}}, function (error, result) {
+      Rfq.update({_id: query.rfqId}, {"$addToSet": {"offerIds": createdOffer.id.toString()}}, function (error, result) {
         if (error)
           return next(error);
 

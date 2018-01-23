@@ -14,8 +14,6 @@
       "type": "string",
       "required": true
     },
-    "offers": [{"type": "string"}],
-    "rfqIds": [{"type": "string"}],
     "creationDate": {
       "type": "Date",
       "required": true
@@ -26,6 +24,24 @@
   },
   "validations": [],
   "relations": {
+    "rfqs": {
+      "type": "referencesMany",
+      "model": "rfq",
+      "foreignKey": "rfqIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "offers": {
+      "type": "referencesMany",
+      "model": "offer",
+      "foreignKey": "offerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
     "status": {
       "type": "belongsTo",
       "model": "sysCode",
