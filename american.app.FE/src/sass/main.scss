@@ -21,7 +21,11 @@
   'vendor/fullcalendar',
   'vendor/wizard-card',
   'vendor/chartist',
-  'vendor/select-bootstrap';
+  'vendor/select-bootstrap',
+  'vendor/parsleyjs',
+  'vendor/ng2-autocomplete',
+  'vendor/file-input';
+
   
 
 // 3. Base stuff
@@ -70,6 +74,8 @@
 // 6. Page-specific styles
 @import
   'pages/home',
+  'pages/signin',
+  'pages/register',
   'pages/pages';
 
 // 7. Themes

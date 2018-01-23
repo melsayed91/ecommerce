@@ -173,6 +173,13 @@
     background-image: none;
     border-bottom: 1px dotted $mdb-input-underline-color;
   }
+
+
+  &.parsley-error {
+    background-image: linear-gradient(#f44336, #f44336), linear-gradient(#D2D2D2, #D2D2D2);
+    background-size: 100% 2px, 100% 1px;
+    transition-duration: 0.3s;
+  }
 }
 
 // -----
@@ -284,6 +291,8 @@
   @include form-group-validation-state(has-error, $brand-danger);
   @include form-group-validation-state(has-success, $brand-success);
   @include form-group-validation-state(has-info, $brand-info);
+
+  
 
   textarea {
     resize: none;
@@ -401,4 +410,10 @@ select.form-control {
         color: $red;
         opacity: 1;
     }
+}
+
+
+
+.form-group.required{
+  @include add-required-mark();
 }

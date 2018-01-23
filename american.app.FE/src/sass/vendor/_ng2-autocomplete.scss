@@ -1,0 +1,51 @@
+.ng2-auto-complete {
+    @include custom-scroll-bar();
+    
+    border-bottom: 1px solid white;
+    background-color: transparent;
+    max-height: 175px;
+    overflow-y: auto;
+    
+    & > input {
+        outline: none;
+        border: 0;
+        padding: 2px; 
+        box-sizing: border-box;
+        background-clip: content-box;
+    }
+    
+    & > ul {
+        background-color: rgba(0, 0, 0, 0.842) !important;
+        margin: 0;
+        width : 100%;
+        overflow-y: auto;
+        list-style-type: none;
+        padding: 0;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        animation: slideDown 0.2s;
+    }
+    
+    & > ul.empty {
+        display: none;
+    }
+        
+    & > ul li {
+        padding: 5px 10px !important;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+        
+    & > ul li.selected {
+        background-color: rgba(255, 255, 255, 0.24) !important;
+    }
+    
+    & > ul li:last-child {
+        border-bottom: none;
+    }
+                         
+    & > ul li:hover {
+        background-color: rgb(78, 78, 78) !important;
+    }
+}
+
