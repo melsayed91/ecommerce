@@ -1,0 +1,49 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../../common/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "sharedSysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  }
+}

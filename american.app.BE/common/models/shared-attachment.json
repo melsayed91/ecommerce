@@ -1,0 +1,28 @@
+{
+    "name": "sharedAttachment",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string"
+        },
+        "url": {
+            "type": "string",
+            "required": true
+        },
+        "creationDate":{
+            "type":"Date",
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+}

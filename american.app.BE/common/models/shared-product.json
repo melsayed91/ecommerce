@@ -1,0 +1,62 @@
+{
+    "name": "sharedProduct",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "description": {
+            "type": "string",
+            "required": true
+        },
+        "price": {
+            "type": "Number",
+            "required": true
+        },
+        "creationDate": {
+            "type": "Date",
+            "defaultFn": "now"
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
+        }
+    },
+    "validations": [],
+    "relations": {
+        "account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId"
+        },
+        "category": {
+            "type": "belongsTo",
+            "model": "sysCode",
+            "foreignKey": "categoryId"
+        },
+        "attachments": {
+            "type": "referencesMany",
+            "model": "attachment",
+            "foreignKey": "attachmentIds",
+            "options": {
+                "validate": true,
+                "forceId": false
+            }
+        }
+    },
+    "acls": [
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$owner",
+            "permission": "ALLOW",
+            "property": "updateUserProduct"
+        }
+    ],
+    "methods": {}
+}
