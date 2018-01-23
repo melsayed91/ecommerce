@@ -19,6 +19,10 @@
     "dataSource": "americanBizDB",
     "public": true
   },
+  "rfp": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
   "sharedSysCode": {
     "dataSource": "americanBizDB",
     "public": false
@@ -28,6 +32,26 @@
     "public": false
   },
   "sharedRFQ": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedRFP": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "offer": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedOffer": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccount": {
     "dataSource": "americanBizDB",
     "public": false
   }

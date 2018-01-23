@@ -1,5 +1,5 @@
 {
-  "name": "sharedRFQ",
+  "name": "sharedRFP",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
@@ -13,9 +13,9 @@
     "title": {
       "type": "string",
       "required": true
-    }
-    ,"offers": [{"type": "string"}]
-    ,
+    },
+    "offers": [{"type": "string"}],
+    "rfqIds": [{"type": "string"}],
     "creationDate": {
       "type": "Date",
       "required": true

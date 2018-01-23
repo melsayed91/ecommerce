@@ -1,21 +1,17 @@
 {
-  "name": "sharedRFQ",
+  "name": "sharedOffer",
   "base": "PersistedModel",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "properties": {
-    "description": {
-      "type": "string",
+    "description": "string",
+    "price": {
+      "type": "number",
       "required": true
     },
-    "title": {
-      "type": "string",
-      "required": true
-    }
-    ,"offers": [{"type": "string"}]
-    ,
+    "quantity": "number",
     "creationDate": {
       "type": "Date",
       "required": true
@@ -31,12 +27,21 @@
       "model": "sysCode",
       "foreignKey": "statusId"
     },
-    "category": {
+    "account": {
       "type": "belongsTo",
-      "model": "sysCode",
-      "foreignKey": "categoryId"
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "rfq": {
+      "type": "belongsTo",
+      "model": "rfq",
+      "foreignKey": "rfqId"
+    },
+    "rfp": {
+      "type": "belongsTo",
+      "model": "rfp",
+      "foreignKey": "rfpId"
     }
-
   },
   "acls": [],
   "methods": {}
