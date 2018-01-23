@@ -3,6 +3,7 @@
     "sources": [
       "loopback/common/models",
       "loopback/server/models",
+      "../../common/enums",
       "../../common/models",
       "../common/models",
       "./models"
@@ -14,24 +15,13 @@
       "./mixins"
     ]
   },
-  "sysUser": {
+  "rfq": {
     "dataSource": "americanBizDB",
     "public": true
   },
-  "sharedUser": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "Account": {
+  "rfp": {
     "dataSource": "americanBizDB",
     "public": true
-  },
-  "sharedAccount": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "Email": {
-    "dataSource": "emailDs"
   },
   "sharedSysCode": {
     "dataSource": "americanBizDB",
@@ -41,11 +31,27 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "attachment": {
+  "sharedRFQ": {
     "dataSource": "americanBizDB",
     "public": false
   },
-  "sharedAttachment": {
+  "sharedRFP": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "offer": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedOffer": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccount": {
     "dataSource": "americanBizDB",
     "public": false
   }

@@ -10,15 +10,77 @@
       "type": "string",
       "required": true
     },
-    "accountType":{
+    "accountType": {
       "type": "string"
     },
-    "data":{
-      "type": "object"
+    "data": {
+      "name": "string",
+      "city": "string",
+      "state": "string",
+      "address": "string",
+      "zipCode": "string",
+      "Phone": "string",
+      "mobile": "string"
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "customers": {
+      "type": "referencesMany",
+      "model": "Account",
+      "foreignKey": "customerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "countriesOfOperation": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "countriesOfOperationIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "gallery": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "galleryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "profileImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "profileImageId"
+    },
+    "bannerImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "bannerImageId"
+    },
+    "disabledCategories": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "disabledCategoriesIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "categories": {
+      "type": "referencesMany",
+      "model": "sysCode",
+      "foreignKey": "categoryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    }
+  },
   "acls": [],
   "methods": {}
 }

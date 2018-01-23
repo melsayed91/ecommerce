@@ -1,0 +1,32 @@
+{
+    "name": "sharedSysCode",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "name": {
+            "type": "string",
+            "required": true
+        },
+        "creationDate": {
+            "type": "Date",
+            "defaultFn": "now"
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
+        }
+    },
+    "validations": [],
+    "relations": {
+        "parent": {
+            "type": "belongsTo",
+            "model": "sysCode",
+            "foreignKey": "parentId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

@@ -1,0 +1,43 @@
+{
+  "name": "sharedRFQ",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    }
+    ,"offers": [{"type": "string"}]
+    ,
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "modificationDate": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "status": {
+      "type": "belongsTo",
+      "model": "sysCode",
+      "foreignKey": "statusId"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "sysCode",
+      "foreignKey": "categoryId"
+    }
+
+  },
+  "acls": [],
+  "methods": {}
+}

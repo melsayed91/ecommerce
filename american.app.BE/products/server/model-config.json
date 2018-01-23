@@ -14,30 +14,27 @@
       "./mixins"
     ]
   },
-  "sysUser": {
-    "dataSource": "americanBizDB",
-    "public": true
-  },
-  "sharedUser": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "Account": {
-    "dataSource": "americanBizDB",
-    "public": true
-  },
-  "sharedAccount": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "Email": {
-    "dataSource": "emailDs"
-  },
   "sharedSysCode": {
     "dataSource": "americanBizDB",
     "public": false
   },
   "sysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
     "dataSource": "americanBizDB",
     "public": false
   },

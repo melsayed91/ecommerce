@@ -1,0 +1,48 @@
+{
+  "name": "sharedOffer",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": "string",
+    "price": {
+      "type": "number",
+      "required": true
+    },
+    "quantity": "number",
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "modificationDate": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "status": {
+      "type": "belongsTo",
+      "model": "sysCode",
+      "foreignKey": "statusId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "rfq": {
+      "type": "belongsTo",
+      "model": "rfq",
+      "foreignKey": "rfqId"
+    },
+    "rfp": {
+      "type": "belongsTo",
+      "model": "rfp",
+      "foreignKey": "rfpId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
