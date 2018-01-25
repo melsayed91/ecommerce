@@ -7,7 +7,7 @@ module.exports = function (sysUser) {
 
       //Register User
       sysUser.register = function (user, next) {
-            //Force Password to string 
+            //Force Password to string
             if (user.credentials)
                   user.password = user.credentials.password.toString();
 
@@ -15,16 +15,22 @@ module.exports = function (sysUser) {
                   if (error)
                         return next(error);
 
-                  var account = {
-                        userId: createdUser.id.toString(),
-                        accountType: user.type,
-                        data: user.data
-                  };
-                  sysUser.app.models.Account.create(account, function (error, createdAccount) {
+
+                  sysUser.app.models.accountData.create(user.data, function (error, createdAccountData) {
                         if (error)
                               return next(error);
+                    var account = {
+                      userId: createdUser.id.toString(),
+                      accountType: user.type,
+                      data: createdAccountData.id.toString()
+                    };
+                    sysUser.app.models.Account.create(account, function (error, createdAccount) {
+                      if (error)
+                        return next(error);
 
-                        return next(null, createdUser);
+
+                      return next(null, createdUser);
+                    });
                   });
             });
       }
@@ -32,7 +38,7 @@ module.exports = function (sysUser) {
       sysUser.remoteMethod('register', {
             accepts: { arg: 'user', type: 'object', required: true },
             returns: { arg: 'user', type: 'any' },
-            http: { path: '/register', verb: 'get' }
+            http: { path: '/register', verb: 'post' }
       });
 
 

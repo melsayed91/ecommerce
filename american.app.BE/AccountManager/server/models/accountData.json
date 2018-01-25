@@ -1,0 +1,13 @@
+{
+  "name": "accountData",
+  "base": "sharedAccountData",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

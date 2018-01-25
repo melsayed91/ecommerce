@@ -25,7 +25,7 @@ module.exports = function (Rfp) {
 
   Rfp.getRFPs = function (catId, next) {
 
-    Rfp.find({where: {categoryId: catId}, include: ['status', 'category']}, function (error, result) {
+    Rfp.find({where: {categoryId: catId}, include: ['rfqs', 'offers', 'status', 'category']}, function (error, result) {
       if (error)
         return next(error);
 
@@ -40,6 +40,22 @@ module.exports = function (Rfp) {
     http: {path: '/getrfp', verb: 'post'}
   });
 
+  Rfp.addSubRFQ = function (model, next) {
+    Rfp.update({_id: model.rfpId}, {$addToSet: {rfqIds: model.rfqId}}, function (error, createdRfp) {
+      if (error)
+        return next(error);
+
+
+      return next(null, createdRfp);
+
+    });
+  }
+
+  Rfp.remoteMethod('addSubRFQ', {
+    accepts: {arg: 'model', type: 'object', required: true},
+    returns: {arg: 'rfp', type: 'any'},
+    http: {path: '/addSubRFQ', verb: 'post'}
+  });
 
   Rfp.updateRFPStatus = function (model, next) {
 
@@ -65,7 +81,7 @@ module.exports = function (Rfp) {
       if (error)
         return next(error);
 
-      Rfp.update({_id: query.rfpId}, {"$addToSet": {"offers": createdOffer.id.toString()}}, function (error, result) {
+      Rfp.update({_id: query.rfpId}, {"$addToSet": {"offerIds": createdOffer.id.toString()}}, function (error, result) {
         if (error)
           return next(error);
 
