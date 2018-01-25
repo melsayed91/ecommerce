@@ -22,6 +22,14 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "AccessToken": {
     "dataSource": "americanBizDB",
     "public": false,

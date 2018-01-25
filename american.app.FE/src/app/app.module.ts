@@ -39,8 +39,8 @@ import { SearchBarComponent } from './layout/search-bar/search-bar.component';
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule,
     CoreModule,
+    AppRoutingModule,
     MatNativeDateModule,
     authSDK.SDKBrowserModule.forRoot(),
     accountSDK.SDKBrowserModule.forRoot()

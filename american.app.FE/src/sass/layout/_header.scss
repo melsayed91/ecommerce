@@ -11,12 +11,13 @@ header{
         max-width: 1500px;
         flex-flow: row wrap;
         align-content:  space-between;
-        padding: 10px;
+        padding: 10px 15px;
         margin: 0 auto;
         
         .middle{
             flex: 1 auto; 
-            text-align: center;
+            padding: 0 15px;
+
             a{
                 cursor: pointer;
                 font-size: 15px;
@@ -35,6 +36,36 @@ header{
         
         .right{
             display: flex;
+            align-items: center;
+
+            .userName {
+                text-align: end;
+                padding: 5px 15px;
+                cursor: pointer;
+
+                @include bottom-line-hover();
+
+                p:first-of-type{
+                    font-size: 20px;
+                }
+
+                p{
+                    margin: 0;
+                }
+            }
+
+            .header-icon{
+                font-size: 20px;
+                padding: 5px;
+                color: #3F51B5;
+                text-align: center;
+                cursor: pointer;
+                @include bottom-line-hover();
+
+                *{
+                    margin: 0;
+                }
+            }
         }
         
     }
@@ -46,24 +77,7 @@ header{
     cursor: pointer;
     text-align: center;
     padding: 5px 10px 0;
-    position: relative;
     color: black;
 
-    &:hover::after{
-            opacity: 1;
-            transform: translateY(0px);
-        } 
-
-    &::after {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: rgba(0,0,0,0.1);
-        content: '';
-        opacity: 0;
-        transition: opacity 0.3s, transform 0.3s;
-        transform: translateY(10px);
-    }
+    @include bottom-line-hover();
 }

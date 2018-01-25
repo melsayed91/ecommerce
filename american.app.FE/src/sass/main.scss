@@ -44,6 +44,7 @@
 
 // 5. Components
 @import
+'components/avatars',
 'components/sidebar-and-main-panel',
 'components/buttons',
 'components/misc',
@@ -76,6 +77,8 @@
   'pages/home',
   'pages/signin',
   'pages/register',
+  'pages/dashboard',
+  'pages/profile',
   'pages/pages';
 
 // 7. Themes

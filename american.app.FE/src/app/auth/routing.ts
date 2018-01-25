@@ -9,6 +9,10 @@ export const RegisterRoutes: Routes = [
         component: RegisterComponent
     },
     {
+        path: 'register/:mode',
+        component: RegisterComponent
+    },
+    {
         path: 'signin',
         component: SigninComponent
     }

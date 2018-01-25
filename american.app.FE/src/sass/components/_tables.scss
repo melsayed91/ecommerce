@@ -80,20 +80,29 @@
             margin-bottom: 5px;
         }
     }
-    .td-name{
+
+    .td-product{
         font-weight: $font-weight-default;
         font-size: 1.5em;
+
         small{
             color: $gray-light;
             font-size: 0.75em;
             font-weight: $font-weight-light;
+        }
+
+        .badge{
+            background-color: rgb(0, 216, 97);
+            &.outofstock{
+                background-color: $brand-danger;
+            }
         }
     }
     .td-number{
        font-weight: $font-weight-light;
        font-size: $font-size-h4;
    }
-    .td-name{
+    .td-product{
         min-width: 200px;
 
         a{
@@ -115,13 +124,69 @@
     }
 
     .img-container{
-        width: 120px;
-        max-height: 160px;
+        width: 170px;
+        max-height: 200px;
         overflow: hidden;
         display: block;
+        padding: 5px 15px;
+        margin: 10px;
+        background: white;
 
         img{
             width: 100%;
         }
     }
+
+    tr{
+        cursor: pointer;
+    }
+}
+
+.dataTables_length{
+    .form-group, .form-group-sm {
+        margin: 0px 10px;
+        width: 30px;
+        overflow: hidden;
+    }
+}
+
+.dataTables_filter{
+
+    .form-group, .form-group-sm {
+        margin: 0;
+        padding: 0 0 15px;
+    }
+    
+    .form-control {
+    height: 36px !important;
+    font-size: 15px !important;
+    line-height: 1.42857143 !important;
+    border: 1px solid #c5c5c5;
+    background: white !important;
+    padding: 15px !important;
+    
+    &::placeholder{
+        font-size: 14px;
+    }
+}
+
+}
+.table-top {
+    align-items: center;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 25px;
+}
+
+
+.table-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    overflow: hidden;
+    padding: 15px;
 }

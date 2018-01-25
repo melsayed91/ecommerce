@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { UserService } from '../../core/services/user.service/user.service';
 
 @Component({
   selector: 'header',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private auth: UserService,
+    private router: Router) { }
 
   ngOnInit() {
+  }
+
+  getUserEmail() {
+    return this.auth.userApi.getCachedCurrent() ? this.auth.getCurrentUserData().email : '';
+  }
+
+  getUserName() {
+    return this.auth.account ? this.auth.account.data.name : '';
+  }
+
+  navigateTo(destination: string) {
+    this.router.navigate([destination]);
   }
 
 }

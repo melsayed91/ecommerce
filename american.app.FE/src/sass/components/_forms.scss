@@ -127,3 +127,16 @@ form{
         margin: 9px 0 0;
     }
 }
+
+
+fieldset{
+    border: none;
+    margin: 0 0 20px;
+    padding: 0;
+}        
+
+.required-mark{
+    position: relative;
+    padding: 9px 0;
+    @include add-required-mark();
+}

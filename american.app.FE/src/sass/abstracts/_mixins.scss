@@ -618,6 +618,7 @@
 }
 
 
+//Dot Required Mark by Youness Zahir
 @mixin add-required-mark(){
   &::after{
     content: "";
@@ -630,8 +631,8 @@
   }
 }
 
-
-@mixin custom-scroll-bar(){ 
+//Custom Scroll by Youness Zahir
+@mixin custom-scroll-bar($thumb-color){ 
 
   &::-webkit-scrollbar-track
   {
@@ -648,7 +649,7 @@
 
   &::-webkit-scrollbar-thumb
   {
-    background-color: #0400ff;
+    background-color: $thumb-color;
     background-image: -webkit-linear-gradient(45deg,
                                               rgba(255, 255, 255, .2) 25%,
                           transparent 25%,
@@ -659,6 +660,42 @@
                           transparent)
   }
 }
+
+// bottom line hover by Youness Zahir
+@mixin bottom-line-hover(){
+  position: relative;
+
+  &:hover::after{
+          opacity: 1;
+          transform: translateY(0px);
+  } 
+
+  &::after {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(0,0,0,0.1);
+      content: '';
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: translateY(10px);
+  }
+}
+
+// Darkening background overlay by Youness Zahir
+@mixin darkening-background-overlay(){
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse farthest-corner at center center, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0.75) 100%) repeat scroll 0% 0%;
+  transition: 500ms;
+}
+
+
 
 /// Event wrapper
 /// @author Harry Roberts

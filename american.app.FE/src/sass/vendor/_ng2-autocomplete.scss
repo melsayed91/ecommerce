@@ -1,6 +1,6 @@
 .ng2-auto-complete {
-    @include custom-scroll-bar();
-    
+    @include custom-scroll-bar( #0400ff);
+
     border-bottom: 1px solid white;
     background-color: transparent;
     max-height: 175px;
@@ -15,7 +15,9 @@
     }
     
     & > ul {
-        background-color: rgba(0, 0, 0, 0.842) !important;
+        #registerForm &{
+            background-color: rgba(0, 0, 0, 0.842) !important;
+        }
         margin: 0;
         width : 100%;
         overflow-y: auto;
@@ -37,7 +39,9 @@
     }
         
     & > ul li.selected {
+        #registerForm &{
         background-color: rgba(255, 255, 255, 0.24) !important;
+        }
     }
     
     & > ul li:last-child {
@@ -45,7 +49,9 @@
     }
                          
     & > ul li:hover {
+        #registerForm &{
         background-color: rgb(78, 78, 78) !important;
+        }
     }
 }
 

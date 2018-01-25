@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 
@@ -384,7 +384,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   selectedsubIndustries = [];
   userData = {};
   userCredentials = {};
-  userType = "Business";
+  userType = "Individual";
   confirmPassword;
   formValidation;
   exitStep;
@@ -392,9 +392,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   uploaded = [];
   constructor(private userService: SysUserApi,
     private router: Router,
+    private route: ActivatedRoute,
     private NotifyService: NotifyService,
     private location: Location,
     private ng2FileInputService: Ng2FileInputService) {
+
+    this.route.params.subscribe(params => {
+      if (params['mode'])
+        this.userType = params['mode'];
+    })
+    
   }
 
 
@@ -475,11 +482,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.userService.register(user).subscribe((response) => {
       this.loading = false;
-      // this.router.navigate(['/auth/signin']);
       this.step = this.done;
     }, (err) => {
       this.loading = false;
-      this.step = this.done;
       if (err.message.includes('Email already exists')) {
         $('#fg-email').addClass("has-error");
       }
@@ -559,7 +564,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   goNext() {
     this.previousStep = this.step;
-    ++this.step;    
+    ++this.step;
   }
 
   goBack() {

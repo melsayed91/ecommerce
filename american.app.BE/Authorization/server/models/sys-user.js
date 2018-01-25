@@ -1,14 +1,16 @@
 'use strict';
+var objectId = require('mongodb').ObjectID;
 
 module.exports = function (sysUser) {
 
-      sysUser.greet = function (person, cb) {
-            cb(null, 'Greetings' + person + 'from Mars!');
-      }
+      sysUser.afterRemote('login', function (ctx, result, next) {
 
-      sysUser.remoteMethod('greet', {
-            accepts: { arg: 'person', type: 'string' },
-            returns: { arg: 'greeting', type: 'string' },
-            http: { path: '/greet', verb: 'get' }
+            sysUser.app.models.Account.findOne(
+                  { where: { userId: ctx.result.userId } },
+                  function (err, account) {
+                        ctx.result.account = account;
+                        ctx.result.accountErr = err;
+                        next();
+                  });
       });
 };

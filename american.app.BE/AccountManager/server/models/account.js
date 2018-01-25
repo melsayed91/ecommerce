@@ -4,8 +4,6 @@ module.exports = function (Account) {
 
     //Register User
     Account.getAccountByUser = function (myUserId, next) {
-
-
         Account.find({
             where:
                 { id: "5a5bc48125aa403e94c56a0b" },

@@ -1,6 +1,6 @@
 .register-form{
     @include full-screen-overlay();
-    background: url(https://i.pinimg.com/originals/95/90/3a/95903a9673291397c9d393608ae153b0.jpg) no-repeat center;
+    background: url(../assets/img/usa-map.jpg) no-repeat center;
     background-size: cover;
 
     .form-wrapper{
@@ -157,12 +157,7 @@
         form {   
             max-width: 700px;
             margin: 0 auto;
-
-            fieldset{
-                border: none;
-                margin: 0 0 20px;
-                padding: 0;
-            }         
+ 
             .form-group{
                 max-width: 450px;
             }
@@ -187,12 +182,6 @@
                 input{
                     padding: 0 30px;
                 }
-            }
-
-            input[type=number]::-webkit-inner-spin-button, 
-            input[type=number]::-webkit-outer-spin-button { 
-                -webkit-appearance: none; 
-                margin: 0;
             }
         }
 
@@ -235,7 +224,7 @@
             padding-top: 20px;
 
             .ulpoaded {
-                @include custom-scroll-bar();
+                @include custom-scroll-bar(#0400ff);
                 padding: 15px;
                 margin-top: 10px;
                 font-size: 16px;
@@ -265,12 +254,6 @@
                 }
             }
 
-        }
-
-        .required-mark{
-            position: relative;
-            padding: 9px 0;
-            @include add-required-mark();
         }
     }
 
@@ -317,7 +300,7 @@
     }        
 
     &.sub{
-        @include custom-scroll-bar();
+        @include custom-scroll-bar( #0400ff);
         font-size: 17px;
         justify-content: flex-start;
         max-height: 30vh;

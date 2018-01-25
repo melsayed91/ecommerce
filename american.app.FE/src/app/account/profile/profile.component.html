@@ -1,0 +1,50 @@
+<app-navbar page="profile"></app-navbar>
+<div class="page-content animated-500 fadeIn">
+    <div id="profile" class="page-layout simple tabbed">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
+            <div class="background-overlay"></div>
+            <div class="user-info">
+                <img class="profile-image avatar huge" src="../../../assets/img/image_placeholder.jpg">
+                <div class="name">
+                    <p>{{userAccount?.data.name}}</p>
+                    <p class="email">{{user?.email}}</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-fab btn-fab-mini btn-simple">
+                    <i class="fa fa-camera"></i>
+                </button>
+            </div>
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <mat-tab-group dynamicHeight="true">
+
+
+                <mat-tab label="Products">
+                    <profile-products></profile-products>
+                </mat-tab>
+
+                <mat-tab label="Account Information">
+                    <profile-info></profile-info>
+                </mat-tab>
+
+                <mat-tab label="Media Gallery">
+                    <profile-gallery></profile-gallery>
+                </mat-tab>
+
+            </mat-tab-group>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+</div>
