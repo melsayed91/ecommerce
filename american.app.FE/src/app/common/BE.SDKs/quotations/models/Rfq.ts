@@ -15,9 +15,11 @@ export interface RfqInterface {
   "categoryId"?: any;
   "offerIds"?: Array<any>;
   "accountId"?: any;
+  "attachmentIds"?: Array<any>;
   category?: any;
   offers?: Offer[];
   account?: any;
+  attachments?: any[];
 }
 
 export class Rfq implements RfqInterface {
@@ -31,9 +33,11 @@ export class Rfq implements RfqInterface {
   "categoryId": any;
   "offerIds": Array<any>;
   "accountId": any;
+  "attachmentIds": Array<any>;
   category: any;
   offers: Offer[];
   account: any;
+  attachments: any[];
   constructor(data?: RfqInterface) {
     Object.assign(this, data);
   }
@@ -109,6 +113,11 @@ export class Rfq implements RfqInterface {
           name: 'accountId',
           type: 'any'
         },
+        "attachmentIds": {
+          name: 'attachmentIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
       },
       relations: {
         category: {
@@ -133,6 +142,14 @@ export class Rfq implements RfqInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'accountId',
+          keyTo: 'id'
+        },
+        attachments: {
+          name: 'attachments',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'attachmentIds',
           keyTo: 'id'
         },
       }

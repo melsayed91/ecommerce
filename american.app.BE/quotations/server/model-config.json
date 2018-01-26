@@ -27,7 +27,7 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "sysCode": {
+  "SysCode": {
     "dataSource": "americanBizDB",
     "public": false
   },
@@ -52,6 +52,14 @@
     "public": false
   },
   "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
     "dataSource": "americanBizDB",
     "public": false
   }

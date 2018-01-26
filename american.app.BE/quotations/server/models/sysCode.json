@@ -1,5 +1,5 @@
 {
-    "name": "sysCode",
+    "name": "SysCode",
     "base": "sharedSysCode",
     "idInjection": true,
     "options": {

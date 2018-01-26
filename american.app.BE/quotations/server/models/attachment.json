@@ -1,6 +1,6 @@
 {
-  "name": "SysCode",
-  "base": "sharedSysCode",
+  "name": "attachment",
+  "base": "sharedAttachment",
   "idInjection": true,
   "options": {
     "validateUpsert": true

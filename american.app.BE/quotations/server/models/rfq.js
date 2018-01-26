@@ -28,7 +28,7 @@ module.exports = function (Rfq) {
       query.accountId = accountId
     }
     Rfq.find({
-      where: query, include: ['offers', 'category']
+      where: query, include: ['offers', 'category','attachments']
     }, function (error, result) {
       if (error)
         return next(error);
@@ -37,9 +37,9 @@ module.exports = function (Rfq) {
   }
 
   Rfq.remoteMethod('getRFQs', {
-    accepts: [{ arg: 'catIds', type: 'array' },
-    { arg: 'accountId', type: 'string' },
-    { arg: 'isBusiness', type: 'Boolean', required: true }],
+    accepts: [{ arg: 'catIds', type: 'array', http: { source: "body" } },
+    { arg: 'accountId', type: 'string', http: { source: "body" } },
+    { arg: 'isBusiness', type: 'Boolean', required: true, http: { source: "body" } }],
     returns: { arg: 'rfq', type: 'any' },
     http: { path: '/getrfq', verb: 'post' }
   });

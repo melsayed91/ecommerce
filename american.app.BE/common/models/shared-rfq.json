@@ -44,13 +44,22 @@
     },
     "category": {
       "type": "belongsTo",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "categoryId"
     },
     "account": {
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
+    },
+    "attachments": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "attachmentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     }
   },
   "acls": [],
