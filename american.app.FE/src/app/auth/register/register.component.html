@@ -77,9 +77,11 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group required" [class.country-input]="userData.country && userData.country.id">
-                                <span *ngIf="userData.country && userData.country.id" [class]="'country-icon flag-icon flag-icon-' + userData.country.id.toLowerCase()"></span>
+                                <span *ngIf="userData.country && userData.country.id" [class]="'country-icon flag-icon flag-icon-' + userData.country.countryCode.toLowerCase()"></span>
                                 <input class="form-control" id="country" name="Country" placeholder="Country" [(ngModel)]="userData.country" auto-complete
                                     [source]="countries" [list-formatter]="autocompleListFormatter" [accept-user-input]="false"
+                                    display-property-name="name"
+                                     value-property-name="id"
                                     [no-match-found-text]="'[!] Country not found ...'" (valueChanged)="countryChanged($event)"
                                     data-parsley-validation-threshold="1" data-parsley-required-message="Country is required"
                                     required>
@@ -159,9 +161,13 @@
             <div *ngIf="step == 2" class="animated-500" [class.fadeInUp-20]="previousStep < 2" [class.fadeInDown-20]="previousStep > 2">
                 <h1 class="title">Let's go deeper!</h1>
                 <h4 class="title">Pick relevant sub-industries for your business</h4>
+              
                 <div class="industries sub">
                     <div *ngFor="let subIndustry of subIndustries" class="item" (click)="toggleSubIndustry(subIndustry)" [class.selected]="selectedsubIndustries.indexOf(subIndustry) != -1">
-                        {{subIndustry}}
+                        {{subIndustry.name}}
+                    </div>
+                    <div *ngFor="let userSubIndustry of userSubIndustries let i=index" class="item selected" (click)="removeUserSubIndustry(i)">
+                        {{userSubIndustry}}
                     </div>
                 </div>
                 <div class="form-group">
@@ -183,10 +189,10 @@
                         <div *ngFor="let file of uploaded let i = index" class="file">
 
                             <span>
-                                <i class="fa fa-file"></i> &nbsp;&nbsp; {{file.name}}
+                                <i class="fa fa-file"></i> &nbsp;&nbsp; {{file.originalFileName}}
                             </span>
                             <mat-progress-bar *ngIf="!file.isLoaded" class="upload-progress" mode="indeterminate"></mat-progress-bar>
-                            <i *ngIf="file.isLoaded" class="fa fa-times remove" (click)="removeFile(i)"></i>
+                            <i *ngIf="file.isLoaded" class="fa fa-times remove" (click)="removeFile(i,file.id)"></i>
                         </div>
                     </div>
                 </div>

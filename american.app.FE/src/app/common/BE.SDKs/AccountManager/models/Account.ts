@@ -1,18 +1,23 @@
 /* tslint:disable */
+import {
+  AccountData
+} from '../index';
 
 declare var Object: any;
 export interface AccountInterface {
   "userId": any;
   "accountType"?: string;
-  "data"?: any;
   "id"?: any;
+  "accountDataId"?: any;
+  accountData?: AccountData;
 }
 
 export class Account implements AccountInterface {
   "userId": any;
   "accountType": string;
-  "data": any;
   "id": any;
+  "accountDataId": any;
+  accountData: AccountData;
   constructor(data?: AccountInterface) {
     Object.assign(this, data);
   }
@@ -54,16 +59,24 @@ export class Account implements AccountInterface {
           name: 'accountType',
           type: 'string'
         },
-        "data": {
-          name: 'data',
-          type: 'any'
-        },
         "id": {
           name: 'id',
           type: 'any'
         },
+        "accountDataId": {
+          name: 'accountDataId',
+          type: 'any'
+        },
       },
       relations: {
+        accountData: {
+          name: 'accountData',
+          type: 'AccountData',
+          model: 'AccountData',
+          relationType: 'belongsTo',
+                  keyFrom: 'accountDataId',
+          keyTo: 'id'
+        },
       }
     }
   }

@@ -14,23 +14,32 @@ module.exports = function (sysUser) {
             sysUser.create(user.credentials, function (error, createdUser) {
                   if (error)
                         return next(error);
+                  if (user.data.country)
+                        user.data.countryId = user.data.country.id;
 
-
-                  sysUser.app.models.accountData.create(user.data, function (error, createdAccountData) {
+                  var accountData = user.data;
+                  if (user.userDocuments && user.userDocuments.length)
+                        accountData.documentIds = user.userDocuments;
+                  if (user.categories && user.categories.length)
+                        accountData.categoryIds = user.categories;
+                  if (user.userCategories && user.userCategories.length)
+                        accountData.userCategories = user.userCategories;
+                  
+                  sysUser.app.models.accountData.create(accountData, function (error, createdAccountData) {
                         if (error)
                               return next(error);
-                    var account = {
-                      userId: createdUser.id.toString(),
-                      accountType: user.type,
-                      data: createdAccountData.id.toString()
-                    };
-                    sysUser.app.models.Account.create(account, function (error, createdAccount) {
-                      if (error)
-                        return next(error);
+                        var account = {
+                              userId: createdUser.id.toString(),
+                              accountType: user.type,
+                              accountDataId: createdAccountData.id.toString()
+                        };
+                        sysUser.app.models.Account.create(account, function (error, createdAccount) {
+                              if (error)
+                                    return next(error);
 
 
-                      return next(null, createdUser);
-                    });
+                              return next(null, createdUser);
+                        });
                   });
             });
       }
@@ -38,7 +47,7 @@ module.exports = function (sysUser) {
       sysUser.remoteMethod('register', {
             accepts: { arg: 'user', type: 'object', required: true },
             returns: { arg: 'user', type: 'any' },
-            http: { path: '/register', verb: 'post' }
+            http: { path: '/register', verb: 'POST' }
       });
 
 

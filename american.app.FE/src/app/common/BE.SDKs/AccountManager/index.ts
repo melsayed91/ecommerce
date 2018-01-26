@@ -50,6 +50,7 @@ import { SocketDriver } from './sockets/socket.driver';
 import { SocketConnection } from './sockets/socket.connections';
 import { RealTime } from './services/core/real.time';
 import { AccountApi } from './services/custom/Account';
+import { AccountDataApi } from './services/custom/AccountData';
 import { EmailApi } from './services/custom/Email';
 import { SysUserApi } from './services/custom/SysUser';
 /**
@@ -84,6 +85,7 @@ export class SDKBrowserModule {
         SDKModels,
         RealTime,
         AccountApi,
+        AccountDataApi,
         EmailApi,
         SysUserApi,
         internalStorageProvider,

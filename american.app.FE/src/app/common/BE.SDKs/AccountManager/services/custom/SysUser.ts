@@ -435,7 +435,9 @@ export class SysUserApi extends BaseLoopBackApi {
          * (The remote method definition does not provide any description.)
          * </em>
    *
-   * @param {object} user 
+   * @param {object} data Request data.
+   *
+   *  - `user` – `{object}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -446,7 +448,7 @@ export class SysUserApi extends BaseLoopBackApi {
    *  - `user` – `{any}` - 
    */
   public register(user: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/sysUsers/register";
     let _routeParams: any = {};

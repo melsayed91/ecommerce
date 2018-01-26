@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 // Application Singleton Services
 import { NotifyService } from './services/notify.service/notify.service';
 import { UserService } from './services/user.service/user.service';
+import { AttachmentService } from './services/attachment.service/attachment.service';
 import { AuthGuardService } from './services/auth.guard.service/auth-guard.service';
 
 
@@ -19,7 +20,8 @@ import { AuthGuardService } from './services/auth.guard.service/auth-guard.servi
   providers: [
     NotifyService,
     UserService,
-    AuthGuardService]
+    AuthGuardService,
+    AttachmentService]
 })
 export class CoreModule {
   constructor( @Optional() @SkipSelf() parentModule: CoreModule) {
