@@ -112,16 +112,16 @@
         </div>
         <div class="row">
           <div class="col-xs-12">
-              <div class="product-images" fxLayout="row" fxLayoutAlign="start start" fxLayoutWrap>
-                  <div *ngFor="let image of product.attachments">
-                      <div class="product-image">
-                          <img class="media" [src]="attachmentServer + image.url">
-                      </div>
-                  </div>
+            <div class="product-images" fxLayout="row" fxLayoutAlign="start start" fxLayoutWrap>
+
+              <div *ngFor="let image of product.attachments" class="product-image">
+                <img class="media" [src]="attachmentServer + image.url">
               </div>
+
+            </div>
             <div class="ulpoad-area">
-              <ng2-file-input [id]="'multiFilesInput'" [show-previews]="true" [multiple]="true" (onAdded)="onAdded($event)" (onRemoved)="removeFile($event)" extensions="['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG']"
-                [browse-text]="uploadIconHtml" [drop-text]="'Drag and drop files here or click the button below to upload product pictures'">
+              <ng2-file-input [id]="'multiFilesInput'" [show-previews]="true" [multiple]="true" (onAdded)="onAdded($event)" (onRemoved)="removeFile($event)"
+                extensions="['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG']" [browse-text]="uploadIconHtml" [drop-text]="'Drag and drop files here or click the button below to upload product pictures'">
               </ng2-file-input>
             </div>
           </div>
