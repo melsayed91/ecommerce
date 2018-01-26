@@ -1,0 +1,21 @@
+.product-images{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .product-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        width: 250px;
+        height: 250px;
+        border: 3px solid rgba(0, 0, 0, 0.12);
+
+        img {
+            height: 100%;
+            width: auto;
+            max-width: none;
+        }
+    }
+}
