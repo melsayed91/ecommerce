@@ -28,7 +28,7 @@ module.exports = function (Rfq) {
       query.accountId = accountId
     }
     Rfq.find({
-      where: query, include: ['offers', 'category']
+      where: query, include: ['offers', 'category','attachments']
     }, function (error, result) {
       if (error)
         return next(error);
