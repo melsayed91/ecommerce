@@ -5,7 +5,7 @@ import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 import { UserService } from '../../../../core/services/user.service/user.service';
 import { ProductApi, Product } from '../../../../common/BE.SDKs/Products';
 import { SysCodeApi } from '../../../../common/BE.SDKs/sysCodes';
-import { LoopBackConfig as attachementApiConfig } from '../../../../common/BE.SDKs/attachment';
+import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../../../common/BE.SDKs/attachment';
 import { AttachmentService } from '../../../../core/services/attachment.service/attachment.service';
 declare var $: any;
 
@@ -16,7 +16,6 @@ declare var $: any;
 })
 export class ProductsComponent implements OnInit {
   attachmentServer: any;
-
   account;
   isNew: any;
   loading;
@@ -38,7 +37,8 @@ export class ProductsComponent implements OnInit {
     private ng2FileInputService: Ng2FileInputService,
     private ProductApi: ProductApi,
     private SysCodeApi: SysCodeApi,
-    private AttachmentService: AttachmentService) {
+    private AttachmentService: AttachmentService,
+    private AttachmentServiceAPI: AttachmentApi) {
   }
 
   ngOnInit() {
@@ -117,7 +117,7 @@ export class ProductsComponent implements OnInit {
       "isActive": this.product.isActive,
       "categoryId": this.product.categoryId,
       "accountId": this.product.accountId,
-      "attachmentIds": this.product.attachmentIds,
+      "attachmentIds": this.uploaded.map(function (item) { return item.id })
     };
     if (!this.isNew)
       data['id'] = this.product.id;
@@ -158,13 +158,28 @@ export class ProductsComponent implements OnInit {
   }
 
   onAdded(event: any) {
-    this.uploaded.push(event.file);
-    this.scrollToBottom('.ulpoaded');
-    setTimeout(() => { event.file.isLoaded = true; }, this.uploaded.length * 1000);
+    var form = new FormData();
+    form.append("file", event.file, event.file.name);
+    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
+      this.uploaded.push(response);
+      this.scrollToBottom('.ulpoaded');
+      setTimeout(() => {
+        response.isLoaded = true;
+      }, this.uploaded.length * 1000);
+      console.log(this.uploaded)
+    }, (err) => {
+
+    })
   }
 
-  removeFile(index) {
-    this.uploaded.splice(index, 1)
+  removeFile(event: any) {
+    var toBeDeletedIndex = this.uploaded.findIndex(function (item) {
+      return item.originalFileName === event.file.name
+    });
+    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id).subscribe((response: any) => {
+      this.uploaded.splice(toBeDeletedIndex, 1)
+    }, (err) => {
+    })
   }
 
   getCurrentFiles() {
