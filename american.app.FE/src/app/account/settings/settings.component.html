@@ -1,1 +1,35 @@
 <app-navbar page="settings"></app-navbar>
+
+
+<div *ngIf="userAccount?.accountType == 'Individual'" class="page-content animated-500 fadeIn">
+    Individual
+</div>
+
+<div *ngIf="userAccount?.accountType == 'Business'" class="page-content animated-500 fadeIn">
+    <div id="settings" class="page-layout simple tabbed">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <div class="card">
+                            <div class="card-content">
+                                <h4 class="card-title">Messages
+                                </h4>
+                                <div class="togglebutton">
+                                    <label>
+                                        <input type="checkbox" checked> Enable Live Chat
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- Regular:
+                        <tag-input [(ngModel)]='blacklistCustomers' theme='filled-theme'></tag-input> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
