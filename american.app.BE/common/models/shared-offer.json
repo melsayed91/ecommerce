@@ -22,11 +22,6 @@
   },
   "validations": [],
   "relations": {
-    "status": {
-      "type": "belongsTo",
-      "model": "sysCode",
-      "foreignKey": "statusId"
-    },
     "account": {
       "type": "belongsTo",
       "model": "Account",

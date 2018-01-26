@@ -10,15 +10,17 @@ import { JSONSearchParams } from '../core/search.params';
 import { ErrorHandler } from '../core/error.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
-import { SysCode } from '../../models/SysCode';
+import { Offer } from '../../models/Offer';
 import { SocketConnection } from '../../sockets/socket.connections';
+import { Rfq } from '../../models/Rfq';
+import { Rfp } from '../../models/Rfp';
 
 
 /**
- * Api services for the `SysCode` model.
+ * Api services for the `Offer` model.
  */
 @Injectable()
-export class SysCodeApi extends BaseLoopBackApi {
+export class OfferApi extends BaseLoopBackApi {
 
   constructor(
     @Inject(Http) protected http: Http,
@@ -32,9 +34,9 @@ export class SysCodeApi extends BaseLoopBackApi {
   }
 
   /**
-   * Fetches belongsTo relation parent.
+   * Fetches belongsTo relation rfq.
    *
-   * @param {any} id SysCode id
+   * @param {any} id offer id
    *
    * @param {boolean} refresh 
    *
@@ -44,13 +46,73 @@ export class SysCodeApi extends BaseLoopBackApi {
    *
    * <em>
    * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysCode` object.)
+   * This usually means the response is a `Offer` object.)
    * </em>
    */
-  public getParent(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
+  public getRfq(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "GET";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/SysCodes/:id/parent";
+    "/offers/:id/rfq";
+    let _routeParams: any = {
+      id: id
+    };
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Fetches belongsTo relation rfp.
+   *
+   * @param {any} id offer id
+   *
+   * @param {boolean} refresh 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Offer` object.)
+   * </em>
+   */
+  public getRfp(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
+    let _method: string = "GET";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/offers/:id/rfp";
+    let _routeParams: any = {
+      id: id
+    };
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * Fetches belongsTo relation account.
+   *
+   * @param {any} id offer id
+   *
+   * @param {boolean} refresh 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * <em>
+   * (The remote method definition does not provide any description.
+   * This usually means the response is a `Offer` object.)
+   * </em>
+   */
+  public getAccount(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
+    let _method: string = "GET";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/offers/:id/account";
     let _routeParams: any = {
       id: id
     };
@@ -74,13 +136,13 @@ export class SysCodeApi extends BaseLoopBackApi {
    *
    * <em>
    * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysCode` object.)
+   * This usually means the response is a `Offer` object.)
    * </em>
    */
   public patchOrCreate(data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "PATCH";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/SysCodes";
+    "/offers";
     let _routeParams: any = {};
     let _postBody: any = {
       data: data
@@ -93,7 +155,7 @@ export class SysCodeApi extends BaseLoopBackApi {
   /**
    * Patch attributes for a model instance and persist it into the data source.
    *
-   * @param {any} id SysCode id
+   * @param {any} id offer id
    *
    * @param {object} data Request data.
    *
@@ -105,13 +167,13 @@ export class SysCodeApi extends BaseLoopBackApi {
    *
    * <em>
    * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysCode` object.)
+   * This usually means the response is a `Offer` object.)
    * </em>
    */
   public patchAttributes(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "PATCH";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/SysCodes/:id";
+    "/offers/:id";
     let _routeParams: any = {
       id: id
     };
@@ -128,21 +190,26 @@ export class SysCodeApi extends BaseLoopBackApi {
          * (The remote method definition does not provide any description.)
          * </em>
    *
+   * @param {object} data Request data.
+   *
+   *  - `model` – `{object}` - 
+   *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
    *   from the server.
    *
    * Data properties:
    *
-   *  - `subIndustries` – `{any}` - 
+   *  - `offer` – `{any}` - 
    */
-  public getAllSubIndustries(customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
+  public getOffers(model: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/SysCodes/getAllSubIndustries";
+    "/offers/getoffers";
     let _routeParams: any = {};
     let _postBody: any = {};
     let _urlParams: any = {};
+    if (typeof model !== 'undefined' && model !== null) _urlParams.model = model;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
@@ -152,7 +219,9 @@ export class SysCodeApi extends BaseLoopBackApi {
          * (The remote method definition does not provide any description.)
          * </em>
    *
-   * @param {string} parentId 
+   * @param {object} data Request data.
+   *
+   *  - `model` – `{object}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -160,25 +229,25 @@ export class SysCodeApi extends BaseLoopBackApi {
    *
    * Data properties:
    *
-   *  - `sysCode` – `{any}` - 
+   *  - `offer` – `{any}` - 
    */
-  public findByParent(parentId: any, customHeaders?: Function): Observable<SysCode> {
-    let _method: string = "GET";
+  public updateOfferStatus(model: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/SysCodes/findByParent";
+    "/offers/updateOfferStatus";
     let _routeParams: any = {};
     let _postBody: any = {};
     let _urlParams: any = {};
-    if (typeof parentId !== 'undefined' && parentId !== null) _urlParams.parentId = parentId;
+    if (typeof model !== 'undefined' && model !== null) _urlParams.model = model;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result.map((instance: SysCode) => new SysCode(instance));
+    return result;
   }
 
   /**
    * The name of the model represented by this $resource,
-   * i.e. `SysCode`.
+   * i.e. `Offer`.
    */
   public getModelName() {
-    return "SysCode";
+    return "Offer";
   }
 }
