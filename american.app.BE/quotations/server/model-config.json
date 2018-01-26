@@ -49,7 +49,7 @@
   },
   "Account": {
     "dataSource": "americanBizDB",
-    "public": true
+    "public": false
   },
   "sharedAccount": {
     "dataSource": "americanBizDB",

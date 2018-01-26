@@ -20,6 +20,14 @@
     },
     "modificationDate": {
       "type": "Date"
+    },
+    "enabled": {
+      "type": "Boolean",
+      "defaule": true
+    },
+    "isDeleted": {
+      "type": "Boolean",
+      "default": false
     }
   },
   "validations": [],
@@ -33,17 +41,16 @@
         "forceId": false
       }
     },
-    "status": {
-      "type": "belongsTo",
-      "model": "sysCode",
-      "foreignKey": "statusId"
-    },
     "category": {
       "type": "belongsTo",
       "model": "sysCode",
       "foreignKey": "categoryId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
     }
-
   },
   "acls": [],
   "methods": {}
