@@ -809,11 +809,12 @@ export class RfqApi extends BaseLoopBackApi {
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/rfqs/getrfq";
     let _routeParams: any = {};
-    let _postBody: any = {};
+    let _postBody: any = {
+      catIds: catIds,
+      accountId: accountId,
+      isBusiness: isBusiness
+    };
     let _urlParams: any = {};
-    if (typeof catIds !== 'undefined' && catIds !== null) _urlParams.catIds = catIds;
-    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
-    if (typeof isBusiness !== 'undefined' && isBusiness !== null) _urlParams.isBusiness = isBusiness;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
