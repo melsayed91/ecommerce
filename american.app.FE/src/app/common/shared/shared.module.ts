@@ -32,11 +32,12 @@ export class SharedDirectivesModule { }
 
 // Vendors Modules from github
 import { Ng2AutoCompleteModule } from 'ng2-auto-complete';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
-  imports: [CommonModule, Ng2AutoCompleteModule],
+  imports: [CommonModule, Ng2AutoCompleteModule, MomentModule],
   declarations: [],
-  exports: [CommonModule, FormsModule, Ng2AutoCompleteModule]
+  exports: [CommonModule, FormsModule, Ng2AutoCompleteModule, MomentModule]
 })
 export class SharedVendorsModule { }
 

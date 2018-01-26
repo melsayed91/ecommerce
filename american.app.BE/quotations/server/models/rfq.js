@@ -19,11 +19,11 @@ module.exports = function (Rfq) {
 
   Rfq.getRFQs = function (catIds, accountId, isBusiness, next) {
     var query = {
-      enabled: true,
       isDeleted: false
     }
     if (isBusiness) {
       query.categoryId = { inq: catIds }
+      query.enabled = true
     } else {
       query.accountId = accountId
     }
