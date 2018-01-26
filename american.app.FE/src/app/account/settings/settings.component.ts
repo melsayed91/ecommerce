@@ -7,6 +7,7 @@ import { UserService } from '../../core/services/user.service/user.service';
 })
 export class SettingsComponent implements OnInit {
   userAccount;
+  blacklistCustomers;
   constructor(private auth: UserService) {
     this.userAccount = this.auth.account;
   }
