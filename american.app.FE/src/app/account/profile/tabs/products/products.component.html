@@ -44,11 +44,13 @@
           <td class="td-product">
             <a>{{row.name}}</a>
             <br />
-            <small>in:&nbsp;{{row.category.name}}</small>
-            <br />
             <span [class.outofstock]="row.stock == 0" class="badge">{{(row.stock > 0)? row.stock +' items in stock': 'Out of stock' }}</span>
           </td>
-          <td>{{row.description}}</td>
+          <td>
+            <small><label>Listed under:&nbsp; {{row.category.name}}</label></small>
+            <br/>
+            {{row.description}}
+          </td>
           <td>
             <b>{{row.price}}</b>
           </td>

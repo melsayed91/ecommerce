@@ -27,6 +27,7 @@ export class ProductsComponent implements OnInit {
   table;
   products = [];
   categories = []
+  attachments = [];
 
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
@@ -52,8 +53,6 @@ export class ProductsComponent implements OnInit {
   loadUserProducts(): any {
     this.ProductApi.getUserProducts(this.account.id).subscribe((response) => {
       this.products = response.products;
-      if (this.table)
-      this.table.draw();
     }, (err) => {
 
     })
@@ -75,7 +74,7 @@ export class ProductsComponent implements OnInit {
       dom: "<'table-top'<'info'i><'filter'f>>" +
         "<'row'<'col-sm-12'tr>>" +
         "<'table-bottom'<'length'l><'paging'p>>",
-      lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+      lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
       pagingType: 'full_numbers',
       responsive: true,
       stateSave: true,
@@ -103,7 +102,6 @@ export class ProductsComponent implements OnInit {
   }
 
   closeProductForm() {
-    this.loadUserProducts();
     this.showProductForm = false;
   }
 
@@ -125,6 +123,12 @@ export class ProductsComponent implements OnInit {
       data['id'] = this.product.id;
 
     this.ProductApi.replaceOrCreate(data).subscribe((response) => {
+      //to avoid reloading the whole list we just add it to the array
+      if (this.isNew) {
+        data['category'] = this.productCategory;
+        data['attachments'] = this.attachments;
+        this.products.push(data);
+      }
       this.loading = undefined;
       this.closeProductForm();
     }, (err) => {
