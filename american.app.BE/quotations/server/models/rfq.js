@@ -17,18 +17,18 @@ module.exports = function (Rfq) {
     http: { path: '/addrfq', verb: 'post' }
   });
 
-  Rfq.getRFQs = function (catIds, accountId, isBusiness, next) {
+  Rfq.getRFQs = function (criteria, next) {
     var query = {
       isDeleted: false
     }
-    if (isBusiness) {
-      query.categoryId = { inq: catIds }
+    if (criteria.isBusiness) {
+      query.categoryId = { inq: criteria.catIds }
       query.enabled = true
     } else {
-      query.accountId = accountId
+      query.accountId = criteria.accountId
     }
     Rfq.find({
-      where: query, include: ['offers', 'category','attachments']
+      where: query, include: ['offers', 'category', 'attachments']
     }, function (error, result) {
       if (error)
         return next(error);
@@ -37,9 +37,7 @@ module.exports = function (Rfq) {
   }
 
   Rfq.remoteMethod('getRFQs', {
-    accepts: [{ arg: 'catIds', type: 'array', http: { source: "body" } },
-    { arg: 'accountId', type: 'string', http: { source: "body" } },
-    { arg: 'isBusiness', type: 'Boolean', required: true, http: { source: "body" } }],
+    accepts: { arg: 'criteria', type: 'any', http: { source: "body" } },
     returns: { arg: 'rfq', type: 'any' },
     http: { path: '/getrfq', verb: 'post' }
   });

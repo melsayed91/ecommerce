@@ -89,7 +89,8 @@ export class Rfq implements RfqInterface {
         },
         "enabled": {
           name: 'enabled',
-          type: 'boolean'
+          type: 'boolean',
+          default: true
         },
         "isDeleted": {
           name: 'isDeleted',

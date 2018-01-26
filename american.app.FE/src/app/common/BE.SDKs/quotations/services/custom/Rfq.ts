@@ -790,11 +790,7 @@ export class RfqApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
-   *  - `catIds` – `{any}` - 
-   *
-   *  - `accountId` – `{string}` - 
-   *
-   *  - `isBusiness` – `{Boolean}` - 
+   * This method expects a subset of model properties as request parameters.
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -804,15 +800,13 @@ export class RfqApi extends BaseLoopBackApi {
    *
    *  - `rfq` – `{any}` - 
    */
-  public getRFQs(catIds: any = {}, accountId: any = {}, isBusiness: any, customHeaders?: Function): Observable<any> {
+  public getRFQs(criteria: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/rfqs/getrfq";
     let _routeParams: any = {};
     let _postBody: any = {
-      catIds: catIds,
-      accountId: accountId,
-      isBusiness: isBusiness
+      criteria: criteria
     };
     let _urlParams: any = {};
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
