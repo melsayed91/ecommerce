@@ -16,14 +16,15 @@
     },
     "creationDate": {
       "type": "Date",
-      "required": true
+      "required": true,
+      "defaultFn": "now"
     },
     "modificationDate": {
       "type": "Date"
     },
     "enabled": {
       "type": "Boolean",
-      "defaule": true
+      "default": true
     },
     "isDeleted": {
       "type": "Boolean",

@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RfpApi, RfqApi, OfferApi } from "../../common/BE.SDKs/quotations";
+import { RfpApi, RfqApi, OfferApi, Rfq } from "../../common/BE.SDKs/quotations";
+import { SysCodeApi } from '../../common/BE.SDKs/sysCodes';
+import { UserService } from '../../core/services/user.service/user.service';
+import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
+declare var $: any;
+
 @Component({
   selector: 'app-request-for-quotations',
   templateUrl: './request-for-quotations.component.html',
@@ -9,18 +15,88 @@ import { RfpApi, RfqApi, OfferApi } from "../../common/BE.SDKs/quotations";
 })
 export class RequestForQuotationsComponent implements OnInit {
 
-  rfqs = []
-  isBusinessUser = true
-  currentAccountId = ""
-  currentUserCategories = []
-  constructor(private RfpService: RfpApi,
-    private RfqService: RfqApi,
-    private OfferServiceAPI: OfferApi) { }
+  rfqs;
+  isBusinessUser;
+  currentAccountId;
+  currentUserCategories = [];
+  currentRfq: Rfq = new Rfq();
+  currentRfqCategory;
+  categories = [];
+  formValidation;
+  showRFQForm;
+  attachmentServer: any;
+
+  uploadIconHtml = "<i class='fa fa-upload'></i>";
+  removeHtml = "<i class='fa fa-times'></i>";
+  uploaded = [];
+
+  constructor(
+    private auth: UserService,
+    private RfproposalApi: RfpApi,
+    private RfquotationApi: RfqApi,
+    private OfferServiceAPI: OfferApi,
+    private SysCodeApi: SysCodeApi,
+    private AttachmentService: AttachmentService,
+    private AttachmentServiceAPI: AttachmentApi) { }
 
   ngOnInit() {
-    // fill current user categories from the logged in user in case it's a business user
-    //fill currentAccountId
-    // in case it's a normal user set isBusinessUser =false
+    this.attachmentServer = attachementApiConfig.getPath();
+    this.currentAccountId = this.auth.account.id;
+    this.isBusinessUser = this.auth.account.accountType == "Business";
+    if (this.isBusinessUser)
+      this.currentUserCategories = this.auth.account.accountData.categoryIds;
+    this.SysCodeApi.findByParent("5a651615f22fe122e0862672").subscribe((response: any) => {
+      this.categories = response.sysCode;
+    }, (err) => { });
+    this.getRfq();
+  }
+  formLoaded() {
+    this.formValidation = $('#rfqForm').parsley({ trigger: "change keyup" });
+  }
+  saveRFQ() {
+    if (!this.formValidation.validate())
+      return;
+    this.currentRfq.accountId = this.currentAccountId;
+    this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
+    this.RfquotationApi.create(this.currentRfq).subscribe(resp => {
+      this.getRfq();
+      this.showRFQForm = false;
+    }, err => { })
+  }
+
+  autocompleListFormatter = (data: any) => {
+    return data['name']
+  }
+
+  validatefield(fieldId) {
+    $("#" + fieldId).parsley().validate();
+  }
+
+  categoryChanged(e) {
+    this.currentRfq.categoryId = e.id;
+    this.currentRfq.category = e;
+  }
+
+
+
+  onAdded(event: any) {
+    var form = new FormData();
+    form.append("file", event.file, event.file.name);
+    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
+      this.uploaded.push(response);
+    }, (err) => {
+
+    })
+  }
+
+  removeFile(event: any) {
+    var toBeDeletedIndex = this.uploaded.findIndex(function (item) {
+      return item.originalFileName === event.file.name
+    });
+    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id).subscribe((response: any) => {
+      this.uploaded.splice(toBeDeletedIndex, 1)
+    }, (err) => {
+    })
   }
 
 
@@ -53,15 +129,16 @@ export class RequestForQuotationsComponent implements OnInit {
     //                     ]
     // }
 
-    this.RfqService.getRFQs(this.currentUserCategories, this.currentAccountId, this.isBusinessUser).subscribe((response: any) => {
-      this.rfqs = response.rfqs;
+    this.rfqs = undefined;
+    this.RfquotationApi.getRFQs(this.currentUserCategories, this.currentAccountId, this.isBusinessUser).subscribe((response: any) => {
+      this.rfqs = response.rfq;
     }, (err) => {
 
     })
   }
 
   enableRfq(rfqId, enable) {
-    this.RfqService.enableRFQ(rfqId, enable).subscribe((response: any) => {
+    this.RfquotationApi.enableRFQ(rfqId, enable).subscribe((response: any) => {
       this.rfqs[this.rfqs.findIndex(function (rfq) {
         return rfq.id === rfqId
       })].enabled = enable;
@@ -72,10 +149,8 @@ export class RequestForQuotationsComponent implements OnInit {
 
 
   deleteRfq(rfqId) {
-    this.RfqService.deleteRFQ(rfqId).subscribe((response: any) => {
-      this.rfqs[this.rfqs.findIndex(function (rfq) {
-        return rfq.id === rfqId
-      })].isDeleted = true;
+    this.RfquotationApi.deleteRFQ(rfqId).subscribe((response: any) => {
+      this.getRfq();
     }, (err) => {
 
     })
@@ -92,7 +167,7 @@ export class RequestForQuotationsComponent implements OnInit {
     //     "accountId":"122121" current user accountId
     //   }
 
-    this.RfqService.addOffer(rfqId, offer).subscribe((response: any) => {
+    this.RfquotationApi.addOffer(rfqId, offer).subscribe((response: any) => {
     }, (err) => {
     })
   }
