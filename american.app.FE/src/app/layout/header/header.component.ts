@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserEmail() {
-    return this.auth.userApi.getCachedCurrent() ? this.auth.getCurrentUserData().email : '';
+    return this.auth.userApi.getCachedCurrent() ? this.auth.userApi.getCachedCurrent().email : '';
   }
 
   getUserName() {

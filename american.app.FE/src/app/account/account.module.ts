@@ -8,6 +8,7 @@ import { MaterialModule } from '../common/shared/material.module';
 import { RegisterRoutes } from './routing';
 
 import { SharedDirectivesModule, SharedVendorsModule } from '../common/shared/shared.module'
+import { Ng2FileInputModule } from 'ng2-file-input';
 
 import { dashboardComponent } from "./dashboard/dashboard.component";
 import { NavbarComponent } from './nav-bar/navbar.component';
@@ -28,7 +29,8 @@ import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
     ReactiveFormsModule,
     MaterialModule,
     SharedVendorsModule,
-    SharedDirectivesModule
+    SharedDirectivesModule,
+    Ng2FileInputModule.forRoot()
   ],
   declarations: [
     dashboardComponent,

@@ -9,8 +9,9 @@
         justify-content: space-around;
         align-items: center;
         font-size: 20px;
-        span{
-            color: #5e5e5e !important;
+         span {
+            color: #565656 !important;
+            font-family: 'Abel';
         }
         button{
             padding: 10px;
@@ -53,21 +54,19 @@
                 overflow:hidden;
                 font-size: 17px;
             }
-            img{
-                width:120px;
-                height:120px;
-            }
         }
         .ng2-file-input-file.image{
-            width:120px;
-            height:120px;
+            width: 200px;
+            height: auto;
             .ng2-file-input-file-text{
                 position:absolute;
                 top:5px;
                 left:5px;
                 line-height:14px;
                 font-size:11px;
-                background: rgba(255,255,255,0.6);
+                background: rgba(0, 0, 0, 0.45);
+                padding: 0 10px;
+                color: white;
                 white-space: nowrap;
                 z-index:5;
                 text-overflow: ellipsis;
@@ -80,18 +79,66 @@
         }
         .ng2-file-input-file.image .ng2-file-input-file-text.remove, 
         .ng2-file-input-file-text.remove{
-            font-size: 14px;
+            font-size: 17px;
             position: absolute;
-            bottom: 0; 
+            top: 5px;
+            bottom: 5px;
+            right: 5px;
+            left: 5px;
             cursor: pointer;
+            background: rgba(0, 0, 0, 0.89);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             opacity: 0;
 
             p{
-             color: orangered !important;
+                color: white !important;
+                margin: 0;
             }
         }
         .ng2-file-input-file.image:hover .ng2-file-input-file-text.remove, .ng2-file-input-file-text.remove:hover{
-                     
+            opacity: 1;  
         }
     }
+}
+
+
+
+.ulpoad-area{
+    min-height: 30vh;
+    padding-top: 20px;
+
+    .ulpoaded {
+        @include custom-scroll-bar(#0400ff);
+        padding: 15px;
+        margin-top: 10px;
+        font-size: 16px;
+        max-height: 25vh;
+        overflow-y: auto;
+
+        .file {
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+
+            span{
+                margin: 0 5px;
+                flex-grow: 1;
+            }
+            .upload-progress{
+                margin: 0 5px;
+                flex: 1;
+            }
+
+            .remove{
+                cursor: pointer;
+                margin: 0 5px;
+                color: $brand-danger !important;
+            }
+
+        }
+    }
+
 }

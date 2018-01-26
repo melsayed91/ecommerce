@@ -26,15 +26,14 @@
         <!-- CONTENT -->
         <div class="content">
 
-            <mat-tab-group dynamicHeight="true">
-
-
-                <mat-tab label="Products">
-                    <profile-products></profile-products>
-                </mat-tab>
+            <mat-tab-group (selectedTabChange)="productsList.initDataTable()" dynamicHeight="true">
 
                 <mat-tab label="Account Information">
                     <profile-info></profile-info>
+                </mat-tab>
+
+                <mat-tab label="Products">
+                    <profile-products #productsList></profile-products>
                 </mat-tab>
 
                 <mat-tab label="Media Gallery">

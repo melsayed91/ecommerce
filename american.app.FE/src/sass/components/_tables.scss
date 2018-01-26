@@ -80,7 +80,18 @@
             margin-bottom: 5px;
         }
     }
+    .td-actions{
+        min-width: 100px;
+        text-align: center;
+        button{
+            padding: 10px !important;
+            background: white;
+            border-radius: 100%;
+            border: none;
+            color: black;   
+        }
 
+    }
     .td-product{
         font-weight: $font-weight-default;
         font-size: 1.5em;
@@ -139,6 +150,12 @@
 
     tr{
         cursor: pointer;
+
+        &.selected{
+            background-color: rgb(255, 255, 255);
+            border-left: 5px solid #3F51B5 !important;
+            border-collapse: inherit !important;
+        }
     }
 }
 

@@ -38,7 +38,7 @@ module.exports = function (sysUser) {
       sysUser.remoteMethod('register', {
             accepts: { arg: 'user', type: 'object', required: true },
             returns: { arg: 'user', type: 'any' },
-            http: { path: '/register', verb: 'post' }
+            http: { path: '/register', verb: 'POST' }
       });
 
 

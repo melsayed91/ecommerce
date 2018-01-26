@@ -218,43 +218,6 @@
             }
         }
         
-
-        .ulpoad-area{
-            min-height: 30vh;
-            padding-top: 20px;
-
-            .ulpoaded {
-                @include custom-scroll-bar(#0400ff);
-                padding: 15px;
-                margin-top: 10px;
-                font-size: 16px;
-                max-height: 25vh;
-                overflow-y: auto;
-
-                .file {
-                    margin-bottom: 5px;
-                    display: flex;
-                    align-items: center;
-
-                    span{
-                        margin: 0 5px;
-                        flex-grow: 1;
-                    }
-                    .upload-progress{
-                        margin: 0 5px;
-                        flex: 1;
-                    }
-
-                    .remove{
-                        cursor: pointer;
-                        margin: 0 5px;
-                        color: $brand-danger !important;
-                    }
-        
-                }
-            }
-
-        }
     }
 
 }

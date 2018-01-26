@@ -1,33 +1,41 @@
 <div class="container-fluid">
   <div class="control-panel">
-    <button class="btn btn-simple" *ngIf="!showProductForm" (click)="openProductForm()">
-      <i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Product
-    </button>
-    <button class="btn btn-simple" *ngIf="showProductForm" (click)="SaveProduct()">
-      <i *ngIf="!loading" class="fa fa-save"></i>
-      <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp; {{loading? '&nbsp;&nbsp;&nbsp;Saving Product':'Save Product'}}
-    </button>
-    <button class="btn btn-simple" *ngIf="!showProductForm">
-      <i class="fa fa-tag"></i>&nbsp;&nbsp;Start a sale
-    </button>
-    <button class="btn btn-simple" *ngIf="!loading && showProductForm" (click)="RemoveProduct()">
-      <i *ngIf="!loading" class="fa fa-trash"></i>
-      <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp; {{loading? '&nbsp;&nbsp;&nbsp;Removing Product':'Remove Product'}}
+    <div *ngIf="!loading">
+      <button class="btn btn-simple" *ngIf="!showProductForm" (click)="openProductForm(true)">
+        <i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Product
+      </button>
+      <button class="btn btn-simple" *ngIf="!showProductForm">
+        <i class="fa fa-tag"></i>&nbsp;&nbsp; Start a sale
+      </button>
+      <button class="btn btn-simple" *ngIf="showProductForm" (click)="SaveProduct()">
+        <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Save Product
+      </button>
+      <button class="btn btn-simple" *ngIf="showProductForm" (click)="closeProductForm()">
+        <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
+      </button>
+      <button class="btn btn-simple" *ngIf="showProductForm && !isNew" (click)="RemoveProduct()">
+        <i *ngIf="!loading" class="fa fa-trash"></i>&nbsp;&nbsp; Remove Product
+      </button>
+    </div>
+
+    <button class="btn btn-simple" *ngIf="loading">
+      <i class="fa fa-spin fa-spinner"></i>&nbsp;&nbsp; {{loading}}
     </button>
   </div>
 
-  <div class="table-responsive" *ngIf="!showProductForm" view-init-spy (onAfterViewInit)="initDataTable()">
-    <table id="datatables" class="table table-shopping" width="100%" style="width:100%">
+  <div class="table-responsive" *ngIf="!showProductForm">
+    <table id="datatables" class="table table-shopping" width="100%" style="width:100%" view-init-spy (onAfterViewInit)="initDataTable()">
       <thead>
         <tr>
           <th></th>
           <th>Product</th>
           <th class="th-description">Description</th>
           <th class="th-description">Price</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of products">
+        <tr *ngFor="let row of products" (click)="toggleRow(row)" [class.selected]="row.selected">
           <td>
             <div class="img-container" [class.stacked-effect]="row.images.length > 0">
               <img [src]="row.avatar" alt="...">
@@ -43,6 +51,9 @@
           <td>
             <b>{{row.price}}</b>
           </td>
+          <td class="td-actions">
+            <button class="btn btn-raised" (click)="product = row; openProductForm(false)"><i class="fa fa-pencil"></i></button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -50,7 +61,7 @@
 
 
   <div *ngIf="showProductForm">
-    <form id="productForm">
+    <form id="productForm" view-init-spy (onAfterViewInit)="formLoaded()">
       <fieldset>
         <div class="text-center">
           <span class="required-mark"></span>Required Fields</div>
@@ -63,13 +74,9 @@
           </div>
           <div class="col-xs-12 col-md-6">
             <div class="form-group required">
-              <input class="form-control" id="category" name="category" placeholder="Product Category" [(ngModel)]="product.category" auto-complete
-                [source]="categories" 
-                [accept-user-input]="true" 
-                [no-match-found-text]="''"
-                (valueChanged)="categoryChanged($event)" 
-                data-parsley-validation-threshold="1" 
-                data-parsley-required-message="Category is required"
+              <input class="form-control" id="category" name="category" placeholder="Product Category" auto-complete [(ngModel)]="product.category" 
+                [source]="categories" [accept-user-input]="true" [no-match-found-text]="''" (valueChanged)="categoryChanged($event)" (ngModelChange)="categoryChanged($event)" display-property-name="name" 
+                [list-formatter]="autocompleListFormatter" data-parsley-validation-threshold="1" data-parsley-required-message="Category is required"
                 required>
             </div>
           </div>
@@ -78,8 +85,7 @@
           <div class="col-xs-12">
             <div class="form-group required">
               <textarea type="text" class="form-control" name="description" placeholder="Product Description" [(ngModel)]="product.about"
-              rows="5"
-                data-parsley-required-message="Address is required" required>
+                rows="3" data-parsley-required-message="Description is required" required>
               </textarea>
             </div>
           </div>
@@ -87,30 +93,23 @@
         <div class="row">
           <div class="col-xs-12 col-md-6">
             <div class="form-group required">
-              <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="product.city" data-parsley-required-message="City is required"
+              <input type="number" class="form-control" name="stock" placeholder="Available Stock" [(ngModel)]="product.stock" data-parsley-required-message="Stock is required"
                 required>
             </div>
           </div>
           <div class="col-xs-12 col-md-6">
             <div class="form-group required">
-              <input type="text" class="form-control" name="zip" placeholder="Zip Code" [(ngModel)]="product.zipCode" data-parsley-pattern="/^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$/i"
-                maxlength="12" data-parsley-pattern-message="A valid zip code contains only digits, letters, space and dash"
-                data-parsley-validation-threshold="1" data-parsley-required-message="Zip Code is required" required>
+              <input type="number" class="form-control" name="Price" placeholder="Product Price" [(ngModel)]="product.price" data-parsley-required-message="Price is required"
+                required>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-xs-12 col-md-6">
-            <div class="form-group required">
-              <input type="text" class="form-control" name="countries" placeholder="Countries of operation" data-parsley-required-message="Mobile is required"
-                required>
-            </div>
-          </div>
-          <div class="col-xs-12 col-md-6">
-            <div class="form-group required">
-              <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="product.phone" maxlength="20"
-                PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
-                data-parsley-validation-threshold="1">
+          <div class="col-xs-12">
+            <div class="ulpoad-area">
+              <ng2-file-input [id]="'multiFilesInput'" [show-previews]="true" [multiple]="true" (onAdded)="onAdded($event)" extensions="['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG']"
+                [browse-text]="uploadIconHtml" [drop-text]="'Drag and drop files here or click the button below to upload product pictures'">
+              </ng2-file-input>
             </div>
           </div>
         </div>
