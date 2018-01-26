@@ -54,5 +54,13 @@
   "sharedAccount": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }
