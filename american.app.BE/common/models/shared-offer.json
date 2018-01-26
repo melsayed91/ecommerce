@@ -11,10 +11,10 @@
       "type": "number",
       "required": true
     },
-    "quantity": "number",
     "creationDate": {
       "type": "Date",
-      "required": true
+      "required": true,
+      "defaultFn": "now"
     },
     "modificationDate": {
       "type": "Date"

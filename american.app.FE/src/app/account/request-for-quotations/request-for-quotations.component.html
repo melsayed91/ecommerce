@@ -24,7 +24,7 @@
                     <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Request for Quotation
                 </button>
             </div>
-            <form id="rfqForm" view-init-spy (onAfterViewInit)="formLoaded()">
+            <form id="rfqForm" view-init-spy (onAfterViewInit)="formLoaded('rfqForm')">
                 <div class="text-center">
                     <span class="required-mark"></span>Required Fields</div>
                 <div class="row">
@@ -90,43 +90,59 @@
         </div>
 
     </div>
-     <!-- Business -->
-     <div *ngIf="isBusinessUser">
+    <!-- Business -->
+    <div *ngIf="isBusinessUser">
 
-            <div *ngIf="rfqs?.length == 0" class="no-rfq">
-                <i class="fa fa-map-signs fa-xl"></i>
-               There is no RFQs that match your industries...
-            </div>
-    
-            <div *ngIf="!rfqs" class="no-rfq">
-                <i class="fa fa-location-arrow fa-xl fa-spin"></i>
-                Give us a moment to bring you the hottest RFQs...
-            </div>
-            
-            <div *ngIf="rfqs?.length > 0 && !showRFQForm">
-                <div class="control-panel">
-                    <button class="btn btn-simple" (click)="showRFQForm = true">Submit a new Request For Quotations!</button>
-                </div>
-                <div class="myrfqs">
-                    <div *ngFor="let rfq of rfqs" class="card card-raised">
-                        <div class="card-content">
-                            <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
-                            <div class="icon">
-                                <img *ngIf="rfq.attachments && rfq.attachments[0]" [src]="attachmentServer + rfq.attachments[0].url">
+        <div *ngIf="rfqs?.length == 0" class="no-rfq">
+            <i class="fa fa-map-signs fa-xl"></i>
+            There is no RFQs that match your industries...
+        </div>
+
+        <div *ngIf="!rfqs" class="no-rfq">
+            <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+            Hold on, we are bringing you the hottest RFQs in the market...
+        </div>
+
+        <div *ngIf="rfqs?.length > 0">
+            <div class="myrfqs">
+                <div *ngFor="let rfq of rfqs" class="card card-raised">
+                    <div class="card-content">
+                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
+                        <h6 class="category">{{rfq.offers? rfq.offers.length: 0}} Companies submitted a quotation</h6>
+                        <div class="icon">
+                            <img *ngIf="rfq.attachments && rfq.attachments[0]" [src]="attachmentServer + rfq.attachments[0].url">
+                        </div>
+                        <h3 class="card-title">{{rfq.title}}</h3>
+                        <p class="card-description">
+                            {{rfq.description}}
+                        </p>
+                        <br>
+                        <form id="offerForm" view-init-spy (onAfterViewInit)="formLoaded('offerForm')">
+                            <div class="text-center">
+                                <span class="required-mark"></span>Required Fields</div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group-sm required">
+                                        <input type="number" class="form-control" name="Price" placeholder="Offer Price" [(ngModel)]="offer.price" data-parsley-required-message="RFQ Title is required"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group-sm">
+                                        <input class="form-control" type="text" id="comment" name="comment"  [(ngModel)]="offer.description" placeholder="You can optionally leave a comment">
+                                    </div>
+                                </div>
                             </div>
-                            <h3 class="card-title">{{rfq.title}}</h3>
-                            <p class="card-description">
-                                {{rfq.description}}
-                            </p>
-                        </div>
-                        <div class="rfq-actions">
-                            <button class="btn btn-simple">Received Quotations ( {{rfq.offers? rfq.offers.length: 0}} )</button>
-                            <button class="btn btn-simple btn-danger btn-sm" (click)="deleteRfq(rfq.id)">Cancel RFQ</button>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="rfq-actions">
+                            <button *ngIf="showOfferForm" class="btn btn-simple" (click)="sendOffer(rfq.id)">Make an offer</button>
+                            <button *ngIf="!showOfferForm" class="btn btn-simple" (click)="showOfferForm = !showOfferForm">Make an offer</button>
                     </div>
                 </div>
-    
             </div>
-    
+
         </div>
+
+    </div>
 </div>

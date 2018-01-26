@@ -86,11 +86,12 @@ export class ProductsComponent implements OnInit {
   }
 
   toggleRow(row) {
-    row.selected = !row.selected;
+   // row.selected = !row.selected;
   }
 
   openProductForm(isNew) {
     this.productCategory = undefined;
+    this.uploaded = [];
     this.isNew = isNew;
     if (!this.isNew)
       this.productCategory = this.product.category;
@@ -109,6 +110,8 @@ export class ProductsComponent implements OnInit {
     if (!this.formValidation.validate())
       return;
     this.loading = 'Saving Product';
+
+    let uploadedAtchmentIds = this.uploaded.map(function (item) { return item.id });
     let data = {
       "name": this.product.name,
       "description": this.product.description,
@@ -117,18 +120,24 @@ export class ProductsComponent implements OnInit {
       "isActive": this.product.isActive,
       "categoryId": this.product.categoryId,
       "accountId": this.product.accountId,
-      "attachmentIds": this.uploaded.map(function (item) { return item.id })
+      "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds)
     };
-    if (!this.isNew)
+    if (!this.isNew) {
       data['id'] = this.product.id;
+    }
+
 
     this.ProductApi.replaceOrCreate(data).subscribe((response) => {
       //to avoid reloading the whole list we just add it to the array
       if (this.isNew) {
         data['category'] = this.productCategory;
-        data['attachments'] = this.attachments;
+        data['attachments'] = this.uploaded;
         this.products.push(data);
       }
+      else
+        this.product.attachments = this.product.attachments.concat(this.uploaded);
+
+
       this.loading = undefined;
       this.closeProductForm();
     }, (err) => {
@@ -162,11 +171,6 @@ export class ProductsComponent implements OnInit {
     form.append("file", event.file, event.file.name);
     this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
       this.uploaded.push(response);
-      this.scrollToBottom('.ulpoaded');
-      setTimeout(() => {
-        response.isLoaded = true;
-      }, this.uploaded.length * 1000);
-      console.log(this.uploaded)
     }, (err) => {
 
     })

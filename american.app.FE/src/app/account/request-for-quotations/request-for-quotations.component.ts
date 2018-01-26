@@ -14,6 +14,9 @@ declare var $: any;
   styleUrls: ['./request-for-quotations.component.scss']
 })
 export class RequestForQuotationsComponent implements OnInit {
+  offer(arg0: any, arg1: any): any {
+    throw new Error("Method not implemented.");
+  }
 
   rfqs;
   isBusinessUser;
@@ -25,6 +28,7 @@ export class RequestForQuotationsComponent implements OnInit {
   formValidation;
   showRFQForm;
   attachmentServer: any;
+  showOfferForm;
 
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
@@ -50,8 +54,8 @@ export class RequestForQuotationsComponent implements OnInit {
     }, (err) => { });
     this.getRfq();
   }
-  formLoaded() {
-    this.formValidation = $('#rfqForm').parsley({ trigger: "change keyup" });
+  formLoaded(id) {
+    this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
   }
   saveRFQ() {
     if (!this.formValidation.validate())
@@ -62,6 +66,14 @@ export class RequestForQuotationsComponent implements OnInit {
       this.getRfq();
       this.showRFQForm = false;
     }, err => { })
+  }
+
+  sendOffer(rfqId) {
+    this.offer['accountId'] = this.currentAccountId;
+    this.RfquotationApi.addOffer(rfqId, this.offer).subscribe((response: any) => {
+      this.showOfferForm = false;
+    }, (err) => {
+    })
   }
 
   autocompleListFormatter = (data: any) => {
@@ -153,22 +165,6 @@ export class RequestForQuotationsComponent implements OnInit {
       this.getRfq();
     }, (err) => {
 
-    })
-  }
-
-  addOfferToRFQ(rfqId, offer) {
-    // sample offer data
-
-    //   "offer":{
-    //     "description":"fdsfsd",
-    //     "title":"dsad",
-    //     "price":200,
-    //     "quantity":10,
-    //     "accountId":"122121" current user accountId
-    //   }
-
-    this.RfquotationApi.addOffer(rfqId, offer).subscribe((response: any) => {
-    }, (err) => {
     })
   }
 
