@@ -44,7 +44,7 @@
     },
     "category": {
       "type": "belongsTo",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "categoryId"
     }
 

@@ -27,7 +27,7 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "sysCode": {
+  "SysCode": {
     "dataSource": "americanBizDB",
     "public": false
   },

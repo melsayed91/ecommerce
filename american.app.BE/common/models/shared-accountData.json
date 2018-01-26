@@ -33,7 +33,7 @@
     },
     "countriesOfOperation": {
       "type": "referencesMany",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "countriesOfOperationIds",
       "options": {
         "validate": true,
@@ -65,7 +65,7 @@
     },
     "country": {
       "type": "belongsTo",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "countryId"
     },
     "bannerImage": {
@@ -75,7 +75,7 @@
     },
     "disabledCategories": {
       "type": "referencesMany",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "disabledCategoriesIds",
       "options": {
         "validate": true,
@@ -84,7 +84,7 @@
     },
     "categories": {
       "type": "referencesMany",
-      "model": "sysCode",
+      "model": "SysCode",
       "foreignKey": "categoryIds",
       "options": {
         "validate": true,
