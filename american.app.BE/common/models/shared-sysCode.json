@@ -23,7 +23,7 @@
     "relations": {
         "parent": {
             "type": "belongsTo",
-            "model": "sysCode",
+            "model": "SysCode",
             "foreignKey": "parentId"
         }
     },

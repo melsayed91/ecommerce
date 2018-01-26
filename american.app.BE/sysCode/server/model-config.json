@@ -14,7 +14,7 @@
       "./mixins"
     ]
   },
-  "sysCode": {
+  "SysCode": {
     "dataSource": "americanBizDB",
     "public": true
   },

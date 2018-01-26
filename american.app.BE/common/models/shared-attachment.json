@@ -6,6 +6,9 @@
         "validateUpsert": true
     },
     "properties": {
+        "originalFileName": {
+            "type": "string"
+        },
         "name": {
             "type": "string"
         },
@@ -16,8 +19,8 @@
             "type": "string",
             "required": true
         },
-        "creationDate":{
-            "type":"Date",
+        "creationDate": {
+            "type": "Date",
             "defaultFn": "now"
         }
     },

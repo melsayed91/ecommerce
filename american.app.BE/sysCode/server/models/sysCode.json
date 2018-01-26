@@ -1,11 +1,18 @@
 {
-    "name": "sysCode",
+    "name": "SysCode",
     "base": "sharedSysCode",
     "idInjection": true,
     "options": {
         "validateUpsert": true
     },
-    "properties": {},
+    "properties": {
+        "countryCode":{
+            "type":"string"
+        },
+        "icon":{
+            "type": "string"
+        }
+    },
     "validations": [],
     "relations": {},
     "acls": [],

@@ -1,6 +1,7 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
 import { Account } from '../../models/Account';
+import { AccountData } from '../../models/AccountData';
 import { Email } from '../../models/Email';
 import { SysUser } from '../../models/SysUser';
 
@@ -11,6 +12,7 @@ export class SDKModels {
 
   private models: Models = {
     Account: Account,
+    AccountData: AccountData,
     Email: Email,
     SysUser: SysUser,
     

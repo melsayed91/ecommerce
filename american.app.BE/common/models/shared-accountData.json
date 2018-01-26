@@ -12,7 +12,8 @@
     "address": "string",
     "zipCode": "string",
     "Phone": "string",
-    "mobile": "string"
+    "mobile": "string",
+    "userCategories":["string"]
   },
   "validations": [],
   "relations": {
@@ -48,10 +49,24 @@
         "forceId": false
       }
     },
+    "documents": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "documentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
     "profileImage": {
       "type": "belongsTo",
       "model": "attachment",
       "foreignKey": "profileImageId"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "sysCode",
+      "foreignKey": "countryId"
     },
     "bannerImage": {
       "type": "belongsTo",

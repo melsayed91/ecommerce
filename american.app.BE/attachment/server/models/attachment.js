@@ -2,16 +2,18 @@
 var CONTAINERS_URL = '/api/containers/';
 module.exports = function (Attachment) {
 
-    Attachment.upload = function (ctx, options, cb) {
+    Attachment.upload = function (ctx, fileName, options, cb) {
         if (!options) options = {};
         ctx.req.params.container = 'common';
-    
+        console.log(fileName)
         Attachment.app.models.container.upload(ctx.req, ctx.result, options, function (err, fileObj) {
             if (err) {
                 cb(err);
             } else {
+
                 var fileInfo = fileObj.files.file[0];
                 Attachment.create({
+                    originalFileName: fileName,
                     name: fileInfo.name,
                     type: fileInfo.type,
                     container: fileInfo.container,
@@ -32,6 +34,7 @@ module.exports = function (Attachment) {
             description: 'Uploads a file',
             accepts: [
                 { arg: 'ctx', type: 'object', http: { source: 'context' } },
+                { arg: 'fileName', type: 'string', required: true },
                 { arg: 'options', type: 'object', http: { source: 'query' } }
             ],
             returns: {
