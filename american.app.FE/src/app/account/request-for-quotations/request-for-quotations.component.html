@@ -112,7 +112,7 @@
                         <div class="card-content">
                             <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
                             <div class="icon">
-                                <img [src]="attachmentServer +rfq.attachments?[0].url">
+                                <img *ngIf="rfq.attachments && rfq.attachments[0]" [src]="attachmentServer + rfq.attachments[0].url">
                             </div>
                             <h3 class="card-title">{{rfq.title}}</h3>
                             <p class="card-description">

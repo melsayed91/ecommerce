@@ -24,6 +24,7 @@ export class RequestForQuotationsComponent implements OnInit {
   categories = [];
   formValidation;
   showRFQForm;
+  attachmentServer: any;
 
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
@@ -39,7 +40,7 @@ export class RequestForQuotationsComponent implements OnInit {
     private AttachmentServiceAPI: AttachmentApi) { }
 
   ngOnInit() {
-
+    this.attachmentServer = attachementApiConfig.getPath();
     this.currentAccountId = this.auth.account.id;
     this.isBusinessUser = this.auth.account.accountType == "Business";
     if (this.isBusinessUser)
@@ -56,7 +57,7 @@ export class RequestForQuotationsComponent implements OnInit {
     if (!this.formValidation.validate())
       return;
     this.currentRfq.accountId = this.currentAccountId;
-    this.currentRfq.attachmentIds: this.uploaded.map(function (item) { return item.id });
+    this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
     this.RfquotationApi.create(this.currentRfq).subscribe(resp => {
       this.getRfq();
       this.showRFQForm = false;
