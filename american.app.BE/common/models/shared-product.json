@@ -18,9 +18,17 @@
             "type": "Number",
             "required": true
         },
+        "stock": {
+            "type": "Number",
+            "required": true
+        },
         "creationDate": {
             "type": "Date",
             "defaultFn": "now"
+        },
+        "isActive": {
+            "type": "Boolean",
+            "default": true
         },
         "isDeleted": {
             "type": "Boolean",
@@ -36,7 +44,7 @@
         },
         "category": {
             "type": "belongsTo",
-            "model": "sysCode",
+            "model": "SysCode",
             "foreignKey": "categoryId"
         },
         "attachments": {

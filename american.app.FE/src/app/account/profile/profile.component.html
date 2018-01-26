@@ -1,7 +1,8 @@
 <app-navbar page="profile"></app-navbar>
-<div class="page-content animated-500 fadeIn">
-    <div id="profile" class="page-layout simple tabbed">
 
+<!-- User Profile -->
+<div *ngIf="userAccount?.accountType == 'Individual'" class="page-content animated-500 fadeIn">
+    <div id="profile" class="page-layout simple tabbed">
         <!-- HEADER -->
         <div class="header">
             <div class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
@@ -9,17 +10,43 @@
             <div class="user-info">
                 <img class="profile-image avatar huge" src="../../../assets/img/image_placeholder.jpg">
                 <div class="name">
-                    <p>{{userAccount?.data.name}}</p>
+                    <p>{{userAccount?.accountData.name}}</p>
                     <p class="email">{{user?.email}}</p>
                 </div>
             </div>
-
             <div class="actions">
                 <button class="btn btn-fab btn-fab-mini btn-simple">
                     <i class="fa fa-camera"></i>
                 </button>
             </div>
+        </div>
+        <!-- / HEADER -->
 
+
+        User Info here
+
+
+    </div>
+</div>
+<!-- Business Profile -->
+<div *ngIf="userAccount?.accountType == 'Business'" class="page-content animated-500 fadeIn">
+    <div id="profile" class="page-layout simple tabbed">
+        <!-- HEADER -->
+        <div class="header">
+            <div class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
+            <div class="background-overlay"></div>
+            <div class="user-info">
+                <img class="profile-image avatar huge" src="../../../assets/img/image_placeholder.jpg">
+                <div class="name">
+                    <p>{{userAccount?.accountData.name}}</p>
+                    <p class="email">{{user?.email}}</p>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn btn-fab btn-fab-mini btn-simple">
+                    <i class="fa fa-camera"></i>
+                </button>
+            </div>
         </div>
         <!-- / HEADER -->
 

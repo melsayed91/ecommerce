@@ -1,6 +1,6 @@
 {
-  "name": "SysCode",
-  "base": "sharedSysCode",
+  "name": "accountData",
+  "base": "sharedAccountData",
   "idInjection": true,
   "options": {
     "validateUpsert": true

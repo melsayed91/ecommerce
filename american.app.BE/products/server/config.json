@@ -1,7 +1,7 @@
 {
   "restApiRoot": "/products",
   "host": "127.0.0.1",
-  "port": 7000,
+  "port": 7777,
   "remoting": {
     "context": false,
     "rest": {
@@ -11,11 +11,11 @@
     },
     "json": {
       "strict": false,
-      "limit": "100kb"
+      "limit": "200kb"
     },
     "urlencoded": {
       "extended": true,
-      "limit": "100kb"
+      "limit": "200kb"
     },
     "cors": false
   }

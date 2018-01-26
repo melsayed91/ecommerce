@@ -30,6 +30,14 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "AccessToken": {
     "dataSource": "americanBizDB",
     "public": false,

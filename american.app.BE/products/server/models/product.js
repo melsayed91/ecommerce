@@ -2,13 +2,15 @@
 
 module.exports = function (product) {
 
-    product.getUserProducts = function (filter, next) {
+    product.getUserProducts = function (accountId, categoryId, next) {
+
+        var whereFilter = { isDeleted: false, accountId: accountId };
+
+        if (categoryId)
+            whereFilter.categoryId = categoryId;
+
         product.find({
-            where: {
-                accountId: filter.accountId,
-                categoryId: filter.categoryId,
-                isDeleted: false
-            }, include: ['category', 'attachments']
+            where: whereFilter, include: ['category', 'attachments']
         }, function (error, products) {
             if (error)
                 return next(error);
@@ -39,8 +41,10 @@ module.exports = function (product) {
     }
 
     product.remoteMethod('getUserProducts', {
-        accepts: { arg: 'filter', type: 'object', required: true },
-        returns: { arg: 'product', type: 'any' },
+        accepts: [
+            { arg: 'accountId', type: 'string', required: true },
+            { arg: 'categoryId', type: 'string' }],
+        returns: { arg: 'products', type: 'any' },
         http: { path: '/getUserProducts', verb: 'post' }
     });
 

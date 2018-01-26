@@ -137,9 +137,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         }
       });
 
+    
     this.lookup("5a651615f22fe122e0862672", "industries", true)
     this.lookup("5a669889218e000a3c209a6e", "countries", true)
-
   }
 
   ngAfterViewInit() {
@@ -187,8 +187,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       this.loading = false;
       if (err.message.includes('Email already exists')) {
         $('#fg-email').addClass("has-error");
+        $('#fg-email .parsley-errors-list').append( "<li class='email-exists'>This email is already taken</li>" )        
       }
     })
+  }
+
+
+  editingEmail(){
+    $('#fg-email').removeClass("has-error");
+    $('#fg-email .parsley-errors-list > .email-exists').remove(); 
   }
 
   autocompleListFormatter = (data: any) => {

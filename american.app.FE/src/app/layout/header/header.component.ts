@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserName() {
-    return this.auth.account ? this.auth.account.data.name : '';
+    return this.auth.account ? this.auth.account.accountData.name : '';
   }
 
   navigateTo(destination: string) {

@@ -37,22 +37,25 @@
       <tbody>
         <tr *ngFor="let row of products" (click)="toggleRow(row)" [class.selected]="row.selected">
           <td>
-            <div class="img-container" [class.stacked-effect]="row.images.length > 0">
-              <img [src]="row.avatar" alt="...">
+            <div class="img-container" [class.stacked-effect]="row.attachments.length > 1">
+              <img *ngIf="row.attachments.length>0" [src]="attachmentServer + row.attachments[0].url" alt="...">
             </div>
           </td>
           <td class="td-product">
             <a>{{row.name}}</a>
             <br />
             <small>in:&nbsp;{{row.category.name}}</small>
+            <br />
             <span [class.outofstock]="row.stock == 0" class="badge">{{(row.stock > 0)? row.stock +' items in stock': 'Out of stock' }}</span>
           </td>
-          <td>{{row.about}}</td>
+          <td>{{row.description}}</td>
           <td>
             <b>{{row.price}}</b>
           </td>
           <td class="td-actions">
-            <button class="btn btn-raised" (click)="product = row; openProductForm(false)"><i class="fa fa-pencil"></i></button>
+            <button class="btn btn-raised" (click)="product = row; openProductForm(false)">
+              <i class="fa fa-pencil"></i>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -74,17 +77,17 @@
           </div>
           <div class="col-xs-12 col-md-6">
             <div class="form-group required">
-              <input class="form-control" id="category" name="category" placeholder="Product Category" auto-complete [(ngModel)]="product.category" 
-                [source]="categories" [accept-user-input]="true" [no-match-found-text]="''" (valueChanged)="categoryChanged($event)" (ngModelChange)="categoryChanged($event)" display-property-name="name" 
-                [list-formatter]="autocompleListFormatter" data-parsley-validation-threshold="1" data-parsley-required-message="Category is required"
-                required>
+              <input class="form-control" id="category" name="category" placeholder="Product Category" auto-complete [(ngModel)]="productCategory"
+                [source]="categories" [accept-user-input]="false" [no-match-found-text]="''" (valueChanged)="categoryChanged($event)"
+                (ngModelChange)="categoryChanged($event)" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                data-parsley-validation-threshold="1" data-parsley-required-message="Category is required" required>
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-xs-12">
             <div class="form-group required">
-              <textarea type="text" class="form-control" name="description" placeholder="Product Description" [(ngModel)]="product.about"
+              <textarea type="text" class="form-control" name="description" placeholder="Product Description" [(ngModel)]="product.description"
                 rows="3" data-parsley-required-message="Description is required" required>
               </textarea>
             </div>

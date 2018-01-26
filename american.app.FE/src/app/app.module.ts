@@ -11,9 +11,11 @@ import { MatNativeDateModule } from '@angular/material';
 
 // Backend SDKs
 import * as authSDK from './common/BE.SDKs/Authorization';
+import * as accountSDK from './common/BE.SDKs/AccountManager';
 import * as attachmentSDK from './common/BE.SDKs/attachment';
 import * as sysCodeSDK from './common/BE.SDKs/sysCodes';
-import * as accountSDK from './common/BE.SDKs/AccountManager';
+import * as productSDK from './common/BE.SDKs/Products';
+
 
 // ------------------------------------
 
@@ -47,7 +49,8 @@ import { SearchBarComponent } from './layout/search-bar/search-bar.component';
     authSDK.SDKBrowserModule.forRoot(),
     accountSDK.SDKBrowserModule.forRoot(),
     sysCodeSDK.SDKBrowserModule.forRoot(),
-    attachmentSDK.SDKBrowserModule.forRoot()
+    attachmentSDK.SDKBrowserModule.forRoot(),
+    productSDK.SDKBrowserModule.forRoot()
   ],
   declarations: [
     AppComponent,
