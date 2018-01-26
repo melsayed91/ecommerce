@@ -50,6 +50,15 @@
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
+    },
+    "attachments": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "attachmentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     }
   },
   "acls": [],
