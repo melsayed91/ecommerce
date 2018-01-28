@@ -912,7 +912,7 @@ export class RfqApi extends BaseLoopBackApi {
    *
    *  - `rfqId` – `{string}` - 
    *
-   *  - `rfqoffer` – `{object}` - 
+   *  - `rfqoffer` – `{any}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned

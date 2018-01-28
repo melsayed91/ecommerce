@@ -14,10 +14,8 @@ declare var $: any;
   styleUrls: ['./request-for-quotations.component.scss']
 })
 export class RequestForQuotationsComponent implements OnInit {
-  offer(arg0: any, arg1: any): any {
-    throw new Error("Method not implemented.");
-  }
 
+  offer = {};
   rfqs;
   isBusinessUser;
   currentAccountId;
@@ -49,8 +47,8 @@ export class RequestForQuotationsComponent implements OnInit {
     this.isBusinessUser = this.auth.account.accountType == "Business";
     if (this.isBusinessUser)
       this.currentUserCategories = this.auth.account.accountData.categoryIds;
-    this.SysCodeApi.findByParent("5a651615f22fe122e0862672").subscribe((response: any) => {
-      this.categories = response.sysCode;
+    this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
+      this.categories = response.subIndustries;
     }, (err) => { });
     this.getRfq();
   }
@@ -62,16 +60,20 @@ export class RequestForQuotationsComponent implements OnInit {
       return;
     this.currentRfq.accountId = this.currentAccountId;
     this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
-    this.RfquotationApi.create(this.currentRfq).subscribe(resp => {
+    delete this.currentRfq.category;
+    this.RfquotationApi.addRFQ(this.currentRfq).subscribe(resp => {
       this.getRfq();
       this.showRFQForm = false;
+      this.currentRfq = new Rfq();
     }, err => { })
   }
 
   sendOffer(rfqId) {
+
     this.offer['accountId'] = this.currentAccountId;
     this.RfquotationApi.addOffer(rfqId, this.offer).subscribe((response: any) => {
-      this.showOfferForm = false;
+      this.getRfq();
+      this.currentRfq['showOfferForm'] = false;
     }, (err) => {
     })
   }
@@ -113,37 +115,24 @@ export class RequestForQuotationsComponent implements OnInit {
 
 
   getRfq() {
-
-    // object example
-    // {
-    //   "description": "rfq1",
-    //     "title": "rfq for 1",
-    //       "creationDate": "2018-01-26T13:25:10.865Z",
-    //         "modificationDate": "2018-01-26T13:40:16.225Z",
-    //           "enabled": true,
-    //             "isDeleted": false,
-    //               "id": "5a6b2c76c3162c0d8c246dfd",
-    //                 "categoryId": "5a6a34aab7e94a3e4499d880",
-    //                   "offerIds": [
-    //                     "5a6b2eb450141238149f0a61"
-    //                   ],
-    //                     "offers": [
-    //                       {
-    //                         "description": "offer1",
-    //                         "price": 200,
-    //                         "quantity": 10,
-    //                         "creationDate": "2018-01-26T13:35:48.164Z",
-    //                         "id": "5a6b2eb450141238149f0a61",
-    //                         "rfqId": "5a6b2c76c3162c0d8c246dfd",
-    //                         "accountId": "5a6b0ed7a40c7d3728058bd1",
-    //                         "title": "offer 11"
-    //                       }
-    //                     ]
-    // }
-
     this.rfqs = undefined;
-    this.RfquotationApi.getRFQs(this.currentUserCategories, this.currentAccountId, this.isBusinessUser).subscribe((response: any) => {
-      this.rfqs = response.rfq;
+    this.RfquotationApi.getRFQs({ catIds: this.currentUserCategories, accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
+      this.rfqs = response.rfq.map(function (rfq) {
+        let myOffers = rfq.offers.filter(function (offer) {
+          return offer.accountId == this.currentAccountId
+        }.bind(this));
+        
+        let myBest = myOffers[0] ? myOffers[0].price : 0;
+
+        myOffers.forEach(offer => {
+          if (offer.price < myBest)
+            myBest = offer.price;
+        });
+
+        rfq.myBestOffer = myBest;
+        rfq.myOffers = myOffers;
+        return rfq;
+      }.bind(this));
     }, (err) => {
 
     })

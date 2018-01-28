@@ -15,15 +15,7 @@
       "./mixins"
     ]
   },
-  "rfq": {
-    "dataSource": "americanBizDB",
-    "public": true
-  },
-  "rfp": {
-    "dataSource": "americanBizDB",
-    "public": true
-  },
-  "sharedSysCode": {
+   "sharedSysCode": {
     "dataSource": "americanBizDB",
     "public": false
   },
@@ -62,5 +54,13 @@
   "sharedAttachment": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "rfq": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "rfp": {
+    "dataSource": "americanBizDB",
+    "public": true
   }
 }

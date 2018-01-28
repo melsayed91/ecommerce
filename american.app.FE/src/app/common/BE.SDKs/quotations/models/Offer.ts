@@ -8,7 +8,6 @@ declare var Object: any;
 export interface OfferInterface {
   "description"?: string;
   "price": number;
-  "quantity"?: number;
   "creationDate": Date;
   "modificationDate"?: Date;
   "id"?: any;
@@ -23,7 +22,6 @@ export interface OfferInterface {
 export class Offer implements OfferInterface {
   "description": string;
   "price": number;
-  "quantity": number;
   "creationDate": Date;
   "modificationDate": Date;
   "id": any;
@@ -72,10 +70,6 @@ export class Offer implements OfferInterface {
         },
         "price": {
           name: 'price',
-          type: 'number'
-        },
-        "quantity": {
-          name: 'quantity',
           type: 'number'
         },
         "creationDate": {

@@ -72,8 +72,10 @@
                 <div *ngFor="let rfq of rfqs" class="card card-raised">
                     <div class="card-content">
                         <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
+
                         <div class="icon">
-                            <img src="../../../assets/img/bag.png">
+                            <img *ngIf="rfq.attachments && rfq.attachments[0]" [src]="attachmentServer + rfq.attachments[0].url">
+                            <img *ngIf="!rfq.attachments || rfq.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
                         </div>
                         <h3 class="card-title">{{rfq.title}}</h3>
                         <p class="card-description">
@@ -108,16 +110,17 @@
                 <div *ngFor="let rfq of rfqs" class="card card-raised">
                     <div class="card-content">
                         <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
-                        <h6 class="category">{{rfq.offers? rfq.offers.length: 0}} Companies submitted a quotation</h6>
+                        <h6 *ngIf="rfq.myOffers.length == 0" class="category">{{rfq.offers? rfq.offers.length: 0}} Submitted Quotations</h6>
+                        <h6 *ngIf="rfq.myOffers.length > 0" class="categor text-success"><i class="fa fa-check"></i> Your best offer is: $ {{rfq.myBestOffer}}</h6>
                         <div class="icon">
                             <img *ngIf="rfq.attachments && rfq.attachments[0]" [src]="attachmentServer + rfq.attachments[0].url">
+                            <img *ngIf="!rfq.attachments || rfq.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
                         </div>
                         <h3 class="card-title">{{rfq.title}}</h3>
                         <p class="card-description">
                             {{rfq.description}}
                         </p>
-                        <br>
-                        <form id="offerForm" view-init-spy (onAfterViewInit)="formLoaded('offerForm')">
+                        <form id="offerForm" *ngIf="rfq.showOfferForm" view-init-spy (onAfterViewInit)="formLoaded('offerForm')">
                             <div class="text-center">
                                 <span class="required-mark"></span>Required Fields</div>
                             <div class="row">
@@ -129,15 +132,19 @@
                                 </div>
                                 <div class="col-xs-12">
                                     <div class="form-group-sm">
-                                        <input class="form-control" type="text" id="comment" name="comment"  [(ngModel)]="offer.description" placeholder="You can optionally leave a comment">
+                                        <textarea class="form-control" type="text" rows="3" id="comment" name="comment" [(ngModel)]="offer.description" placeholder="You can optionally leave a comment">
+                                        </textarea>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="rfq-actions">
-                            <button *ngIf="showOfferForm" class="btn btn-simple" (click)="sendOffer(rfq.id)">Make an offer</button>
-                            <button *ngIf="!showOfferForm" class="btn btn-simple" (click)="showOfferForm = !showOfferForm">Make an offer</button>
+                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple" (click)="sendOffer(rfq.id)">
+                            <i class="fa fa-send-o"></i> &nbsp;Submit offer</button>
+                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple btn-danger" (click)="rfq.showOfferForm = !rfq.showOfferForm">Cancel</button>
+                        <button *ngIf="!rfq.showOfferForm" class="btn btn-simple" (click)="rfq.showOfferForm = !rfq.showOfferForm">
+                            <i class="fa fa-bullhorn"></i> &nbsp;Make an offer</button>
                     </div>
                 </div>
             </div>

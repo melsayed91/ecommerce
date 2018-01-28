@@ -45,8 +45,8 @@ export class ProductsComponent implements OnInit {
     this.attachmentServer = attachementApiConfig.getPath();
     this.account = this.auth.account;
     this.loadUserProducts();
-    this.SysCodeApi.findByParent("5a651615f22fe122e0862672").subscribe((response: any) => {
-      this.categories = response.sysCode;
+    this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
+      this.categories = response.subIndustries;
     }, (err) => { });
   }
 
@@ -86,7 +86,7 @@ export class ProductsComponent implements OnInit {
   }
 
   toggleRow(row) {
-   // row.selected = !row.selected;
+    // row.selected = !row.selected;
   }
 
   openProductForm(isNew) {

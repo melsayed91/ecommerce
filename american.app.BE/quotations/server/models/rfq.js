@@ -1,9 +1,11 @@
 'use strict';
+var objectId = require('mongodb').ObjectID;
 
 module.exports = function (Rfq) {
 
 
   Rfq.addRFQ = function (rfq, next) {
+    delete rfq.category;
     Rfq.create(rfq, function (error, createdRfq) {
       if (error)
         return next(error);
@@ -14,7 +16,7 @@ module.exports = function (Rfq) {
   Rfq.remoteMethod('addRFQ', {
     accepts: { arg: 'rfq', type: 'object', required: true },
     returns: { arg: 'rfq', type: 'any' },
-    http: { path: '/addrfq', verb: 'post' }
+    http: { path: '/addrfq', verb: 'POST' }
   });
 
   Rfq.getRFQs = function (criteria, next) {
@@ -91,7 +93,6 @@ module.exports = function (Rfq) {
   });
 
   Rfq.addOffer = function (rfqId, rfqoffer, next) {
-    rfqoffer.creationDate = new Date();
     rfqoffer.rfqId = rfqId;
     Rfq.app.models.offer.create(rfqoffer, function (error, createdOffer) {
       if (error)
@@ -106,7 +107,7 @@ module.exports = function (Rfq) {
 
   Rfq.remoteMethod('addOffer', {
     accepts: [{ arg: 'rfqId', type: 'string', required: true },
-    { arg: 'rfqoffer', type: 'object', required: true }],
+    { arg: 'rfqoffer', type: 'any', required: true }],
     returns: { arg: 'rfqoffer', type: 'any' },
     http: { path: '/addoffer', verb: 'post' }
   });

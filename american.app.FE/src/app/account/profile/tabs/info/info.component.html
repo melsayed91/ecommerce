@@ -1,24 +1,57 @@
 <div class="main-content" *ngIf="!this.isEditMode">
     <div class="container-fluid">
         <div class="row">
+            <div class="col-md-4">
+                <div class="card card-testimonial">
+                    <div class="card-content">
+                        <h5 class="card-description">
+                            You can leave some words here for your visitors
+                        </h5>
+                    </div>
+                    <div class="footer">
+                        <h4 class="card-title">{{accountData?.name}}</h4>
+                        <h6 class="category">{{user?.email}}</h6>
+                        <div class="card-avatar">
+                            <a href="#pablo">
+                                <img class="img" src="../../../assets/img/user-img.jpg" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-content">
                         <h4 class="card-title">Account Info
                         </h4>
-                        Name :{{accountData?.name}} 
-                        City :{{accountData?.city}}
-                         Country :{{accountData?.country?.name}}
-                          State :{{accountData?.state}}
-                        Address :{{accountData?.address}} 
-                        zipCode :{{accountData?.zipCode}}
-                         Phone:{{accountData?.Phone}}
-                         Mobile:{{accountData?.mobile}}
+                        <br>
+                        <p>
+                            <b>
+                                <i class="fa fa-phone"></i> &nbsp; Phone:
+                            </b>
+                            {{accountData?.Phone}}
+                        </p>
+                        <p>
+                            <b>
+                                <i class="fa fa-map-marker"></i> &nbsp; Address:
+                            </b>
+                            {{accountData?.address}}
+                        </p>
+                        <p>
+                            <b>State:</b> {{accountData?.state}}
+                        </p>
+                        <p>
+                            <b>City:</b> {{accountData?.city}}
+                        </p>
+                        <p>
+                            <b>Zip Code:</b> {{accountData?.zipCode}}
+                        </p>
                     </div>
-                    <button (click)="toggleEditProfile()" class="btn btn-rose pull-right">Edit Profile</button>
-                    <div class="clearfix"></div>
+                    <button (click)="toggleEditProfile() " class="btn btn-rose pull-right ">Edit Profile</button>
+                    <div class="clearfix "></div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -35,7 +68,7 @@
                         <!-- Individual Registration -->
                         <div class="form-content">
 
-                            <form id="editProfileForm" view-init-spy>
+                            <form id="editProfileForm" view-init-spy (onAfterViewInit)="formLoaded()">
 
                                 <fieldset>
                                     <div class="text-center">
@@ -49,7 +82,7 @@
                                             </div>
                                         </div>
 
-                                        
+
 
                                     </div>
                                     <div class="row">

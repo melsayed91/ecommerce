@@ -53,7 +53,7 @@
             <br/> {{row.description}}
           </td>
           <td>
-            <b>{{row.price}}</b>
+            <b>{{'$' + row.price}}</b>
           </td>
           <td class="td-actions">
             <button class="btn btn-raised" (click)="product = row; openProductForm(false)">
