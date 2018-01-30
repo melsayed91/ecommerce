@@ -1,0 +1,58 @@
+[
+    {
+        "uid": "AccountManager",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./AccountManager"
+    },
+    {
+        "uid": "Authorization",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./Authorization"
+    },
+    {
+        "uid": "Attachment",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./Attachment"
+    },
+    {
+        "uid": "Dashboard",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./Dashboard"
+    },
+    {
+        "uid": "Products",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./Products"
+    },
+    {
+        "uid": "Quotations",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./Quotations"
+    },
+    {
+        "uid": "SysCode",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "./SysCode"
+    }
+]

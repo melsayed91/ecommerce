@@ -5,7 +5,7 @@ var path = require('path');
 
 module.exports = function (sysUser) {
 
-      //Register User
+      //Register User / Business
       sysUser.register = function (user, next) {
             //Force Password to string
             if (user.credentials)

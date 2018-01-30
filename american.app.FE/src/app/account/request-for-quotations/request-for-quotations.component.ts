@@ -41,6 +41,7 @@ export class RequestForQuotationsComponent implements OnInit {
     private AttachmentService: AttachmentService,
     private AttachmentServiceAPI: AttachmentApi) { }
 
+    
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
     this.currentAccountId = this.auth.account.id;
@@ -52,9 +53,11 @@ export class RequestForQuotationsComponent implements OnInit {
     }, (err) => { });
     this.getRfq();
   }
+
   formLoaded(id) {
     this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
   }
+
   saveRFQ() {
     if (!this.formValidation.validate())
       return;
@@ -91,8 +94,6 @@ export class RequestForQuotationsComponent implements OnInit {
     this.currentRfq.category = e;
   }
 
-
-
   onAdded(event: any) {
     var form = new FormData();
     form.append("file", event.file, event.file.name);
@@ -112,7 +113,6 @@ export class RequestForQuotationsComponent implements OnInit {
     }, (err) => {
     })
   }
-
 
   getRfq() {
     this.rfqs = undefined;
@@ -147,7 +147,6 @@ export class RequestForQuotationsComponent implements OnInit {
 
     })
   }
-
 
   deleteRfq(rfqId) {
     this.RfquotationApi.deleteRFQ(rfqId).subscribe((response: any) => {
