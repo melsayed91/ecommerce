@@ -18,6 +18,11 @@
       "limit": "100kb"
     },
     "cors": false,
-    "sharedMethods": {}
+    "sharedMethods": {
+      "*": false,
+      "deleteById": true,
+      "upload": true,
+      "download": true
+    }
   }
 }

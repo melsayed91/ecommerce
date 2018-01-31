@@ -19,6 +19,9 @@
     },
     "cors": false,
     "sharedMethods": {
+      "*": false,
+      "findByParent": true,
+      "getAllSubIndustries": true
     }
   }
 }

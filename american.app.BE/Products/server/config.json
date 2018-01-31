@@ -18,6 +18,10 @@
       "limit": "200kb"
     },
     "cors": false,
-    "sharedMethods": {}
+    "sharedMethods": {
+      "*":false,
+      "getUserProducts": true,
+      "replaceOrCreate": true
+    }
   }
 }
