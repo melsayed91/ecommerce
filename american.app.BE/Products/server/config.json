@@ -17,6 +17,7 @@
       "extended": true,
       "limit": "200kb"
     },
-    "cors": false
+    "cors": false,
+    "sharedMethods": {}
   }
 }

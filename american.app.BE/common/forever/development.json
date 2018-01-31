@@ -24,14 +24,6 @@
         "sourceDir": "./Attachment"
     },
     {
-        "uid": "Dashboard",
-        "append": true,
-        "watch": true,
-        "script": "/server/server.js",
-        "command": "node .",
-        "sourceDir": "./Dashboard"
-    },
-    {
         "uid": "Products",
         "append": true,
         "watch": true,

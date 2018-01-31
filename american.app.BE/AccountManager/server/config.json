@@ -19,7 +19,6 @@
     },
     "cors": false,
     "sharedMethods": {
-      "*": false
     }
   }
 }
