@@ -23,7 +23,6 @@
       "getAccountData": true,
       "updateAccountData": true,
       "register": true,
-      "verify": true,
       "confirm": true
     }
   }
