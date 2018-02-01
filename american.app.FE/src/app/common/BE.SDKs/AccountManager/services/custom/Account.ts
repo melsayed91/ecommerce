@@ -12,7 +12,6 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
 import { Account } from '../../models/Account';
 import { SocketConnection } from '../../sockets/socket.connections';
-import { AccountData } from '../../models/AccountData';
 
 
 /**
@@ -33,92 +32,28 @@ export class AccountApi extends BaseLoopBackApi {
   }
 
   /**
-   * Fetches belongsTo relation accountData.
-   *
-   * @param {any} id Account id
-   *
-   * @param {boolean} refresh 
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
    * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Account` object.)
-   * </em>
-   */
-  public getAccountData(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Accounts/:id/accountData";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {};
-    let _urlParams: any = {};
-    if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Patch an existing model instance or insert a new one into the data source.
+         * (The remote method definition does not provide any description.)
+         * </em>
    *
    * @param {object} data Request data.
    *
-   *  - `data` – `{object}` - Model instance data
+   * This method does not accept any data. Supply an empty object.
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
    *   from the server.
    *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Account` object.)
-   * </em>
+   * Data properties:
+   *
+   *  - `acc` – `{any}` - 
    */
-  public patchOrCreate(data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "PATCH";
+  public getBusinessAccounts(customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Accounts";
+    "/Accounts/getBusinessAccounts";
     let _routeParams: any = {};
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Patch attributes for a model instance and persist it into the data source.
-   *
-   * @param {any} id Account id
-   *
-   * @param {object} data Request data.
-   *
-   *  - `data` – `{object}` - An object of model property name/value pairs
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `Account` object.)
-   * </em>
-   */
-  public patchAttributes(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "PATCH";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Accounts/:id";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {
-      data: data
-    };
+    let _postBody: any = {};
     let _urlParams: any = {};
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
@@ -129,7 +64,9 @@ export class AccountApi extends BaseLoopBackApi {
          * (The remote method definition does not provide any description.)
          * </em>
    *
-   * @param {any} myUserId 
+   * @param {object} data Request data.
+   *
+   *  - `accountId` – `{any}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -139,14 +76,14 @@ export class AccountApi extends BaseLoopBackApi {
    *
    *  - `acc` – `{any}` - 
    */
-  public getAccountByUser(myUserId: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
+  public approveBusinessAccount(accountId: any = {}, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/Accounts/getAccountByUser";
+    "/Accounts/approveBusinessAccount";
     let _routeParams: any = {};
     let _postBody: any = {};
     let _urlParams: any = {};
-    if (typeof myUserId !== 'undefined' && myUserId !== null) _urlParams.myUserId = myUserId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }

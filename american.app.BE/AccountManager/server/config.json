@@ -23,7 +23,9 @@
       "getAccountData": true,
       "updateAccountData": true,
       "register": true,
-      "confirm": true
+      "confirm": true,
+      "getBusinessAccounts":true,
+      "approveBusinessAccount":true
     }
   }
 }

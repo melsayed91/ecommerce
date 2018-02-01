@@ -1,7 +1,4 @@
 /* tslint:disable */
-import {
-  Account
-} from '../index';
 
 declare var Object: any;
 export interface AccountDataInterface {
@@ -24,8 +21,8 @@ export interface AccountDataInterface {
   "documentIds"?: Array<any>;
   "profileImageId"?: any;
   "bannerImageId"?: any;
-  account?: Account;
-  customers?: Account[];
+  account?: any;
+  customers?: any[];
   countriesOfOperation?: any[];
   country?: any;
   disabledCategories?: any[];
@@ -56,8 +53,8 @@ export class AccountData implements AccountDataInterface {
   "documentIds": Array<any>;
   "profileImageId": any;
   "bannerImageId": any;
-  account: Account;
-  customers: Account[];
+  account: any;
+  customers: any[];
   countriesOfOperation: any[];
   country: any;
   disabledCategories: any[];
@@ -185,16 +182,16 @@ export class AccountData implements AccountDataInterface {
       relations: {
         account: {
           name: 'account',
-          type: 'Account',
-          model: 'Account',
+          type: 'any',
+          model: '',
           relationType: 'belongsTo',
                   keyFrom: 'accountId',
           keyTo: 'id'
         },
         customers: {
           name: 'customers',
-          type: 'Account[]',
-          model: 'Account',
+          type: 'any[]',
+          model: '',
           relationType: 'referencesMany',
                   keyFrom: 'customerIds',
           keyTo: 'id'

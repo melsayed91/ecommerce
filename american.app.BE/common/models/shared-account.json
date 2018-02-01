@@ -12,6 +12,16 @@
     },
     "accountType": {
       "type": "string"
+    },
+    "isApproved": {
+      "type": "Boolean"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "modificationDate": {
+      "type": "Date"
     }
   },
   "validations": [],

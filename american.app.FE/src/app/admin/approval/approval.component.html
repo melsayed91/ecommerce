@@ -1,0 +1,34 @@
+<h2>
+  Companies
+</h2>
+
+<div class="table-responsive">
+  <table id="datatables" class="table table-shopping" width="100%" style="width:100%" view-init-spy>
+    <thead>
+    <tr>
+      <th>Company Name</th>
+      <th class="th-description">Status</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of companies">
+      <td class="">
+        <label>{{row.name}}</label>
+      </td>
+      <td>
+        <small>
+          <label>{{row.status}}</label>
+        </small>
+      </td>
+      <td>
+        <button *ngIf="!row.status" class="btn btn-primary" (click)="company = row;openProductForm(row.id)">
+          APPROVE
+        </button>
+
+        <label *ngIf="row.status"> Approved</label>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
