@@ -22,7 +22,9 @@
       "*": false,
       "getAccountData": true,
       "updateAccountData": true,
-      "register": true
+      "register": true,
+      "verify": true,
+      "confirm": true
     }
   }
 }

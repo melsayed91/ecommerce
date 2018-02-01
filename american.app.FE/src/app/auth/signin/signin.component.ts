@@ -34,6 +34,7 @@ export class SigninComponent implements OnInit {
     this.loading = true;
     this.auth.userApi.login({ email: this.email, password: this.password }).subscribe((response) => {
       this.auth.setAccount(response.account);
+      this.auth.setTokenOfAllSDKs(response);
       let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
       this.router.navigate([redirect]);
     },

@@ -8,14 +8,11 @@
   "properties": {},
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "property": "greet",
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "$everyone",
-      "permission": "ALLOW"
+  "acls": [],
+  "methods": {},
+  "mixins": {
+    "HideRelationsMethods": {
+      "expose": []
     }
-  ],
-  "methods": {}
+  }
 }

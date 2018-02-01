@@ -22,8 +22,7 @@ module.exports = function (accountData) {
     http: { path: '/getAccountData', verb: 'post' }
   });
 
-
-
+  
   accountData.updateAccountData = function (model, next) {
     if (model.updateQuery.country)
       delete model.updateQuery.country

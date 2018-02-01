@@ -21,7 +21,6 @@
     "sharedMethods": {
       "*": false,
       "login": true,
-      "confirm": true,
       "logout": true
     }
   }

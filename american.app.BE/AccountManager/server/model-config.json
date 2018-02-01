@@ -11,16 +11,13 @@
       "loopback/common/mixins",
       "loopback/server/mixins",
       "../common/mixins",
+      "../../common/mixins",
       "./mixins"
     ]
   },
   "sysUser": {
     "dataSource": "americanBizDB",
     "public": true
-  },
-  "sharedUser": {
-    "dataSource": "americanBizDB",
-    "public": false
   },
   "Account": {
     "dataSource": "americanBizDB",
@@ -54,6 +51,29 @@
     "public": false
   },
   "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "sysUser",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
     "dataSource": "americanBizDB",
     "public": false
   }

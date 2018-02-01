@@ -50,8 +50,7 @@ module.exports = function (sysUser) {
             http: { path: '/register', verb: 'POST' }
       });
 
-
-
+      
       //send verification email after registration
       sysUser.afterRemote('register', function (context, response, next) {
             var user = response.user;
