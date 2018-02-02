@@ -10,6 +10,7 @@
     "mixins": [
       "loopback/common/mixins",
       "loopback/server/mixins",
+      "../../common/mixins",
       "../common/mixins",
       "./mixins"
     ]
@@ -43,6 +44,22 @@
     "public": false
   },
   "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
     "dataSource": "americanBizDB",
     "public": false
   }

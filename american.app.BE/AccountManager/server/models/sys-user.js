@@ -11,45 +11,58 @@ module.exports = function (sysUser) {
             if (user.credentials)
                   user.password = user.credentials.password.toString();
 
-            sysUser.create(user.credentials, function (error, createdUser) {
-                  if (error)
-                        return next(error);
-                  if (user.data.country)
-                        user.data.countryId = user.data.country.id;
+    sysUser.create(user.credentials, function (error, createdUser) {
+      if (error)
+        return next(error);
+      if (user.data.country)
+        user.data.countryId = user.data.country.id;
 
-                  var accountData = user.data;
-                  if (user.userDocuments && user.userDocuments.length)
-                        accountData.documentIds = user.userDocuments;
-                  if (user.categories && user.categories.length)
-                        accountData.categoryIds = user.categories;
-                  if (user.userCategories && user.userCategories.length)
-                        accountData.userCategories = user.userCategories;
-                  
-                  sysUser.app.models.accountData.create(accountData, function (error, createdAccountData) {
-                        if (error)
-                              return next(error);
-                        var account = {
-                              userId: createdUser.id.toString(),
-                              accountType: user.type,
-                              accountDataId: createdAccountData.id.toString()
-                        };
-                        sysUser.app.models.Account.create(account, function (error, createdAccount) {
-                              if (error)
-                                    return next(error);
+      var accountData = user.data;
+      if (user.userDocuments && user.userDocuments.length)
+        accountData.documentIds = user.userDocuments;
+      if (user.categories && user.categories.length)
+        accountData.categoryIds = user.categories;
+      if (user.userCategories && user.userCategories.length)
+        accountData.userCategories = user.userCategories;
+
+      sysUser.app.models.accountData.create(accountData, function (error, createdAccountData) {
+        if (error)
+          return next(error);
+        var account = {
+          userId: createdUser.id.toString(),
+          accountType: user.type,
+          accountDataId: createdAccountData.id.toString(),
+          creationDate: new Date(),
+          isApproved : true
+        };
+
+        function createAccount() {
+          sysUser.app.models.Account.create(account, function (error, createdAccount) {
+            if (error)
+              return next(error);
 
 
-                              return next(null, createdUser);
-                        });
-                  });
-            });
-      }
+            return next(null, createdUser);
+          });
+        }
 
-      sysUser.remoteMethod('register', {
-            accepts: { arg: 'user', type: 'object', required: true },
-            returns: { arg: 'user', type: 'any' },
-            http: { path: '/register', verb: 'POST' }
+        if (user.type === "Business") {
+          //call approve api
+          account.isApproved = true; // api result
+          createAccount();
+        } else {
+          createAccount();
+        }
+
       });
+    });
+  }
 
+  sysUser.remoteMethod('register', {
+    accepts: {arg: 'user', type: 'object', required: true},
+    returns: {arg: 'user', type: 'any'},
+    http: {path: '/register', verb: 'POST'}
+  });
 
 
       //send verification email after registration
@@ -71,12 +84,12 @@ module.exports = function (sysUser) {
                   user: user
             };
 
-            user.verify(options, function (err, response) {
-                  if (err) {
-                        sysUser.deleteById(user.id);
-                        return next(err);
-                  }
-                  return next(null, true);
-            });
-      });
+    user.verify(options, function (err, response) {
+      if (err) {
+        sysUser.deleteById(user.id);
+        return next(err);
+      }
+      return next(null, true);
+    });
+  });
 };

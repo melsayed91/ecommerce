@@ -19,6 +19,12 @@
     },
     "cors": false,
     "sharedMethods": {
+      "*": false,
+      "addRFQ": true,
+      "addOffer": true,
+      "getRFQs": true,
+      "enableRFQ": true,
+      "deleteRFQ": true
     }
   }
 }

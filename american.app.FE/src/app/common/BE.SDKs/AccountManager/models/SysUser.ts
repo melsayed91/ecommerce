@@ -1,7 +1,4 @@
 /* tslint:disable */
-import {
-  Account
-} from '../index';
 
 declare var Object: any;
 export interface SysUserInterface {
@@ -11,7 +8,8 @@ export interface SysUserInterface {
   "emailVerified"?: boolean;
   "id"?: any;
   "password"?: string;
-  Account?: Account;
+  accessTokens?: any[];
+  Account?: any;
 }
 
 export class SysUser implements SysUserInterface {
@@ -21,7 +19,8 @@ export class SysUser implements SysUserInterface {
   "emailVerified": boolean;
   "id": any;
   "password": string;
-  Account: Account;
+  accessTokens: any[];
+  Account: any;
   constructor(data?: SysUserInterface) {
     Object.assign(this, data);
   }
@@ -81,10 +80,18 @@ export class SysUser implements SysUserInterface {
         },
       },
       relations: {
+        accessTokens: {
+          name: 'accessTokens',
+          type: 'any[]',
+          model: '',
+          relationType: 'hasMany',
+                  keyFrom: 'id',
+          keyTo: 'userId'
+        },
         Account: {
           name: 'Account',
-          type: 'Account',
-          model: 'Account',
+          type: 'any',
+          model: '',
           relationType: 'hasOne',
                   keyFrom: 'id',
           keyTo: 'userId'

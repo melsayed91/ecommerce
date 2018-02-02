@@ -21,5 +21,21 @@
   "sharedSysCode": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

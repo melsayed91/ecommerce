@@ -13,9 +13,16 @@
       <i class="fa fa-angle-down"></i>&nbsp;Help Center</a>
     <a>
       <i class="fa fa-angle-down"></i>&nbsp;Contact Us</a>
+    <a (click)="navigateTo('/admin/approval')">My Dashbaord</a>
   </div>
 
   <div *ngIf="!auth.userApi.isAuthenticated()" class="right">
+    <div class="button-with-icon" (click)="navigateTo('/admin/approval')">
+      <span>
+        <i class="fa fa-check"></i>
+        <p>Admin Approve</p>
+      </span>
+    </div>
     <div class="button-with-icon" (click)="navigateTo('/auth/signin')">
       <span>
         <i class="fa fa-sign-in"></i>
@@ -35,6 +42,7 @@
       <p>{{getUserName()}}</p>
       <p>{{getUserEmail()}}</p>
       <ul class="dropdown-menu">
+
         <li>
           <a (click)="navigateTo('account/dashboard')">My Dashbaord</a>
         </li>

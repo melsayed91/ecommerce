@@ -11,5 +11,10 @@
 
   },
   "acls": [],
-  "methods": {}
+  "methods": {},
+  "mixins": {
+    "HideRelationsMethods": {
+      "expose": []
+    }
+  }
 }

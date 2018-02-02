@@ -19,6 +19,9 @@
     },
     "cors": false,
     "sharedMethods": {
+      "*": false,
+      "login": true,
+      "logout": true
     }
   }
 }

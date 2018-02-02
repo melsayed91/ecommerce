@@ -12,10 +12,11 @@
       "loopback/common/mixins",
       "loopback/server/mixins",
       "../common/mixins",
+      "../../common/mixins",
       "./mixins"
     ]
   },
-   "sharedSysCode": {
+  "sharedSysCode": {
     "dataSource": "americanBizDB",
     "public": false
   },
@@ -62,5 +63,21 @@
   "rfp": {
     "dataSource": "americanBizDB",
     "public": true
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }
