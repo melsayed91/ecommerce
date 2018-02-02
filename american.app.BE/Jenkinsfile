@@ -1,0 +1,14 @@
+pipeline {
+    agent  dockerfile {
+        filename 'Dockerfile'
+        dir './quotations'
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+                sh 'svn --version'
+            }
+        }
+    }
+}
