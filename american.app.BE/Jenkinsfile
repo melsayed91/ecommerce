@@ -2,7 +2,7 @@ pipeline {
     agent {
     dockerfile {
         filename 'Dockerfile'
-        dir '../american.app.BE/quotations'
+        dir './american.app.BE/quotations'
     }
     }
     stages {
