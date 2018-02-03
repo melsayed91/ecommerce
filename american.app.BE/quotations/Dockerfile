@@ -2,7 +2,7 @@ FROM common as common
 FROM node:9.2.1
 RUN mkdir -p /usr/src/quotations
 RUN mkdir -p /usr/src/common
-COPY ./american.app.BE/package.json ./american.app.BE/package-lock.json /usr/src/quotations/
+COPY ./american.app.BE/quotations/package.json ./american.app.BE/quotations/package-lock.json /usr/src/quotations/
 RUN npm cache verify && \
     npm install --silent --progress=false --production
 COPY . /usr/src/quotations
