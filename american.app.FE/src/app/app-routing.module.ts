@@ -26,6 +26,10 @@ export const AppRoutes: Routes = [
                 loadChildren: './account/account.module#AccountModule',
                 canLoad: [AuthGuardService]
             },
+          {
+                path: 'admin',
+                loadChildren: './admin/admin.module#AdminModule'
+            },
             {
                 path: '**',
                 redirectTo: 'home',

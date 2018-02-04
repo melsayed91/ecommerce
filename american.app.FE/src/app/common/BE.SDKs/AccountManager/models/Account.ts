@@ -4,6 +4,9 @@ declare var Object: any;
 export interface AccountInterface {
   "userId": any;
   "accountType"?: string;
+  "isApproved"?: boolean;
+  "creationDate": Date;
+  "modificationDate"?: Date;
   "id"?: any;
   "accountDataId"?: any;
   accountData?: any;
@@ -12,6 +15,9 @@ export interface AccountInterface {
 export class Account implements AccountInterface {
   "userId": any;
   "accountType": string;
+  "isApproved": boolean;
+  "creationDate": Date;
+  "modificationDate": Date;
   "id": any;
   "accountDataId": any;
   accountData: any;
@@ -55,6 +61,18 @@ export class Account implements AccountInterface {
         "accountType": {
           name: 'accountType',
           type: 'string'
+        },
+        "isApproved": {
+          name: 'isApproved',
+          type: 'boolean'
+        },
+        "creationDate": {
+          name: 'creationDate',
+          type: 'Date'
+        },
+        "modificationDate": {
+          name: 'modificationDate',
+          type: 'Date'
         },
         "id": {
           name: 'id',

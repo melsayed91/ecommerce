@@ -1,0 +1,11 @@
+FROM common as common
+FROM node:9.2.1
+RUN mkdir -p /usr/src/quotations
+RUN mkdir -p /usr/src/common
+COPY --from=common /common /usr/src/common
+COPY . /usr/src/quotations
+RUN npm cache verify && \
+    npm install --silent --progress=false --production
+WORKDIR /usr/src/quotations
+EXPOSE 3333
+CMD ["node", "."]
