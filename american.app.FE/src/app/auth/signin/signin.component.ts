@@ -15,7 +15,7 @@ export class SigninComponent implements OnInit {
 
   email;
   password;
-
+  loginFeedback;
   constructor(
     private router: Router,
     private auth: UserService,
@@ -39,10 +39,11 @@ export class SigninComponent implements OnInit {
       this.router.navigate([redirect]);
     },
       (err) => {
+        this.loading = false;
         if (err.code == 'LOGIN_FAILED')
-          console.log('Oops!', 'Incorrect Email or Password');
+          this.loginFeedback = 'Oops! Incorrect Email or Password';
         if (err.code == 'LOGIN_FAILED_EMAIL_NOT_VERIFIED')
-          console.log('Account Not Activated!', 'Please check your email.');
+          this.loginFeedback = 'Account Not Activated! Please check your email.';
       })
   }
 

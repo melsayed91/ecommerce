@@ -91,7 +91,7 @@
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group required">
-                                <input type="text" class="form-control" name="State" placeholder="State" [(ngModel)]="userData.State" data-parsley-required-message="State is required"
+                                <input type="text" class="form-control" name="State" placeholder="State" [(ngModel)]="userData.state" data-parsley-required-message="State is required"
                                     required>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group required">
-                                <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="userData.City" data-parsley-required-message="City is required"
+                                <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="userData.city" data-parsley-required-message="City is required"
                                     required>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group required">
-                                <input type="text" class="form-control" name="Mobile" placeholder="Mobile Number" [(ngModel)]="userData.Mobile" maxlength="20"
+                                <input type="text" class="form-control" name="Mobile" placeholder="Mobile Number" [(ngModel)]="userData.mobile" maxlength="20"
                                     PhoneNumberValidator data-parsley-pattern-message="This should be a valid international mobile number<br/> Format: + [Country Code] [Phone Number]"
                                     data-parsley-validation-threshold="1" data-parsley-required-message="Mobile is required"
                                     required>
@@ -123,7 +123,7 @@
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group">
-                                <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="userData.Phone" maxlength="20"
+                                <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="userData.phone" maxlength="20"
                                     PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
                                     data-parsley-validation-threshold="1">
                             </div>

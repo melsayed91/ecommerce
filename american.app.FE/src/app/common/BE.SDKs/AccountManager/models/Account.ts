@@ -1,7 +1,4 @@
 /* tslint:disable */
-import {
-  AccountData
-} from '../index';
 
 declare var Object: any;
 export interface AccountInterface {
@@ -9,7 +6,7 @@ export interface AccountInterface {
   "accountType"?: string;
   "id"?: any;
   "accountDataId"?: any;
-  accountData?: AccountData;
+  accountData?: any;
 }
 
 export class Account implements AccountInterface {
@@ -17,7 +14,7 @@ export class Account implements AccountInterface {
   "accountType": string;
   "id": any;
   "accountDataId": any;
-  accountData: AccountData;
+  accountData: any;
   constructor(data?: AccountInterface) {
     Object.assign(this, data);
   }
@@ -71,8 +68,8 @@ export class Account implements AccountInterface {
       relations: {
         accountData: {
           name: 'accountData',
-          type: 'AccountData',
-          model: 'AccountData',
+          type: 'any',
+          model: '',
           relationType: 'belongsTo',
                   keyFrom: 'accountDataId',
           keyTo: 'id'

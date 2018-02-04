@@ -1,0 +1,80 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-testimonial">
+          <div class="card-content">
+            <div class="form-group user-bio">
+              <i *ngIf="bioLoading" class="fa fa-spin fa-spinner"></i>
+              <textarea class="form-control" type="text" [(ngModel)]="userBio" (focusout)="bioEdited()" placeholder="You can leave some welcome words here for your visitor..."
+                rows="3" maxlength="75"></textarea>
+            </div>
+          </div>
+          <div class="footer">
+            <h4 class="card-title">{{accountData?.name}}</h4>
+            <p *ngIf="userAccount?.accountType == 'Individual'">
+              <i [class]=" 'flag-icon flag-icon-' + accountData?.country?.countryCode.toLowerCase()"></i>
+              &nbsp; | &nbsp; {{accountData?.country?.name}}
+            </p>
+            <div class="card-avatar profile-picture" [class.loading]="pictureLoading" (click)="triggerUpload()">
+              <div class="dark-overlay">
+                <i *ngIf="!pictureLoading" class="fa fa-camera"></i>
+                <i *ngIf="pictureLoading" class="fa fa-spin fa-spinner"></i>
+              </div>
+              <input id="profilePicture" accept="image/*" type="file" (change)="uploadPicture($event)">
+              <div *ngIf="!accountData?.profileImage" class="image" style="background-image:url(../../../assets/img/image_placeholder.jpg)"></div>
+              <div *ngIf="accountData?.profileImage" class="image" [style.background-image]="'url('+attachmentServer + accountData?.profileImage.url +')'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-content">
+
+            <div class="account-info">
+              <div class="info-section" *ngIf="userAccount?.accountType == 'Business'">
+
+                <i class="fa fa-map"></i>
+                <div>
+                  <h4>COUNTRIES OF OPERATION</h4>
+                  <p *ngFor="let country of accountData?.countriesOfOperation">
+                    <i [class]=" 'flag-icon flag-icon-' + country?.countryCode.toLowerCase()"></i>
+                    &nbsp; | &nbsp; {{country?.name}}
+                  </p>
+                </div>
+              </div>
+              <div class="info-section">
+
+                <i class="fa fa-envelope"></i>
+                <div>
+                  <h4>REGISTRED EMAIL</h4>
+                  <p>{{user?.email}}</p>
+                </div>
+              </div>
+              <div class="info-section">
+                <i class="fa fa-phone"></i>
+                <div>
+                  <h4>CONTACT NUMBERS</h4>
+                  <p class="no-margin" *ngIf="userAccount?.accountType == 'Individual'">Mobile: {{accountData?.mobile}}</p>
+                  <p class="no-margin">Phone: {{accountData?.phone}}</p>
+                </div>
+              </div>
+              <div class="info-section">
+                <i class="fa fa-map"></i>
+                <div>
+                  <h4>ADDRESS</h4>
+                  <p>{{accountData?.address? accountData.address + ', ': ''}} {{accountData?.city}}, {{accountData?.state}},
+                    {{accountData?.zipCode}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button (click)="toggleEditProfile() " class="btn btn-rose pull-right ">Edit Profile</button>
+          <div class="clearfix "></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

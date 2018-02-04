@@ -16,9 +16,13 @@
                 <label class="control-label">Password</label>
                 <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
             </div>
-            <p class="resetPass text-muted">Forgot Password?</p>
+            <p class="login-error-message">{{loginFeedback}}</p>
+
             <button class="btn btn-raised btn-primary" type="button" (click)="signin()">
-                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>{{loading? '&nbsp;&nbsp;&nbsp;We are checking your credentials...':'Sign in'}}</button>
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>{{loading? '&nbsp;&nbsp;&nbsp;We are checking your credentials...':'Sign in'}}
+            </button>
+            <br>
+            <p class="resetPass text-muted">Forgot Password?</p>
         </form>
     </div>
     <div class="col-xs-12 col-sm-6 animated fadeIn">
@@ -31,11 +35,11 @@
             <div class="register-links">
                 <div class="link" routerLink="/auth/register/Individual">
                     <span class="fa fa-user-circle-o"></span>
-                        <p>Individual Account</p>
+                    <p>Individual Account</p>
                 </div>
                 <div class="link" routerLink="/auth/register/Business">
                     <span class="fa fa-briefcase"></span>
-                        <p>Business Account</p>
+                    <p>Business Account</p>
                 </div>
             </div>
 

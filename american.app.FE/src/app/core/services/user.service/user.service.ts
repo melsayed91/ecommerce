@@ -36,6 +36,10 @@ export class UserService extends LoopBackAuth {
     this.account = account;
     this.persist("account", account);
   }
+  setAccountData(accountData) {
+    this.account.accountData = accountData;
+    this.persist("account", this.account);
+  }
 
   setTokenOfAllSDKs(response) {
     this.AccountManagerAuth.setToken(response);

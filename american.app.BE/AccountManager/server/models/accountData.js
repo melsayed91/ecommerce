@@ -4,7 +4,8 @@ module.exports = function (accountData) {
 
   accountData.getAccountData = function (accountDataId, next) {
     accountData.find({
-      where: { _id: accountDataId }, include: ['categories', 'account', 'customers', 'gallery', 'profileImage', 'country',
+      where: { _id: accountDataId }, 
+      include: ['categories', 'account', 'customers', 'gallery', 'profileImage', 'country',
         'bannerImage']
     },
       function (error, result) {
@@ -22,16 +23,16 @@ module.exports = function (accountData) {
     http: { path: '/getAccountData', verb: 'post' }
   });
 
-  
-  accountData.updateAccountData = function (model, next) {
-    if (model.updateQuery.country)
-      delete model.updateQuery.country
-    if (model.updateQuery.categories)
-      delete model.updateQuery.categories
 
-    accountData.update(
-      { _id: model.accountDataId },
-      model.updateQuery,
+  accountData.updateAccountData = function (accountDataId, updatesObject, next) {
+    if (updatesObject.country)
+      delete updatesObject.country;
+    if (updatesObject.categories)
+      delete updatesObject.categories;
+
+    accountData.updateAll(
+      { id: accountDataId },
+      updatesObject,
       function (error, result) {
         if (error)
           return next(error);
@@ -42,7 +43,7 @@ module.exports = function (accountData) {
   }
 
   accountData.remoteMethod('updateAccountData', {
-    accepts: { arg: 'model', type: 'object', required: true },
+    accepts: [{ arg: 'accountDataId', type: 'string', required: true }, { arg: 'updatesObject', type: 'object', required: true }],
     returns: { arg: 'accountData', type: 'any' },
     http: { path: '/updateAccountData', verb: 'post' }
   });

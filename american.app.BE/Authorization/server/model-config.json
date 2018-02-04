@@ -39,6 +39,14 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "SysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "AccessToken": {
     "dataSource": "americanBizDB",
     "public": false,

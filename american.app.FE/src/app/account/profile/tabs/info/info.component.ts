@@ -7,7 +7,7 @@ declare var $: any;
 
 
 @Component({
-  selector: 'profile-info',
+  selector: 'business-profile-info',
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss']
 })

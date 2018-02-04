@@ -18,6 +18,7 @@ import { RequestForQuotationsComponent } from './request-for-quotations/request-
 import { ProductsComponent } from './profile/tabs/products/products.component';
 import { InfoComponent } from './profile/tabs/info/info.component';
 import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
+import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
 
 
 
@@ -40,7 +41,8 @@ import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
     RequestForQuotationsComponent,
     ProductsComponent,
     InfoComponent,
-    GalleryComponent]
+    GalleryComponent,
+    ProfileInfoComponent]
 })
 export class AccountModule {
 

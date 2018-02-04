@@ -28,6 +28,13 @@
       "principalId": "$authenticated",
       "permission": "ALLOW",
       "property": "updateAccountData"
+    },
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$authenticated",
+      "permission": "ALLOW",
+      "property": "updateAttributes"
     }
   ],
   "methods": {},
