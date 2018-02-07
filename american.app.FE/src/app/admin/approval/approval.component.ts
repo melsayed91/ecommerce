@@ -29,6 +29,7 @@ export class ApprovalComponent implements OnInit {
     })
   }
   openProductForm(id) {
+    debugger;
     this.AccountApi.approveBusinessAccount(id).subscribe((response) => {
 
       this.loadCompanies();

@@ -3,11 +3,12 @@
 declare var Object: any;
 export interface AccountDataInterface {
   "name"?: string;
+  "bio"?: string;
   "city"?: string;
   "state"?: string;
   "address"?: string;
   "zipCode"?: string;
-  "Phone"?: string;
+  "phone"?: string;
   "mobile"?: string;
   "userCategories"?: Array<any>;
   "id"?: any;
@@ -35,11 +36,12 @@ export interface AccountDataInterface {
 
 export class AccountData implements AccountDataInterface {
   "name": string;
+  "bio": string;
   "city": string;
   "state": string;
   "address": string;
   "zipCode": string;
-  "Phone": string;
+  "phone": string;
   "mobile": string;
   "userCategories": Array<any>;
   "id": any;
@@ -100,6 +102,10 @@ export class AccountData implements AccountDataInterface {
           name: 'name',
           type: 'string'
         },
+        "bio": {
+          name: 'bio',
+          type: 'string'
+        },
         "city": {
           name: 'city',
           type: 'string'
@@ -116,8 +122,8 @@ export class AccountData implements AccountDataInterface {
           name: 'zipCode',
           type: 'string'
         },
-        "Phone": {
-          name: 'Phone',
+        "phone": {
+          name: 'phone',
           type: 'string'
         },
         "mobile": {

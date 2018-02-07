@@ -77,7 +77,7 @@ export class InfoComponent implements OnInit {
          en: 'Your password must contain at least (%s) special characters.'
        }
      });
-     
+
     this.accountService.getAccountData(this.userAccount.accountDataId).subscribe((response) => {
       this.accountData = response.accountData;
       this.profileData = { ...response.accountData };
@@ -116,7 +116,7 @@ export class InfoComponent implements OnInit {
       accountDataId: this.userAccount.accountDataId,
       updateQuery: this.profileData
     }
-    this.accountService.updateAccountData(toBeUpdated).subscribe((response) => {
+    this.accountService.updateAccountData(toBeUpdated.accountDataId,toBeUpdated.updateQuery).subscribe((response) => {
       this.accountService.getAccountData(this.userAccount.accountDataId).subscribe((response) => {
         this.accountData = response.accountData;
         this.profileData = { ...response.accountData };

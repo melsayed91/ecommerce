@@ -21,7 +21,7 @@ module.exports = function (Account) {
         http: { path: '/getAccountByUser', verb: 'get' }
     });
 
-  Account.getBusinessAccounts = function (myUserId, next) {
+  Account.getBusinessAccounts = function (next) {
     Account.find({
       where:
         { type:"Business" },
