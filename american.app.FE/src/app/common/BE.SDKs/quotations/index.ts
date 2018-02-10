@@ -49,9 +49,9 @@ import { SocketBrowser } from './sockets/socket.browser';
 import { SocketDriver } from './sockets/socket.driver';
 import { SocketConnection } from './sockets/socket.connections';
 import { RealTime } from './services/core/real.time';
+import { OfferApi } from './services/custom/Offer';
 import { RfqApi } from './services/custom/Rfq';
 import { RfpApi } from './services/custom/Rfp';
-import { OfferApi } from './services/custom/Offer';
 /**
 * @module SDKBrowserModule
 * @description
@@ -83,9 +83,9 @@ export class SDKBrowserModule {
         JSONSearchParams,
         SDKModels,
         RealTime,
+        OfferApi,
         RfqApi,
         RfpApi,
-        OfferApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },
         { provide: SocketDriver, useClass: SocketBrowser }

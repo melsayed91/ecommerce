@@ -1,8 +1,4 @@
 /* tslint:disable */
-import {
-  Rfq,
-  Rfp
-} from '../index';
 
 declare var Object: any;
 export interface OfferInterface {
@@ -11,12 +7,12 @@ export interface OfferInterface {
   "creationDate": Date;
   "modificationDate"?: Date;
   "id"?: any;
+  "accountId"?: any;
   "rfqId"?: any;
   "rfpId"?: any;
-  "accountId"?: any;
-  rfq?: Rfq;
-  rfp?: Rfp;
   account?: any;
+  rfq?: any;
+  rfp?: any;
 }
 
 export class Offer implements OfferInterface {
@@ -25,12 +21,12 @@ export class Offer implements OfferInterface {
   "creationDate": Date;
   "modificationDate": Date;
   "id": any;
+  "accountId": any;
   "rfqId": any;
   "rfpId": any;
-  "accountId": any;
-  rfq: Rfq;
-  rfp: Rfp;
   account: any;
+  rfq: any;
+  rfp: any;
   constructor(data?: OfferInterface) {
     Object.assign(this, data);
   }
@@ -84,6 +80,10 @@ export class Offer implements OfferInterface {
           name: 'id',
           type: 'any'
         },
+        "accountId": {
+          name: 'accountId',
+          type: 'any'
+        },
         "rfqId": {
           name: 'rfqId',
           type: 'any'
@@ -92,34 +92,30 @@ export class Offer implements OfferInterface {
           name: 'rfpId',
           type: 'any'
         },
-        "accountId": {
-          name: 'accountId',
-          type: 'any'
-        },
       },
       relations: {
-        rfq: {
-          name: 'rfq',
-          type: 'Rfq',
-          model: 'Rfq',
-          relationType: 'belongsTo',
-                  keyFrom: 'rfqId',
-          keyTo: 'id'
-        },
-        rfp: {
-          name: 'rfp',
-          type: 'Rfp',
-          model: 'Rfp',
-          relationType: 'belongsTo',
-                  keyFrom: 'rfpId',
-          keyTo: 'id'
-        },
         account: {
           name: 'account',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'accountId',
+          keyTo: 'id'
+        },
+        rfq: {
+          name: 'rfq',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'rfqId',
+          keyTo: 'id'
+        },
+        rfp: {
+          name: 'rfp',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'rfpId',
           keyTo: 'id'
         },
       }

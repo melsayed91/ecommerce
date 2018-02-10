@@ -1,7 +1,4 @@
 /* tslint:disable */
-import {
-  Offer
-} from '../index';
 
 declare var Object: any;
 export interface RfqInterface {
@@ -12,12 +9,12 @@ export interface RfqInterface {
   "enabled"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
-  "categoryId"?: any;
   "offerIds"?: Array<any>;
+  "categoryId"?: any;
   "accountId"?: any;
   "attachmentIds"?: Array<any>;
+  offers?: any[];
   category?: any;
-  offers?: Offer[];
   account?: any;
   attachments?: any[];
 }
@@ -30,12 +27,12 @@ export class Rfq implements RfqInterface {
   "enabled": boolean;
   "isDeleted": boolean;
   "id": any;
-  "categoryId": any;
   "offerIds": Array<any>;
+  "categoryId": any;
   "accountId": any;
   "attachmentIds": Array<any>;
+  offers: any[];
   category: any;
-  offers: Offer[];
   account: any;
   attachments: any[];
   constructor(data?: RfqInterface) {
@@ -101,14 +98,14 @@ export class Rfq implements RfqInterface {
           name: 'id',
           type: 'any'
         },
-        "categoryId": {
-          name: 'categoryId',
-          type: 'any'
-        },
         "offerIds": {
           name: 'offerIds',
           type: 'Array&lt;any&gt;',
           default: <any>[]
+        },
+        "categoryId": {
+          name: 'categoryId',
+          type: 'any'
         },
         "accountId": {
           name: 'accountId',
@@ -121,20 +118,20 @@ export class Rfq implements RfqInterface {
         },
       },
       relations: {
+        offers: {
+          name: 'offers',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'offerIds',
+          keyTo: 'id'
+        },
         category: {
           name: 'category',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
-          keyTo: 'id'
-        },
-        offers: {
-          name: 'offers',
-          type: 'Offer[]',
-          model: 'Offer',
-          relationType: 'referencesMany',
-                  keyFrom: 'offerIds',
           keyTo: 'id'
         },
         account: {

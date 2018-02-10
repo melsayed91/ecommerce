@@ -1,8 +1,4 @@
 /* tslint:disable */
-import {
-  Rfq,
-  Offer
-} from '../index';
 
 declare var Object: any;
 export interface RfpInterface {
@@ -12,11 +8,11 @@ export interface RfpInterface {
   "modificationDate"?: Date;
   "id"?: any;
   "rfqIds"?: Array<any>;
-  "categoryId"?: any;
   "offerIds"?: Array<any>;
-  rfqs?: Rfq[];
+  "categoryId"?: any;
+  rfqs?: any[];
+  offers?: any[];
   category?: any;
-  offers?: Offer[];
 }
 
 export class Rfp implements RfpInterface {
@@ -26,11 +22,11 @@ export class Rfp implements RfpInterface {
   "modificationDate": Date;
   "id": any;
   "rfqIds": Array<any>;
-  "categoryId": any;
   "offerIds": Array<any>;
-  rfqs: Rfq[];
+  "categoryId": any;
+  rfqs: any[];
+  offers: any[];
   category: any;
-  offers: Offer[];
   constructor(data?: RfpInterface) {
     Object.assign(this, data);
   }
@@ -89,23 +85,31 @@ export class Rfp implements RfpInterface {
           type: 'Array&lt;any&gt;',
           default: <any>[]
         },
-        "categoryId": {
-          name: 'categoryId',
-          type: 'any'
-        },
         "offerIds": {
           name: 'offerIds',
           type: 'Array&lt;any&gt;',
           default: <any>[]
         },
+        "categoryId": {
+          name: 'categoryId',
+          type: 'any'
+        },
       },
       relations: {
         rfqs: {
           name: 'rfqs',
-          type: 'Rfq[]',
-          model: 'Rfq',
+          type: 'any[]',
+          model: '',
           relationType: 'referencesMany',
                   keyFrom: 'rfqIds',
+          keyTo: 'id'
+        },
+        offers: {
+          name: 'offers',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'offerIds',
           keyTo: 'id'
         },
         category: {
@@ -114,14 +118,6 @@ export class Rfp implements RfpInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
-          keyTo: 'id'
-        },
-        offers: {
-          name: 'offers',
-          type: 'Offer[]',
-          model: 'Offer',
-          relationType: 'referencesMany',
-                  keyFrom: 'offerIds',
           keyTo: 'id'
         },
       }

@@ -5,6 +5,7 @@ export interface AccountInterface {
   "userId": any;
   "accountType"?: string;
   "isApproved"?: boolean;
+  "isAdmin"?: boolean;
   "creationDate": Date;
   "modificationDate"?: Date;
   "id"?: any;
@@ -16,6 +17,7 @@ export class Account implements AccountInterface {
   "userId": any;
   "accountType": string;
   "isApproved": boolean;
+  "isAdmin": boolean;
   "creationDate": Date;
   "modificationDate": Date;
   "id": any;
@@ -64,6 +66,10 @@ export class Account implements AccountInterface {
         },
         "isApproved": {
           name: 'isApproved',
+          type: 'boolean'
+        },
+        "isAdmin": {
+          name: 'isAdmin',
           type: 'boolean'
         },
         "creationDate": {

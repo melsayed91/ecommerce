@@ -14,19 +14,19 @@
     <tbody>
     <tr *ngFor="let row of companies">
       <td class="">
-        <label>{{row.name}}</label>
+        <label>{{row.accountData.name}}</label>
       </td>
       <td>
         <small>
-          <label>{{row.status}}</label>
+          <label>{{row.isApproved}}</label>
         </small>
       </td>
       <td>
-        <button *ngIf="!row.status" class="btn btn-primary" (click)="company = row;openProductForm(row.id)">
+        <button *ngIf="!row.isApproved" class="btn btn-primary" (click)="company = row;openProductForm(row.id)">
           APPROVE
         </button>
 
-        <label *ngIf="row.status"> Approved</label>
+        <label *ngIf="row.isApproved"> Approved</label>
       </td>
     </tr>
     </tbody>

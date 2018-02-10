@@ -36,7 +36,7 @@ export class ProfileInfoComponent implements OnInit {
     this.userAccount = this.auth.account;
     this.user = this.auth.userApi.getCachedCurrent();
     this.accountData = this.userAccount.accountData;
-    this.userBio = this.accountData.bio.toString();
+    this.userBio = this.accountData.bio?this.accountData.bio.toString() : "";
     this.profileData = { ...this.accountData };
     this.lookup("5a669889218e000a3c209a6e", "countries", true)
   }

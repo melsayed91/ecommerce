@@ -1,8 +1,8 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
+import { Offer } from '../../models/Offer';
 import { Rfq } from '../../models/Rfq';
 import { Rfp } from '../../models/Rfp';
-import { Offer } from '../../models/Offer';
 
 export interface Models { [name: string]: any }
 
@@ -10,9 +10,9 @@ export interface Models { [name: string]: any }
 export class SDKModels {
 
   private models: Models = {
+    Offer: Offer,
     Rfq: Rfq,
     Rfp: Rfp,
-    Offer: Offer,
     
   };
 

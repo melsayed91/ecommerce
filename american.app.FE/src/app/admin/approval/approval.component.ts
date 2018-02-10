@@ -15,15 +15,14 @@ export class ApprovalComponent implements OnInit {
   constructor(private AccountApi: AccountApi) { }
 
   ngOnInit() {
-    this.companies =[{id:"1",name : "company 1" , status: true},{id:"2",name : "company 2" , status: false}]
-
     this.loadCompanies();
 
   }
 
   loadCompanies(): any {
     this.AccountApi.getBusinessAccounts().subscribe((response) => {
-      this.companies =[{id:"1",name : "company 1" , status: true},{id:"2",name : "company 2" , status: false}]
+      debugger
+      this.companies = response.acc;
     }, (err) => {
 
     })

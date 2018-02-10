@@ -9,7 +9,7 @@ export interface SysCodeInterface {
   "isDeleted"?: boolean;
   "id"?: any;
   "parentId"?: any;
-  parent?: SysCode;
+  parent?: any;
 }
 
 export class SysCode implements SysCodeInterface {
@@ -20,7 +20,7 @@ export class SysCode implements SysCodeInterface {
   "isDeleted": boolean;
   "id": any;
   "parentId": any;
-  parent: SysCode;
+  parent: any;
   constructor(data?: SysCodeInterface) {
     Object.assign(this, data);
   }
@@ -87,8 +87,8 @@ export class SysCode implements SysCodeInterface {
       relations: {
         parent: {
           name: 'parent',
-          type: 'SysCode',
-          model: 'SysCode',
+          type: 'any',
+          model: '',
           relationType: 'belongsTo',
                   keyFrom: 'parentId',
           keyTo: 'id'

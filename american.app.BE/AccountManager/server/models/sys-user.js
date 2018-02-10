@@ -5,11 +5,11 @@ var path = require('path');
 
 module.exports = function (sysUser) {
 
-      //Register User / Business
-      sysUser.register = function (user, next) {
-            //Force Password to string
-            if (user.credentials)
-                  user.password = user.credentials.password.toString();
+  //Register User / Business
+  sysUser.register = function (user, next) {
+    //Force Password to string
+    if (user.credentials)
+      user.password = user.credentials.password.toString();
 
     sysUser.create(user.credentials, function (error, createdUser) {
       if (error)
@@ -33,7 +33,7 @@ module.exports = function (sysUser) {
           accountType: user.type,
           accountDataId: createdAccountData.id.toString(),
           creationDate: new Date(),
-          isApproved : true
+          isApproved: true
         };
 
         function createAccount() {
@@ -65,24 +65,24 @@ module.exports = function (sysUser) {
   });
 
 
-      //send verification email after registration
-      sysUser.afterRemote('register', function (context, response, next) {
-            var user = response.user;
-            var ref = context.req.headers.referer;
-            if (!ref) {
-                  ref = context.req.headers.origin;
-            }
-            ref = ref.replace("register", "signin");
-            var fromMail = sysUser.app.models.Email.dataSource.settings.transports[0].auth.user;
-            var options = {
-                  type: 'email',
-                  from: fromMail,
-                  to: user.email,
-                  subject: "You're in! Activate your account now.",
-                  template: path.resolve(__dirname, '../../server/email-templates/verify.ejs'),
-                  redirect: ref,
-                  user: user
-            };
+  //send verification email after registration
+  sysUser.afterRemote('register', function (context, response, next) {
+    var user = response.user;
+    var ref = context.req.headers.referer;
+    if (!ref) {
+      ref = context.req.headers.origin;
+    }
+    ref = ref.replace("register", "signin");
+    var fromMail = sysUser.app.models.Email.dataSource.settings.transports[0].auth.user;
+    var options = {
+      type: 'email',
+      from: fromMail,
+      to: user.email,
+      subject: "You're in! Activate your account now.",
+      template: path.resolve(__dirname, '../../server/email-templates/verify.ejs'),
+      redirect: ref,
+      user: user
+    };
 
     user.verify(options, function (err, response) {
       if (err) {

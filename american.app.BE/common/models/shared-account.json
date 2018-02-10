@@ -16,6 +16,9 @@
     "isApproved": {
       "type": "Boolean"
     },
+    "isAdmin": {
+      "type": "Boolean"
+    },
     "creationDate": {
       "type": "Date",
       "required": true

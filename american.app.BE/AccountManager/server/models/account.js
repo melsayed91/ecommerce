@@ -24,7 +24,7 @@ module.exports = function (Account) {
   Account.getBusinessAccounts = function (next) {
     Account.find({
       where:
-        { type:"Business" },
+        { accountType:"Business" },
       include: ['accountData']
     }, function (error, acc) {
       if (error)
