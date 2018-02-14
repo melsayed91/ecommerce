@@ -1,0 +1,92 @@
+{
+    "name": "sharedPrototype",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "description": {
+            "type": "string",
+            "required": true
+        },
+        "title": {
+            "type": "string",
+            "required": true
+        },
+        "creationDate": {
+            "type": "Date",
+            "required": true,
+            "defaultFn": "now"
+        },
+        "modificationDate": {
+            "type": "Date"
+        },
+        "quantity": {
+            "type": "number",
+            "required": true
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
+        },
+        "paymentDetails": {
+            "paymentMethod": {
+                "type": "string"
+            },
+            "approvalCode": {
+                "type": "string"
+            },
+            "transaction": {
+                "type": "string"
+            },
+            "amount": {
+                "type": "number"
+            }
+        },
+        "shipmentDetails": {
+            "address": {
+                "type": "string",
+                "required": true
+            },
+            "trackingNumber": {
+                "type": "string",
+                "required": true
+            }
+        }
+    },
+    "validations": [],
+    "relations": {
+        "type": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "typeId"
+        },
+        "status": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "statusId"
+        },
+        "product": {
+            "type": "belongsTo",
+            "model": "product",
+            "foreignKey": "productId"
+        },
+        "account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId"
+        },
+        "attachments": {
+            "type": "referencesMany",
+            "model": "attachment",
+            "foreignKey": "digitalPrototypeIds",
+            "options": {
+                "validate": true,
+                "forceId": false
+            }
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

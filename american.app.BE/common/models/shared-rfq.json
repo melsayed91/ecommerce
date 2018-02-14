@@ -10,6 +10,10 @@
       "type": "string",
       "required": true
     },
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
     "title": {
       "type": "string",
       "required": true
@@ -39,24 +43,10 @@
       "model": "offer",
       "foreignKey": "offerId"
     },
-    "category": {
-      "type": "belongsTo",
-      "model": "SysCode",
-      "foreignKey": "categoryId"
-    },
     "account": {
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
-    },
-    "attachments": {
-      "type": "referencesMany",
-      "model": "attachment",
-      "foreignKey": "attachmentIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
     }
   },
   "acls": [],
