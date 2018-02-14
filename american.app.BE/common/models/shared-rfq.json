@@ -22,10 +22,6 @@
     "modificationDate": {
       "type": "Date"
     },
-    "enabled": {
-      "type": "Boolean",
-      "default": true
-    },
     "isDeleted": {
       "type": "Boolean",
       "default": false
@@ -33,14 +29,15 @@
   },
   "validations": [],
   "relations": {
-    "offers": {
-      "type": "referencesMany",
+    "product": {
+      "type": "belongsTo",
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "offer": {
+      "type": "belongsTo",
       "model": "offer",
-      "foreignKey": "offerIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
+      "foreignKey": "offerId"
     },
     "category": {
       "type": "belongsTo",
