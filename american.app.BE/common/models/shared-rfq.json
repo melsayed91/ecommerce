@@ -10,6 +10,10 @@
       "type": "string",
       "required": true
     },
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
     "title": {
       "type": "string",
       "required": true
@@ -22,10 +26,6 @@
     "modificationDate": {
       "type": "Date"
     },
-    "enabled": {
-      "type": "Boolean",
-      "default": true
-    },
     "isDeleted": {
       "type": "Boolean",
       "default": false
@@ -33,33 +33,20 @@
   },
   "validations": [],
   "relations": {
-    "offers": {
-      "type": "referencesMany",
-      "model": "offer",
-      "foreignKey": "offerIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
-    },
-    "category": {
+    "product": {
       "type": "belongsTo",
-      "model": "SysCode",
-      "foreignKey": "categoryId"
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "offer": {
+      "type": "belongsTo",
+      "model": "offer",
+      "foreignKey": "offerId"
     },
     "account": {
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
-    },
-    "attachments": {
-      "type": "referencesMany",
-      "model": "attachment",
-      "foreignKey": "attachmentIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
     }
   },
   "acls": [],

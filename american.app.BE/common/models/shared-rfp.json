@@ -20,19 +20,18 @@
     },
     "modificationDate": {
       "type": "Date"
+    },
+    "enabled": {
+      "type": "Boolean",
+      "default": true
+    },
+    "isDeleted": {
+      "type": "Boolean",
+      "default": false
     }
   },
   "validations": [],
   "relations": {
-    "rfqs": {
-      "type": "referencesMany",
-      "model": "rfq",
-      "foreignKey": "rfqIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
-    },
     "offers": {
       "type": "referencesMany",
       "model": "offer",
@@ -46,8 +45,21 @@
       "type": "belongsTo",
       "model": "SysCode",
       "foreignKey": "categoryId"
+    },
+    "attachments": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "attachmentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
     }
-
   },
   "acls": [],
   "methods": {}

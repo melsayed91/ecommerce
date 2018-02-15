@@ -16,6 +16,11 @@
       "required": true,
       "defaultFn": "now"
     },
+    "expiryDate": {
+      "type": "Date",
+      "required": true,
+      "defaultFn": "now"
+    },
     "modificationDate": {
       "type": "Date"
     }
