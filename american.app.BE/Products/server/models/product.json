@@ -20,14 +20,14 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": "getUserProducts"
+      "property": ["getUserProducts","replaceOrCreate"]
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
-      "principalId": "$authenticated",
+      "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": "replaceOrCreate"
+      "property": ["find", "findById"]
     }
   ],
   "methods": {},

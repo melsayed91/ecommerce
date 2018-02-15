@@ -1,0 +1,13 @@
+<h3>LATEST PRODUCTS</h3>
+<div class="products">
+    <div class="product card" *ngFor="let product of products" [routerLink]="[ '/product/details' , product.id]">
+        <div class="picture" [style.background-image]="'url('+attachmentServer + product.attachments[0].url+')'">
+        </div>
+        <div class="title">{{product.name}}</div>
+        <div class="footer">
+            <span>$ {{product.price}}</span>
+            <i class="fa fa-shopping-cart"></i>
+        </div>
+
+    </div>
+</div>

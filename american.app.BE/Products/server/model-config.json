@@ -31,6 +31,14 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "product": {
     "dataSource": "americanBizDB",
     "public": true
@@ -47,9 +55,20 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "AccessToken": {
+  "sysUser": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "sysUser",
+        "foreignKey": "userId"
+      }
+    }
   },
   "ACL": {
     "dataSource": "americanBizDB",

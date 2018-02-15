@@ -64,9 +64,20 @@
     "dataSource": "americanBizDB",
     "public": true
   },
-  "AccessToken": {
+  "sysUser": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "sysUser",
+        "foreignKey": "userId"
+      }
+    }
   },
   "ACL": {
     "dataSource": "americanBizDB",
