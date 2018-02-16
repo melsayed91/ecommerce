@@ -5,6 +5,7 @@ export interface OfferInterface {
   "description"?: string;
   "price": number;
   "creationDate": Date;
+  "expiryDate"?: Date;
   "modificationDate"?: Date;
   "id"?: any;
   "accountId"?: any;
@@ -19,6 +20,7 @@ export class Offer implements OfferInterface {
   "description": string;
   "price": number;
   "creationDate": Date;
+  "expiryDate": Date;
   "modificationDate": Date;
   "id": any;
   "accountId": any;
@@ -70,6 +72,10 @@ export class Offer implements OfferInterface {
         },
         "creationDate": {
           name: 'creationDate',
+          type: 'Date'
+        },
+        "expiryDate": {
+          name: 'expiryDate',
           type: 'Date'
         },
         "modificationDate": {

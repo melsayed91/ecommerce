@@ -23,8 +23,14 @@
       "addRFQ": true,
       "addOffer": true,
       "getRFQs": true,
+      "getRFQTransactions": true,
       "enableRFQ": true,
-      "deleteRFQ": true
+      "deleteRFQ": true,
+      "addRFP": true,
+      "getRFPs": true,
+      "getRFPTransactions": true,
+      "beginRFQ": true,
+      "addRFPOffer": true
     }
   }
 }

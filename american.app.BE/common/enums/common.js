@@ -12,5 +12,18 @@ module.exports = {
         "5a6a333cb7e94a3e4499d86c",
         "5a6a332db7e94a3e4499d86b",
         "5a6a331ab7e94a3e4499d86a"
-    ]
+    ],
+    "rfqStatus": {
+        "open": "5a87059a8a8d811ea8e8434c",
+        "recieved": "5a8705a48a8d811ea8e8434d",
+        "offered": "5a8705ad8a8d811ea8e8434e",
+        "rejected": "5a8705c38a8d811ea8e8434f",
+        "finished": "5a8705cd8a8d811ea8e84350"
+    },
+    "rfpStatus": {
+        "open": "5a8705498a8d811ea8e84348",
+        "offered": "5a87055e8a8d811ea8e8434a",
+        "finished": "5a8705538a8d811ea8e84349",
+        "rejected": "5a87085861579b337cdc399f"
+    }
 }

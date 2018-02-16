@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RfpApi, RfqApi, OfferApi, Rfq } from "../../common/BE.SDKs/quotations";
+import { RfpApi, RfqApi, OfferApi, Rfp ,Rfq} from "../../common/BE.SDKs/quotations";
 import { SysCodeApi } from '../../common/BE.SDKs/sysCodes';
 import { UserService } from '../../core/services/user.service/user.service';
 import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
@@ -9,22 +9,24 @@ import { AttachmentService } from '../../core/services/attachment.service/attach
 declare var $: any;
 
 @Component({
-  selector: 'app-request-for-quotations',
-  templateUrl: './request-for-quotations.component.html',
-  styleUrls: ['./request-for-quotations.component.scss']
+  selector: 'app-request-for-proposal',
+  templateUrl: './request-for-proposal.component.html',
+  styleUrls: ['./request-for-proposal.component.scss']
 })
-export class RequestForQuotationsComponent implements OnInit {
+export class RequestForProposalComponent implements OnInit {
 
   offer = {};
+  rfps;
   rfqs;
   isBusinessUser;
   currentAccountId;
   currentUserCategories = [];
+  currentRfp: Rfp = new Rfp();
   currentRfq: Rfq = new Rfq();
-  currentRfqCategory;
+  currentRfpCategory;
   categories = [];
   formValidation;
-  showRFQForm;
+  showRFPForm;
   attachmentServer: any;
   showOfferForm;
 
@@ -35,13 +37,13 @@ export class RequestForQuotationsComponent implements OnInit {
   constructor(
     private auth: UserService,
     private RfproposalApi: RfpApi,
-    private RfquotationApi: RfqApi,
+    private RfquataionApi: RfqApi,
     private OfferServiceAPI: OfferApi,
     private SysCodeApi: SysCodeApi,
     private AttachmentService: AttachmentService,
     private AttachmentServiceAPI: AttachmentApi) { }
 
-    
+
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
     this.currentAccountId = this.auth.account.id;
@@ -51,6 +53,7 @@ export class RequestForQuotationsComponent implements OnInit {
     this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
       this.categories = response.subIndustries;
     }, (err) => { });
+    this.getRfp();
     this.getRfq();
   }
 
@@ -58,23 +61,35 @@ export class RequestForQuotationsComponent implements OnInit {
     this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
   }
 
-  saveRFQ() {
+  saveRFP() {
     if (!this.formValidation.validate())
       return;
-    this.currentRfq.accountId = this.currentAccountId;
-    this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
-    delete this.currentRfq.category;
-    this.RfquotationApi.addRFQ(this.currentRfq).subscribe(resp => {
-      this.getRfq();
-      this.showRFQForm = false;
-      this.currentRfq = new Rfq();
+    this.currentRfp.accountId = this.currentAccountId;
+    this.currentRfp.attachmentIds = this.uploaded.map(function (item) { return item.id });
+    delete this.currentRfp.category;
+    this.RfproposalApi.addRFP(this.currentRfp).subscribe(resp => {
+      this.getRfp();
+      this.showRFPForm = false;
+      this.currentRfp = new Rfp();
     }, err => { })
   }
 
-  sendOffer(rfqId) {
+  sendOffer(rfpId) {
 
     this.offer['accountId'] = this.currentAccountId;
-    this.RfquotationApi.addOffer(rfqId, this.offer).subscribe((response: any) => {
+    this.offer['rfpId'] = rfpId;
+    this.RfproposalApi.addRFPOffer(rfpId, this.offer).subscribe((response: any) => {
+      this.getRfp();
+      this.currentRfp['showOfferForm'] = false;
+    }, (err) => {
+    })
+  }
+
+
+  sendRfqOffer(rfqId){
+    this.offer['accountId'] = this.currentAccountId;
+    this.offer['rfqId'] = rfqId;
+    this.RfquataionApi.addOffer(rfqId, this.offer).subscribe((response: any) => {
       this.getRfq();
       this.currentRfq['showOfferForm'] = false;
     }, (err) => {
@@ -90,8 +105,8 @@ export class RequestForQuotationsComponent implements OnInit {
   }
 
   categoryChanged(e) {
-    this.currentRfq.categoryId = e.id;
-    this.currentRfq.category = e;
+    this.currentRfp.categoryId = e.id;
+    this.currentRfp.category = e;
   }
 
   onAdded(event: any) {
@@ -114,14 +129,14 @@ export class RequestForQuotationsComponent implements OnInit {
     })
   }
 
-  getRfq() {
-    this.rfqs = undefined;
-    this.RfquotationApi.getRFQs({ catIds: this.currentUserCategories, accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
-      this.rfqs = response.rfq.map(function (rfq) {
-        let myOffers = rfq.offers.filter(function (offer) {
+  getRfp() {
+    this.rfps = undefined;
+    this.RfproposalApi.getRFPs({ catIds: this.currentUserCategories, accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
+      this.rfps = response.rfp.map(function (rfp) {
+        let myOffers = rfp.offers.filter(function (offer) {
           return offer.accountId == this.currentAccountId
         }.bind(this));
-        
+
         let myBest = myOffers[0] ? myOffers[0].price : 0;
 
         myOffers.forEach(offer => {
@@ -129,31 +144,20 @@ export class RequestForQuotationsComponent implements OnInit {
             myBest = offer.price;
         });
 
-        rfq.myBestOffer = myBest;
-        rfq.myOffers = myOffers;
-        return rfq;
+        rfp.myBestOffer = myBest;
+        rfp.myOffers = myOffers;
+        return rfp;
       }.bind(this));
     }, (err) => {
-
     })
   }
 
-  enableRfq(rfqId, enable) {
-    this.RfquotationApi.enableRFQ(rfqId, enable).subscribe((response: any) => {
-      this.rfqs[this.rfqs.findIndex(function (rfq) {
-        return rfq.id === rfqId
-      })].enabled = enable;
+
+  getRfq() {
+    this.rfqs = undefined;
+    this.RfquataionApi.getRFQs({ accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
+      this.rfqs = response.rfq;
     }, (err) => {
-
     })
   }
-
-  deleteRfq(rfqId) {
-    this.RfquotationApi.deleteRFQ(rfqId).subscribe((response: any) => {
-      this.getRfq();
-    }, (err) => {
-
-    })
-  }
-
 }

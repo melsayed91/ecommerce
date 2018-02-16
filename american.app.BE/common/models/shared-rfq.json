@@ -38,6 +38,11 @@
       "model": "product",
       "foreignKey": "productId"
     },
+    "productOwner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "productOwnerId"
+    },
     "offer": {
       "type": "belongsTo",
       "model": "offer",
@@ -47,6 +52,11 @@
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
     }
   },
   "acls": [],

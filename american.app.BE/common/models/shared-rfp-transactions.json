@@ -1,5 +1,5 @@
 {
-    "name": "sharedPrototypeTransactions",
+    "name": "sharedRFPTransactions",
     "base": "PersistedModel",
     "idInjection": true,
     "options": {
@@ -14,10 +14,10 @@
     },
     "validations": [],
     "relations": {
-        "prototype": {
+        "rfp": {
             "type": "belongsTo",
-            "model": "prototype",
-            "foreignKey": "prototypeId"
+            "model": "rfp",
+            "foreignKey": "rfpId"
         },
         "status": {
             "type": "belongsTo",

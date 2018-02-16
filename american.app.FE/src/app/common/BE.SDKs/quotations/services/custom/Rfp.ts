@@ -38,7 +38,7 @@ export class RfpApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
-   *  - `rfpoffer` – `{object}` - 
+   *  - `rfp` – `{object}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -48,13 +48,104 @@ export class RfpApi extends BaseLoopBackApi {
    *
    *  - `rfp` – `{any}` - 
    */
-  public addOffer(rfpoffer: any, customHeaders?: Function): Observable<any> {
+  public addRFP(rfp: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfps/addrfp";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfp !== 'undefined' && rfp !== null) _urlParams.rfp = rfp;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   * This method expects a subset of model properties as request parameters.
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfp` – `{any}` - 
+   */
+  public getRFPs(criteria: any = {}, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfps/getrfp";
+    let _routeParams: any = {};
+    let _postBody: any = {
+      criteria: criteria
+    };
+    let _urlParams: any = {};
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfpId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `transactions` – `{any}` - 
+   */
+  public getRFPTransactions(rfpId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfps/getrfp/transactions";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfpId !== 'undefined' && rfpId !== null) _urlParams.rfpId = rfpId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfpId` – `{string}` - 
+   *
+   *  - `rfpoffer` – `{any}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfp` – `{any}` - 
+   */
+  public addRFPOffer(rfpId: any, rfpoffer: any, customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/rfps/addoffer";
     let _routeParams: any = {};
     let _postBody: any = {};
     let _urlParams: any = {};
+    if (typeof rfpId !== 'undefined' && rfpId !== null) _urlParams.rfpId = rfpId;
     if (typeof rfpoffer !== 'undefined' && rfpoffer !== null) _urlParams.rfpoffer = rfpoffer;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;

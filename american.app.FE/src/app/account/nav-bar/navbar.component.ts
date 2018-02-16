@@ -46,14 +46,14 @@ export class NavbarComponent implements OnInit {
     },
     {
       name: 'RFQs',
-      redirectTo: '/account/rfqs',
+      redirectTo: '/account/rfps',
       text: 'RFQs & RFPs Feed',
       icon: 'bullhorn',
       showTo: 'Business'
     },
     {
       name: 'RFQs',
-      redirectTo: '/account/rfqs',
+      redirectTo: '/account/rfps',
       text: 'My RFQs & RFPs',
       icon: 'bullhorn',
       showTo: 'Individual'  

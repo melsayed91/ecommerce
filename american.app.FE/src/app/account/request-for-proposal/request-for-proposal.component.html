@@ -1,0 +1,256 @@
+<app-navbar page="RFPs"></app-navbar>
+
+<div class="page-content animated-500 fadeIn">
+    <!-- Individual -->
+    <div *ngIf="!isBusinessUser">
+
+        <h1>Proposals</h1>
+        <div *ngIf="rfps?.length == 0 && !showRFPForm" class="no-rfp">
+            <i class="fa fa-map-signs fa-lg"></i>
+            You don't have any RFP's published for the moment.
+            <button class="btn btn-simple" (click)="showRFPForm = true">Request for proposal now!</button>
+        </div>
+
+        <div *ngIf="!rfps && !showRFPForm" class="no-rfp">
+            <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+            Give us a moment to fetch your RFPs..
+        </div>
+
+        <div *ngIf="showRFPForm" class="rfq-form">
+            <div class="control-panel">
+                <button class="btn btn-simple" (click)="showRFPForm = false">
+                    <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
+                </button>
+                <button class="btn btn-simple" (click)="saveRFP()">
+                    <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Request for Proposal
+                </button>
+            </div>
+            <form id="rfpForm" view-init-spy (onAfterViewInit)="formLoaded('rfpForm')">
+                <div class="text-center">
+                    <span class="required-mark"></span>Required Fields</div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group required required">
+                            <input type="text" class="form-control" name="currentRfpName" placeholder="RFP Title" [(ngModel)]="currentRfp.title" maxlength="65"
+                                data-parsley-required-message="RFP Title is required" required>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group required">
+                            <input class="form-control" id="category" name="category" placeholder="The Product Category" auto-complete [(ngModel)]="currentRfpCategory"
+                                [source]="categories" [accept-user-input]="false" [no-match-found-text]="''" (valueChanged)="categoryChanged($event)"
+                                (ngModelChange)="categoryChanged($event)" display-property-name="name" [list-formatter]="autocompleListFormatter"
+                                data-parsley-validation-threshold="1" data-parsley-required-message="Category is required" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group required">
+                            <textarea type="text" class="form-control" name="description" placeholder="Your Product Description" [(ngModel)]="currentRfp.description"
+                                rows="3" data-parsley-required-message="Description is required" required>
+                            </textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="ulpoad-area">
+                            <ng2-file-input [id]="'multiFilesInput'" [show-previews]="true" [multiple]="true" (onAdded)="onAdded($event)" (onRemoved)="removeFile($event)"
+                                extensions="['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG']" [browse-text]="uploadIconHtml" [drop-text]="'Do you have a picture of your product? Upload it here!'">
+                            </ng2-file-input>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div *ngIf="rfps?.length > 0 && !showRFPForm">
+            <div class="control-panel">
+                <button class="btn btn-simple" (click)="showRFPForm = true">Submit a new Request For Proposal!</button>
+            </div>
+            <div class="myrfps">
+                <div *ngFor="let rfp of rfps" class="card card-raised">
+                    <div class="card-content">
+                        <h6 class="category">Published {{rfp.creationDate | amTimeAgo}}</h6>
+
+                        <div class="icon">
+                            <img *ngIf="rfp.attachments && rfp.attachments[0]" [src]="attachmentServer + rfp.attachments[0].url">
+                            <img *ngIf="!rfp.attachments || rfp.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
+                        </div>
+                        <h3 class="card-title">{{rfp.title}}</h3>
+                        <p class="card-description">
+                            {{rfp.description}}
+                        </p>
+                    </div>
+                    <div class="rfp-actions">
+                        <button class="btn btn-simple">Received Offers ( {{rfp.offers? rfp.offers.length: 0}} )</button>
+                        <!-- <button class="btn btn-simple btn-danger btn-sm" (click)="deleteRfp(rfp.id)">Cancel RFP</button> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <h1>Quatations</h1>
+        <div *ngIf="rfqs?.length == 0" class="no-rfp">
+            <i class="fa fa-map-signs fa-lg"></i>
+            You don't have any RFQ's published for the moment.
+        </div>
+
+        <div *ngIf="!rfqs" class="no-rfp">
+            <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+            Give us a moment to fetch your RFQs..
+        </div>
+        <!-- Quatations -->
+        <div *ngIf="rfqs?.length > 0">
+            <div class="myrfps">
+                <div *ngFor="let rfq of rfqs" class="card card-raised">
+                    <div class="card-content">
+                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
+
+                        <div class="icon">
+                            <img *ngIf="rfq.product&&rfq.product.attachments && rfq.product.attachments[0]" [src]="attachmentServer + rfq.product.attachments[0].url">
+                            <img *ngIf="!rfq.product&&rfq.product.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
+                        </div>
+                        <h3 class="card-title">{{rfq.title}}</h3>
+                        <p class="card-description">
+                            {{rfq.description}}
+                        </p>
+                    </div>
+                    <div class="rfp-actions">
+                        <button class="btn btn-simple">Received Offers ( {{rfq.offer? 1: 0}} )</button>
+                        <!-- <button class="btn btn-simple btn-danger btn-sm" (click)="deleteRfp(rfp.id)">Cancel RFP</button> -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- Business -->
+    <div *ngIf="isBusinessUser">
+        <h1>Proposals</h1>
+        <div *ngIf="rfps?.length == 0" class="no-rfp">
+            <i class="fa fa-map-signs fa-xl"></i>
+            There is no RFPs that match your industries...
+        </div>
+
+        <div *ngIf="!rfps" class="no-rfp">
+            <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+            Hold on, we are bringing you the hottest RFPs in the market...
+        </div>
+
+        <div *ngIf="rfps?.length > 0">
+            <div class="myrfps">
+                <div *ngFor="let rfp of rfps" class="card card-raised">
+                    <div class="card-content">
+                        <h6 class="category">Published {{rfp.creationDate | amTimeAgo}}</h6>
+                        <h6 *ngIf="rfp.myOffers.length == 0" class="category">{{rfp.offers? rfp.offers.length: 0}} Submitted Offers</h6>
+                        <h6 *ngIf="rfp.myOffers.length > 0" class="categor text-success">
+                            <i class="fa fa-check"></i> Your best offer is: $ {{rfp.myBestOffer}}</h6>
+                        <div class="icon">
+                            <img *ngIf="rfp.attachments && rfp.attachments[0]" [src]="attachmentServer + rfp.attachments[0].url">
+                            <img *ngIf="!rfp.attachments || rfp.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
+                        </div>
+                        <h3 class="card-title">{{rfp.title}}</h3>
+                        <p class="card-description">
+                            {{rfp.description}}
+                        </p>
+                        <form id="offerForm" *ngIf="rfp.showOfferForm" view-init-spy (onAfterViewInit)="formLoaded('offerForm')">
+                            <div class="text-center">
+                                <span class="required-mark"></span>Required Fields</div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="form-group-sm required">
+                                        <input type="number" class="form-control" name="Price" placeholder="Offer Price" [(ngModel)]="offer.price" data-parsley-required-message="Offer Price is required"
+                                            required>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="form-group-sm">
+                                        <textarea class="form-control" type="text" rows="3" id="comment" name="comment" [(ngModel)]="offer.description" placeholder="You can optionally leave a comment">
+                                        </textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="rfq-actions">
+                        <button *ngIf="rfp.showOfferForm" class="btn btn-simple" (click)="sendOffer(rfp.id)">
+                            <i class="fa fa-send-o"></i> &nbsp;Submit offer</button>
+                        <button *ngIf="rfp.showOfferForm" class="btn btn-simple btn-danger" (click)="rfp.showOfferForm = !rfq.showOfferForm">Cancel</button>
+                        <button *ngIf="!rfp.showOfferForm" class="btn btn-simple" (click)="rfp.showOfferForm = !rfp.showOfferForm">
+                            <i class="fa fa-bullhorn"></i> &nbsp;Make an offer</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+        <h1>Quatations</h1>
+        <div *ngIf="rfqs?.length == 0" class="no-rfp">
+            <i class="fa fa-map-signs fa-lg"></i>
+            You don't have any RFQ's published for the moment.
+        </div>
+
+        <div *ngIf="!rfqs" class="no-rfp">
+            <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+            Give us a moment to fetch your RFQs..
+        </div>
+        <!-- Quatations -->
+        <div *ngIf="rfqs?.length > 0">
+            <div class="myrfps">
+                <div *ngFor="let rfq of rfqs" class="card card-raised">
+                    <div class="card-content">
+                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
+
+                        <div class="icon">
+                            <img *ngIf="rfq.product&&rfq.product.attachments && rfq.product.attachments[0]" [src]="attachmentServer + rfq.product.attachments[0].url">
+                            <img *ngIf="!rfq.product&&rfq.product.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
+                        </div>
+                        <h3 class="card-title">{{rfq.title}}</h3>
+                        <p class="card-description">
+                            {{rfq.description}}
+                        </p>
+                    </div>
+
+                    <form id="rfqOfferForm" *ngIf="rfq.showOfferForm" view-init-spy (onAfterViewInit)="formLoaded('rfqOfferForm')">
+                        <div class="text-center">
+                            <span class="required-mark"></span>Required Fields</div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group-sm required">
+                                    <input type="number" class="form-control" name="Price" placeholder="Offer Price" [(ngModel)]="offer.price" data-parsley-required-message="Offer Price is required"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group-sm">
+                                    <textarea class="form-control" type="text" rows="3" id="comment" name="comment" [(ngModel)]="offer.description" placeholder="You can optionally leave a comment">
+                                        </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="rfp-actions">
+                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple" (click)="sendRfqOffer(rfq.id)">
+                            <i class="fa fa-send-o"></i> &nbsp;Submit offer</button>
+                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple btn-danger" (click)="rfq.showOfferForm = !rfq.showOfferForm">Cancel</button>
+                        <button *ngIf="!rfq.showOfferForm" class="btn btn-simple" (click)="rfq.showOfferForm = !rfq.showOfferForm">
+                            <i class="fa fa-bullhorn"></i> &nbsp;Make an offer</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

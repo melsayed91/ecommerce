@@ -1,4 +1,4 @@
-.no-rfq{
+.no-rfp{
     display: flex;
     flex-flow: column;
     justify-content: center;
@@ -10,12 +10,12 @@
     }
 }
 
-#rfqForm{
+#rfpForm{
     margin: 0 auto;
     max-width: 900px;
 }
 
-.myrfqs{
+.myrfps{
     display: flex;
     justify-content: center;
     align-items: start;
@@ -43,7 +43,7 @@
             margin-bottom: 100px;
         }
 
-        .rfq-actions{
+        .rfp-actions{
             position: absolute;
             bottom: 10px;
             text-align: center;

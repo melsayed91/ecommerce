@@ -9,7 +9,45 @@
       </div>
     </div>
   </div>
-  <div class="col-xs-12 col-md-6">
+
+  <div *ngIf="showRFQForm" class="col-xs-12 col-md-6">
+      <div class="control-panel">
+        <button class="btn btn-simple" (click)="showRFQForm = false">
+          <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
+        </button>
+        <button class="btn btn-simple" (click)="addRfq()">
+          <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Request for Quatation
+        </button>
+      </div>
+    <form id="rfqForm" view-init-spy (onAfterViewInit)="formLoaded('rfqForm')">
+      <div class="text-center">
+        <span class="required-mark"></span>Required Fields</div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group-sm">
+            <textarea class="form-control" type="text" rows="1" id="title" name="title" [(ngModel)]="currentRfq.title"
+              placeholder="Quatation Title">
+                                                </textarea>
+          </div>
+        </div>
+          <div class="col-xs-12">
+            <div class="form-group-sm">
+              <textarea class="form-control" type="text" rows="3" id="description" name="description" [(ngModel)]="currentRfq.description"
+                placeholder="Quatation Description">
+                                                  </textarea>
+            </div>
+          </div>
+        <div class="col-xs-12">
+          <div class="form-group-sm required">
+            <input type="number" class="form-control" name="Quantity" placeholder="Quatation Quantity" [(ngModel)]="currentRfq.quantity"
+              data-parsley-required-message="Quatation Quantity is required" required>
+          </div>
+        </div>
+      
+      </div>
+    </form>
+  </div>
+  <div class="col-xs-12 col-md-6" *ngIf="!showRFQForm">
     <h3>{{product.name}}</h3>
     <div class="seller">
       <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
@@ -33,5 +71,6 @@
 
     <button class="btn btn-raised btn-primary">Add to Cart</button>
     <button class="btn btn-raised btn-white">Add to wishlist</button>
+    <button class="btn btn-raised btn-white" (click)="showRFQForm=true">Request a Quatation</button>
   </div>
 </div>

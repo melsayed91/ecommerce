@@ -4,7 +4,7 @@ import { AuthGuardService } from '../core/services/auth.guard.service/auth-guard
 import { dashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
-import { RequestForQuotationsComponent } from './request-for-quotations/request-for-quotations.component';
+import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
 
 
 
@@ -30,8 +30,8 @@ export const RegisterRoutes: Routes = [
         component: SettingsComponent
     },
     {
-        path: 'rfqs',
+        path: 'rfps',
         canActivate: [AuthGuardService],
-        component: RequestForQuotationsComponent
+        component: RequestForProposalComponent
     }
 ];

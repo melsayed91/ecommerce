@@ -1,5 +1,5 @@
 {
-    "name": "sharedPrototypeTransactions",
+    "name": "sharedRFQTransactions",
     "base": "PersistedModel",
     "idInjection": true,
     "options": {
@@ -14,10 +14,10 @@
     },
     "validations": [],
     "relations": {
-        "prototype": {
+        "rfq": {
             "type": "belongsTo",
-            "model": "prototype",
-            "foreignKey": "prototypeId"
+            "model": "rfq",
+            "foreignKey": "rfqId"
         },
         "status": {
             "type": "belongsTo",
