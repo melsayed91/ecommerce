@@ -12,7 +12,8 @@
     <div id="profile" class="page-layout simple tabbed">
         <!-- HEADER -->
         <div class="header">
-            <div class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
+            <div *ngIf="accountData?.bannerImage" class="background-image" [style.background-image]="'url('+attachmentServer + accountData?.bannerImage.url +')'"></div>
+            <div *ngIf="!accountData?.bannerImage" class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
             <div class="background-overlay"></div>
             <div class="user-info">
                 <div class="name">
@@ -20,9 +21,11 @@
                     <p class="email">{{user?.email}}</p>
                 </div>
             </div>
-            <div class="actions">
-                <button class="btn btn-fab btn-fab-mini btn-simple">
-                    <i class="fa fa-camera"></i>
+            <div class="actions" [class.loading]="pictureLoading">
+                <button class="btn btn-fab btn-fab-mini btn-simple btn-white" (click)="triggerUpload()">
+                    <input id="bannerImage" accept="image/*" type="file" (change)="uploadPicture($event)">
+                    <i *ngIf="!pictureLoading" class="fa fa-camera"></i>
+                    <i *ngIf="pictureLoading" class="fa fa-spin fa-spinner"></i>
                 </button>
             </div>
         </div>

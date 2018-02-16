@@ -30,6 +30,8 @@ export class ProfileComponent implements OnInit {
     private AttachmentServiceAPI: AttachmentApi) {
     this.userAccount = this.auth.account;
     this.user = this.auth.userApi.getCachedCurrent();
+    this.accountData = this.userAccount.accountData;
+    this.attachmentServer = attachementApiConfig.getPath();
   }
 
   ngOnInit() {
@@ -84,5 +86,29 @@ export class ProfileComponent implements OnInit {
           en: 'Your password must contain at least (%s) special characters.'
         }
       });
+  }
+
+  triggerUpload() {
+    $('#bannerImage').click();
+  }
+
+  uploadPicture(fileInput: any) {
+    if (fileInput.target.files && fileInput.target.files[0]) {
+      this.pictureLoading = true;
+      var file = fileInput.target.files[0];
+      var form = new FormData();
+      form.append("file", file, file.name);
+      this.AttachmentService.upload(form, file.name, {}).subscribe((response: any) => {
+        this.accountData.bannerImage = response;
+
+        this.accountApi.updateAccountData(this.accountData.id, { bannerImageId: response.id })
+          .subscribe((response: any) => {
+            this.pictureLoading = false;
+            this.auth.setAccountData(this.accountData);
+          })
+      }, (err) => {
+
+      })
+    }
   }
 }

@@ -66,6 +66,10 @@
         .actions {
             display: none;
         }
+        .actions.loading {
+            display: flex;
+            z-index: 100;
+        }
     }
 
     .content {

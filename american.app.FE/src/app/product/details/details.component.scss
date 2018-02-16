@@ -38,9 +38,11 @@
 
 .quantity{
   input{
-      border: none;
-      background: none;
-      text-align: center;
+    border: none;
+    background: none;
+    text-align: center;
+    font-size: 25px;
+    max-width: 110px;
       &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { 
           -webkit-appearance: none; 
           margin: 0; 

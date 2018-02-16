@@ -24,9 +24,9 @@
     <div class="quantity">
       <span>Quantity</span>
       <div>
-        <button class="btn btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-</button>
+        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-</button>
         <input name="quantity" type="number" [(ngModel)]="quantity">
-        <button class="btn btn-simple" (click)="quantity = +quantity+1;">+</button>
+        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
       </div>
 
     </div>
