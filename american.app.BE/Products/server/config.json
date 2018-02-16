@@ -21,7 +21,9 @@
     "sharedMethods": {
       "*":false,
       "getUserProducts": true,
-      "replaceOrCreate": true
+      "replaceOrCreate": true,
+      "find": true,
+      "findById":true
     }
   }
 }

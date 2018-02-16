@@ -26,6 +26,10 @@ export const AppRoutes: Routes = [
                 loadChildren: './account/account.module#AccountModule',
                 canLoad: [AuthGuardService]
             },
+            {
+                path: 'product',
+                loadChildren: './product/product.module#ProductModule'
+            },
           {
                 path: 'admin',
                 loadChildren: './admin/admin.module#AdminModule'

@@ -366,3 +366,12 @@ Copyright (c) 2015 Daniel Eden
   animation-name: fadeInDown-20;
 }
 
+
+
+@mixin set-animation-delays {
+  @for $i from 1 through 10 {
+      .animation-delay-#{$i} { animation-delay: #{$i*100}ms  }
+  }
+}
+
+@include set-animation-delays;

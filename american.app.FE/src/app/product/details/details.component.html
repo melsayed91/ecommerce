@@ -1,0 +1,37 @@
+<div *ngIf="product" class="row">
+  <div class="col-xs-12 col-md-6">
+    <div class="images-slider">
+      <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
+      </div>
+      <div class="thumbnails">
+        <div class="picture" *ngFor="let image of product.attachments" [style.background-image]="'url('+ attachmentServer +image.url +')'"
+          (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6">
+    <h3>{{product.name}}</h3>
+    <div class="seller">
+      <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
+      <span>{{product.account?.accountData?.name}}</span>
+    </div>
+
+
+    <h3>
+      <b>$ {{product.price}}</b>
+    </h3>
+    <p>{{product.description}}</p>
+    <div class="quantity">
+      <span>Quantity</span>
+      <div>
+        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-</button>
+        <input name="quantity" type="number" [(ngModel)]="quantity">
+        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
+      </div>
+
+    </div>
+
+    <button class="btn btn-raised btn-primary">Add to Cart</button>
+    <button class="btn btn-raised btn-white">Add to wishlist</button>
+  </div>
+</div>
