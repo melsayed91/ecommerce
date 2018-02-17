@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
   products = [];
   categories = []
   attachments = [];
-
+  spec = { name: "", value: "" };
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
   uploaded = [];
@@ -117,10 +117,12 @@ export class ProductsComponent implements OnInit {
       "description": this.product.description,
       "price": this.product.price,
       "stock": this.product.stock,
+      "moq": this.product['moq'],
       "isActive": this.product.isActive,
       "categoryId": this.product.categoryId,
       "accountId": this.product.accountId,
-      "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds)
+      "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds),
+      "specs": this.product['specs']
     };
     if (!this.isNew) {
       data['id'] = this.product.id;
@@ -191,4 +193,8 @@ export class ProductsComponent implements OnInit {
     return files;
   }
 
+  addSpec() {
+    this.product['specs'].push(this.spec);
+    this.spec = { name: "", value: "" };
+  }
 }

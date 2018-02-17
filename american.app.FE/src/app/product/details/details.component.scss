@@ -60,22 +60,13 @@
 .seller{
     display: flex;
     align-items: center;
-    
+
     img{   
         width: 30px;
         height: 30px;
         border-radius: 100%;
         margin: 0 10px;
     }
-}
-
-
-.spec-title{
-    vertical-align: top;
-    white-space: nowrap; 
-}
-.spec-text{
-    white-space: unset;
 }
 
 .product-highlights {
@@ -96,3 +87,4 @@
         }
     }
 }
+
