@@ -17,53 +17,9 @@ export class DetailsComponent implements OnInit {
   product;
   productId: string;
   selectedImage;
-  MQO = 10;
-  quantity = this.MQO;
+  quantity;
 
   private subs = [];
-  specs =
-    [
-      {
-        name: 'Dakota Rice',
-        value: 'Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis. Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis. Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis'
-      },
-      {
-        name: 'Minerva Hooper',
-        value: 'Curaçao Sinaai-Waas $23,789'
-      },
-      {
-        name: 'Sage Rodriguez',
-        value: 'Netherlands Baileux $56,142'
-      },
-      {
-        name: 'Philip Chaney',
-        value: 'Korea, South Overland Park $38,735'
-      },
-      {
-        name: 'Doris Greene',
-        value: 'Malawi Feldkirchen in Kärnten $63,542'
-      },
-      {
-        name: 'Dakota Rice',
-        value: 'Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis. Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis. Autem eaque voluptatem officiis aut vel Nam dolores rem excepteur atque est beatae perspiciatis'
-      },
-      {
-        name: 'Minerva Hooper',
-        value: 'Curaçao Sinaai-Waas $23,789'
-      },
-      {
-        name: 'Sage Rodriguez',
-        value: 'Netherlands Baileux $56,142'
-      },
-      {
-        name: 'Philip Chaney',
-        value: 'Korea, South Overland Park $38,735'
-      },
-      {
-        name: 'Mason Porter',
-        value: 'Chile Gloucester $78,615'
-      }
-    ];
   constructor(
     private route: ActivatedRoute,
     private productApi: ProductApi) { }
@@ -83,6 +39,7 @@ export class DetailsComponent implements OnInit {
           }).subscribe(response => {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
+            this.quantity=this.product.moq;
           })
         )
       })
