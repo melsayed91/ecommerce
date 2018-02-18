@@ -5,7 +5,7 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./AccountManager"
+        "sourceDir": "../../AccountManager"
     },
     {
         "uid": "Authorization",
@@ -13,7 +13,7 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./Authorization"
+        "sourceDir": "../../Authorization"
     },
     {
         "uid": "Attachment",
@@ -21,7 +21,7 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./Attachment"
+        "sourceDir": "../../Attachment"
     },
     {
         "uid": "Products",
@@ -29,7 +29,7 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./Products"
+        "sourceDir": "../../Products"
     },
     {
         "uid": "Quotations",
@@ -37,7 +37,7 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./Quotations"
+        "sourceDir": "../../Quotations"
     },
     {
         "uid": "SysCode",
@@ -45,6 +45,6 @@
         "watch": true,
         "script": "/server/server.js",
         "command": "node .",
-        "sourceDir": "./SysCode"
+        "sourceDir": "../../SysCode"
     }
 ]

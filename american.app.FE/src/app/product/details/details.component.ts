@@ -23,7 +23,6 @@ export class DetailsComponent implements OnInit {
   showRFQForm = false;
   currentRfq: Rfq = new Rfq();
   private subs = [];
-
   constructor(
     private auth: UserService,
     private route: ActivatedRoute,
@@ -45,6 +44,7 @@ export class DetailsComponent implements OnInit {
           }).subscribe(response => {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
+            this.quantity = this.product.moq;
           })
         )
       })
@@ -53,6 +53,9 @@ export class DetailsComponent implements OnInit {
 
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
+  }
+  scrollTo(selector) {
+    $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);
   }
   formLoaded(id) {
     this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
@@ -69,5 +72,4 @@ export class DetailsComponent implements OnInit {
       this.currentRfq = new Rfq();
     }, err => { })
   }
-
 }

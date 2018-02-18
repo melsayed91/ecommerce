@@ -29,7 +29,8 @@ body {
     position: relative;
     width: 100%;
     min-height: 100%;
-    @include bg-radial-gradient(white, 15%, #efefef , 100%);
+    background-color: #fcfcfc;
+    // @include bg-radial-gradient(white, 15%, #efefef , 100%);
     color: $black-color;
     &.inverse {
         background: #333333;

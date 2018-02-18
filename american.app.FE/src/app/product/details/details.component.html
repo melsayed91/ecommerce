@@ -1,76 +1,214 @@
-<div *ngIf="product" class="row">
-  <div class="col-xs-12 col-md-6">
-    <div class="images-slider">
-      <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
-      </div>
-      <div class="thumbnails">
-        <div class="picture" *ngFor="let image of product.attachments" [style.background-image]="'url('+ attachmentServer +image.url +')'"
-          (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
+<div *ngIf="product" id="productInfo">
+  <div class="row">
+    <div class="col-xs-12 col-md-6  animated-250 fadeInLeft">
+      <div class="images-slider">
+        <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
+        </div>
+        <div class="thumbnails">
+          <div class="picture" *ngFor="let image of product.attachments" [style.background-image]="'url('+ attachmentServer +image.url +')'"
+            (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
+        </div>
       </div>
     </div>
-  </div>
-
-  <div *ngIf="showRFQForm" class="col-xs-12 col-md-6">
-      <div class="control-panel">
-        <button class="btn btn-simple" (click)="showRFQForm = false">
-          <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
-        </button>
-        <button class="btn btn-simple" (click)="addRfq()">
-          <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Request for Quatation
-        </button>
+    <div class="col-xs-12 col-md-6 animated-250 fadeInRight">
+      <h3 class="no-margin">{{product.name}}</h3>
+      <div class="seller">
+        <span>Sold by:</span>
+        <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
+        <span>{{product.account?.accountData?.name}}</span>
       </div>
-    <form id="rfqForm" view-init-spy (onAfterViewInit)="formLoaded('rfqForm')">
-      <div class="text-center">
-        <span class="required-mark"></span>Required Fields</div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group-sm">
-            <textarea class="form-control" type="text" rows="1" id="title" name="title" [(ngModel)]="currentRfq.title"
-              placeholder="Quatation Title">
-                                                </textarea>
-          </div>
+      <h3>
+        <b>$ {{product.price}}</b>
+      </h3>
+      <p>{{product.description?.substring(0, 150)}}...
+        <button class="btn btn-primary btn-simple btn-sm no-margin" (click)="scrollTo('#productDetails')">
+          <b>More</b>
+        </button>
+      </p>
+      <h5 class="no-margin">
+        <b>You will get:</b>
+      </h5>
+      <div class="product-highlights">
+        <div class="product-feature">
+          <p>FREE SHIPPING</p>
+          <i class="fa fa-2x fa-truck"></i>
+          <p>World wide</p>
         </div>
-          <div class="col-xs-12">
-            <div class="form-group-sm">
-              <textarea class="form-control" type="text" rows="3" id="description" name="description" [(ngModel)]="currentRfq.description"
-                placeholder="Quatation Description">
-                                                  </textarea>
+
+        <div class="product-feature">
+          <p>RETURN POLICY</p>
+          <i class="fa fa-2x fa-repeat"></i>
+          <p>Within 15 Days</p>
+        </div>
+
+        <div class="product-feature">
+          <p>WARRANTY</p>
+          <i class="fa fa-2x fa-shield"></i>
+          <p>3 Years</p>
+        </div>
+
+        <div class="product-feature">
+          <p>TECHNICAL SUPPORT</p>
+          <i class="fa fa-2x fa-phone"></i>
+          <p>First 6 months</p>
+        </div>
+
+      </div>
+      <h5 class="no-margin">
+        <b>Quantity</b>&nbsp;
+        <small>(Minimum {{product.moq}})</small>
+      </h5>
+      <div class="quantity">
+        <div>
+          <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == product.moq? product.moq: +quantity-1;">-</button>
+          <input name="quantity" type="number" [(ngModel)]="quantity">
+          <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
+        </div>
+
+      </div>
+
+      <button class="btn btn-raised btn-primary">
+        <i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart
+      </button>
+      <button class="btn btn-raised btn-primary" (click)="showRFQForm=true;scrollTo('#productDetails')">
+        <i class="fa fa-dollar"></i>&nbsp;&nbsp;&nbsp;Request for quotation
+      </button>
+      <button class="btn btn-raised btn-white">
+        <i class="fa fa-heart-o text-primary"></i>&nbsp;&nbsp;&nbsp;Add to wishlist
+      </button>
+    </div>
+  </div>
+  <div class="product-description">
+
+    <div class="card br-0" id="productDetails">
+
+      <div class="card-content">
+        <div *ngIf="showRFQForm" class="row">
+          <div class="control-panel">
+            <button class="btn btn-simple" (click)="showRFQForm = false;scrollTo('#productInfo')">
+              <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
+            </button>
+            <button class="btn btn-simple" (click)="addRfq();scrollTo('#productInfo')">
+              <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Request for Quatation
+            </button>
+          </div>
+          <form id="rfqForm" view-init-spy (onAfterViewInit)="formLoaded('rfqForm')">
+            <div class="text-center">
+              <span class="required-mark"></span>Required Fields</div>
+            <div class="form-group label-floating">
+              <label class="control-label">Quatation Title</label>
+              <input type="text" class="form-control" [(ngModel)]="currentRfq.title" required id="title" name="title">
+            </div>
+
+            <div class="form-group label-floating">
+              <label class="control-label">Quatation Description</label>
+              <input type="text" class="form-control" id="description" name="description" [(ngModel)]="currentRfq.description" required>
+            </div>
+            <div class="form-group label-floating">
+              <label class="control-label">Quatation Quantity</label>
+              <input type="number" class="form-control" min="1" id="Quantity" name="Quantity" [(ngModel)]="currentRfq.quantity" required>
+            </div>
+          </form>
+        </div>
+        <div class="row" *ngIf="!showRFQForm">
+          <div class="col-xs-12 col-md-2">
+            <ul class="nav nav-pills nav-pills-icons nav-pills-primary nav-stacked" role="tablist">
+              <!--color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"-->
+              <li class="active">
+                <a href="#info" role="tab" data-toggle="tab">
+                  <i class="fa fa-info"></i> General Info
+                </a>
+              </li>
+              <li>
+                <a href="#Specifications" role="tab" data-toggle="tab">
+                  <i class="fa fa-list-ul"></i> Specifications
+                </a>
+              </li>
+              <li>
+                <a href="#Reviews" role="tab" data-toggle="tab">
+                  <i class="fa fa-star-half-o"></i> Customer Reviews
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-md-10">
+            <div class="tab-content">
+              <div class="tab-pane active" id="info">
+
+
+                <h4>
+                  <b>Description</b>
+                </h4>
+                <p>
+                  {{product.description}}
+                </p>
+                <h4>
+                  <b>Prototype</b>
+                </h4>
+                <p>Prototypes are available for free! &nbsp;&nbsp;
+                  <button class="no-margin btn btn-raised btn-sm btn-dark">Request for Prototype</button>
+                </p>
+
+                <h4>
+                  <b>Warranty</b>
+                </h4>
+                <p>
+                  <b>1 Year</b>
+                  <br> Notes: Warranty is extendable.
+                </p>
+                <h4>
+                  <b>Shipping</b>
+                </h4>
+                <p>
+                  <b>Free</b> world wide.
+                  <br> Notes: To be eligible for free shipping ordered quantity should be more than 100 items.
+                </p>
+
+                <h4>
+                  <b>Return Policy</b>
+                </h4>
+                <p>
+                  Returns are accepted within 15 days from the purchase date.
+                </p>
+                <ul>
+                  <b>1. Submit Return Request</b>
+                  <br>
+                  <b>2. Prepare your package for return:</b> Pack your item securely, inserting any paperwork that was included
+                  when you requested your return from the Online Returns Center. If you don't have the original product packaging,
+                  use a sturdy box and include padding such as packing bubbles or newspaper. Attach your return label to
+                  the package.
+                  <br>
+                  <b> 3. Ship your return based on the return shipping option you selected:</b> For more information on the return
+                  shipping options, go to About Return Shipping.
+                </ul>
+              </div>
+              <div class="tab-pane" id="Specifications">
+                <button class="btn btn-raised btn-dark">
+                  <i class="fa fa-question-circle-o"></i>&nbsp;&nbsp;&nbsp;Request for Specifications
+                </button>
+                <div class="content table-responsive">
+                  <table class="table">
+                    <tbody>
+                      <tr *ngFor="let spec of product.specs">
+                        <td class="spec-title">
+                          <b>{{spec.name}}</b>
+                        </td>
+                        <td class="spec-text">
+                          {{spec.value}}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="Reviews">
+
+              </div>
             </div>
           </div>
-        <div class="col-xs-12">
-          <div class="form-group-sm required">
-            <input type="number" class="form-control" name="Quantity" placeholder="Quatation Quantity" [(ngModel)]="currentRfq.quantity"
-              data-parsley-required-message="Quatation Quantity is required" required>
-          </div>
         </div>
-      
       </div>
-    </form>
-  </div>
-  <div class="col-xs-12 col-md-6" *ngIf="!showRFQForm">
-    <h3>{{product.name}}</h3>
-    <div class="seller">
-      <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
-      <span>{{product.account?.accountData?.name}}</span>
     </div>
-
-
-    <h3>
-      <b>$ {{product.price}}</b>
-    </h3>
-    <p>{{product.description}}</p>
-    <div class="quantity">
-      <span>Quantity</span>
-      <div>
-        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-</button>
-        <input name="quantity" type="number" [(ngModel)]="quantity">
-        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
-      </div>
-
-    </div>
-
-    <button class="btn btn-raised btn-primary">Add to Cart</button>
-    <button class="btn btn-raised btn-white">Add to wishlist</button>
-    <button class="btn btn-raised btn-white" (click)="showRFQForm=true">Request a Quatation</button>
   </div>
 </div>

@@ -5,12 +5,13 @@
 
     .product-image {
         display: flex;
+        flex-flow: row wrap;
         justify-content: center;
         align-items: center;
         overflow: hidden;
-        width: 250px;
-        height: 250px;
-        border: 3px solid rgba(0, 0, 0, 0.12);
+        width: 150px;
+        height: 150px;
+        border: 3px solid #cfcfcf;
 
         img {
             height: 100%;

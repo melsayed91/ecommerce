@@ -60,10 +60,11 @@ search-bar div.overlay{
 
         .fa{
             font-size: 36px;
-            color: #000000;
+            color: #f3f3f3;
             border-right: 1px solid;
             padding-right: 15px;
             margin-right: 15px; 
+            transition: color 500ms;            
         }
         
         input{
@@ -79,7 +80,14 @@ search-bar div.overlay{
             transition: all 0.2s cubic-bezier(0.04, 0.55, 0.97, 1.01);
 
             &::placeholder{
-                color: #4b4b4b;
+                color: #f3f3f3;
+                transition: color 500ms;
+            }
+        }
+
+        &:hover{
+            .fa, input::placeholder{
+                color: #1f1f1f;
             }
         }
     }

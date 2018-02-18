@@ -207,3 +207,11 @@
     overflow: hidden;
     padding: 15px;
 }
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.text-wrap {
+    white-space:pre-wrap;
+}
