@@ -1,0 +1,85 @@
+{
+  "name": "Order",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "orderNo": {
+      "type": "string",
+      "required": true
+    },
+    "paymentInfo": {
+      "type": "object"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "ownerId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
+    },
+    "shipments": {
+      "type": "referencesMany",
+      "model": "Shipment",
+      "foreignKey": "shipmentIds"
+    }
+  },
+  "acls": [],
+  "methods": {},
+  "a": {
+    "ownerId": "5a7b437bc30fd92aa4264201",
+    "paymentInfo": {
+      "method": "Credit Card",
+      "TransactionCode": "654654788754",
+      "total": 1545.0
+    },
+    "statusId": "5a89a6c29fcea8171cb0f0d4",
+    "blah": "blah",
+    "shipments": [
+      {
+        "awb": "11111",
+        "shippedBy": "fedex",
+        "shippingFees": 0,
+        "sellerId": "1",
+        "statusId": "string",
+        "items": [
+          {
+            "quantity": 1,
+            "total": 4000,
+            "productId": "iphonex"
+          },
+          {
+            "quantity": 1,
+            "total": 250,
+            "productId": "iphonex case"
+          }
+        ]
+      },
+      {
+        "awb": "22222",
+        "shippedBy": "dhl",
+        "shippingFees": 0,
+        "sellerId": "2",
+        "statusId": "string",
+        "items": [
+          {
+            "quantity": 2,
+            "total": 460,
+            "productId": "apple earpods"
+          }
+        ]
+      }
+    ]
+  }
+}

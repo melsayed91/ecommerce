@@ -81,5 +81,17 @@
   "Role": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "Order": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "Shipment": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "ShipmentItem": {
+    "dataSource": "americanBizDB",
+    "public": true
   }
 }

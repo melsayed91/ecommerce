@@ -5,14 +5,14 @@
   "options": {
     "validateUpsert": true
   },
-  "properties": {},
-  "validations": [],
-  "relations": {},
-  "acls": [],
-  "methods": {},
   "mixins": {
     "HideRelationsMethods": {
       "expose": []
     }
-  }
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
 }

@@ -1,0 +1,48 @@
+{
+  "name": "Shipment",
+  "base": "PersistedModel",
+  "plural":"shipments",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "awb": {
+      "type": "string"
+    },
+    "shippedBy": {
+      "type": "string"
+    },
+    "shippingFees": {
+      "type": "number"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "order": {
+      "type": "belongsTo",
+      "model": "Order",
+      "foreignKey": "orderId"
+    },
+    "seller": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "sellerId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
+    },
+    "items": {
+      "type": "referencesMany",
+      "model": "ShipmentItem",
+      "foreignKey": "itemsIds"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

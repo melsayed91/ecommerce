@@ -38,7 +38,7 @@
       <p>{{getUserEmail()}}</p>
       <ul class="dropdown-menu">
 
-        <li *ngIf="this.auth.account.isAdmin">
+        <li *ngIf="this.auth.account?.isAdmin">
           <a (click)="navigateTo('/admin/approval')">Admin Approval</a>
         </li>
         <li>

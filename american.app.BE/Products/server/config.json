@@ -23,7 +23,8 @@
       "getUserProducts": true,
       "replaceOrCreate": true,
       "find": true,
-      "findById":true
+      "findById":true,
+      "placeOrder": true
     }
   }
 }
