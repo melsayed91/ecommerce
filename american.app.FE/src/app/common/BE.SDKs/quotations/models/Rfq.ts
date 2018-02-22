@@ -3,38 +3,34 @@
 declare var Object: any;
 export interface RfqInterface {
   "description": string;
+  "quantity": number;
   "title": string;
   "creationDate": Date;
   "modificationDate"?: Date;
-  "enabled"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
-  "offerIds"?: Array<any>;
-  "categoryId"?: any;
+  "offerId"?: any;
   "accountId"?: any;
-  "attachmentIds"?: Array<any>;
-  offers?: any[];
-  category?: any;
+  "productId"?: any;
+  offer?: any;
   account?: any;
-  attachments?: any[];
+  product?: any;
 }
 
 export class Rfq implements RfqInterface {
   "description": string;
+  "quantity": number;
   "title": string;
   "creationDate": Date;
   "modificationDate": Date;
-  "enabled": boolean;
   "isDeleted": boolean;
   "id": any;
-  "offerIds": Array<any>;
-  "categoryId": any;
+  "offerId": any;
   "accountId": any;
-  "attachmentIds": Array<any>;
-  offers: any[];
-  category: any;
+  "productId": any;
+  offer: any;
   account: any;
-  attachments: any[];
+  product: any;
   constructor(data?: RfqInterface) {
     Object.assign(this, data);
   }
@@ -72,6 +68,10 @@ export class Rfq implements RfqInterface {
           name: 'description',
           type: 'string'
         },
+        "quantity": {
+          name: 'quantity',
+          type: 'number'
+        },
         "title": {
           name: 'title',
           type: 'string'
@@ -84,11 +84,6 @@ export class Rfq implements RfqInterface {
           name: 'modificationDate',
           type: 'Date'
         },
-        "enabled": {
-          name: 'enabled',
-          type: 'boolean',
-          default: true
-        },
         "isDeleted": {
           name: 'isDeleted',
           type: 'boolean',
@@ -98,40 +93,26 @@ export class Rfq implements RfqInterface {
           name: 'id',
           type: 'any'
         },
-        "offerIds": {
-          name: 'offerIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
-        "categoryId": {
-          name: 'categoryId',
+        "offerId": {
+          name: 'offerId',
           type: 'any'
         },
         "accountId": {
           name: 'accountId',
           type: 'any'
         },
-        "attachmentIds": {
-          name: 'attachmentIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
+        "productId": {
+          name: 'productId',
+          type: 'any'
         },
       },
       relations: {
-        offers: {
-          name: 'offers',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'offerIds',
-          keyTo: 'id'
-        },
-        category: {
-          name: 'category',
+        offer: {
+          name: 'offer',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
-                  keyFrom: 'categoryId',
+                  keyFrom: 'offerId',
           keyTo: 'id'
         },
         account: {
@@ -142,12 +123,12 @@ export class Rfq implements RfqInterface {
                   keyFrom: 'accountId',
           keyTo: 'id'
         },
-        attachments: {
-          name: 'attachments',
-          type: 'any[]',
+        product: {
+          name: 'product',
+          type: 'any',
           model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'attachmentIds',
+          relationType: 'belongsTo',
+                  keyFrom: 'productId',
           keyTo: 'id'
         },
       }

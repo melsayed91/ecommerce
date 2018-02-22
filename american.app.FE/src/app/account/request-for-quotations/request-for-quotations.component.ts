@@ -41,7 +41,7 @@ export class RequestForQuotationsComponent implements OnInit {
     private AttachmentService: AttachmentService,
     private AttachmentServiceAPI: AttachmentApi) { }
 
-    
+
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
     this.currentAccountId = this.auth.account.id;
@@ -62,8 +62,8 @@ export class RequestForQuotationsComponent implements OnInit {
     if (!this.formValidation.validate())
       return;
     this.currentRfq.accountId = this.currentAccountId;
-    this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
-    delete this.currentRfq.category;
+    /*this.currentRfq.attachmentIds = this.uploaded.map(function (item) { return item.id });
+    delete this.currentRfq.category;*/
     this.RfquotationApi.addRFQ(this.currentRfq).subscribe(resp => {
       this.getRfq();
       this.showRFQForm = false;
@@ -90,8 +90,8 @@ export class RequestForQuotationsComponent implements OnInit {
   }
 
   categoryChanged(e) {
-    this.currentRfq.categoryId = e.id;
-    this.currentRfq.category = e;
+   /* this.currentRfq.categoryId = e.id;
+    this.currentRfq.category = e;*/
   }
 
   onAdded(event: any) {
@@ -121,7 +121,7 @@ export class RequestForQuotationsComponent implements OnInit {
         let myOffers = rfq.offers.filter(function (offer) {
           return offer.accountId == this.currentAccountId
         }.bind(this));
-        
+
         let myBest = myOffers[0] ? myOffers[0].price : 0;
 
         myOffers.forEach(offer => {

@@ -29,7 +29,7 @@ export class NavbarComponent implements OnInit {
       redirectTo: '/account/',
       text: 'My Orders',
       icon: 'file-text-o',
-      showTo: 'Individual'      
+      showTo: 'Individual'
     },
     {
       name: 'messages',
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
       name: 'cutomersBase',
       redirectTo: '/account/',
       text: 'Customers Base',
-      icon: 'address-card-o',  
+      icon: 'address-card-o',
       showTo: 'Business'
     },
     {
@@ -56,7 +56,14 @@ export class NavbarComponent implements OnInit {
       redirectTo: '/account/rfqs',
       text: 'My RFQs & RFPs',
       icon: 'bullhorn',
-      showTo: 'Individual'  
+      showTo: 'Individual'
+    },
+    {
+      name: 'requests',
+      redirectTo: '/account/requests',
+      text: 'Requests Feed',
+      icon: 'info',
+      showTo: 'Business'
     },
     {
       name: 'profile',
@@ -70,7 +77,7 @@ export class NavbarComponent implements OnInit {
       redirectTo: '/account/profile',
       text: 'My Profile',
       icon: 'user-circle-o',
-      showTo: 'Individual'  
+      showTo: 'Individual'
     },
     {
       name: 'settings',

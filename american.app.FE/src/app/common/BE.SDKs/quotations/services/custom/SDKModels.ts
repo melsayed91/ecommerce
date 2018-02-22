@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Offer } from '../../models/Offer';
 import { Rfq } from '../../models/Rfq';
 import { Rfp } from '../../models/Rfp';
+import { Specification } from '../../models/Specification';
+import { Product } from '../../models/Product';
 
 export interface Models { [name: string]: any }
 
@@ -13,6 +15,8 @@ export class SDKModels {
     Offer: Offer,
     Rfq: Rfq,
     Rfp: Rfp,
+    Specification: Specification,
+    Product: Product,
     
   };
 

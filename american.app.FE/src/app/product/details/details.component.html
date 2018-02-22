@@ -4,8 +4,9 @@
       <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
       </div>
       <div class="thumbnails">
-        <div class="picture" *ngFor="let image of product.attachments" [style.background-image]="'url('+ attachmentServer +image.url +')'"
-          (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
+        <div class="picture" *ngFor="let image of product.attachments"
+             [style.background-image]="'url('+ attachmentServer +image.url +')'"
+             (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
       </div>
     </div>
   </div>
@@ -21,17 +22,51 @@
       <b>$ {{product.price}}</b>
     </h3>
     <p>{{product.description}}</p>
-    <div class="quantity">
-      <span>Quantity</span>
-      <div>
-        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-</button>
-        <input name="quantity" type="number" [(ngModel)]="quantity">
-        <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
+
+    <div *ngIf="!requestSpecificationMode">
+      <div class="quantity">
+        <span>Quantity</span>
+        <div>
+          <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = quantity == 1? 1: +quantity-1;">-
+          </button>
+          <input name="quantity" type="number" [(ngModel)]="quantity">
+          <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
+        </div>
+
       </div>
 
+      <button class="btn btn-raised btn-primary">Add to Cart</button>
+      <button class="btn btn-raised btn-white">Add to wishlist</button>
+      <button class="btn btn-raised btn-white" (click)="toggleRequestSpecification()">Request Specification</button>
     </div>
+    <form *ngIf="requestSpecificationMode" id="specificationForm" view-init-spy (onAfterViewInit)="formLoaded('specificationForm')">
 
-    <button class="btn btn-raised btn-primary">Add to Cart</button>
-    <button class="btn btn-raised btn-white">Add to wishlist</button>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group-sm required">
+            <input type="text" class="form-control" name="Title" placeholder="Title"
+                   [(ngModel)]="requestSpecificationModel.title" data-parsley-required-message="Title is required"
+                   required>
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="form-group-sm required">
+                                        <textarea required class="form-control" type="text" rows="3" id="description"
+                                                  name="description" [(ngModel)]="requestSpecificationModel.description"
+                                                  data-parsley-required-message="Description is required"
+                                                  placeholder="Leave a description">
+                                        </textarea>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-raised btn-primary" (click)="requestSpecification()">
+        <i *ngIf="!requestSpecificationLoading" class="fa fa-send-o"></i>
+        <i *ngIf="requestSpecificationLoading" class="fa fa-spin fa-spinner"></i>
+        {{requestSpecificationLoading? '&nbsp;&nbsp;&nbsp;We are sending your request...':'Send'}}
+      </button>
+      <button class="btn btn-raised btn-danger" (click)="toggleRequestSpecification()">Cancel</button>
+    </form>
+
+
   </div>
 </div>

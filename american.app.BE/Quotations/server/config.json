@@ -24,7 +24,10 @@
       "addOffer": true,
       "getRFQs": true,
       "enableRFQ": true,
-      "deleteRFQ": true
+      "deleteRFQ": true,
+      "addSpecification": true,
+      "replyToSpecification": true,
+      "getSpecifications": true
     }
   }
 }

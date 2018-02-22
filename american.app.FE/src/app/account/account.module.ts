@@ -19,6 +19,7 @@ import { ProductsComponent } from './profile/tabs/products/products.component';
 import { InfoComponent } from './profile/tabs/info/info.component';
 import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
+import { RequestsComponent } from './requests/requests.component';
 
 
 
@@ -42,7 +43,8 @@ import { ProfileInfoComponent } from './profile/profile-info/profile-info.compon
     ProductsComponent,
     InfoComponent,
     GalleryComponent,
-    ProfileInfoComponent]
+    ProfileInfoComponent,
+    RequestsComponent]
 })
 export class AccountModule {
 

@@ -21,14 +21,12 @@ export class ApprovalComponent implements OnInit {
 
   loadCompanies(): any {
     this.AccountApi.getBusinessAccounts().subscribe((response) => {
-      debugger
       this.companies = response.acc;
     }, (err) => {
 
     })
   }
   openProductForm(id) {
-    debugger;
     this.AccountApi.approveBusinessAccount(id).subscribe((response) => {
 
       this.loadCompanies();
