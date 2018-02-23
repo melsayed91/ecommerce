@@ -1,0 +1,57 @@
+{
+  "name": "sharedSpecification",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "reply": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true,
+      "defaultFn": "now"
+    },
+    "modificationDate": {
+      "type": "Date"
+    },
+    "isReplied": {
+      "type": "Boolean",
+      "default": false
+    },
+    "isDeleted": {
+      "type": "Boolean",
+      "default": false
+    }
+  },
+  "validations": [],
+  "relations": {
+    "product": {
+      "type": "belongsTo",
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "productOwner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "productOwnerId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

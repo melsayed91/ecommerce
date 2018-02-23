@@ -90,5 +90,21 @@
   "Role": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "specification": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedSpecification": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

@@ -52,6 +52,8 @@ import { RealTime } from './services/core/real.time';
 import { OfferApi } from './services/custom/Offer';
 import { RfqApi } from './services/custom/Rfq';
 import { RfpApi } from './services/custom/Rfp';
+import { SpecificationApi } from './services/custom/Specification';
+import { ProductApi } from './services/custom/Product';
 /**
 * @module SDKBrowserModule
 * @description
@@ -86,6 +88,8 @@ export class SDKBrowserModule {
         OfferApi,
         RfqApi,
         RfpApi,
+        SpecificationApi,
+        ProductApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },
         { provide: SocketDriver, useClass: SocketBrowser }

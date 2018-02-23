@@ -6,13 +6,17 @@ export interface RfpInterface {
   "title": string;
   "creationDate": Date;
   "modificationDate"?: Date;
+  "enabled"?: boolean;
+  "isDeleted"?: boolean;
   "id"?: any;
-  "rfqIds"?: Array<any>;
   "offerIds"?: Array<any>;
   "categoryId"?: any;
-  rfqs?: any[];
+  "attachmentIds"?: Array<any>;
+  "accountId"?: any;
   offers?: any[];
   category?: any;
+  attachments?: any[];
+  account?: any;
 }
 
 export class Rfp implements RfpInterface {
@@ -20,13 +24,17 @@ export class Rfp implements RfpInterface {
   "title": string;
   "creationDate": Date;
   "modificationDate": Date;
+  "enabled": boolean;
+  "isDeleted": boolean;
   "id": any;
-  "rfqIds": Array<any>;
   "offerIds": Array<any>;
   "categoryId": any;
-  rfqs: any[];
+  "attachmentIds": Array<any>;
+  "accountId": any;
   offers: any[];
   category: any;
+  attachments: any[];
+  account: any;
   constructor(data?: RfpInterface) {
     Object.assign(this, data);
   }
@@ -76,14 +84,19 @@ export class Rfp implements RfpInterface {
           name: 'modificationDate',
           type: 'Date'
         },
+        "enabled": {
+          name: 'enabled',
+          type: 'boolean',
+          default: true
+        },
+        "isDeleted": {
+          name: 'isDeleted',
+          type: 'boolean',
+          default: false
+        },
         "id": {
           name: 'id',
           type: 'any'
-        },
-        "rfqIds": {
-          name: 'rfqIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
         },
         "offerIds": {
           name: 'offerIds',
@@ -94,16 +107,17 @@ export class Rfp implements RfpInterface {
           name: 'categoryId',
           type: 'any'
         },
+        "attachmentIds": {
+          name: 'attachmentIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
+        "accountId": {
+          name: 'accountId',
+          type: 'any'
+        },
       },
       relations: {
-        rfqs: {
-          name: 'rfqs',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'rfqIds',
-          keyTo: 'id'
-        },
         offers: {
           name: 'offers',
           type: 'any[]',
@@ -118,6 +132,22 @@ export class Rfp implements RfpInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
+          keyTo: 'id'
+        },
+        attachments: {
+          name: 'attachments',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'attachmentIds',
+          keyTo: 'id'
+        },
+        account: {
+          name: 'account',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'accountId',
           keyTo: 'id'
         },
       }

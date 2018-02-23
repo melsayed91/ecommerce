@@ -1,0 +1,70 @@
+<app-navbar page="requests"></app-navbar>
+
+
+<h3>SPECIFICATIONS REQUESTS</h3>
+
+<div *ngIf="specificationsRequests?.length == 0" class="no-rfq">
+  <i class="fa fa-map-signs fa-xl"></i>
+  There is no Specifications Requests that match your industries...
+</div>
+
+<div *ngIf="!specificationsRequests" class="no-rfq">
+  <i class="fa fa-location-arrow fa-xl fa-spin"></i>
+  Hold on, we are bringing you the Specifications Requests...
+</div>
+
+<div *ngIf="specificationsRequests?.length > 0">
+  <div class="">
+    <div *ngFor="let specificationRequest of specificationsRequests" class="card card-raised">
+      <div class="card-content">
+        <h6 class="category">Published {{specificationRequest.creationDate | amTimeAgo}}</h6>
+        <div class="icon">
+          <img *ngIf="specificationRequest.product.attachments && specificationRequest.product.attachments[0]"
+               [src]="attachmentServer + specificationRequest.product.attachments[0].url">
+          <img *ngIf="!specificationRequest.product.attachments || specificationRequest.product.attachments.length == 0"
+               src="../../../assets/img/image_placeholder.jpg">
+        </div>
+        <h3 class="card-title">{{specificationRequest.title}}</h3>
+        <p class="card-description">
+          {{specificationRequest.description}}
+        </p>
+
+        <h6 (click)="navigateTo('/product/details/'+specificationRequest.product.id)">requester:
+          {{specificationRequest.account.accountDataId}}</h6>
+        <h6 *ngIf="!specificationRequest.showReplyForm && specificationRequest.reply">Reply:
+          {{specificationRequest.reply}}</h6>
+        <form id="replyForm" *ngIf="specificationRequest.showReplyForm" view-init-spy
+              (onAfterViewInit)="formLoaded('replyForm')">
+          <div class="text-center">
+            <span class="required-mark"></span>Required Fields
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <div class="form-group-sm">
+                                        <textarea class="form-control" type="text" rows="3" id="comment" name="comment"
+                                                  [(ngModel)]="specificationRequest.reply"
+                                                  placeholder="Specification Reply">
+                                        </textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="rfq-actions">
+        <button *ngIf="specificationRequest.showReplyForm" class="btn btn-simple"
+                (click)="sendReply(specificationRequest);specificationRequest.showReplyForm = false;">
+          <i class="fa fa-send-o"></i> &nbsp;Reply
+        </button>
+        <button *ngIf="specificationRequest.showReplyForm" class="btn btn-simple btn-danger"
+                (click)="specificationRequest.showReplyForm = !specificationRequest.showReplyForm;specificationRequest.reply =''">
+          Cancel
+        </button>
+        <button *ngIf="!specificationRequest.showReplyForm && !specificationRequest.reply" class="btn btn-simple"
+                (click)="specificationRequest.showReplyForm = !specificationRequest.showReplyForm;specificationRequest.reply =''">
+          <i class="fa fa-bullhorn"></i> &nbsp;Make a reply
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
