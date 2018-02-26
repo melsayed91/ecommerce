@@ -375,3 +375,26 @@ Copyright (c) 2015 Daniel Eden
 }
 
 @include set-animation-delays;
+
+
+@keyframes placeHolderShimmer{
+  0%{
+      background-position: -468px 0
+  }
+  100%{
+      background-position: 468px 0
+  }
+}
+
+@mixin animate-background($color, $color2) {
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background: #f6f7f8;
+  background: linear-gradient(to right, $color 8%, $color2 18%, $color 33%);
+  background-size: 800px 104px;
+  position: relative;
+}
+

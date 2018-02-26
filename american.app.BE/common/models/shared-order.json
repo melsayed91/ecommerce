@@ -1,0 +1,32 @@
+{
+    "name": "SharedOrder",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "mixins": {
+    "TimeStamp": true
+  },
+    "properties": {
+        "orderNo": {
+            "type": "string",
+            "required": true
+        },
+        "isPrototype": {
+            "type": "boolean",
+            "required": true,
+            "default": false
+        },
+        "paymentInfo": {
+            "type": "object"
+        },
+        "shippingInfo": {
+            "type": "object"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+}

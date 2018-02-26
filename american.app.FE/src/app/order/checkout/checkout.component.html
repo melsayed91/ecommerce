@@ -1,0 +1,245 @@
+<div class="checkout">
+  <h3 class="checkout-title">A Few steps to place this order</h3>
+  <h5 class="checkout-steps">
+    <div [class.active]="step==1" (click)="goTo(1)">
+      <p>Shipping details &#9679;</p>
+    </div>
+    <div *ngIf="getTotal() > 0" [class.active]="step==2" (click)="goTo(2)">
+      <p>Payment &#9679;</p>
+    </div>
+    <div [class.active]="step==3" (click)="goTo(3)">
+      <p>Order Review &#9679;</p>
+    </div>
+    <div [class.active]="step==4">
+      <p>Order Completed </p>
+    </div>
+  </h5>
+  <div class="row">
+    <div class="col-xs-12" [class.col-sm-8]="step <4">
+      <div class="step-wrapper">
+
+        <!-- Shipping -->
+        <div *ngIf="step == 1" class="animated-250 fadeIn">
+          <form id="shippingForm" view-init-spy (onAfterViewInit)="formLoaded()">
+            <h4>
+              <b>Delivery</b>
+            </h4>
+            <div class="delivery-options">
+              <div *ngFor="let option of deliveryOptions" class="radio">
+                <label>
+                  <input type="radio" name="optionsRadios" [checked]="selectedDelivery.id == option.id" [value]="option" (change)="deliverySelected(option)"> {{option.title}}
+                  <p class="no-margin">
+                    <small>{{option.description}}</small>
+                  </p>
+                </label>
+                <span class="fees">{{(option.fees == 0 ? 'FREE': '$ ' + option.fees) }}</span>
+              </div>
+            </div>
+
+            <h4>
+              <b>Address</b>
+            </h4>
+            <!-- <div class="checkbox">
+              <label>
+                <input type="checkbox" name="addressSame" checked> Delivery Address is the same as the Billing Address
+              </label>
+            </div> -->
+            <div class="row">
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="name">Recipient Name</label>
+                  <input [(ngModel)]="address.recipient" class="form-control" id="name" type="text" name="name" data-parsley-required-message="Recipient Name"
+                    required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="phone">Phone</label>
+                  <input type="text" class="form-control" name="Phone" [(ngModel)]="address.phone" maxlength="20" PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
+                    data-parsley-validation-threshold="1">
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="alias">Save this address as</label>
+                  <input [(ngModel)]="address.addressAlias" class="form-control" id="alias" type="text" name="alias" data-parsley-required-message="Phone is required"
+                    required>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-8">
+                <div class="form-group">
+                  <label for="address1">Address</label>
+                  <input [(ngModel)]="address.address" class="form-control" id="address1" type="text" name="address1" data-parsley-required-message="Phone is required"
+                    required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="zip">Post Code</label>
+
+                  <input type="text" class="form-control" name="zip" [(ngModel)]="address.zipCode" data-parsley-pattern="/^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$/i"
+                    maxlength="12" data-parsley-pattern-message="A valid zip code contains only digits, letters, space and dash"
+                    data-parsley-validation-threshold="1" data-parsley-required-message="Zip Code is required" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <input [(ngModel)]="address.country" class="form-control" id="country" type="text" name="country" data-parsley-required-message="Phone is required"
+                    required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <input [(ngModel)]="address.state" class="form-control" id="state" type="text" name="state" data-parsley-required-message="Phone is required"
+                    required>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="form-group">
+                  <label for="city">Town/City</label>
+                  <input [(ngModel)]="address.city" class="form-control" id="city" type="text" name="city" data-parsley-required-message="Phone is required"
+                    required>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment -->
+        <div *ngIf="step == 2" class="animated-250 fadeIn">
+
+          <h4>
+            <b>Payment method</b>
+            <br>
+          </h4>
+          <div class="payment-options">
+            <div [class.active]="paymentMethod == 'card'" (click)="paymentMethod = 'card'">
+              <h3>
+                <i class="fa fa-credit-card"></i> &nbsp;Credit Card </h3>
+            </div>
+            <div [class.active]="paymentMethod == 'paypal'" (click)="paymentMethod = 'paypal'">
+              <img src="../../../assets/img/paypal-logo.png">
+            </div>
+          </div>
+
+          <h4>
+            <b>Payment Information</b>
+          </h4>
+          <stripe-form #stripe (onTokenCreated)="tokenCreated($event)"></stripe-form>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" name="addressSame" checked> Billing Address is the same as the Delivery Address
+            </label>
+          </div>
+        </div>
+
+        <!-- Review -->
+        <div *ngIf="step == 3" class="animated-250 fadeInUp">
+          <br>
+          <br>
+          <div class="row">
+            <div class="col-xs-12 col-sm-4">
+              <i class="fa fa-truck fa-3x fa-flip-horizontal text-primary"></i>
+              <h4>
+                <b>Delivery Method</b>
+              </h4>
+              <p>{{selectedDelivery.title}}</p>
+              <p>{{selectedDelivery.description}}</p>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <i class="fa fa-map-o fa-3x text-primary"></i>
+              <h4>
+                <b>Shipping & Billing Address</b>
+              </h4>
+              <p>{{address.recipient}}</p>
+              <p>{{address.address}}</p>
+              <p>{{address.city}}, {{address.state}}. {{address.zip}}.</p>
+              <p>{{address.country}}</p>
+              <p>{{address.phone}}</p>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <i class="fa fa-money fa-3x text-primary"></i>
+              <h4>
+                <b>Payment Method</b>
+              </h4>
+              <p>{{paymentMethods[paymentMethod]}}</p>
+              <p>{{order.paymentInfo.token?.card?.brand}}</p>
+              <p>**** **** **** {{order.paymentInfo.token?.card?.last4}}</p>
+              <p>Zip Code: {{order.paymentInfo.token?.card?.address_zip}}</p>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Completed -->
+        <div *ngIf="step == 4">
+          <div class="text-center">
+            <img class="animated-250 fadeInLeft animation-delay-3" src="../../../assets/img/shopping-bag.png">
+            <div class="s">
+              <h3>Thank you, Youness!</h3>
+              <h4>Your order has been placed successfully. The Order Reference is
+                <b>{{orderReference}}</b>
+              </h4>
+            </div>
+            <div class="animated fadeIn animation-delay-4">
+              <button class="btn btn-raised btn-sm btn-primary" [routerLink]="[ '/account/orders' , orderId]">Track order Status</button>
+              <button class="btn btn-raised btn-sm btn-dark" routerLink="/home">Continue Shopping</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div *ngIf="step < 4" class="col-xs-12 animated-150 fadeInRight col-sm-4">
+      <div class="summary">
+        <h4>
+          <b>Order Summary</b>
+        </h4>
+        <div class="order-items">
+          <div *ngFor="let product of products" class="item">
+            <img [src]="attachmentServer + product.attachments[0].url">
+            <div class="description">
+              <p>{{product.name}}</p>
+              <p>Qty: {{isPrototype? '1': product.orderQuantity}}</p>
+            </div>
+
+            <p>$ {{isPrototype? product.prototypePrice.toFixed(2): (product.orderQuantity * product.price).toFixed(2)}}</p>
+          </div>
+        </div>
+        <br>
+        <div>
+          <p>Subtotal
+            <span class="fees">$ {{getSubTotal().toFixed(2)}}</span>
+          </p>
+          <br>
+          <p>Standard Delivery 4-6 business days
+            <span class="fees">$ {{selectedDelivery.fees.toFixed(2)}}</span>
+          </p>
+          <p>Discount
+            <span class="fees">$ {{discount.toFixed(2)}}</span>
+          </p>
+          <p>Taxes
+            <span class="fees">$ {{taxes.toFixed(2)}}</span>
+          </p>
+          <br>
+          <p class="total">
+            <b>Total</b>
+            <span class="fees">$ {{getTotal().toFixed(2) }}</span>
+          </p>
+        </div>
+        <div class="proceed btn btn-raised btn-primary" [class.animated-background]="loading" (click)="goNext()">{{proceed[step]}}
+          <i class="fa fa-angle-right"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

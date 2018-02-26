@@ -1,0 +1,67 @@
+
+ 
+    .order{
+        background: white;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+        padding: 15px;
+        margin: 5px;
+
+        .order-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .order-body{
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+        .shipments{
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+
+        }
+        .shipment{
+            .item{   
+                display: flex;
+                align-items: center;
+                .product-img{ 
+                    position: relative;
+                    margin: 5px 15px;
+                    .badge{
+                        position: absolute;
+                        background: #3f51b5;
+                        right: -5px;
+                        top: -5px;
+                    }
+                    img{
+                        width: 42px;
+                        height: 42px;
+                        object-fit: scale-down;
+                        &.lg{
+                            width: 75px;
+                            height: 75px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+.status{
+    border: 1px solid;
+    padding: 3px 10px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 15px;
+    margin: 0 0 0 30px;
+    cursor: pointer;
+}
+
+.order-info{
+    max-width: 800px;
+    margin: 0 auto;
+}

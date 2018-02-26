@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import "rxjs/add/operator/takeWhile";
+
 
 import { SysUserApi, LoopBackAuth, InternalStorage } from '../../../common/BE.SDKs/Authorization';
 import {

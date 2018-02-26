@@ -1,5 +1,5 @@
 module.exports = {
-    "industries": [
+    industries: [
         "5a6a33c9b7e94a3e4499d875",
         "5a6a33b5b7e94a3e4499d874",
         "5a6a33a6b7e94a3e4499d873",
@@ -12,5 +12,8 @@ module.exports = {
         "5a6a333cb7e94a3e4499d86c",
         "5a6a332db7e94a3e4499d86b",
         "5a6a331ab7e94a3e4499d86a"
-    ]
+    ],
+    shipmentStatus: {
+        pending: "5a89a6c29fcea8171cb0f0d4"
+    }
 }
