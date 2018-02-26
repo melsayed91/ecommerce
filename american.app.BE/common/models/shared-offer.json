@@ -39,6 +39,11 @@
       "type": "belongsTo",
       "model": "rfp",
       "foreignKey": "rfpId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
     }
   },
   "acls": [],

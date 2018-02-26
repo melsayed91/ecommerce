@@ -9,12 +9,14 @@ export interface RfqInterface {
   "modificationDate"?: Date;
   "isDeleted"?: boolean;
   "id"?: any;
+  "productId"?: any;
   "productOwnerId"?: any;
-  "offerId"?: any;
+  "offerIds"?: Array<any>;
   "accountId"?: any;
   "statusId"?: any;
+  product?: any;
   productOwner?: any;
-  offer?: any;
+  offers?: any[];
   account?: any;
   status?: any;
 }
@@ -27,12 +29,14 @@ export class Rfq implements RfqInterface {
   "modificationDate": Date;
   "isDeleted": boolean;
   "id": any;
+  "productId": any;
   "productOwnerId": any;
-  "offerId": any;
+  "offerIds": Array<any>;
   "accountId": any;
   "statusId": any;
+  product: any;
   productOwner: any;
-  offer: any;
+  offers: any[];
   account: any;
   status: any;
   constructor(data?: RfqInterface) {
@@ -97,13 +101,18 @@ export class Rfq implements RfqInterface {
           name: 'id',
           type: 'any'
         },
+        "productId": {
+          name: 'productId',
+          type: 'any'
+        },
         "productOwnerId": {
           name: 'productOwnerId',
           type: 'any'
         },
-        "offerId": {
-          name: 'offerId',
-          type: 'any'
+        "offerIds": {
+          name: 'offerIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
         },
         "accountId": {
           name: 'accountId',
@@ -115,6 +124,14 @@ export class Rfq implements RfqInterface {
         },
       },
       relations: {
+        product: {
+          name: 'product',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'productId',
+          keyTo: 'id'
+        },
         productOwner: {
           name: 'productOwner',
           type: 'any',
@@ -123,12 +140,12 @@ export class Rfq implements RfqInterface {
                   keyFrom: 'productOwnerId',
           keyTo: 'id'
         },
-        offer: {
-          name: 'offer',
-          type: 'any',
+        offers: {
+          name: 'offers',
+          type: 'any[]',
           model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'offerId',
+          relationType: 'referencesMany',
+                  keyFrom: 'offerIds',
           keyTo: 'id'
         },
         account: {

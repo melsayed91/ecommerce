@@ -109,13 +109,16 @@
             <div class="myrfps">
                 <div *ngFor="let rfq of rfqs" class="card card-raised">
                     <div class="card-content">
-                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
+                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}} ({{rfq.status.name}})</h6>
 
                         <div class="icon">
                             <img *ngIf="rfq.product&&rfq.product.attachments && rfq.product.attachments[0]" [src]="attachmentServer + rfq.product.attachments[0].url">
                             <img *ngIf="!rfq.product&&rfq.product.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
                         </div>
                         <h3 class="card-title">{{rfq.title}}</h3>
+                        <a class="card-description" [routerLink]="[ '/product/details' , rfq.productId]">
+                            Product: {{rfq.product.name}}
+                        </a>
                         <p class="card-description">
                             {{rfq.description}}
                         </p>
@@ -124,8 +127,8 @@
                         </p>
                     </div>
                     <div class="rfp-actions">
-                        <button class="btn btn-simple">Received Offers ( {{rfq.offer? 1: 0}} )</button>
-                        <!-- <button class="btn btn-simple btn-danger btn-sm" (click)="deleteRfp(rfp.id)">Cancel RFP</button> -->
+                        <button class="btn btn-simple">Received Offers ( {{rfq.offers? rfq.offers.length: 0}} )</button>
+                        <a class="btn btn-simple btn-danger btn-sm" [routerLink]="[ '/account/rfq/details' , rfq.id]">Details</a>
                     </div>
                 </div>
             </div>
@@ -211,8 +214,11 @@
             <div class="myrfps">
                 <div *ngFor="let rfq of rfqs" class="card card-raised">
                     <div class="card-content">
-                        <h6 class="category">Published {{rfq.creationDate | amTimeAgo}}</h6>
-
+                        <h6 class="category rfq-header">Published {{rfq.creationDate | amTimeAgo}} ({{rfq.status.name}})</h6>
+                        <h6 class="category">By {{rfq.account.accountData.name}}</h6>
+                        <a class="card-description" [routerLink]="[ '/product/details' , rfq.productId]">
+                            {{rfq.product.name}}
+                        </a>
                         <div class="icon">
                             <img *ngIf="rfq.product&&rfq.product.attachments && rfq.product.attachments[0]" [src]="attachmentServer + rfq.product.attachments[0].url">
                             <img *ngIf="!rfq.product&&rfq.product.attachments.length == 0" src="../../../assets/img/image_placeholder.jpg">
@@ -246,11 +252,7 @@
                     </form>
 
                     <div class="rfp-actions">
-                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple" (click)="sendRfqOffer(rfq.id)">
-                            <i class="fa fa-send-o"></i> &nbsp;Submit offer</button>
-                        <button *ngIf="rfq.showOfferForm" class="btn btn-simple btn-danger" (click)="rfq.showOfferForm = !rfq.showOfferForm">Cancel</button>
-                        <button *ngIf="!rfq.showOfferForm" class="btn btn-simple" (click)="rfq.showOfferForm = !rfq.showOfferForm">
-                            <i class="fa fa-bullhorn"></i> &nbsp;Make an offer</button>
+                        <a class="btn btn-simple btn-danger btn-sm" [routerLink]="[ '/account/rfq/details' , rfq.id]">Details</a>
                     </div>
                 </div>
             </div>

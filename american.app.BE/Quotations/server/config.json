@@ -30,7 +30,11 @@
       "getRFPs": true,
       "getRFPTransactions": true,
       "beginRFQ": true,
-      "addRFPOffer": true
+      "addRFPOffer": true,
+      "cancelRFQ":true,
+      "lastPriceRFQ":true,
+      "find": true,
+      "findById": true
     }
   }
 }

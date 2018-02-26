@@ -43,10 +43,14 @@
       "model": "Account",
       "foreignKey": "productOwnerId"
     },
-    "offer": {
-      "type": "belongsTo",
+    "offers": {
+      "type": "referencesMany",
       "model": "offer",
-      "foreignKey": "offerId"
+      "foreignKey": "offerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     },
     "account": {
       "type": "belongsTo",

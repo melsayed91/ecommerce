@@ -13,7 +13,7 @@ module.exports = function (Rfq) {
       query.accountId = criteria.accountId
     }
     Rfq.find({
-      where: query, include: ['offer', 'account', { 'product':'attachments'}, 'status','productOwner']
+      where: query, include: ['offers', { 'account': 'accountData' }, { 'product': 'attachments' }, 'status', 'productOwner']
     }, function (error, result) {
       if (error)
         return next(error);
@@ -87,6 +87,63 @@ module.exports = function (Rfq) {
     });
   }
 
+
+
+  Rfq.remoteMethod('cancelRFQ', {
+    accepts: [{ arg: 'rfqId', type: 'string', required: true }, { arg: 'offerId', type: 'string', required: true }, { arg: 'accountId', type: 'string', required: true }],
+    returns: { arg: 'rfq', type: 'any' },
+    http: { path: '/cancelRFQ', verb: 'POST' }
+  });
+
+  Rfq.cancelRFQ = function (rfqId, offerId, accountId, next) {
+
+    Rfq.update({ _id: rfqId }, { statusId: enums.rfqStatus.rejected, modificationDate: new Date() }, function (error, result) {
+      if (error)
+        return next(error);
+      Rfq.app.models.offer.update({ _id: offerId }, { statusId: enums.offerStatus.rejected, modificationDate: new Date() }, function (error, result) {
+        if (error)
+          return next(error);
+        Rfq.app.models.rfqTransaction.create({
+          rfqId: rfqId,
+          statusId: enums.rfqStatus.rejected,
+          accountId: accountId
+        }, function (error, createdOffer) {
+          if (error)
+            return next(error);
+          return next(null, result);
+        });
+      })
+    });
+  }
+
+  Rfq.remoteMethod('lastPriceRFQ', {
+    accepts: [{ arg: 'rfqId', type: 'string', required: true }, { arg: 'offerId', type: 'string', required: true }, { arg: 'accountId', type: 'string', required: true }],
+    returns: { arg: 'rfq', type: 'any' },
+    http: { path: '/lastPriceRFQ', verb: 'POST' }
+  });
+
+  Rfq.lastPriceRFQ = function (rfqId, offerId, accountId, next) {
+
+    Rfq.update({ _id: rfqId }, { statusId: enums.rfqStatus.open, modificationDate: new Date() }, function (error, result) {
+      if (error)
+        return next(error);
+      Rfq.app.models.offer.update({ _id: offerId }, { statusId: enums.offerStatus.rejected, modificationDate: new Date() }, function (error, result) {
+        if (error)
+          return next(error);
+        Rfq.app.models.rfqTransaction.create({
+          rfqId: rfqId,
+          statusId: enums.rfqStatus.open,
+          accountId: accountId
+        }, function (error, createdOffer) {
+          if (error)
+            return next(error);
+          return next(null, result);
+        });
+      });
+    });
+  }
+
+
   Rfq.remoteMethod('beginRFQ', {
     accepts: [{ arg: 'rfqId', type: 'string', required: true }, { arg: 'accountId', type: 'string', required: true }],
     returns: { arg: 'rfq', type: 'any' },
@@ -95,6 +152,7 @@ module.exports = function (Rfq) {
 
   Rfq.addOffer = function (rfqId, rfqoffer, next) {
     rfqoffer.rfqId = rfqId;
+    rfqoffer.statusId = enums.offerStatus.open;
     Rfq.app.models.offer.create(rfqoffer, function (error, createdOffer) {
       if (error)
         return next(error);

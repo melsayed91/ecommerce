@@ -15,6 +15,7 @@ import { NavbarComponent } from './nav-bar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
+import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
 import { ProductsComponent } from './profile/tabs/products/products.component';
 import { InfoComponent } from './profile/tabs/info/info.component';
 import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
@@ -39,6 +40,7 @@ import { ProfileInfoComponent } from './profile/profile-info/profile-info.compon
     ProfileComponent,
     SettingsComponent,
     RequestForProposalComponent,
+    QuatationDetailsComponent,
     ProductsComponent,
     InfoComponent,
     GalleryComponent,

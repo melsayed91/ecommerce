@@ -15,7 +15,6 @@ module.exports = {
     ],
     "rfqStatus": {
         "open": "5a87059a8a8d811ea8e8434c",
-        "recieved": "5a8705a48a8d811ea8e8434d",
         "offered": "5a8705ad8a8d811ea8e8434e",
         "rejected": "5a8705c38a8d811ea8e8434f",
         "finished": "5a8705cd8a8d811ea8e84350"
@@ -25,5 +24,10 @@ module.exports = {
         "offered": "5a87055e8a8d811ea8e8434a",
         "finished": "5a8705538a8d811ea8e84349",
         "rejected": "5a87085861579b337cdc399f"
+    },
+    "offerStatus": {
+        "open": "5a947bacc639c71f6875ee71",
+        "approved": "5a947bb4c639c71f6875ee72",
+        "rejected": "5a947bbbc639c71f6875ee73"
     }
 }

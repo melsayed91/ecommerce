@@ -5,7 +5,7 @@ import { dashboardComponent } from './dashboard/dashboard.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
-
+import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
 
 
 export const RegisterRoutes: Routes = [
@@ -33,5 +33,10 @@ export const RegisterRoutes: Routes = [
         path: 'rfps',
         canActivate: [AuthGuardService],
         component: RequestForProposalComponent
+    },
+    {
+        path: 'rfq/details/:id',
+        canActivate: [AuthGuardService],
+        component: QuatationDetailsComponent
     }
 ];

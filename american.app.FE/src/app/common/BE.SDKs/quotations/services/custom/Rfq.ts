@@ -128,6 +128,76 @@ export class RfqApi extends BaseLoopBackApi {
    *
    *  - `rfqId` – `{string}` - 
    *
+   *  - `offerId` – `{string}` - 
+   *
+   *  - `accountId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfq` – `{any}` - 
+   */
+  public cancelRFQ(rfqId: any, offerId: any, accountId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/cancelRFQ";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof offerId !== 'undefined' && offerId !== null) _urlParams.offerId = offerId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
+   *  - `offerId` – `{string}` - 
+   *
+   *  - `accountId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfq` – `{any}` - 
+   */
+  public lastPriceRFQ(rfqId: any, offerId: any, accountId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/lastPriceRFQ";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof offerId !== 'undefined' && offerId !== null) _urlParams.offerId = offerId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
    *  - `accountId` – `{string}` - 
    *
    * @returns {object} An empty reference that will be

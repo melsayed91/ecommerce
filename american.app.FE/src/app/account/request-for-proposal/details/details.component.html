@@ -1,0 +1,201 @@
+<div *ngIf="quatation" id="productInfo">
+  <div class="product-description">
+
+    <div class="card br-0" id="productDetails">
+
+      <div class="card-content">
+        <div class="row">
+          <div class="col-xs-12 col-md-2">
+            <ul class="nav nav-pills nav-pills-icons nav-pills-primary nav-stacked" role="tablist">
+              <!--color-classes: "nav-pills-primary", "nav-pills-info", "nav-pills-success", "nav-pills-warning","nav-pills-danger"-->
+              <li class="active">
+                <a href="#info" role="tab" data-toggle="tab">
+                  <i class="fa fa-info"></i> Quatation Info
+                </a>
+              </li>
+              <li>
+                <a href="#Offers" role="tab" data-toggle="tab">
+                  <i class="fa fa-star-half-o"></i> Offers
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-xs-12 col-md-10">
+            <div class="tab-content">
+              <div class="tab-pane active" id="info">
+
+                <div class="row">
+                  <div class="col-xs-12 col-md-6">
+                    <h4>
+                      <b>Title</b>
+                    </h4>
+                    <p>
+                      {{quatation.title}}
+                    </p>
+
+                    <h4>
+                      <b>Description</b>
+                    </h4>
+                    <p>
+                      {{quatation.description}}
+                    </p>
+
+                    <h4>
+                      <b>Quantity</b>
+                    </h4>
+                    <p>
+                      {{quatation.quantity}}
+                    </p>
+                    <h4>
+                      <b>Submited By</b>
+                    </h4>
+                    <p>
+                      {{quatation.account.accountData.name}}
+                    </p>
+
+                    <h4>
+                      <b>Submited On</b>
+                    </h4>
+                    <p>
+                      {{quatation.creationDate | amTimeAgo}}
+                    </p>
+                    <h4>
+                      <b>Status</b>
+                    </h4>
+                    <p>
+                      {{quatation.status.name}}
+                    </p>
+                  </div>
+                  <div class="col-xs-12 col-md-6">
+                    <h4>
+                      <b>Product</b>
+                    </h4>
+                    <p>
+                      {{product.name}}
+                    </p>
+
+                    <h4>
+                      <b>Product Description</b>
+                    </h4>
+                    <p>
+                      {{product.description}}
+                    </p>
+
+                    <h4>
+                      <b>Price</b>
+                    </h4>
+                    <p>
+                      {{product.price}}
+                    </p>
+                    <h4>
+                      <b>Stock</b>
+                    </h4>
+                    <p>
+                      {{product.stock}}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane" id="Offers">
+
+                <div class="row">
+                  <div class="control-panel">
+                    <div>
+                      <button class="btn btn-simple" *ngIf="!showOfferForm && isBusinessUser && quatation.statusId!=rfqStatus.offered" (click)="openOfferForm()">
+                        <i class="fa fa-plus"></i>&nbsp;&nbsp;Submit Offer
+                      </button>
+                      <button class="btn btn-simple" *ngIf="showOfferForm" (click)="SaveOffer()">
+                        <i *ngIf="!loading" class="fa fa-save"></i>&nbsp;&nbsp; Save Offer
+                      </button>
+                      <button class="btn btn-simple" *ngIf="showOfferForm" (click)="closeOfferForm()">
+                        <i *ngIf="!loading" class="fa fa-arrow-left"></i>&nbsp;&nbsp; Cancel
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="material-datatables table-responsive" *ngIf="!showOfferForm">
+                    <table id="offersTable" class="table table-striped table-no-bordered table-hover" cellspacing="0" width="100%" style="width:100%">
+                      <thead>
+                        <tr>
+                          <th>{{ dataTable.headerRow[0] }}</th>
+                          <th>{{ dataTable.headerRow[1] }}</th>
+                          <th>{{ dataTable.headerRow[2] }}</th>
+                          <th>{{ dataTable.headerRow[3] }}</th>
+                          <th class="text-right" *ngIf="!isBusinessUser">{{ dataTable.footerRow[4] }}</th>
+                        </tr>
+                      </thead>
+                      <tfoot>
+                        <tr>
+                          <th>{{ dataTable.footerRow[0] }}</th>
+                          <th>{{ dataTable.footerRow[1] }}</th>
+                          <th>{{ dataTable.footerRow[2] }}</th>
+                          <th>{{ dataTable.footerRow[3] }}</th>
+                          <th class="text-right" *ngIf="!isBusinessUser">{{ dataTable.footerRow[4] }}</th>
+                        </tr>
+                      </tfoot>
+                      <tbody>
+                        <tr *ngFor="let row of dataTable.dataRows">
+                          <td>{{row.description}}</td>
+                          <td>{{row.price}}</td>
+                          <td>{{row.creationDate|amLocal|amDateFormat:'YYYY-MM-DD HH:mmA'}}</td>
+                          <td>{{row.expiryDate|amLocal|amDateFormat:'YYYY-MM-DD HH:mmA'}}</td>
+                          <td class="text-right" *ngIf="!isBusinessUser &&quatation.statusId==rfqStatus.offered && row.statusId==offerStatus.open">
+                            <button class="btn btn-simple btn-success btn-icon edit" (click)="acceptOffer()" matTooltip="Accept Offer" [matTooltipPosition]="'left'">
+                              <i class="material-icons">thumb_up</i>
+                            </button>
+                            <button class="btn btn-simple btn-warning btn-icon remove" (click)="reopenQuataion(row)" matTooltip="Ask For Last Price" [matTooltipPosition]="'left'">
+                              <i class="material-icons">money_off</i>
+                            </button>
+                            <button class="btn btn-simple btn-danger btn-icon remove" (click)="rejectQuataion(row)" matTooltip="Cancel Quatation" [matTooltipPosition]="'left'">
+                              <i class="material-icons">close</i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+
+                <div class="card" *ngIf="showOfferForm">
+                  <div class="card-content">
+                    <h4 class="card-title">Submit Offer</h4>
+                    <form id="offerForm" view-init-spy (onAfterViewInit)="formLoaded()">
+                      <fieldset>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                              <input type="text" class="form-control" name="description" placeholder="Offer Description" [(ngModel)]="offer.description"
+                                required>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                              <input type="number" class="form-control" min="1" name="price" placeholder="Offer Price" [(ngModel)]="offer.price" required>
+                            </div>
+                          </div>
+                          <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                              <mat-datepicker-toggle matSuffix [for]="resultPicker">
+                              </mat-datepicker-toggle>
+                              <mat-input-container>
+                                <input name="expiryDate" matInput [matDatepicker]="resultPicker" placeholder="Pick expiry date" [(ngModel)]="expiryDate">
+                              </mat-input-container>
+                              <mat-datepicker #resultPicker [touchUi]="touch" [startView]="'month'">
+                              </mat-datepicker>
+                            </div>
+                          </div>
+                        </div>
+                      </fieldset>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
