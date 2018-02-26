@@ -1,23 +1,11 @@
 {
   "name": "ShipmentItem",
-  "base": "PersistedModel",
+  "base": "SharedShipmentItem",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
-  "mixins": {
-    "TimeStamp": true
-  },
-  "properties": {
-    "quantity": {
-      "type": "number",
-      "required": true
-    },
-    "total": {
-      "type": "number",
-      "required": true
-    }
-  },
+  "properties": {},
   "validations": [],
   "relations": {
     "product": {

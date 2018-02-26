@@ -5,6 +5,9 @@
     "options": {
         "validateUpsert": true
     },
+    "mixins": {
+        "TimeStamp": true
+    },
     "properties": {
         "name": {
             "type": "string",
@@ -18,21 +21,23 @@
             "type": "Number",
             "required": true
         },
+        "prototypePrice": {
+            "type": "Number",
+            "required": true
+        },
         "moq": {
             "type": "Number",
             "required": true,
             "default": 1
         },
         "specs": {
-            "type": ["object"]
+            "type": [
+                "object"
+            ]
         },
         "stock": {
             "type": "Number",
             "required": true
-        },
-        "creationDate": {
-            "type": "Date",
-            "defaultFn": "now"
         },
         "isActive": {
             "type": "Boolean",

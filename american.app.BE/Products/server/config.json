@@ -17,14 +17,6 @@
       "extended": true,
       "limit": "200kb"
     },
-    "cors": false,
-    "sharedMethods": {
-      "*":false,
-      "getUserProducts": true,
-      "replaceOrCreate": true,
-      "find": true,
-      "findById":true,
-      "placeOrder": true
-    }
+    "cors": false
   }
 }

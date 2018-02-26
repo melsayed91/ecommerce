@@ -1,25 +1,17 @@
 {
   "name": "Shipment",
-  "base": "PersistedModel",
-  "plural":"shipments",
+  "base": "SharedShipment",
+  "plural": "shipments",
   "idInjection": true,
   "options": {
     "validateUpsert": true
   },
   "mixins": {
-    "TimeStamp": true
-  },
-  "properties": {
-    "awb": {
-      "type": "string"
-    },
-    "shippedBy": {
-      "type": "string"
-    },
-    "shippingFees": {
-      "type": "number"
+    "HideRelationsMethods": {
+      "expose": []
     }
   },
+  "properties": {},
   "validations": [],
   "relations": {
     "order": {
