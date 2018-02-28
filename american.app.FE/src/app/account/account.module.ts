@@ -20,6 +20,8 @@ import { ProductsComponent } from './profile/tabs/products/products.component';
 import { InfoComponent } from './profile/tabs/info/info.component';
 import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderDetailsComponent } from './orders/details/details.component';
 
 
 
@@ -44,7 +46,9 @@ import { ProfileInfoComponent } from './profile/profile-info/profile-info.compon
     ProductsComponent,
     InfoComponent,
     GalleryComponent,
-    ProfileInfoComponent]
+    ProfileInfoComponent,
+    OrdersComponent,
+    OrderDetailsComponent]
 })
 export class AccountModule {
 

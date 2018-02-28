@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RfqApi, Rfq } from "../../common/BE.SDKs/quotations";
+import "rxjs/add/operator/takeWhile";
+
 import { ProductApi } from '../../common/BE.SDKs/Products';
 import { UserService } from '../../core/services/user.service/user.service';
 import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
@@ -11,8 +13,9 @@ declare var $: any;
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
+  alive: boolean = true;
   attachmentServer: any;
   product;
   productId: string;
@@ -32,27 +35,29 @@ export class DetailsComponent implements OnInit {
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
     this.currentAccountId = this.auth.account.id;
-    this.subs.push(
-      this.route.params.subscribe(params => {
+
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
         this.productId = params['id'];
-        this.subs.push(
-          this.productApi.findById(this.productId, {
-            include: [
-              "attachments",
-              { "account": { "accountData": "profileImage" } }
-            ]
-          }).subscribe(response => {
+
+        this.productApi.findById(this.productId, {
+          include: [
+            "attachments",
+            { "account": { "accountData": "profileImage" } }
+          ]
+        })
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
             this.quantity = this.product.moq;
           })
-        )
       })
-    )
   }
 
   ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.alive = false;
   }
   scrollTo(selector) {
     $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);

@@ -30,6 +30,10 @@ export const AppRoutes: Routes = [
                 path: 'product',
                 loadChildren: './product/product.module#ProductModule'
             },
+            {
+                path: 'order',
+                loadChildren: './order/order.module#OrderModule'
+            },
           {
                 path: 'admin',
                 loadChildren: './admin/admin.module#AdminModule'

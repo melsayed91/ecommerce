@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import "rxjs/add/operator/takeWhile";
+
 import { SysCodeApi } from '../../common/BE.SDKs/sysCodes';
 import { UserService } from '../../core/services/user.service/user.service';
 import { SysUserApi, AccountDataApi, AccountData } from '../../common/BE.SDKs/AccountManager';
@@ -12,7 +14,8 @@ declare var $: any;
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
+  alive: boolean = true;
   userAccount;
   accountData;
   profileData;
@@ -88,6 +91,10 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  ngOnDestroy() {
+    this.alive = false;
+  }
+
   triggerUpload() {
     $('#bannerImage').click();
   }
@@ -98,17 +105,20 @@ export class ProfileComponent implements OnInit {
       var file = fileInput.target.files[0];
       var form = new FormData();
       form.append("file", file, file.name);
-      this.AttachmentService.upload(form, file.name, {}).subscribe((response: any) => {
-        this.accountData.bannerImage = response;
+      this.AttachmentService.upload(form, file.name, {})
+        .takeWhile(() => this.alive)
+        .subscribe((response: any) => {
+          this.accountData.bannerImage = response;
 
-        this.accountApi.updateAccountData(this.accountData.id, { bannerImageId: response.id })
-          .subscribe((response: any) => {
-            this.pictureLoading = false;
-            this.auth.setAccountData(this.accountData);
-          })
-      }, (err) => {
+          this.accountApi.updateAccountData(this.accountData.id, { bannerImageId: response.id })
+            .takeWhile(() => this.alive)
+            .subscribe((response: any) => {
+              this.pictureLoading = false;
+              this.auth.setAccountData(this.accountData);
+            })
+        }, (err) => {
 
-      })
+        })
     }
   }
 }

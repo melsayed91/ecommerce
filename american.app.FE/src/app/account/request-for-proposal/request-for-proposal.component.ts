@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { RfpApi, RfqApi, OfferApi, Rfp ,Rfq} from "../../common/BE.SDKs/quotations";
+import "rxjs/add/operator/takeWhile";
+
+import { RfpApi, RfqApi, OfferApi, Rfp, Rfq } from "../../common/BE.SDKs/quotations";
 import { SysCodeApi } from '../../common/BE.SDKs/sysCodes';
 import { UserService } from '../../core/services/user.service/user.service';
 import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
@@ -13,7 +15,13 @@ declare var $: any;
   templateUrl: './request-for-proposal.component.html',
   styleUrls: ['./request-for-proposal.component.scss']
 })
-export class RequestForProposalComponent implements OnInit {
+export class RequestForProposalComponent implements OnInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
 
   offer = {};
   rfps;
@@ -50,10 +58,12 @@ export class RequestForProposalComponent implements OnInit {
     this.isBusinessUser = this.auth.account.accountType == "Business";
     if (this.isBusinessUser)
       this.currentUserCategories = this.auth.account.accountData.categoryIds;
-    this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
-      this.categories = response.subIndustries;
-    }, (err) => { });
-    this.getRfp();
+
+    this.SysCodeApi.getAllSubIndustries()
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.categories = response.subIndustries;
+      }, (err) => { });
     this.getRfq();
   }
 
@@ -67,33 +77,40 @@ export class RequestForProposalComponent implements OnInit {
     this.currentRfp.accountId = this.currentAccountId;
     this.currentRfp.attachmentIds = this.uploaded.map(function (item) { return item.id });
     delete this.currentRfp.category;
-    this.RfproposalApi.addRFP(this.currentRfp).subscribe(resp => {
-      this.getRfp();
-      this.showRFPForm = false;
-      this.currentRfp = new Rfp();
-    }, err => { })
+    this.RfproposalApi.addRFP(this.currentRfp)
+      .takeWhile(() => this.alive)
+      .subscribe(resp => {
+        this.getRfp();
+        this.showRFPForm = false;
+        this.currentRfp = new Rfp();
+      }, err => { })
+
+
   }
 
   sendOffer(rfpId) {
-
     this.offer['accountId'] = this.currentAccountId;
     this.offer['rfpId'] = rfpId;
-    this.RfproposalApi.addRFPOffer(rfpId, this.offer).subscribe((response: any) => {
-      this.getRfp();
-      this.currentRfp['showOfferForm'] = false;
-    }, (err) => {
-    })
+    this.RfproposalApi.addRFPOffer(rfpId, this.offer)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.getRfp();
+        this.currentRfp['showOfferForm'] = false;
+      }, (err) => {
+      })
   }
 
 
-  sendRfqOffer(rfqId){
+  sendRfqOffer(rfqId) {
     this.offer['accountId'] = this.currentAccountId;
     this.offer['rfqId'] = rfqId;
-    this.RfquataionApi.addOffer(rfqId, this.offer).subscribe((response: any) => {
-      this.getRfq();
-      this.currentRfq['showOfferForm'] = false;
-    }, (err) => {
-    })
+    this.RfquataionApi.addOffer(rfqId, this.offer)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.getRfq();
+        this.currentRfq['showOfferForm'] = false;
+      }, (err) => {
+      })
   }
 
   autocompleListFormatter = (data: any) => {
@@ -112,52 +129,60 @@ export class RequestForProposalComponent implements OnInit {
   onAdded(event: any) {
     var form = new FormData();
     form.append("file", event.file, event.file.name);
-    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
-      this.uploaded.push(response);
-    }, (err) => {
+    this.AttachmentService.upload(form, event.file.name, {})
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.push(response);
+      }, (err) => {
 
-    })
+      })
   }
 
   removeFile(event: any) {
     var toBeDeletedIndex = this.uploaded.findIndex(function (item) {
       return item.originalFileName === event.file.name
     });
-    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id).subscribe((response: any) => {
-      this.uploaded.splice(toBeDeletedIndex, 1)
-    }, (err) => {
-    })
+    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.splice(toBeDeletedIndex, 1)
+      }, (err) => {
+      })
   }
 
   getRfp() {
     this.rfps = undefined;
-    this.RfproposalApi.getRFPs({ catIds: this.currentUserCategories, accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
-      this.rfps = response.rfp.map(function (rfp) {
-        let myOffers = rfp.offers.filter(function (offer) {
-          return offer.accountId == this.currentAccountId
+    this.RfproposalApi.getRFPs({ catIds: this.currentUserCategories, accountId: this.currentAccountId, isBusiness: this.isBusinessUser })
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.rfps = response.rfp.map(function (rfp) {
+          let myOffers = rfp.offers.filter(function (offer) {
+            return offer.accountId == this.currentAccountId
+          }.bind(this));
+
+          let myBest = myOffers[0] ? myOffers[0].price : 0;
+
+          myOffers.forEach(offer => {
+            if (offer.price < myBest)
+              myBest = offer.price;
+          });
+
+          rfp.myBestOffer = myBest;
+          rfp.myOffers = myOffers;
+          return rfp;
         }.bind(this));
-
-        let myBest = myOffers[0] ? myOffers[0].price : 0;
-
-        myOffers.forEach(offer => {
-          if (offer.price < myBest)
-            myBest = offer.price;
-        });
-
-        rfp.myBestOffer = myBest;
-        rfp.myOffers = myOffers;
-        return rfp;
-      }.bind(this));
-    }, (err) => {
-    })
+      }, (err) => {
+      })
   }
 
 
   getRfq() {
     this.rfqs = undefined;
-    this.RfquataionApi.getRFQs({ accountId: this.currentAccountId, isBusiness: this.isBusinessUser }).subscribe((response: any) => {
-      this.rfqs = response.rfq;
-    }, (err) => {
-    })
+    this.RfquataionApi.getRFQs({ accountId: this.currentAccountId, isBusiness: this.isBusinessUser })
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.rfqs = response.rfq;
+      }, (err) => {
+      })
   }
 }

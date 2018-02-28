@@ -38,7 +38,7 @@
       <p>{{getUserEmail()}}</p>
       <ul class="dropdown-menu">
 
-        <li *ngIf="this.auth.account.isAdmin">
+        <li *ngIf="this.auth.account?.isAdmin">
           <a (click)="navigateTo('/admin/approval')">Admin Approval</a>
         </li>
         <li>
@@ -62,7 +62,7 @@
       <p>5</p>
       <i class="fa fa-bell"></i>
     </div>
-    <div class="header-icon">
+    <div class="header-icon" (click)="navigateTo('/order/mycart')">
       <p>2</p>
       <i class="fa fa-shopping-cart"></i>
     </div>

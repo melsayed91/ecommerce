@@ -1,0 +1,34 @@
+{
+    "name": "SharedShipment",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "mixins": {
+        "TimeStamp": true
+    },
+    "properties": {
+        "awb": {
+            "type": "string"
+        },
+        "shippedBy": {
+            "type": "string"
+        },
+        "shippingFees": {
+            "type": "number"
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$owner",
+            "permission": "ALLOW",
+            "property": "updateUserProduct"
+        }
+    ],
+    "methods": {}
+}

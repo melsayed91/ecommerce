@@ -19,14 +19,14 @@ export class NavbarComponent implements OnInit {
     },
     {
       name: 'orders',
-      redirectTo: '/account/',
+      redirectTo: '/account/orders',
       text: 'Orders & Requests',
       icon: 'file-text-o',
       showTo: 'Business'
     },
     {
       name: 'orders',
-      redirectTo: '/account/',
+      redirectTo: '/account/orders',
       text: 'My Orders',
       icon: 'file-text-o',
       showTo: 'Individual'      

@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import "rxjs/add/operator/takeWhile";
 
 import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 
@@ -14,7 +15,13 @@ declare var $: any;
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
   attachmentServer: any;
   account;
   isNew: any;
@@ -45,17 +52,21 @@ export class ProductsComponent implements OnInit {
     this.attachmentServer = attachementApiConfig.getPath();
     this.account = this.auth.account;
     this.loadUserProducts();
-    this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
-      this.categories = response.subIndustries;
-    }, (err) => { });
+    this.SysCodeApi.getAllSubIndustries()
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.categories = response.subIndustries;
+      }, (err) => { });
   }
 
   loadUserProducts(): any {
-    this.ProductApi.getUserProducts(this.account.id).subscribe((response) => {
-      this.products = response.products;
-    }, (err) => {
+    this.ProductApi.getUserProducts(this.account.id)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.products = response.products;
+      }, (err) => {
 
-    })
+      })
   }
 
   initDataTable() {
@@ -129,22 +140,24 @@ export class ProductsComponent implements OnInit {
     }
 
 
-    this.ProductApi.replaceOrCreate(data).subscribe((response) => {
-      //to avoid reloading the whole list we just add it to the array
-      if (this.isNew) {
-        data['category'] = this.productCategory;
-        data['attachments'] = this.uploaded;
-        this.products.push(data);
-      }
-      else
-        this.product.attachments = this.product.attachments.concat(this.uploaded);
+    this.ProductApi.replaceOrCreate(data)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        //to avoid reloading the whole list we just add it to the array
+        if (this.isNew) {
+          data['category'] = this.productCategory;
+          data['attachments'] = this.uploaded;
+          this.products.push(data);
+        }
+        else
+          this.product.attachments = this.product.attachments.concat(this.uploaded);
 
 
-      this.loading = undefined;
-      this.closeProductForm();
-    }, (err) => {
+        this.loading = undefined;
+        this.closeProductForm();
+      }, (err) => {
 
-    })
+      })
   }
 
   formLoaded() {
@@ -171,21 +184,25 @@ export class ProductsComponent implements OnInit {
   onAdded(event: any) {
     var form = new FormData();
     form.append("file", event.file, event.file.name);
-    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
-      this.uploaded.push(response);
-    }, (err) => {
+    this.AttachmentService.upload(form, event.file.name, {})
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.push(response);
+      }, (err) => {
 
-    })
+      })
   }
 
   removeFile(event: any) {
     var toBeDeletedIndex = this.uploaded.findIndex(function (item) {
       return item.originalFileName === event.file.name
     });
-    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id).subscribe((response: any) => {
-      this.uploaded.splice(toBeDeletedIndex, 1)
-    }, (err) => {
-    })
+    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.splice(toBeDeletedIndex, 1)
+      }, (err) => {
+      })
   }
 
   getCurrentFiles() {

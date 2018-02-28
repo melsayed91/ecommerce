@@ -1,0 +1,78 @@
+.placeholder-orders{
+    height: 158px;
+    margin: 10px 5px 15px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+
+    
+  .background-masker {
+    background: #fff;
+    position: absolute;
+
+    &.header-top{
+        top: 0;
+        height: 15px;
+        width: 100%;
+    }
+    &.header-bottom{
+        top: 30px;
+        height: 5px;
+        width: 100%;
+    }
+    
+    &.header-left{
+        top: 5px;
+        left: 0;
+        width: 10px;
+        height: 25px;
+    }
+    
+    &.header-right{
+        top: 5px;
+        right: 0;
+        width: 10px;
+        height: 25px;        
+    }
+
+    
+  
+    &.header2-bottom{
+        top: 41px;
+        height: 40px;
+        width: 100%;
+    }
+    
+    &.header2-left{
+        top: 35px;
+        left: 0;
+        width: 10px;
+        height: 64px;
+    }
+    
+    &.header2-right{
+        top: 35px;
+        right: 0;
+        width: 10px;
+        height: 64px;       
+    }
+
+    &.footer{
+        bottom: 14px;
+        height: 57px;
+        width: 100%;
+    }
+    &.left{
+        top: 52px;
+        left: 0;
+        height: 111px;
+        width: 30px;
+    }
+    &.right{
+        top: 52px;
+        right: 0;
+        height: 111px;
+        width: 30px;
+    }
+}
+
+
+}

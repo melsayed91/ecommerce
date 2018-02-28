@@ -41,7 +41,19 @@
   },
   "product": {
     "dataSource": "americanBizDB",
-    "public": true
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "getUserProducts": true,
+          "replaceOrCreate": true,
+          "find": true,
+          "findById": true,
+          "placeOrder": true
+        }
+      }
+    }
   },
   "sharedProduct": {
     "dataSource": "americanBizDB",
@@ -79,6 +91,49 @@
     "public": false
   },
   "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Order": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "placeOrder": true,
+          "find": true,
+          "updateModelAttributes": true,
+          "findById": true
+        }
+      }
+    }
+  },
+  "SharedOrder": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Shipment": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "find": true
+        }
+      }
+    }
+  },
+  "SharedShipment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ShipmentItem": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "SharedShipmentItem": {
     "dataSource": "americanBizDB",
     "public": false
   }

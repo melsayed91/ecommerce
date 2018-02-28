@@ -5,18 +5,26 @@
     "options": {
         "validateUpsert": true
     },
+    "mixins": {
+        "TimeStamp": true
+    },
     "properties": {
         "name": {
             "type": "string",
             "required": true
         },
-        "creationDate": {
-            "type": "Date",
-            "defaultFn": "now"
+        "icon": {
+            "type": "string"
+        },
+        "class": {
+            "type": "string"
         },
         "isDeleted": {
             "type": "Boolean",
             "default": false
+        },
+        "countryCode": {
+            "type": "string"
         }
     },
     "validations": [],
