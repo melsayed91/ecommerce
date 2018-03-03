@@ -21,7 +21,7 @@ module.exports = function (Specification) {
       Specification.app.models.ConversationServiceApi.addConversation({conversation: conversation}).then(function (createdConversation) {
         var newMessage = {
           creationDate: new Date(),
-          conversationId: createdConversation.id,
+          conversationId: createdConversation.conversation.id,
           ownerId: specification.accountId,
           text: specification.description
         }

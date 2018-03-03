@@ -62,6 +62,7 @@ export class HeaderComponent implements OnInit {
             return msg.id === data[0].id
           }).length > 0
           if (!conversationExist && data.length) {
+            this.conversations.push(data[0]);
             ++this.conversationCount;
           }
         }
