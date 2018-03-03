@@ -1,0 +1,19 @@
+{
+  "name": "Conversation",
+  "base": "sharedConversation",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {},
+  "mixins": {
+    "HideRelationsMethods": {
+      "expose": []
+    },
+    "FireLoop": true
+  }
+}

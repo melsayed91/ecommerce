@@ -106,5 +106,37 @@
   "sharedProduct": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Conversation": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "ConversationServiceApi": {
+    "dataSource": "ConversationApiSource",
+    "public": true
+  },
+  "MessageServiceApi": {
+    "dataSource": "MessageApiSource",
+    "public": true
+  },
+  "sharedConversation": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Message": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedMessage": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

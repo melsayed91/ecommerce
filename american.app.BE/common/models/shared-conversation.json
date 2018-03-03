@@ -1,0 +1,39 @@
+{
+  "name": "sharedConversation",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "type": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "modificationDate": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "accounts": {
+      "type": "referencesMany",
+      "model": "Account",
+      "foreignKey": "participantIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "specificationRequest": {
+      "type": "belongsTo",
+      "model": "specification",
+      "foreignKey": "specificationId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

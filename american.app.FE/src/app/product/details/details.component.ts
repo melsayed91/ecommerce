@@ -77,7 +77,6 @@ export class DetailsComponent implements OnInit,AfterViewInit{
     this.requestSpecificationLoading = true;
     this.specificationApi.addSpecification({
       productId: this.product.id,
-      title: this.requestSpecificationModel['title'],
       description: this.requestSpecificationModel['description'],
       accountId: this.auth.account.id,
       productOwnerId: this.product.accountId,

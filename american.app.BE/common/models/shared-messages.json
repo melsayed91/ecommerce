@@ -1,0 +1,35 @@
+{
+  "name": "sharedMessage",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "text": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "seenDate": {
+      "type": "Date"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "conversation": {
+      "type": "belongsTo",
+      "model": "Conversation",
+      "foreignKey": "conversationId"
+    },
+    "owner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "ownerId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

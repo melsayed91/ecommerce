@@ -1,9 +1,41 @@
 {
-    "americanBizDB": {
-      "url": "mongodb://amtigerteam:%25nUyQmzop!@cluster0-shard-00-00-u7gvr.mongodb.net:27017,cluster0-shard-00-01-u7gvr.mongodb.net:27017,cluster0-shard-00-02-u7gvr.mongodb.net:27017/americanBizDB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
-      "database": "americanBizDB",
-      "name": "americanBizDB",
-      "connector": "mongodb",
-      "allowExtendedOperators": true
-    }
+  "americanBizDB": {
+    "url": "mongodb://amtigerteam:%25nUyQmzop!@cluster0-shard-00-00-u7gvr.mongodb.net:27017,cluster0-shard-00-01-u7gvr.mongodb.net:27017,cluster0-shard-00-02-u7gvr.mongodb.net:27017/americanBizDB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
+    "database": "americanBizDB",
+    "name": "americanBizDB",
+    "connector": "mongodb",
+    "allowExtendedOperators": true
+  },
+  "ConversationApiSource": {
+    "connector": "rest",
+    "name": "ConversationApiSource",
+    "operations": [
+      {
+        "functions": {
+          "addConversation": ["conversation"]
+        },
+        "template": {
+          "method": "POST",
+          "url": "http://127.0.0.1:3000/uranus/Conversations/addConversation",
+          "body": "{conversation}"
+        }
+      }
+    ]
+  },
+  "MessageApiSource": {
+    "connector": "rest",
+    "name": "MessageApiSource",
+    "operations": [
+      {
+        "functions": {
+          "addMessage": ["newMessage"]
+        },
+        "template": {
+          "method": "POST",
+          "url": "http://127.0.0.1:3000/uranus/Messages/addMessage",
+          "body": "{newMessage}"
+        }
+      }
+    ]
+  }
 }

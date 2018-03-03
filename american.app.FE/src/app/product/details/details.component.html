@@ -157,9 +157,29 @@
                   </ul>
               </div>
               <div class="tab-pane" id="Specifications">
-                <button class="btn btn-raised btn-dark">
+                <button class="btn btn-raised btn-dark" (click)="toggleRequestSpecification()">
                   <i class="fa fa-question-circle-o"></i>&nbsp;&nbsp;&nbsp;Request for Specifications
                 </button>
+                <form *ngIf="requestSpecificationMode" id="specificationForm" view-init-spy (onAfterViewInit)="formLoaded('specificationForm')">
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <div class="form-group-sm required">
+                                        <textarea required class="form-control" type="text" rows="3" id="description"
+                                                  name="description" [(ngModel)]="requestSpecificationModel.description"
+                                                  data-parsley-required-message="Description is required"
+                                                  placeholder="Leave a description">
+                                        </textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-raised btn-primary" (click)="requestSpecification()">
+                    <i *ngIf="!requestSpecificationLoading" class="fa fa-send-o"></i>
+                    <i *ngIf="requestSpecificationLoading" class="fa fa-spin fa-spinner"></i>
+                    {{requestSpecificationLoading? '&nbsp;&nbsp;&nbsp;We are sending your request...':'Send'}}
+                  </button>
+                  <button class="btn btn-raised btn-danger" (click)="toggleRequestSpecification()">Cancel</button>
+                </form>
                 <div class="content table-responsive">
                   <table class="table">
                     <tbody>

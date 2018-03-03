@@ -7,12 +7,30 @@ module.exports = function (Specification) {
 
     specification.creationDate = new Date();
 
+
     Specification.create(specification, function (error, createdSpecification) {
       if (error)
         return next(error);
 
+      var conversation = {
+        creationDate: new Date(),
+        participantIds: [specification.productOwnerId, specification.accountId],
+        specificationId: createdSpecification.id.toString()
+      };
 
-      return next(null, createdSpecification);
+      Specification.app.models.ConversationServiceApi.addConversation({conversation: conversation}).then(function (createdConversation) {
+        var newMessage = {
+          creationDate: new Date(),
+          conversationId: createdConversation.id,
+          ownerId: specification.accountId,
+          text: specification.description
+        }
+        Specification.app.models.MessageServiceApi.addMessage({message: newMessage}, function (createdMessage) {
+
+          return next(null, createdSpecification);
+        })
+      })
+
 
     });
   }
@@ -25,7 +43,10 @@ module.exports = function (Specification) {
 
   Specification.getSpecifications = function (ownerId, next) {
 
-    Specification.find({where: {productOwnerId: ownerId}, include: [{product: 'attachments'}, 'account']}, function (error, result) {
+    Specification.find({
+      where: {productOwnerId: ownerId},
+      include: [{product: 'attachments'}, {account: 'accountData'}]
+    }, function (error, result) {
       if (error)
         return next(error);
 

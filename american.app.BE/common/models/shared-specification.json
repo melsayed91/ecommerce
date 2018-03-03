@@ -10,10 +10,6 @@
       "type": "string",
       "required": true
     },
-    "title": {
-      "type": "string",
-      "required": true
-    },
     "reply": {
       "type": "string"
     },

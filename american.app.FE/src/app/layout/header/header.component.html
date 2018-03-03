@@ -38,7 +38,7 @@
       <p>{{getUserEmail()}}</p>
       <ul class="dropdown-menu">
 
-        <li *ngIf="this.auth.account.isAdmin">
+        <li *ngIf="this.auth.account?.isAdmin">
           <a (click)="navigateTo('/admin/approval')">Admin Approval</a>
         </li>
         <li>
@@ -57,6 +57,10 @@
           <a (click)="auth.logout()">Sign out</a>
         </li>
       </ul>
+    </div>
+    <div class="header-icon" [routerLink]="['/conversation', conversations[0].id]" *ngIf="conversations[0]">
+      <p>{{conversationCount?conversationCount: 0}}</p>
+      <i class="fa fa-comments"></i>
     </div>
     <div class="header-icon">
       <p>5</p>

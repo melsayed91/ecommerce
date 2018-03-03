@@ -16,6 +16,7 @@ import * as attachmentSDK from './common/BE.SDKs/attachment';
 import * as sysCodeSDK from './common/BE.SDKs/sysCodes';
 import * as productSDK from './common/BE.SDKs/Products';
 import * as quotationSDK from './common/BE.SDKs/quotations';
+import * as messagingSDK from './common/BE.SDKs/Messaging';
 
 // ------------------------------------
 
@@ -51,7 +52,8 @@ import { SearchBarComponent } from './layout/search-bar/search-bar.component';
     sysCodeSDK.SDKBrowserModule.forRoot(),
     attachmentSDK.SDKBrowserModule.forRoot(),
     productSDK.SDKBrowserModule.forRoot(),
-    quotationSDK.SDKBrowserModule.forRoot()
+    quotationSDK.SDKBrowserModule.forRoot(),
+    messagingSDK.SDKBrowserModule.forRoot()
   ],
   declarations: [
     AppComponent,

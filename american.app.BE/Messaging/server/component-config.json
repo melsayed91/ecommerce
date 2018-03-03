@@ -1,0 +1,13 @@
+{
+  "loopback-component-explorer": {
+    "mountPath": "/explorer",
+    "generateOperationScopedModels": true
+  },
+  "@mean-expert/loopback-component-realtime": {
+    "debug": true,
+    "auth": true,
+    "driver": {
+      "name": "socket.io"
+    }
+  }
+}

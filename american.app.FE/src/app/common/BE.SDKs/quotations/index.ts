@@ -54,6 +54,11 @@ import { RfqApi } from './services/custom/Rfq';
 import { RfpApi } from './services/custom/Rfp';
 import { SpecificationApi } from './services/custom/Specification';
 import { ProductApi } from './services/custom/Product';
+import { AccountDataApi } from './services/custom/AccountData';
+import { ConversationApi } from './services/custom/Conversation';
+import { ConversationServiceApiApi } from './services/custom/ConversationServiceApi';
+import { MessageServiceApiApi } from './services/custom/MessageServiceApi';
+import { MessageApi } from './services/custom/Message';
 /**
 * @module SDKBrowserModule
 * @description
@@ -90,6 +95,11 @@ export class SDKBrowserModule {
         RfpApi,
         SpecificationApi,
         ProductApi,
+        AccountDataApi,
+        ConversationApi,
+        ConversationServiceApiApi,
+        MessageServiceApiApi,
+        MessageApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },
         { provide: SocketDriver, useClass: SocketBrowser }
