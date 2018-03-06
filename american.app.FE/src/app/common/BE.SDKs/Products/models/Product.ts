@@ -4,6 +4,8 @@ declare var Object: any;
 export interface ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
   "prototypePrice": number;
   "moq": number;
@@ -25,6 +27,8 @@ export interface ProductInterface {
 export class Product implements ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
   "prototypePrice": number;
   "moq": number;
@@ -81,6 +85,14 @@ export class Product implements ProductInterface {
         "description": {
           name: 'description',
           type: 'string'
+        },
+        "returnPeriode": {
+          name: 'returnPeriode',
+          type: 'number'
+        },
+        "warrantyPeriod": {
+          name: 'warrantyPeriod',
+          type: 'number'
         },
         "price": {
           name: 'price',

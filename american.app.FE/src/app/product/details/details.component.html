@@ -35,16 +35,16 @@
           <p>World wide</p>
         </div>
 
-        <div class="product-feature">
+        <div class="product-feature" *ngIf="product.returnPeriode > 0">
           <p>RETURN POLICY</p>
           <i class="fa fa-2x fa-repeat"></i>
-          <p>Within 15 Days</p>
+          <p>Within {{ product.returnPeriode }} Days</p>
         </div>
 
-        <div class="product-feature">
+        <div class="product-feature" *ngIf="product.warrantyPeriod > 0">
           <p>WARRANTY</p>
           <i class="fa fa-2x fa-shield"></i>
-          <p>3 Years</p>
+          <p>{{ product.warrantyPeriod }} Days</p>
         </div>
 
         <div class="product-feature">
@@ -119,17 +119,25 @@
                 <h4>
                   <b>Prototype</b>
                 </h4>
-                <p>Prototypes are available for free! &nbsp;&nbsp;
-                  <button class="no-margin btn btn-raised btn-sm btn-dark" [routerLink]="[ '/order/checkout' , product.id]">Request for Prototype</button>
+                <p>A prototype is available for {{product.prototypePrice == 0? 'Free': '$ ' + product.prototypePrice}}! &nbsp;&nbsp;
+                  <button class="no-margin btn btn-raised btn-sm btn-dark" [routerLink]="[ '/order/checkout' , product.id]">Order Prototype</button>
                 </p>
 
                 <h4>
                   <b>Warranty</b>
                 </h4>
-                <p>
-                  <b>1 Year</b>
-                  <br> Notes: Warranty is extendable.
-                </p>
+                <div *ngIf="product.warrantyPeriod == 0">
+                  <p>
+                    <i class="fa fa-shield text-danger"></i> &nbsp; No Warranty Provided with this product
+                  </p>
+                </div>
+                <div *ngIf="product.warrantyPeriod > 0">
+                  <p>
+                    <b>
+                      <i class="fa fa-shield text-success"></i> &nbsp; {{product.warrantyPeriod}} Days</b>
+                    <br> Notes: Warranty is extendable.
+                  </p>
+                </div>
                 <h4>
                   <b>Shipping</b>
                 </h4>
@@ -139,22 +147,30 @@
                 </p>
 
                 <h4>
-                    <b>Return Policy</b>
-                  </h4>
+                  <b>Return Policy</b>
+                </h4>
+                <div *ngIf="product.returnPeriode == 0">
                   <p>
-                    Returns are accepted within 15 days from the purchase date.
+                    <i class="fa fa-times text-danger"></i> &nbsp; Returns are not accepted for this product.
+                  </p>
+                </div>
+                <div *ngIf="product.returnPeriode > 0">
+                  <p>
+                    Returns are accepted within {{product.returnPeriode}} days from the purchase date.
                   </p>
                   <ul>
                     <b>1. Submit Return Request</b>
                     <br>
                     <b>2. Prepare your package for return:</b> Pack your item securely, inserting any paperwork that was included
-                    when you requested your return from the Online Returns Center. If you don't have the original product packaging,
-                    use a sturdy box and include padding such as packing bubbles or newspaper. Attach your return label to
-                    the package.
+                    when you requested your return from the Online Returns Center. If you don't have the original product
+                    packaging, use a sturdy box and include padding such as packing bubbles or newspaper. Attach your return
+                    label to the package.
                     <br>
-                    <b> 3. Ship your return based on the return shipping option you selected:</b> For more information on the return
-                    shipping options, go to About Return Shipping.
+                    <b> 3. Ship your return based on the return shipping option you selected:</b> For more information on the
+                    return shipping options, go to About Return Shipping.
                   </ul>
+                </div>
+
               </div>
               <div class="tab-pane" id="Specifications">
                 <button class="btn btn-raised btn-dark">

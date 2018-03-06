@@ -38,7 +38,6 @@ export class ApprovalComponent implements OnInit, OnDestroy {
       })
   }
   openProductForm(id) {
-    debugger;
     this.AccountApi.approveBusinessAccount(id)
       .takeWhile(() => this.alive)
       .subscribe((response) => {

@@ -55,7 +55,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.alive = false;
   }
   scrollTo(selector) {
-    debugger;
     $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);
   }
 }
