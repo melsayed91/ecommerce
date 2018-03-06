@@ -17,6 +17,16 @@
             "type": "string",
             "required": true
         },
+        "returnPeriode": {
+            "type": "Number",
+            "required": true,
+            "default": 0
+        },
+        "warrantyPeriod": {
+            "type": "Number",
+            "required": true,
+            "default": 0
+        },
         "price": {
             "type": "Number",
             "required": true

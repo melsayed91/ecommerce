@@ -38,7 +38,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
   uploaded = [];
-
+  returnAccepted = true;
+  warrantyProvided = true;
   constructor(
     private auth: UserService,
     private ng2FileInputService: Ng2FileInputService,
@@ -104,11 +105,16 @@ export class ProductsComponent implements OnInit, OnDestroy {
     this.productCategory = undefined;
     this.uploaded = [];
     this.isNew = isNew;
-    if (!this.isNew)
+    if (!this.isNew) {
       this.productCategory = this.product.category;
+      this.warrantyProvided = this.product.warrantyPeriod > 0;
+      this.returnAccepted = this.product.returnPeriode > 0;
+    }
+
     else {
       this.product = new Product();
-      this.product.accountId = this.account.id;
+      this.product.accountId = this.account.id
+      this.product.specs = [];
     }
     this.showProductForm = true;
   }
@@ -127,14 +133,18 @@ export class ProductsComponent implements OnInit, OnDestroy {
       "name": this.product.name,
       "description": this.product.description,
       "price": this.product.price,
+      "prototypePrice": this.product.prototypePrice,
       "stock": this.product.stock,
-      "moq": this.product['moq'],
+      "moq": this.product.moq,
       "isActive": this.product.isActive,
       "categoryId": this.product.categoryId,
       "accountId": this.product.accountId,
       "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds),
-      "specs": this.product['specs']
+      "specs": this.product.specs,
+      "returnPeriode": this.returnAccepted ? this.product.returnPeriode : 0,
+      "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0
     };
+
     if (!this.isNew) {
       data['id'] = this.product.id;
     }
@@ -165,7 +175,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   validatefield(fieldId) {
-    $("#" + fieldId).parsley().validate();
+    return $("#" + fieldId).parsley().validate();
   }
 
   categoryChanged(e) {
@@ -211,7 +221,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   addSpec() {
-    this.product['specs'].push(this.spec);
-    this.spec = { name: "", value: "" };
+    if (this.validatefield("specDesc") === true && this.validatefield("specKey") === true) {
+      this.product.specs.push(this.spec);
+      this.spec = { name: "", value: "" };
+    }
   }
 }

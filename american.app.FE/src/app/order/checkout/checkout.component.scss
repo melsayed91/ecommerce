@@ -32,26 +32,7 @@
     padding: 10px 30px;
 }
 
-#shippingForm, #paymentForm{
-  
-    input{
-        background: #ececec;
-        color: black;
-        border: none;
-        padding: 7px;
-    }
-    .form-group {
-        margin: 10px 0 0 0;
-    }
-    .delivery-options{
-        max-width: 500px;
-        margin: 0 auto;
-    }
-}
 
-.checkbox label, .radio label{
-    color: black;
-}
 .payment-options{
     display: flex;
     div{

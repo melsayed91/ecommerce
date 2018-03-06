@@ -146,7 +146,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     }
   }
   goTo(step) {
-    if (this.step < 4)
+    if (this.step < 4 && this.step > step)
       this.step = step;
   }
   deliverySelected(e) {
