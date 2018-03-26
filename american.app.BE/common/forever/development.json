@@ -46,5 +46,13 @@
         "script": "/server/server.js",
         "command": "node .",
         "sourceDir": "../../SysCode"
+    },
+    {
+        "uid": "Messaging",
+        "append": true,
+        "watch": true,
+        "script": "/server/server.js",
+        "command": "node .",
+        "sourceDir": "../../Messaging"
     }
 ]
