@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import "rxjs/add/operator/takeWhile";
 
 import { UserService } from '../../core/services/user.service/user.service';
 import { NotifyService } from '../../core/services/notify.service/notify.service';
@@ -10,7 +11,14 @@ declare var $: any;
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
+
   loading: boolean;
 
   email;
@@ -32,19 +40,21 @@ export class SigninComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this.auth.userApi.login({ email: this.email, password: this.password }).subscribe((response) => {
-      this.auth.setAccount(response.account);
-      this.auth.setTokenOfAllSDKs(response);
-      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
-      this.router.navigate([redirect]);
-    },
-      (err) => {
-        this.loading = false;
-        if (err.code == 'LOGIN_FAILED')
-          this.loginFeedback = 'Oops! Incorrect Email or Password';
-        if (err.code == 'LOGIN_FAILED_EMAIL_NOT_VERIFIED')
-          this.loginFeedback = 'Account Not Activated! Please check your email.';
-      })
+    this.auth.userApi.login({ email: this.email, password: this.password })
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.auth.setAccount(response.account);
+        this.auth.setTokenOfAllSDKs(response);
+        let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+        this.router.navigate([redirect]);
+      },
+        (err) => {
+          this.loading = false;
+          if (err.code == 'LOGIN_FAILED')
+            this.loginFeedback = 'Oops! Incorrect Email or Password';
+          if (err.code == 'LOGIN_FAILED_EMAIL_NOT_VERIFIED')
+            this.loginFeedback = 'Account Not Activated! Please check your email.';
+        })
   }
 
 }

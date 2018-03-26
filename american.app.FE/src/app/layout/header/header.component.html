@@ -51,7 +51,7 @@
           <a (click)="navigateTo('account/messages')">Messages</a>
         </li>
         <li>
-          <a (click)="navigateTo('account/rfqs')">RFQs & RFPs</a>
+          <a (click)="navigateTo('account/rfps')">RFQs & RFPs</a>
         </li>
         <li>
           <a (click)="auth.logout()">Sign out</a>
@@ -66,7 +66,7 @@
       <p>5</p>
       <i class="fa fa-bell"></i>
     </div>
-    <div class="header-icon">
+    <div class="header-icon" (click)="navigateTo('/order/mycart')">
       <p>2</p>
       <i class="fa fa-shopping-cart"></i>
     </div>

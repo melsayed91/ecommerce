@@ -38,6 +38,65 @@ export class RfqApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
+   * This method expects a subset of model properties as request parameters.
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfq` – `{any}` - 
+   */
+  public getRFQs(criteria: any = {}, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/getrfq";
+    let _routeParams: any = {};
+    let _postBody: any = {
+      criteria: criteria
+    };
+    let _urlParams: any = {};
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `transactions` – `{any}` - 
+   */
+  public getRFQTransactions(rfqId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/getrfq/transactions";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
    *  - `rfq` – `{object}` - 
    *
    * @returns {object} An empty reference that will be
@@ -67,7 +126,11 @@ export class RfqApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
-   * This method expects a subset of model properties as request parameters.
+   *  - `rfqId` – `{string}` - 
+   *
+   *  - `offerId` – `{string}` - 
+   *
+   *  - `accountId` – `{string}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -77,15 +140,115 @@ export class RfqApi extends BaseLoopBackApi {
    *
    *  - `rfq` – `{any}` - 
    */
-  public getRFQs(criteria: any = {}, customHeaders?: Function): Observable<any> {
+  public cancelRFQ(rfqId: any, offerId: any, accountId: any, customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/rfqs/getrfq";
+    "/rfqs/cancelRFQ";
     let _routeParams: any = {};
-    let _postBody: any = {
-      criteria: criteria
-    };
+    let _postBody: any = {};
     let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof offerId !== 'undefined' && offerId !== null) _urlParams.offerId = offerId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
+   *  - `offerId` – `{string}` - 
+   *
+   *  - `accountId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfq` – `{any}` - 
+   */
+  public lastPriceRFQ(rfqId: any, offerId: any, accountId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/lastPriceRFQ";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof offerId !== 'undefined' && offerId !== null) _urlParams.offerId = offerId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
+   *  - `accountId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfq` – `{any}` - 
+   */
+  public beginRFQ(rfqId: any, accountId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/begin";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `rfqId` – `{string}` - 
+   *
+   *  - `rfqoffer` – `{any}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `rfqoffer` – `{any}` - 
+   */
+  public addOffer(rfqId: any, rfqoffer: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/rfqs/addoffer";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
+    if (typeof rfqoffer !== 'undefined' && rfqoffer !== null) _urlParams.rfqoffer = rfqoffer;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }
@@ -147,38 +310,6 @@ export class RfqApi extends BaseLoopBackApi {
     let _postBody: any = {};
     let _urlParams: any = {};
     if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * <em>
-         * (The remote method definition does not provide any description.)
-         * </em>
-   *
-   * @param {object} data Request data.
-   *
-   *  - `rfqId` – `{string}` - 
-   *
-   *  - `rfqoffer` – `{any}` - 
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * Data properties:
-   *
-   *  - `rfqoffer` – `{any}` - 
-   */
-  public addOffer(rfqId: any, rfqoffer: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/rfqs/addoffer";
-    let _routeParams: any = {};
-    let _postBody: any = {};
-    let _urlParams: any = {};
-    if (typeof rfqId !== 'undefined' && rfqId !== null) _urlParams.rfqId = rfqId;
-    if (typeof rfqoffer !== 'undefined' && rfqoffer !== null) _urlParams.rfqoffer = rfqoffer;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }

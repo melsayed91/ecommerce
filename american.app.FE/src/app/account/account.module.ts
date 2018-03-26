@@ -14,12 +14,15 @@ import { dashboardComponent } from "./dashboard/dashboard.component";
 import { NavbarComponent } from './nav-bar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
-import { RequestForQuotationsComponent } from './request-for-quotations/request-for-quotations.component';
+import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
+import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
 import { ProductsComponent } from './profile/tabs/products/products.component';
 import { InfoComponent } from './profile/tabs/info/info.component';
 import { GalleryComponent } from './profile/tabs/gallery/gallery.component';
 import { ProfileInfoComponent } from './profile/profile-info/profile-info.component';
 import { RequestsComponent } from './requests/requests.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderDetailsComponent } from './orders/details/details.component';
 
 
 
@@ -39,12 +42,16 @@ import { RequestsComponent } from './requests/requests.component';
     NavbarComponent,
     ProfileComponent,
     SettingsComponent,
-    RequestForQuotationsComponent,
+    RequestForProposalComponent,
+    QuatationDetailsComponent,
     ProductsComponent,
     InfoComponent,
     GalleryComponent,
     ProfileInfoComponent,
-    RequestsComponent]
+    RequestsComponent,
+    ProfileInfoComponent,
+    OrdersComponent,
+    OrderDetailsComponent]
 })
 export class AccountModule {
 

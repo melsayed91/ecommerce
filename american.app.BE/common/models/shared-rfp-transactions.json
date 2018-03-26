@@ -1,0 +1,35 @@
+{
+    "name": "sharedRFPTransactions",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "creationDate": {
+            "type": "Date",
+            "required": true,
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "rfp": {
+            "type": "belongsTo",
+            "model": "rfp",
+            "foreignKey": "rfpId"
+        },
+        "status": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "statusId"
+        },
+        "account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

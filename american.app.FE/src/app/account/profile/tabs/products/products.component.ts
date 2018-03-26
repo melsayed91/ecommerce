@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import "rxjs/add/operator/takeWhile";
 
 import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 
@@ -14,7 +15,13 @@ declare var $: any;
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent implements OnInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
   attachmentServer: any;
   account;
   isNew: any;
@@ -31,7 +38,8 @@ export class ProductsComponent implements OnInit {
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
   uploaded = [];
-
+  returnAccepted = true;
+  warrantyProvided = true;
   constructor(
     private auth: UserService,
     private ng2FileInputService: Ng2FileInputService,
@@ -45,17 +53,21 @@ export class ProductsComponent implements OnInit {
     this.attachmentServer = attachementApiConfig.getPath();
     this.account = this.auth.account;
     this.loadUserProducts();
-    this.SysCodeApi.getAllSubIndustries().subscribe((response: any) => {
-      this.categories = response.subIndustries;
-    }, (err) => { });
+    this.SysCodeApi.getAllSubIndustries()
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.categories = response.subIndustries;
+      }, (err) => { });
   }
 
   loadUserProducts(): any {
-    this.ProductApi.getUserProducts(this.account.id).subscribe((response) => {
-      this.products = response.products;
-    }, (err) => {
+    this.ProductApi.getUserProducts(this.account.id)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.products = response.products;
+      }, (err) => {
 
-    })
+      })
   }
 
   initDataTable() {
@@ -93,11 +105,16 @@ export class ProductsComponent implements OnInit {
     this.productCategory = undefined;
     this.uploaded = [];
     this.isNew = isNew;
-    if (!this.isNew)
+    if (!this.isNew) {
       this.productCategory = this.product.category;
+      this.warrantyProvided = this.product.warrantyPeriod > 0;
+      this.returnAccepted = this.product.returnPeriode > 0;
+    }
+
     else {
       this.product = new Product();
-      this.product.accountId = this.account.id;
+      this.product.accountId = this.account.id
+      this.product.specs = [];
     }
     this.showProductForm = true;
   }
@@ -116,35 +133,41 @@ export class ProductsComponent implements OnInit {
       "name": this.product.name,
       "description": this.product.description,
       "price": this.product.price,
+      "prototypePrice": this.product.prototypePrice,
       "stock": this.product.stock,
-      "moq": this.product['moq'],
+      "moq": this.product.moq,
       "isActive": this.product.isActive,
       "categoryId": this.product.categoryId,
       "accountId": this.product.accountId,
       "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds),
-      "specs": this.product['specs']
+      "specs": this.product.specs,
+      "returnPeriode": this.returnAccepted ? this.product.returnPeriode : 0,
+      "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0
     };
+
     if (!this.isNew) {
       data['id'] = this.product.id;
     }
 
 
-    this.ProductApi.replaceOrCreate(data).subscribe((response) => {
-      //to avoid reloading the whole list we just add it to the array
-      if (this.isNew) {
-        data['category'] = this.productCategory;
-        data['attachments'] = this.uploaded;
-        this.products.push(data);
-      }
-      else
-        this.product.attachments = this.product.attachments.concat(this.uploaded);
+    this.ProductApi.replaceOrCreate(data)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        //to avoid reloading the whole list we just add it to the array
+        if (this.isNew) {
+          data['category'] = this.productCategory;
+          data['attachments'] = this.uploaded;
+          this.products.push(data);
+        }
+        else
+          this.product.attachments = this.product.attachments.concat(this.uploaded);
 
 
-      this.loading = undefined;
-      this.closeProductForm();
-    }, (err) => {
+        this.loading = undefined;
+        this.closeProductForm();
+      }, (err) => {
 
-    })
+      })
   }
 
   formLoaded() {
@@ -152,7 +175,7 @@ export class ProductsComponent implements OnInit {
   }
 
   validatefield(fieldId) {
-    $("#" + fieldId).parsley().validate();
+    return $("#" + fieldId).parsley().validate();
   }
 
   categoryChanged(e) {
@@ -171,21 +194,25 @@ export class ProductsComponent implements OnInit {
   onAdded(event: any) {
     var form = new FormData();
     form.append("file", event.file, event.file.name);
-    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
-      this.uploaded.push(response);
-    }, (err) => {
+    this.AttachmentService.upload(form, event.file.name, {})
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.push(response);
+      }, (err) => {
 
-    })
+      })
   }
 
   removeFile(event: any) {
     var toBeDeletedIndex = this.uploaded.findIndex(function (item) {
       return item.originalFileName === event.file.name
     });
-    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id).subscribe((response: any) => {
-      this.uploaded.splice(toBeDeletedIndex, 1)
-    }, (err) => {
-    })
+    this.AttachmentServiceAPI.deleteById(this.uploaded[toBeDeletedIndex].id)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.splice(toBeDeletedIndex, 1)
+      }, (err) => {
+      })
   }
 
   getCurrentFiles() {
@@ -194,7 +221,9 @@ export class ProductsComponent implements OnInit {
   }
 
   addSpec() {
-    this.product['specs'].push(this.spec);
-    this.spec = { name: "", value: "" };
+    if (this.validatefield("specDesc") === true && this.validatefield("specKey") === true) {
+      this.product.specs.push(this.spec);
+      this.spec = { name: "", value: "" };
+    }
   }
 }

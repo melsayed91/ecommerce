@@ -1,9 +1,13 @@
 import {Routes} from '@angular/router';
 import {AuthGuardService} from '../core/services/auth.guard.service/auth-guard.service';
 
-import {dashboardComponent} from './dashboard/dashboard.component';
-import {ProfileComponent} from './profile/profile.component';
-import {SettingsComponent} from './settings/settings.component';
+import { dashboardComponent } from './dashboard/dashboard.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderDetailsComponent } from './orders/details/details.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SettingsComponent } from './settings/settings.component';
+import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
+import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
 import {RequestForQuotationsComponent} from './request-for-quotations/request-for-quotations.component';
 import {RequestsComponent} from './requests/requests.component';
 
@@ -20,7 +24,17 @@ export const RegisterRoutes: Routes = [
     component: dashboardComponent
   },
   {
-    path: 'profile',
+    path: 'orders',
+        canActivate: [AuthGuardService],
+        component: OrdersComponent
+    },
+    {
+        path: 'orders/:id',
+        canActivate: [AuthGuardService],
+        component: OrderDetailsComponent
+    },
+    {
+        path: 'profile',
     canActivate: [AuthGuardService],
     component: ProfileComponent
   },
@@ -30,9 +44,14 @@ export const RegisterRoutes: Routes = [
     component: SettingsComponent
   },
   {
-    path: 'rfqs',
+    path: 'rfps',
     canActivate: [AuthGuardService],
-    component: RequestForQuotationsComponent
+    component: RequestForProposalComponent
+    },
+    {
+        path: 'rfq/details/:id',
+        canActivate: [AuthGuardService],
+        component: QuatationDetailsComponent
   },
   {
     path: 'requests',

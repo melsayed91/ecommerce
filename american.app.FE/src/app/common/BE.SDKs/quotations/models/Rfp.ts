@@ -10,10 +10,12 @@ export interface RfpInterface {
   "isDeleted"?: boolean;
   "id"?: any;
   "offerIds"?: Array<any>;
+  "statusId"?: any;
   "categoryId"?: any;
   "attachmentIds"?: Array<any>;
   "accountId"?: any;
   offers?: any[];
+  status?: any;
   category?: any;
   attachments?: any[];
   account?: any;
@@ -28,10 +30,12 @@ export class Rfp implements RfpInterface {
   "isDeleted": boolean;
   "id": any;
   "offerIds": Array<any>;
+  "statusId": any;
   "categoryId": any;
   "attachmentIds": Array<any>;
   "accountId": any;
   offers: any[];
+  status: any;
   category: any;
   attachments: any[];
   account: any;
@@ -103,6 +107,10 @@ export class Rfp implements RfpInterface {
           type: 'Array&lt;any&gt;',
           default: <any>[]
         },
+        "statusId": {
+          name: 'statusId',
+          type: 'any'
+        },
         "categoryId": {
           name: 'categoryId',
           type: 'any'
@@ -124,6 +132,14 @@ export class Rfp implements RfpInterface {
           model: '',
           relationType: 'referencesMany',
                   keyFrom: 'offerIds',
+          keyTo: 'id'
+        },
+        status: {
+          name: 'status',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'statusId',
           keyTo: 'id'
         },
         category: {

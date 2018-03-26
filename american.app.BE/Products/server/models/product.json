@@ -5,6 +5,11 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "HideRelationsMethods": {
+      "expose": []
+    }
+  },
   "properties": {},
   "validations": [],
   "relations": {},
@@ -20,20 +25,21 @@
       "principalType": "ROLE",
       "principalId": "$authenticated",
       "permission": "ALLOW",
-      "property": ["getUserProducts","replaceOrCreate"]
+      "property": [
+        "getUserProducts",
+        "replaceOrCreate"
+      ]
     },
     {
       "accessType": "*",
       "principalType": "ROLE",
       "principalId": "$everyone",
       "permission": "ALLOW",
-      "property": ["find", "findById"]
+      "property": [
+        "find",
+        "findById"
+      ]
     }
   ],
-  "methods": {},
-  "mixins": {
-    "HideRelationsMethods": {
-      "expose": []
-    }
-  }
+  "methods": {}
 }

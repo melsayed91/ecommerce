@@ -32,11 +32,43 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedRFQTransactions": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedRFPTransactions": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "rfqTransaction": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "rfpTransaction": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "offer": {
     "dataSource": "americanBizDB",
     "public": true
   },
   "sharedOffer": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccountData": {
     "dataSource": "americanBizDB",
     "public": false
   },

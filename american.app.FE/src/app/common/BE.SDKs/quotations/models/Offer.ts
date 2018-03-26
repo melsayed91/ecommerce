@@ -5,12 +5,14 @@ export interface OfferInterface {
   "description"?: string;
   "price": number;
   "creationDate": Date;
-  "expiryDate": Date;
+  "expiryDate"?: Date;
   "modificationDate"?: Date;
   "id"?: any;
+  "statusId"?: any;
   "accountId"?: any;
   "rfqId"?: any;
   "rfpId"?: any;
+  status?: any;
   account?: any;
   rfq?: any;
   rfp?: any;
@@ -23,9 +25,11 @@ export class Offer implements OfferInterface {
   "expiryDate": Date;
   "modificationDate": Date;
   "id": any;
+  "statusId": any;
   "accountId": any;
   "rfqId": any;
   "rfpId": any;
+  status: any;
   account: any;
   rfq: any;
   rfp: any;
@@ -78,12 +82,20 @@ export class Offer implements OfferInterface {
           name: 'expiryDate',
           type: 'Date'
         },
+        "expiryDate": {
+          name: 'expiryDate',
+          type: 'Date'
+        },
         "modificationDate": {
           name: 'modificationDate',
           type: 'Date'
         },
         "id": {
           name: 'id',
+          type: 'any'
+        },
+        "statusId": {
+          name: 'statusId',
           type: 'any'
         },
         "accountId": {
@@ -100,6 +112,14 @@ export class Offer implements OfferInterface {
         },
       },
       relations: {
+        status: {
+          name: 'status',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'statusId',
+          keyTo: 'id'
+        },
         account: {
           name: 'account',
           type: 'any',

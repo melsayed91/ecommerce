@@ -5,6 +5,9 @@
     "options": {
         "validateUpsert": true
     },
+    "mixins": {
+        "TimeStamp": true
+    },
     "properties": {
         "name": {
             "type": "string",
@@ -14,7 +17,21 @@
             "type": "string",
             "required": true
         },
+        "returnPeriode": {
+            "type": "Number",
+            "required": true,
+            "default": 0
+        },
+        "warrantyPeriod": {
+            "type": "Number",
+            "required": true,
+            "default": 0
+        },
         "price": {
+            "type": "Number",
+            "required": true
+        },
+        "prototypePrice": {
             "type": "Number",
             "required": true
         },
@@ -24,15 +41,13 @@
             "default": 1
         },
         "specs": {
-            "type": "array"
+            "type": [
+                "object"
+            ]
         },
         "stock": {
             "type": "Number",
             "required": true
-        },
-        "creationDate": {
-            "type": "Date",
-            "defaultFn": "now"
         },
         "isActive": {
             "type": "Boolean",

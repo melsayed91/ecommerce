@@ -41,6 +41,11 @@
         "forceId": false
       }
     },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
+    },
     "category": {
       "type": "belongsTo",
       "model": "SysCode",

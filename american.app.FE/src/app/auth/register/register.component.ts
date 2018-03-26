@@ -1,7 +1,9 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import "rxjs/add/operator/takeWhile";
+
 import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 
 import { SysUserApi } from '../../common/BE.SDKs/AccountManager';
@@ -43,7 +45,14 @@ export class State {
     ], )
   ]
 })
-export class RegisterComponent implements OnInit, AfterViewInit {
+export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
+
   isBusiness = true;
   previousStep = 0;
   step = 1;
@@ -76,10 +85,12 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     private AttachmentService: AttachmentService,
     private AttachmentServiceAPI: AttachmentApi) {
 
-    this.route.params.subscribe(params => {
-      if (params['mode'])
-        this.userType = params['mode'];
-    })
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
+        if (params['mode'])
+          this.userType = params['mode'];
+      })
 
   }
 
@@ -137,7 +148,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         }
       });
 
-    
+
     this.lookup("5a651615f22fe122e0862672", "industries", true)
     this.lookup("5a669889218e000a3c209a6e", "countries", true)
   }
@@ -147,16 +158,18 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
 
   lookup(key, obj, overwrite) {
-    this.sysCodeService.findByParent(key).subscribe((response: any) => {
-      if (overwrite)
-        this[obj] = response.sysCode;
-      else {
-        this[obj] = this[obj].concat(response.sysCode);
-      }
+    this.sysCodeService.findByParent(key)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        if (overwrite)
+          this[obj] = response.sysCode;
+        else {
+          this[obj] = this[obj].concat(response.sysCode);
+        }
 
-    }, (err) => {
+      }, (err) => {
 
-    })
+      })
   }
 
   formLoaded() {
@@ -180,22 +193,24 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       type: this.userType
     }
     this.loading = true;
-    this.userService.register(user).subscribe((response) => {
-      this.loading = false;
-      this.step = this.done;
-    }, (err) => {
-      this.loading = false;
-      if (err.message.includes('Email already exists')) {
-        $('#fg-email').addClass("has-error");
-        $('#fg-email .parsley-errors-list').append( "<li class='email-exists'>This email is already taken</li>" )        
-      }
-    })
+    this.userService.register(user)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.loading = false;
+        this.step = this.done;
+      }, (err) => {
+        this.loading = false;
+        if (err.message.includes('Email already exists')) {
+          $('#fg-email').addClass("has-error");
+          $('#fg-email .parsley-errors-list').append("<li class='email-exists'>This email is already taken</li>")
+        }
+      })
   }
 
 
-  editingEmail(){
+  editingEmail() {
     $('#fg-email').removeClass("has-error");
-    $('#fg-email .parsley-errors-list > .email-exists').remove(); 
+    $('#fg-email .parsley-errors-list > .email-exists').remove();
   }
 
   autocompleListFormatter = (data: any) => {
@@ -296,24 +311,28 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   onAdded(event: any) {
     var form = new FormData();
     form.append("file", event.file, event.file.name);
-    this.AttachmentService.upload(form, event.file.name, {}).subscribe((response: any) => {
-      this.uploaded.push(response);
-      this.scrollToBottom('.ulpoaded');
-      setTimeout(() => {
-        response.isLoaded = true;
-      }, this.uploaded.length * 1000);
-      console.log(this.uploaded)
-    }, (err) => {
+    this.AttachmentService.upload(form, event.file.name, {})
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.push(response);
+        this.scrollToBottom('.ulpoaded');
+        setTimeout(() => {
+          response.isLoaded = true;
+        }, this.uploaded.length * 1000);
+        console.log(this.uploaded)
+      }, (err) => {
 
-    })
+      })
 
   }
 
   removeFile(index, fileId) {
-    this.AttachmentServiceAPI.deleteById(fileId).subscribe((response: any) => {
-      this.uploaded.splice(index, 1)
-    }, (err) => {
-    })
+    this.AttachmentServiceAPI.deleteById(fileId)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.splice(index, 1)
+      }, (err) => {
+      })
   }
 
   getCurrentFiles() {

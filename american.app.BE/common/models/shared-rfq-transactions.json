@@ -1,0 +1,35 @@
+{
+    "name": "sharedRFQTransactions",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "creationDate": {
+            "type": "Date",
+            "required": true,
+            "defaultFn": "now"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "rfq": {
+            "type": "belongsTo",
+            "model": "rfq",
+            "foreignKey": "rfqId"
+        },
+        "status": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "statusId"
+        },
+        "account": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "accountId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

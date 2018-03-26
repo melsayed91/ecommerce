@@ -38,15 +38,29 @@
       "model": "product",
       "foreignKey": "productId"
     },
-    "offer": {
+    "productOwner": {
       "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "productOwnerId"
+    },
+    "offers": {
+      "type": "referencesMany",
       "model": "offer",
-      "foreignKey": "offerId"
+      "foreignKey": "offerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     },
     "account": {
       "type": "belongsTo",
       "model": "Account",
       "foreignKey": "accountId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
     }
   },
   "acls": [],

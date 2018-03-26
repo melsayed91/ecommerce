@@ -1,5 +1,5 @@
 module.exports = {
-    "industries": [
+    industries: [
         "5a6a33c9b7e94a3e4499d875",
         "5a6a33b5b7e94a3e4499d874",
         "5a6a33a6b7e94a3e4499d873",
@@ -12,5 +12,26 @@ module.exports = {
         "5a6a333cb7e94a3e4499d86c",
         "5a6a332db7e94a3e4499d86b",
         "5a6a331ab7e94a3e4499d86a"
-    ]
+    ],
+    rfqStatus: {
+        open: "5a87059a8a8d811ea8e8434c",
+        offered: "5a8705ad8a8d811ea8e8434e",
+        rejected: "5a8705c38a8d811ea8e8434f",
+        finished: "5a8705cd8a8d811ea8e84350"
+    },
+    rfpStatus: {
+        open: "5a8705498a8d811ea8e84348",
+        offered: "5a87055e8a8d811ea8e8434a",
+        finished: "5a8705538a8d811ea8e84349",
+        rejected: "5a87085861579b337cdc399f"
+    },
+    offerStatus: {
+        open: "5a947bacc639c71f6875ee71",
+        approved: "5a947bb4c639c71f6875ee72",
+        rejected: "5a947bbbc639c71f6875ee73"
+    },
+    shipmentStatus: {
+        pending: "5a89a6c29fcea8171cb0f0d4"
+    }
+
 }

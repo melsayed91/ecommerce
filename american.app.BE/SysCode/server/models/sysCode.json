@@ -5,14 +5,7 @@
     "options": {
         "validateUpsert": true
     },
-    "properties": {
-        "countryCode":{
-            "type":"string"
-        },
-        "icon":{
-            "type": "string"
-        }
-    },
+    "properties": {},
     "validations": [],
     "relations": {},
     "acls": [],

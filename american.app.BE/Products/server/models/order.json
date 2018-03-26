@@ -1,0 +1,29 @@
+{
+  "name": "Order",
+  "base": "SharedOrder",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+    "owner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "ownerId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
+    },
+    "shipments": {
+      "type": "referencesMany",
+      "model": "Shipment",
+      "foreignKey": "shipmentIds"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

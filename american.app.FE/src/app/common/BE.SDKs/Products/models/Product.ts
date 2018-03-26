@@ -4,14 +4,20 @@ declare var Object: any;
 export interface ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
+  "moq": number;
+  "specs"?: Array<any>;
   "stock": number;
-  "creationDate"?: Date;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
+  "createdAt": Date;
+  "updatedAt": Date;
   "attachmentIds"?: Array<any>;
   account?: any;
   category?: any;
@@ -21,14 +27,20 @@ export interface ProductInterface {
 export class Product implements ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
+  "moq": number;
+  "specs": Array<any>;
   "stock": number;
-  "creationDate": Date;
   "isActive": boolean;
   "isDeleted": boolean;
   "id": any;
   "accountId": any;
   "categoryId": any;
+  "createdAt": Date;
+  "updatedAt": Date;
   "attachmentIds": Array<any>;
   account: any;
   category: any;
@@ -74,17 +86,34 @@ export class Product implements ProductInterface {
           name: 'description',
           type: 'string'
         },
+        "returnPeriode": {
+          name: 'returnPeriode',
+          type: 'number'
+        },
+        "warrantyPeriod": {
+          name: 'warrantyPeriod',
+          type: 'number'
+        },
         "price": {
           name: 'price',
           type: 'number'
         },
+        "prototypePrice": {
+          name: 'prototypePrice',
+          type: 'number'
+        },
+        "moq": {
+          name: 'moq',
+          type: 'number',
+          default: 1
+        },
+        "specs": {
+          name: 'specs',
+          type: 'Array&lt;any&gt;'
+        },
         "stock": {
           name: 'stock',
           type: 'number'
-        },
-        "creationDate": {
-          name: 'creationDate',
-          type: 'Date'
         },
         "isActive": {
           name: 'isActive',
@@ -107,6 +136,14 @@ export class Product implements ProductInterface {
         "categoryId": {
           name: 'categoryId',
           type: 'any'
+        },
+        "createdAt": {
+          name: 'createdAt',
+          type: 'Date'
+        },
+        "updatedAt": {
+          name: 'updatedAt',
+          type: 'Date'
         },
         "attachmentIds": {
           name: 'attachmentIds',

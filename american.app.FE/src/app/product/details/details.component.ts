@@ -1,11 +1,12 @@
-import {Component, OnInit,AfterViewInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy,AfterViewInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { RfqApi, Rfq } from "../../common/BE.SDKs/quotations";
+import "rxjs/add/operator/takeWhile";
 
-import {ProductApi} from '../../common/BE.SDKs/Products';
-import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
-
+import { ProductApi } from '../../common/BE.SDKs/Products';
+import { UserService } from '../../core/services/user.service/user.service';
+import {LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
 import {SpecificationApi} from '../../common/BE.SDKs/quotations';
-import {UserService} from '../../core/services/user.service/user.service';
 declare var $: any;
 
 @Component({
@@ -13,59 +14,77 @@ declare var $: any;
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit,AfterViewInit{
+export class DetailsComponent implements OnInit, OnDestroy,AfterViewInit {
 
+  alive: boolean = true;
   attachmentServer: any;
   product;
   productId: string;
   selectedImage;
-  quantity;
+  currentAccountId;
+  quantity = 1;
+  formValidation;
+  showRFQForm = false;
+  currentRfq: Rfq = new Rfq();
   requestSpecificationMode = false;
   requestSpecificationLoading = false;
   requestSpecificationModel = {};
-  formValidation;
 
   private subs = [];
   constructor(private auth: UserService,
-              private route: ActivatedRoute,
+    private route: ActivatedRoute,
+    private RfquataionApi: RfqApi,
               private productApi: ProductApi,
               private specificationApi: SpecificationApi) {
   }
 
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
-    this.subs.push(
-      this.route.params.subscribe(params => {
+    this.currentAccountId = this.auth.account.id;
+
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
         this.productId = params['id'];
-        this.subs.push(
-          this.productApi.findById(this.productId, {
-            include: [
-              "attachments",
-              { "account": { "accountData": "profileImage" } }
-            ]
-          }).subscribe(response => {
+
+        this.productApi.findById(this.productId, {
+          include: [
+            "attachments",
+            { "account": { "accountData": "profileImage" } }
+          ]
+        })
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
-            this.quantity=this.product.moq;
+            this.quantity = this.product.moq;
           })
-        )
       })
-    )
   }
 
 
   ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.alive = false;
   }
   scrollTo(selector) {
-    debugger;
     $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);
   }
-
   formLoaded(id) {
-    debugger;
     this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
   }
+  validatefield(fieldId) {
+    $("#" + fieldId).parsley().validate();
+  }
+  addRfq() {
+    this.currentRfq.accountId = this.currentAccountId;
+    this.currentRfq['productId'] = this.product.id;
+    this.currentRfq['productOwnerId'] = this.product.accountId;
+    this.RfquataionApi.addRFQ(this.currentRfq).subscribe(resp => {
+      this.showRFQForm = false;
+      this.currentRfq = new Rfq();
+    }, err => { })
+  }
+
   ngAfterViewInit() {
   }
   toggleRequestSpecification() {
