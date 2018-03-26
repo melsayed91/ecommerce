@@ -32,14 +32,6 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "product": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "sharedProduct": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
   "sharedRFQTransactions": {
     "dataSource": "americanBizDB",
     "public": false
@@ -61,14 +53,6 @@
     "public": true
   },
   "sharedOffer": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "accountData": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "sharedAccountData": {
     "dataSource": "americanBizDB",
     "public": false
   },

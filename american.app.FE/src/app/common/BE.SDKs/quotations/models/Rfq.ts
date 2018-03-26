@@ -17,7 +17,6 @@ export interface RfqInterface {
   product?: any;
   productOwner?: any;
   offers?: any[];
-  offer?: any;
   account?: any;
   status?: any;
 }

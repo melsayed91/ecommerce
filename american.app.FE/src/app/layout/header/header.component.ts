@@ -48,6 +48,7 @@ export class HeaderComponent implements OnInit {
   }
 
   getConversationCount() {
+    debugger;
     this.ConversationApi.getConversations(this.auth.account.id).subscribe((response) => {
       this.conversationCount = response.conversations.length;
       this.conversations = response.conversations;

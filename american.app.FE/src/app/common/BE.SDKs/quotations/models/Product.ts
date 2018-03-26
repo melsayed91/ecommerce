@@ -4,38 +4,46 @@ declare var Object: any;
 export interface ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
   "moq": number;
-  "specs"?: any;
+  "specs"?: Array<any>;
   "stock": number;
-  "creationDate"?: Date;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
-  "accountId"?: any;
   "categoryId"?: any;
+  "createdAt": Date;
+  "updatedAt": Date;
+  "accountId"?: any;
   "attachmentIds"?: Array<any>;
-  account?: any;
   category?: any;
+  account?: any;
   attachments?: any[];
 }
 
 export class Product implements ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
   "moq": number;
-  "specs": any;
+  "specs": Array<any>;
   "stock": number;
-  "creationDate": Date;
   "isActive": boolean;
   "isDeleted": boolean;
   "id": any;
-  "accountId": any;
   "categoryId": any;
+  "createdAt": Date;
+  "updatedAt": Date;
+  "accountId": any;
   "attachmentIds": Array<any>;
-  account: any;
   category: any;
+  account: any;
   attachments: any[];
   constructor(data?: ProductInterface) {
     Object.assign(this, data);
@@ -78,8 +86,22 @@ export class Product implements ProductInterface {
           name: 'description',
           type: 'string'
         },
+        "returnPeriode": {
+          name: 'returnPeriode',
+          type: 'number',
+          default: 0
+        },
+        "warrantyPeriod": {
+          name: 'warrantyPeriod',
+          type: 'number',
+          default: 0
+        },
         "price": {
           name: 'price',
+          type: 'number'
+        },
+        "prototypePrice": {
+          name: 'prototypePrice',
           type: 'number'
         },
         "moq": {
@@ -89,15 +111,11 @@ export class Product implements ProductInterface {
         },
         "specs": {
           name: 'specs',
-          type: 'any'
+          type: 'Array&lt;any&gt;'
         },
         "stock": {
           name: 'stock',
           type: 'number'
-        },
-        "creationDate": {
-          name: 'creationDate',
-          type: 'Date'
         },
         "isActive": {
           name: 'isActive',
@@ -113,12 +131,20 @@ export class Product implements ProductInterface {
           name: 'id',
           type: 'any'
         },
-        "accountId": {
-          name: 'accountId',
-          type: 'any'
-        },
         "categoryId": {
           name: 'categoryId',
+          type: 'any'
+        },
+        "createdAt": {
+          name: 'createdAt',
+          type: 'Date'
+        },
+        "updatedAt": {
+          name: 'updatedAt',
+          type: 'Date'
+        },
+        "accountId": {
+          name: 'accountId',
           type: 'any'
         },
         "attachmentIds": {
@@ -128,20 +154,20 @@ export class Product implements ProductInterface {
         },
       },
       relations: {
-        account: {
-          name: 'account',
-          type: 'any',
-          model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'accountId',
-          keyTo: 'id'
-        },
         category: {
           name: 'category',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
+          keyTo: 'id'
+        },
+        account: {
+          name: 'account',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'accountId',
           keyTo: 'id'
         },
         attachments: {

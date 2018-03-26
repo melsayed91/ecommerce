@@ -49,12 +49,12 @@ import { SocketBrowser } from './sockets/socket.browser';
 import { SocketDriver } from './sockets/socket.driver';
 import { SocketConnection } from './sockets/socket.connections';
 import { RealTime } from './services/core/real.time';
+import { ProductApi } from './services/custom/Product';
 import { OfferApi } from './services/custom/Offer';
+import { AccountDataApi } from './services/custom/AccountData';
 import { RfqApi } from './services/custom/Rfq';
 import { RfpApi } from './services/custom/Rfp';
 import { SpecificationApi } from './services/custom/Specification';
-import { ProductApi } from './services/custom/Product';
-import { AccountDataApi } from './services/custom/AccountData';
 import { ConversationApi } from './services/custom/Conversation';
 import { ConversationServiceApiApi } from './services/custom/ConversationServiceApi';
 import { MessageServiceApiApi } from './services/custom/MessageServiceApi';
@@ -90,12 +90,12 @@ export class SDKBrowserModule {
         JSONSearchParams,
         SDKModels,
         RealTime,
+        ProductApi,
         OfferApi,
+        AccountDataApi,
         RfqApi,
         RfpApi,
         SpecificationApi,
-        ProductApi,
-        AccountDataApi,
         ConversationApi,
         ConversationServiceApiApi,
         MessageServiceApiApi,

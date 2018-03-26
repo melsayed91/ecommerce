@@ -2,24 +2,28 @@
 
 declare var Object: any;
 export interface SysCodeInterface {
-  "countryCode"?: string;
-  "icon"?: string;
   "name": string;
-  "creationDate"?: Date;
+  "icon"?: string;
+  "class"?: string;
   "isDeleted"?: boolean;
+  "countryCode"?: string;
   "id"?: any;
   "parentId"?: any;
+  "createdAt": Date;
+  "updatedAt": Date;
   parent?: any;
 }
 
 export class SysCode implements SysCodeInterface {
-  "countryCode": string;
-  "icon": string;
   "name": string;
-  "creationDate": Date;
+  "icon": string;
+  "class": string;
   "isDeleted": boolean;
+  "countryCode": string;
   "id": any;
   "parentId": any;
+  "createdAt": Date;
+  "updatedAt": Date;
   parent: any;
   constructor(data?: SysCodeInterface) {
     Object.assign(this, data);
@@ -54,26 +58,26 @@ export class SysCode implements SysCodeInterface {
       path: 'SysCodes',
       idName: 'id',
       properties: {
-        "countryCode": {
-          name: 'countryCode',
+        "name": {
+          name: 'name',
           type: 'string'
         },
         "icon": {
           name: 'icon',
           type: 'string'
         },
-        "name": {
-          name: 'name',
+        "class": {
+          name: 'class',
           type: 'string'
-        },
-        "creationDate": {
-          name: 'creationDate',
-          type: 'Date'
         },
         "isDeleted": {
           name: 'isDeleted',
           type: 'boolean',
           default: false
+        },
+        "countryCode": {
+          name: 'countryCode',
+          type: 'string'
         },
         "id": {
           name: 'id',
@@ -82,6 +86,14 @@ export class SysCode implements SysCodeInterface {
         "parentId": {
           name: 'parentId',
           type: 'any'
+        },
+        "createdAt": {
+          name: 'createdAt',
+          type: 'Date'
+        },
+        "updatedAt": {
+          name: 'updatedAt',
+          type: 'Date'
         },
       },
       relations: {

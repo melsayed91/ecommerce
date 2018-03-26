@@ -4,16 +4,20 @@ declare var Object: any;
 export interface ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
   "moq": number;
-  "specs"?: any;
+  "specs"?: Array<any>;
   "stock": number;
-  "creationDate"?: Date;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
   "accountId"?: any;
   "attachmentIds"?: Array<any>;
+  "createdAt": Date;
+  "updatedAt": Date;
   account?: any;
   attachments?: any[];
 }
@@ -21,16 +25,20 @@ export interface ProductInterface {
 export class Product implements ProductInterface {
   "name": string;
   "description": string;
+  "returnPeriode": number;
+  "warrantyPeriod": number;
   "price": number;
+  "prototypePrice": number;
   "moq": number;
-  "specs": any;
+  "specs": Array<any>;
   "stock": number;
-  "creationDate": Date;
   "isActive": boolean;
   "isDeleted": boolean;
   "id": any;
   "accountId": any;
   "attachmentIds": Array<any>;
+  "createdAt": Date;
+  "updatedAt": Date;
   account: any;
   attachments: any[];
   constructor(data?: ProductInterface) {
@@ -74,8 +82,22 @@ export class Product implements ProductInterface {
           name: 'description',
           type: 'string'
         },
+        "returnPeriode": {
+          name: 'returnPeriode',
+          type: 'number',
+          default: 0
+        },
+        "warrantyPeriod": {
+          name: 'warrantyPeriod',
+          type: 'number',
+          default: 0
+        },
         "price": {
           name: 'price',
+          type: 'number'
+        },
+        "prototypePrice": {
+          name: 'prototypePrice',
           type: 'number'
         },
         "moq": {
@@ -85,15 +107,11 @@ export class Product implements ProductInterface {
         },
         "specs": {
           name: 'specs',
-          type: 'any'
+          type: 'Array&lt;any&gt;'
         },
         "stock": {
           name: 'stock',
           type: 'number'
-        },
-        "creationDate": {
-          name: 'creationDate',
-          type: 'Date'
         },
         "isActive": {
           name: 'isActive',
@@ -117,6 +135,14 @@ export class Product implements ProductInterface {
           name: 'attachmentIds',
           type: 'Array&lt;any&gt;',
           default: <any>[]
+        },
+        "createdAt": {
+          name: 'createdAt',
+          type: 'Date'
+        },
+        "updatedAt": {
+          name: 'updatedAt',
+          type: 'Date'
         },
       },
       relations: {

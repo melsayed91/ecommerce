@@ -82,10 +82,6 @@ export class Offer implements OfferInterface {
           name: 'expiryDate',
           type: 'Date'
         },
-        "expiryDate": {
-          name: 'expiryDate',
-          type: 'Date'
-        },
         "modificationDate": {
           name: 'modificationDate',
           type: 'Date'

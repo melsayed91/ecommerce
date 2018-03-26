@@ -1,11 +1,11 @@
 /* tslint:disable */
 import { Injectable } from '@angular/core';
+import { Product } from '../../models/Product';
 import { Offer } from '../../models/Offer';
+import { AccountData } from '../../models/AccountData';
 import { Rfq } from '../../models/Rfq';
 import { Rfp } from '../../models/Rfp';
 import { Specification } from '../../models/Specification';
-import { Product } from '../../models/Product';
-import { AccountData } from '../../models/AccountData';
 import { Conversation } from '../../models/Conversation';
 import { ConversationServiceApi } from '../../models/ConversationServiceApi';
 import { MessageServiceApi } from '../../models/MessageServiceApi';
@@ -17,12 +17,12 @@ export interface Models { [name: string]: any }
 export class SDKModels {
 
   private models: Models = {
+    Product: Product,
     Offer: Offer,
+    AccountData: AccountData,
     Rfq: Rfq,
     Rfp: Rfp,
     Specification: Specification,
-    Product: Product,
-    AccountData: AccountData,
     Conversation: Conversation,
     ConversationServiceApi: ConversationServiceApi,
     MessageServiceApi: MessageServiceApi,

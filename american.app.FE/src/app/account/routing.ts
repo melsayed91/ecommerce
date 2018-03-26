@@ -8,7 +8,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
 import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
-import {RequestForQuotationsComponent} from './request-for-quotations/request-for-quotations.component';
 import {RequestsComponent} from './requests/requests.component';
 
 

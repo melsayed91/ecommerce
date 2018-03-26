@@ -88,11 +88,13 @@ export class Product implements ProductInterface {
         },
         "returnPeriode": {
           name: 'returnPeriode',
-          type: 'number'
+          type: 'number',
+          default: 0
         },
         "warrantyPeriod": {
           name: 'warrantyPeriod',
-          type: 'number'
+          type: 'number',
+          default: 0
         },
         "price": {
           name: 'price',
