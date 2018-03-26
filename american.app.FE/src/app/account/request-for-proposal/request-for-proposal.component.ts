@@ -64,6 +64,7 @@ export class RequestForProposalComponent implements OnInit, OnDestroy {
       .subscribe((response: any) => {
         this.categories = response.subIndustries;
       }, (err) => { });
+    this.getRfp();
     this.getRfq();
   }
 
