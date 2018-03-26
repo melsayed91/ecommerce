@@ -8,13 +8,6 @@
   "properties": {},
   "validations": [],
   "relations": {},
-  "acls": [
-   
-  ],
-  "methods": {},
-  "mixins": {
-    "HideRelationsMethods": {
-      "expose": []
-    }
-  }
+  "acls": [],
+  "methods": {}
 }
