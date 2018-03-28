@@ -9,12 +9,12 @@ export interface SpecificationInterface {
   "isReplied"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
-  "productId"?: any;
   "accountId"?: any;
   "productOwnerId"?: any;
-  product?: any;
+  "productId"?: any;
   account?: any;
   productOwner?: any;
+  product?: any;
 }
 
 export class Specification implements SpecificationInterface {
@@ -25,12 +25,12 @@ export class Specification implements SpecificationInterface {
   "isReplied": boolean;
   "isDeleted": boolean;
   "id": any;
-  "productId": any;
   "accountId": any;
   "productOwnerId": any;
-  product: any;
+  "productId": any;
   account: any;
   productOwner: any;
+  product: any;
   constructor(data?: SpecificationInterface) {
     Object.assign(this, data);
   }
@@ -94,10 +94,6 @@ export class Specification implements SpecificationInterface {
           name: 'id',
           type: 'any'
         },
-        "productId": {
-          name: 'productId',
-          type: 'any'
-        },
         "accountId": {
           name: 'accountId',
           type: 'any'
@@ -106,16 +102,12 @@ export class Specification implements SpecificationInterface {
           name: 'productOwnerId',
           type: 'any'
         },
+        "productId": {
+          name: 'productId',
+          type: 'any'
+        },
       },
       relations: {
-        product: {
-          name: 'product',
-          type: 'any',
-          model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'productId',
-          keyTo: 'id'
-        },
         account: {
           name: 'account',
           type: 'any',
@@ -130,6 +122,14 @@ export class Specification implements SpecificationInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'productOwnerId',
+          keyTo: 'id'
+        },
+        product: {
+          name: 'product',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'productId',
           keyTo: 'id'
         },
       }

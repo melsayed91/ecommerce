@@ -9,16 +9,16 @@ export interface RfqInterface {
   "modificationDate"?: Date;
   "isDeleted"?: boolean;
   "id"?: any;
-  "productId"?: any;
   "productOwnerId"?: any;
   "offerIds"?: Array<any>;
   "accountId"?: any;
   "statusId"?: any;
-  product?: any;
+  "productId"?: any;
   productOwner?: any;
   offers?: any[];
   account?: any;
   status?: any;
+  product?: any;
 }
 
 export class Rfq implements RfqInterface {
@@ -29,16 +29,16 @@ export class Rfq implements RfqInterface {
   "modificationDate": Date;
   "isDeleted": boolean;
   "id": any;
-  "productId": any;
   "productOwnerId": any;
   "offerIds": Array<any>;
   "accountId": any;
   "statusId": any;
-  product: any;
+  "productId": any;
   productOwner: any;
   offers: any[];
   account: any;
   status: any;
+  product: any;
   constructor(data?: RfqInterface) {
     Object.assign(this, data);
   }
@@ -101,10 +101,6 @@ export class Rfq implements RfqInterface {
           name: 'id',
           type: 'any'
         },
-        "productId": {
-          name: 'productId',
-          type: 'any'
-        },
         "productOwnerId": {
           name: 'productOwnerId',
           type: 'any'
@@ -122,16 +118,12 @@ export class Rfq implements RfqInterface {
           name: 'statusId',
           type: 'any'
         },
+        "productId": {
+          name: 'productId',
+          type: 'any'
+        },
       },
       relations: {
-        product: {
-          name: 'product',
-          type: 'any',
-          model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'productId',
-          keyTo: 'id'
-        },
         productOwner: {
           name: 'productOwner',
           type: 'any',
@@ -162,6 +154,14 @@ export class Rfq implements RfqInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'statusId',
+          keyTo: 'id'
+        },
+        product: {
+          name: 'product',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'productId',
           keyTo: 'id'
         },
       }

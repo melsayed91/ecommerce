@@ -1,5 +1,5 @@
-FROM common as common
-FROM node:9.2.1
+FROM abz/abz-1/common:0.0.1 as common
+FROM  mhart/alpine-node
 RUN mkdir -p /usr/src/quotations
 RUN mkdir -p /usr/src/common
 COPY --from=common /common /usr/src/common

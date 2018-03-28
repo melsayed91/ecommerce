@@ -14,13 +14,13 @@ export interface ProductInterface {
   "isActive"?: boolean;
   "isDeleted"?: boolean;
   "id"?: any;
+  "accountId"?: any;
   "categoryId"?: any;
+  "attachmentIds"?: Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
-  "accountId"?: any;
-  "attachmentIds"?: Array<any>;
-  category?: any;
   account?: any;
+  category?: any;
   attachments?: any[];
 }
 
@@ -37,13 +37,13 @@ export class Product implements ProductInterface {
   "isActive": boolean;
   "isDeleted": boolean;
   "id": any;
+  "accountId": any;
   "categoryId": any;
+  "attachmentIds": Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
-  "accountId": any;
-  "attachmentIds": Array<any>;
-  category: any;
   account: any;
+  category: any;
   attachments: any[];
   constructor(data?: ProductInterface) {
     Object.assign(this, data);
@@ -131,9 +131,18 @@ export class Product implements ProductInterface {
           name: 'id',
           type: 'any'
         },
+        "accountId": {
+          name: 'accountId',
+          type: 'any'
+        },
         "categoryId": {
           name: 'categoryId',
           type: 'any'
+        },
+        "attachmentIds": {
+          name: 'attachmentIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
         },
         "createdAt": {
           name: 'createdAt',
@@ -143,31 +152,22 @@ export class Product implements ProductInterface {
           name: 'updatedAt',
           type: 'Date'
         },
-        "accountId": {
-          name: 'accountId',
-          type: 'any'
-        },
-        "attachmentIds": {
-          name: 'attachmentIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
       },
       relations: {
-        category: {
-          name: 'category',
-          type: 'any',
-          model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'categoryId',
-          keyTo: 'id'
-        },
         account: {
           name: 'account',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'accountId',
+          keyTo: 'id'
+        },
+        category: {
+          name: 'category',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'categoryId',
           keyTo: 'id'
         },
         attachments: {

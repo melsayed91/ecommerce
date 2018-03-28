@@ -1,10 +1,11 @@
 ### STAGE 1: Build ###
-FROM node:9.2.1 as builder
+FROM mhart/alpine-node as builder
 
 WORKDIR /app
 
 COPY package.json /app/
-
+RUN npm update -g @angular/cli
+RUN npm i -g npm@5.6.0
 RUN npm install
 
 COPY ./ /app/

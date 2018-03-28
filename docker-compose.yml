@@ -1,0 +1,42 @@
+version: '2' 
+services:
+  accountManager:
+    image: abz/abz-1/accountmanager:0.0.1
+    build: american.app.BE/AccountManager
+    ports:
+      - "2222:2222"
+  attachment:
+    image: abz/abz-1/attachment:0.0.1
+    build: american.app.BE/attachment 
+    ports:
+      - "5000:5000"
+  Authorization:
+    image: abz/abz-1/authorization:0.0.1
+    build: american.app.BE/Authorization 
+    ports:
+      - "1111:1111" 
+  Messaging:
+    image: abz/abz-1/messaging:0.0.1
+    build: american.app.BE/Messaging 
+    ports:
+      - "3000:3000" 
+  Products:
+    image: abz/abz-1/products:0.0.1
+    build: american.app.BE/products 
+    ports:
+      - "7777:7777"
+  quotations:
+    image: abz/abz-1/quotations:0.0.1
+    build: american.app.BE/quotations 
+    ports:
+      - "3333:3333"
+  sysCode:
+    image: abz/abz-1/syscode:0.0.1
+    build: american.app.BE/sysCode 
+    ports:
+      - "5555:5555" 
+  frontend:
+    image: abz/abz-1/frontend:0.0.1
+    build: american.app.FE 
+    ports:
+      - "8080:80" 

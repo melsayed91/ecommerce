@@ -12,26 +12,26 @@ export interface AccountDataInterface {
   "mobile"?: string;
   "userCategories"?: Array<any>;
   "id"?: any;
-  "countriesOfOperationIds"?: Array<any>;
-  "countryId"?: any;
-  "disabledCategoriesIds"?: Array<any>;
-  "categoryIds"?: Array<any>;
   "accountId"?: any;
   "customerIds"?: Array<any>;
+  "countriesOfOperationIds"?: Array<any>;
   "galleryIds"?: Array<any>;
   "documentIds"?: Array<any>;
   "profileImageId"?: any;
+  "countryId"?: any;
   "bannerImageId"?: any;
-  countriesOfOperation?: any[];
-  country?: any;
-  disabledCategories?: any[];
-  categories?: any[];
+  "disabledCategoriesIds"?: Array<any>;
+  "categoryIds"?: Array<any>;
   account?: any;
   customers?: any[];
+  countriesOfOperation?: any[];
   gallery?: any[];
   documents?: any[];
   profileImage?: any;
+  country?: any;
   bannerImage?: any;
+  disabledCategories?: any[];
+  categories?: any[];
 }
 
 export class AccountData implements AccountDataInterface {
@@ -45,26 +45,26 @@ export class AccountData implements AccountDataInterface {
   "mobile": string;
   "userCategories": Array<any>;
   "id": any;
-  "countriesOfOperationIds": Array<any>;
-  "countryId": any;
-  "disabledCategoriesIds": Array<any>;
-  "categoryIds": Array<any>;
   "accountId": any;
   "customerIds": Array<any>;
+  "countriesOfOperationIds": Array<any>;
   "galleryIds": Array<any>;
   "documentIds": Array<any>;
   "profileImageId": any;
+  "countryId": any;
   "bannerImageId": any;
-  countriesOfOperation: any[];
-  country: any;
-  disabledCategories: any[];
-  categories: any[];
+  "disabledCategoriesIds": Array<any>;
+  "categoryIds": Array<any>;
   account: any;
   customers: any[];
+  countriesOfOperation: any[];
   gallery: any[];
   documents: any[];
   profileImage: any;
+  country: any;
   bannerImage: any;
+  disabledCategories: any[];
+  categories: any[];
   constructor(data?: AccountDataInterface) {
     Object.assign(this, data);
   }
@@ -138,31 +138,17 @@ export class AccountData implements AccountDataInterface {
           name: 'id',
           type: 'any'
         },
-        "countriesOfOperationIds": {
-          name: 'countriesOfOperationIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
-        "countryId": {
-          name: 'countryId',
-          type: 'any'
-        },
-        "disabledCategoriesIds": {
-          name: 'disabledCategoriesIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
-        "categoryIds": {
-          name: 'categoryIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
         "accountId": {
           name: 'accountId',
           type: 'any'
         },
         "customerIds": {
           name: 'customerIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
+        "countriesOfOperationIds": {
+          name: 'countriesOfOperationIds',
           type: 'Array&lt;any&gt;',
           default: <any>[]
         },
@@ -180,44 +166,26 @@ export class AccountData implements AccountDataInterface {
           name: 'profileImageId',
           type: 'any'
         },
+        "countryId": {
+          name: 'countryId',
+          type: 'any'
+        },
         "bannerImageId": {
           name: 'bannerImageId',
           type: 'any'
         },
+        "disabledCategoriesIds": {
+          name: 'disabledCategoriesIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
+        "categoryIds": {
+          name: 'categoryIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
       },
       relations: {
-        countriesOfOperation: {
-          name: 'countriesOfOperation',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'countriesOfOperationIds',
-          keyTo: 'id'
-        },
-        country: {
-          name: 'country',
-          type: 'any',
-          model: '',
-          relationType: 'belongsTo',
-                  keyFrom: 'countryId',
-          keyTo: 'id'
-        },
-        disabledCategories: {
-          name: 'disabledCategories',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'disabledCategoriesIds',
-          keyTo: 'id'
-        },
-        categories: {
-          name: 'categories',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'categoryIds',
-          keyTo: 'id'
-        },
         account: {
           name: 'account',
           type: 'any',
@@ -232,6 +200,14 @@ export class AccountData implements AccountDataInterface {
           model: '',
           relationType: 'referencesMany',
                   keyFrom: 'customerIds',
+          keyTo: 'id'
+        },
+        countriesOfOperation: {
+          name: 'countriesOfOperation',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'countriesOfOperationIds',
           keyTo: 'id'
         },
         gallery: {
@@ -258,12 +234,36 @@ export class AccountData implements AccountDataInterface {
                   keyFrom: 'profileImageId',
           keyTo: 'id'
         },
+        country: {
+          name: 'country',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'countryId',
+          keyTo: 'id'
+        },
         bannerImage: {
           name: 'bannerImage',
           type: 'any',
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'bannerImageId',
+          keyTo: 'id'
+        },
+        disabledCategories: {
+          name: 'disabledCategories',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'disabledCategoriesIds',
+          keyTo: 'id'
+        },
+        categories: {
+          name: 'categories',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'categoryIds',
           keyTo: 'id'
         },
       }

@@ -4,24 +4,24 @@ var loopback = require('loopback');
 var boot = require('loopback-boot');
 
 var app = module.exports = loopback();
-const StatsToElastic = require('@nearform/stats-to-elasticsearch')
-const statsToElastic = StatsToElastic({
-  elaticsearchConfig: {
-    host: 'localhost:9200',
-    log: 'error',
-    maxRetries: Number.MAX_SAFE_INTEGER,
-    sniffOnStart: true,
-    keepAlive: true,
-    sniffOnConnectionFault: true
-  }, statsConfig: {
+// const StatsToElastic = require('@nearform/stats-to-elasticsearch')
+// const statsToElastic = StatsToElastic({
+//   elaticsearchConfig: {
+//     host: 'localhost:9200',
+//     log: 'error',
+//     maxRetries: Number.MAX_SAFE_INTEGER,
+//     sniffOnStart: true,
+//     keepAlive: true,
+//     sniffOnConnectionFault: true
+//   }, statsConfig: {
 
-  }
-})
+//   }
+// })
 app.start = function () {
   // start the web server
   return app.listen(function () {
     app.emit('started');
-    statsToElastic.start()
+    //statsToElastic.start()
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
     if (app.get('loopback-component-explorer')) {
