@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy,AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RfqApi, Rfq } from "../../common/BE.SDKs/quotations";
 import "rxjs/add/operator/takeWhile";
 
 import { ProductApi } from '../../common/BE.SDKs/Products';
 import { UserService } from '../../core/services/user.service/user.service';
-import {LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
-import {SpecificationApi} from '../../common/BE.SDKs/quotations';
+import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import { SpecificationApi } from '../../common/BE.SDKs/quotations';
 declare var $: any;
 
 @Component({
@@ -14,7 +14,7 @@ declare var $: any;
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit, OnDestroy,AfterViewInit {
+export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   alive: boolean = true;
   attachmentServer: any;
@@ -34,13 +34,14 @@ export class DetailsComponent implements OnInit, OnDestroy,AfterViewInit {
   constructor(private auth: UserService,
     private route: ActivatedRoute,
     private RfquataionApi: RfqApi,
-              private productApi: ProductApi,
-              private specificationApi: SpecificationApi) {
+    private productApi: ProductApi,
+    private specificationApi: SpecificationApi) {
   }
 
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
-    this.currentAccountId = this.auth.account.id;
+    if (this.auth.account)
+      this.currentAccountId = this.auth.account.id;
 
     this.route.params
       .takeWhile(() => this.alive)

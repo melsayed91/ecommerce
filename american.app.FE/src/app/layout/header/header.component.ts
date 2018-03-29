@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {UserService} from '../../core/services/user.service/user.service';
+import { UserService } from '../../core/services/user.service/user.service';
 import {
   ConversationApi,
   RealTime,
@@ -21,15 +21,16 @@ export class HeaderComponent implements OnInit {
   private RoomReference: FireLoopRef<Conversation>;
 
   constructor(private auth: UserService,
-              private ConversationApi: ConversationApi,
-              private realTime: RealTime,
-              private router: Router) {
+    private ConversationApi: ConversationApi,
+    private realTime: RealTime,
+    private router: Router) {
   }
 
   ngOnInit() {
     this.realTime.onReady().subscribe(() => {
       this.RoomReference = this.realTime.FireLoop.ref<Conversation>(Conversation);
-      this.getConversationCount()
+      if (this.auth.account)
+        this.getConversationCount()
     });
 
 
@@ -48,12 +49,11 @@ export class HeaderComponent implements OnInit {
   }
 
   getConversationCount() {
-    debugger;
     this.ConversationApi.getConversations(this.auth.account.id).subscribe((response) => {
       this.conversationCount = response.conversations.length;
       this.conversations = response.conversations;
       this.RoomReference.on('change', {
-        where: {participantIds: this.auth.account.id},
+        where: { participantIds: this.auth.account.id },
         order: 'creationDate DESC',
         limit: 1
       }).subscribe((data: Conversation[]) => {
