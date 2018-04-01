@@ -1,0 +1,140 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../../common/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../../common/mixins",
+      "../common/mixins",
+      "./mixins"
+    ]
+  },
+  "sharedSysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "SysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "getUserProducts": true,
+          "replaceOrCreate": true,
+          "find": true,
+          "findById": true,
+          "placeOrder": true
+        }
+      }
+    }
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sysUser": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "sysUser",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Order": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "placeOrder": true,
+          "find": true,
+          "updateModelAttributes": true,
+          "findById": true
+        }
+      }
+    }
+  },
+  "SharedOrder": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Shipment": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "find": true
+        }
+      }
+    }
+  },
+  "SharedShipment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ShipmentItem": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "SharedShipmentItem": {
+    "dataSource": "americanBizDB",
+    "public": false
+  }
+}

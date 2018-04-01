@@ -22,7 +22,7 @@ services:
       - "3000:3000" 
   Products:
     image: abz/abz-1/products:0.0.1
-    build: american.app.BE/products 
+    build: american.app.BE/Products 
     ports:
       - "7777:7777"
   quotations:
