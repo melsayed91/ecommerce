@@ -7,7 +7,7 @@ services:
       - "2222:2222"
   attachment:
     image: abz/abz-1/attachment:0.0.1
-    build: american.app.BE/attachment 
+    build: american.app.BE/Attachment 
     ports:
       - "5000:5000"
   Authorization:
@@ -27,12 +27,12 @@ services:
       - "7777:7777"
   quotations:
     image: abz/abz-1/quotations:0.0.1
-    build: american.app.BE/quotations 
+    build: american.app.BE/Quotations 
     ports:
       - "3333:3333"
   sysCode:
     image: abz/abz-1/syscode:0.0.1
-    build: american.app.BE/sysCode 
+    build: american.app.BE/SysCode 
     ports:
       - "5555:5555" 
   frontend:
