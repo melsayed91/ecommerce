@@ -32,8 +32,18 @@ module.exports = function (Order) {
                     // Create Shipment Items
                     async.times(shipment.items.length, function (j, itemsNext) {
                         let item = shipment.items[j];
-                        shipmentInstance.items.create(item, itemsNext);
+                        Order.app.models.product.find({ where: { _id: item.productId }, include: ['account'] },
+                            function (error, product) {
+                                var accountDataId = product[0].__data.account.__data.accountDataId.toString();
+                                var model = {
+                                    accountDataId: product[0].__data.account.__data.accountDataId.toString(),
+                                    customerId: orderInstance.ownerId
+                                }
 
+                                Order.app.models.accountData.addCustomer(model, function (err, result) {
+                                    shipmentInstance.items.create(item, itemsNext);
+                                });
+                            });
                     }, function (err, shipmentItemsInstances) {
                         shipmentNext(err, shipmentInstance);
                     })

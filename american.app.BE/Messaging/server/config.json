@@ -22,6 +22,7 @@
       "*": false,
       "addConversation": true,
       "getConversations": true,
+      "addBulkConversation": true,
       "addMessage": true,
       "getMessages": true,
       "markMessageAsSeen": true
