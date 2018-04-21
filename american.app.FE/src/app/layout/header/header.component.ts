@@ -8,6 +8,7 @@ import {
   FireLoopRef,
   Conversation
 } from '../../common/BE.SDKs/Messaging';
+import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
 
 @Component({
   selector: 'header',
@@ -18,6 +19,7 @@ export class HeaderComponent implements OnInit {
 
   conversationCount = 0;
   conversations = [];
+  attachmentServer;
   private RoomReference: FireLoopRef<Conversation>;
 
   constructor(private auth: UserService,
@@ -27,6 +29,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.attachmentServer = attachementApiConfig.getPath();
     this.realTime.onReady().subscribe(() => {
       this.RoomReference = this.realTime.FireLoop.ref<Conversation>(Conversation);
       if (this.auth.account)

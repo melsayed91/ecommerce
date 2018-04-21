@@ -3,11 +3,14 @@
 <div class="card-content">
   <div class="row">
     <div class="col-md-4 scroll-conversations" style="height:400px">
-      <div *ngIf="!conversations.length" class="no-items">
+      <div *ngIf="!conversations.length && !emptyConversations" class="no-items">
         <i class="fa fa-spinner fa-xl fa-spin"></i>
         Loading Conversations...
       </div>
-      <ul class="nav nav-pills nav-pills-rose nav-stacked container_ui">
+      <div *ngIf="emptyConversations" style="text-align: center">
+        No conversations yet!
+      </div>
+      <ul class="nav nav-pills nav-pills-rose nav-stacked container_ui" *ngIf="!emptyConversations">
 
         <li class="conv_list" *ngFor="let row of conversations let i=index" [routerLink]="['/conversation', row.id]" [ngClass]="{'active' : row.id === selectedConversationId}">
 
