@@ -77,8 +77,8 @@ app.use(flash());
 
 passportConfigurator.setupModels({
   userModel: app.models.SysUser,
-  userIdentityModel: app.models.SysUser,
-  userCredentialModel: app.models.SysUser,
+  userIdentityModel: app.models.UserIdentity,
+  userCredentialModel: app.models.UserCredential,
 });
 for (var s in config) {
   var c = config[s];

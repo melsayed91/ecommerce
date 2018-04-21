@@ -10,6 +10,7 @@ export interface AccountDataInterface {
   "zipCode"?: string;
   "phone"?: string;
   "mobile"?: string;
+  "socialImage"?: string;
   "userCategories"?: Array<any>;
   "id"?: any;
   "accountId"?: any;
@@ -43,6 +44,7 @@ export class AccountData implements AccountDataInterface {
   "zipCode": string;
   "phone": string;
   "mobile": string;
+  "socialImage": string;
   "userCategories": Array<any>;
   "id": any;
   "accountId": any;
@@ -128,6 +130,10 @@ export class AccountData implements AccountDataInterface {
         },
         "mobile": {
           name: 'mobile',
+          type: 'string'
+        },
+        "socialImage": {
+          name: 'socialImage',
           type: 'string'
         },
         "userCategories": {

@@ -4,17 +4,7 @@ var utils = require('./utils');
 
 module.exports = function (sysUser) {
 
-  sysUser.socialLogin = function (myUserId, next) {
-    Account.find({
-      where:
-        { id: "5a5bc48125aa403e94c56a0b" },
-      fields: ['data']
-    }, function (error, acc) {
-      if (error)
-        return next(error);
-      return next(null, acc);
-    });
-  }
+
 
   function profileToUser(provider, profile) {
     var email = profile.emails && profile.emails[0] && profile.emails[0].value;
@@ -38,7 +28,7 @@ module.exports = function (sysUser) {
     sysUser.app.models.Account.findOne(
       {
         where: { userId: ctx.result.userId },
-        include: { accountData: ['profileImage', 'country', 'bannerImage', 'countriesOfOperation'] }
+        include: { accountData: ['profileImage', 'country', 'bannerImage', 'countriesOfOperation' , {customers:'accountData'}] }
       },
       function (err, account) {
         ctx.result.account = account;

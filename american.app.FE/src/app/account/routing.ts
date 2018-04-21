@@ -9,6 +9,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
 import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
 import {RequestsComponent} from './requests/requests.component';
+import {CustomersComponent} from './customers/customers.component';
 
 
 export const RegisterRoutes: Routes = [
@@ -21,6 +22,11 @@ export const RegisterRoutes: Routes = [
     path: 'dashboard',
     canActivate: [AuthGuardService],
     component: dashboardComponent
+  },
+  {
+    path: 'customers',
+    canActivate: [AuthGuardService],
+    component: CustomersComponent
   },
   {
     path: 'orders',

@@ -23,6 +23,7 @@ import { ProfileInfoComponent } from './profile/profile-info/profile-info.compon
 import { RequestsComponent } from './requests/requests.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderDetailsComponent } from './orders/details/details.component';
+import { CustomersComponent } from './customers/customers.component';
 
 
 
@@ -51,7 +52,8 @@ import { OrderDetailsComponent } from './orders/details/details.component';
     RequestsComponent,
     ProfileInfoComponent,
     OrdersComponent,
-    OrderDetailsComponent]
+    OrderDetailsComponent,
+    CustomersComponent]
 })
 export class AccountModule {
 

@@ -19,6 +19,14 @@
     "dataSource": "americanBizDB",
     "public": true
   },
+  "userIdentity": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "userCredential": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
   "sharedUser": {
     "dataSource": "americanBizDB",
     "public": false

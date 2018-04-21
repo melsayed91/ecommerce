@@ -30,7 +30,7 @@ module.exports = function (Message) {
       where: {conversationId: conversationId},
 
       include: [{
-        owner: {accountData: "profileImage"}
+        owner: {accountData: ["profileImage","socialImage"]}
       }]
     }, function (error, result) {
       if (error)

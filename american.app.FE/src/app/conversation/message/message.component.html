@@ -8,9 +8,12 @@
     <div class="col-md-12 message-item" *ngFor="let message of messages let i=index" id="{{message.id}}">
 
 
-      <div class="card" [ngClass]="{'authorMessage': message.owner.id == userAccount.id}">
-        <div class="card-header card-header-icon message-image" data-background-color="rose"
-             [style.background-image]="'url('+attachmentServer + message.owner.accountData.profileImage.url +')'">
+      <div class="card"  [ngClass]="{'authorMessage': message.owner.id == userAccount.id}">
+        <div *ngIf="message.owner.accountData.profileImage" class="card-header card-header-icon message-image" data-background-color="rose"
+             [style.background-image]="'url(' + attachmentServer + message.owner.accountData.profileImage.url +')'">
+        </div>
+        <div class="card-header card-header-icon message-image" *ngIf="!message.owner.accountData.profileImage" data-background-color="rose"
+             [style.background-image]="'url(' + message.owner.accountData.socialImage +')'">
         </div>
         <div class="card-content">
           <h4 class="card-title">{{message.text}}</h4>

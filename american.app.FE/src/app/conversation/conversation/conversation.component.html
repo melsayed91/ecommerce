@@ -15,7 +15,8 @@
           <label href='#move'>
             <div class='container_ui__item'>
               <div class='face'>
-                <img src='{{attachmentServer + row.accounts[0].accountData.profileImage.url}}'>
+                <img *ngIf="row.accounts[0].accountData.profileImage" src='{{attachmentServer + row.accounts[0].accountData.profileImage.url}}'>
+                <img *ngIf="!row.accounts[0].accountData.profileImage" src='{{row.accounts[0].accountData.socialImage}}'>
                 <div class='color_bar one' >
                   <p>Now Reading</p>
                   <span>Read</span>

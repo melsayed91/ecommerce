@@ -32,14 +32,8 @@ export class NavbarComponent implements OnInit {
       showTo: 'Individual'
     },
     {
-      name: 'messages',
-      redirectTo: '/account/',
-      text: 'Messages',
-      icon: 'envelope-o'
-    },
-    {
-      name: 'cutomersBase',
-      redirectTo: '/account/',
+      name: 'customers',
+      redirectTo: '/account/customers',
       text: 'Customers Base',
       icon: 'address-card-o',
       showTo: 'Business'

@@ -25,7 +25,9 @@
       "register": true,
       "confirm": true,
       "getBusinessAccounts":true,
-      "approveBusinessAccount":true
+      "getAccountByUser":true,
+      "approveBusinessAccount":true,
+      "socialLogin":true
     }
   }
 }

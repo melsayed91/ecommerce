@@ -1,14 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 
-import { UserService } from '../../core/services/user.service/user.service';
-import { NotifyService } from '../../core/services/notify.service/notify.service';
+import {UserService} from '../../core/services/user.service/user.service';
+import {AccountApi} from '../../common/BE.SDKs/AccountManager';
+import {NotifyService} from '../../core/services/notify.service/notify.service';
 import {
   AuthService,
   FacebookLoginProvider,
   GoogleLoginProvider
 } from 'angular5-social-login';
+import {SDKToken} from "../../common/BE.SDKs/Authorization/models/BaseModels";
+
 declare var $: any;
 
 @Component({
@@ -29,11 +32,26 @@ export class SigninComponent implements OnInit, OnDestroy {
   email;
   password;
   loginFeedback;
-  constructor(
-    private router: Router,
-    private auth: UserService,
-    private NotifyService: NotifyService,
-    private socialAuthService: AuthService) { }
+
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private auth: UserService,
+              private NotifyService: NotifyService,
+              private AccountApi: AccountApi,
+              private socialAuthService: AuthService) {
+
+    this.route.params.subscribe((token: SDKToken) => {
+      if (token.id && token.userId) {
+
+        this.AccountApi.getAccountByUser(token.userId).subscribe((userAccount) => {
+          this.auth.setAccount(userAccount.acc);
+          this.auth.setTokenOfAllSDKs(token);
+          let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+            this.router.navigate([redirect]);
+        });
+      }
+    });
+  }
 
   ngOnInit() {
     // function tt(){
@@ -58,21 +76,25 @@ export class SigninComponent implements OnInit, OnDestroy {
     //   fjs.parentNode.insertBefore(js, fjs);
     // }(document, 'script', 'facebook-jssdk'));
   }
-  socialSignIn(socialPlatform : string) {
+
+  socialSignIn(socialPlatform: string) {
     let socialPlatformProvider;
-    if(socialPlatform == "facebook"){
+    if (socialPlatform == "facebook") {
       socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
-    }else if(socialPlatform == "google"){
+    } else if (socialPlatform == "google") {
+
+        this.router.navigate(['http://localhost:1111/auth/google']);
       socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
     }
     this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
-        console.log(socialPlatform+" sign in data : " , userData);
+        console.log(socialPlatform + " sign in data : ", userData);
         // Now sign-in with userData
       }
     );
   }
-  checkStatus(){
+
+  checkStatus() {
 
     // FB.getLoginStatus((response) => {
     //   debugger;
@@ -104,15 +126,14 @@ export class SigninComponent implements OnInit, OnDestroy {
       return;
     }
     this.loading = true;
-    this.auth.userApi.login({ email: this.email, password: this.password })
+    this.auth.userApi.login({email: this.email, password: this.password})
       .takeWhile(() => this.alive)
       .subscribe((response) => {
-      debugger;
-        this.auth.setAccount(response.account);
-        this.auth.setTokenOfAllSDKs(response);
-        let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
-        this.router.navigate([redirect]);
-      },
+          this.auth.setAccount(response.account);
+          this.auth.setTokenOfAllSDKs(response);
+          let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+          this.router.navigate([redirect]);
+        },
         (err) => {
           this.loading = false;
           if (err.code == 'LOGIN_FAILED')

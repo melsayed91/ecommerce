@@ -1,4 +1,5 @@
 /* tslint:disable */
+export * from './UserIdentity';
 export * from './Account';
 export * from './AccountData';
 export * from './Email';

@@ -10,16 +10,30 @@
     "successRedirect": "/auth/account",
     "scope": ["email"]
   },
+  "google-login": {
+    "provider": "google",
+    "module": "passport-google-oauth",
+    "strategy": "OAuth2Strategy",
+    "clientID": "879896811493-eic5m596rdnmnkgerf0bf56pc7jfertd.apps.googleusercontent.com",
+    "clientSecret": "1qVqBKgA9-hsFu6iHaRdKjcC",
+    "callbackURL": "/auth/google/callback",
+    "authPath": "/auth/google",
+    "callbackPath": "/auth/google/callback",
+    "successRedirect": "/auth/success",
+    "failureRedirect": "/auth/failure",
+    "scope": ["email", "profile"],
+    "failureFlash": true
+  },
   "google-link": {
     "provider": "google",
     "module": "passport-google-oauth",
     "strategy": "OAuth2Strategy",
-    "clientID": "{google-client-id-2}",
-    "clientSecret": "{google-client-secret-2}",
-    "callbackURL": "http://localhost:3000/link/google/callback",
+    "clientID": "879896811493-eic5m596rdnmnkgerf0bf56pc7jfertd.apps.googleusercontent.com",
+    "clientSecret": "1qVqBKgA9-hsFu6iHaRdKjcC",
+    "callbackURL": "http://localhost:2222/venus/Accounts/socialLogin",
     "authPath": "/link/google",
     "callbackPath": "/link/google/callback",
-    "successRedirect": "/link/account",
+    "successRedirect": "http://localhost:4200",
     "scope": ["email", "profile"],
     "link": true
   }
