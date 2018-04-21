@@ -21,6 +21,7 @@ declare var $: any;
 export class MessageComponent implements OnInit {
   @Input() selectedConversationId: "";
   messages = [];
+  emptyMessages = false;
   psMessages: any;
   newMessage: "";
   userAccount;
@@ -50,12 +51,14 @@ export class MessageComponent implements OnInit {
 
 
       this.messages = response.messages;
-      if (this.messages.length) {
+      if (this.messages.length > 0) {
         setTimeout(function () {
           $('.scroll-messages').animate({scrollTop: $('.form-group').height()}, 1);
           const elemSidebar = <HTMLElement>document.querySelector('.scroll-messages');
           this.psMessages = new PerfectScrollbar(elemSidebar, {suppressScrollX: true});
         }.bind(this))
+      } else {
+        this.emptyMessages = true
       }
 
       this.RoomReference.on('change', {

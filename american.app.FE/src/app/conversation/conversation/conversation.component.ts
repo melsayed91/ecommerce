@@ -24,6 +24,7 @@ export class ConversationComponent implements OnInit {
   psMessages: any;
   newMessage: "";
   conversations = [];
+  emptyConversations = false;
   userAccount;
   messages = [];
   selectedConversation: any;
@@ -41,7 +42,7 @@ export class ConversationComponent implements OnInit {
     this.attachmentServer = attachementApiConfig.getPath();
     this.sub = this.route.params.subscribe(params => {
       this.selectedConversationId = params['id'];
-      if(this.conversations.length){
+      if (this.conversations.length) {
         this.selectConversation(this.selectedConversationId);
       } else {
         this.loadConversations();
@@ -57,13 +58,18 @@ export class ConversationComponent implements OnInit {
     let ps = new PerfectScrollbar(elemSidebar, {suppressScrollX: true});
     this.ConversationApi.getConversations(this.userAccount.id).subscribe((response) => {
 
-      this.conversations = response.conversations.map(function (conv) {
-        conv.accounts = conv.accounts.filter(function (acc) {
-          return acc.id !== usrAccId
+      if (response.conversations.length > 0){
+        this.conversations = response.conversations.map(function (conv) {
+          conv.accounts = conv.accounts.filter(function (acc) {
+            return acc.id !== usrAccId
+          });
+          return conv;
         });
-        return conv;
-      });
-      this.selectConversation(this.selectedConversationId);
+        this.selectConversation(this.selectedConversationId);
+      } else {
+        this.emptyConversations = true;
+      }
+
       /* if (this.conversations.length) {
          this.loadMessages(this.conversations[0].id)
          this.selectedConversation = this.conversations[0]
@@ -74,7 +80,7 @@ export class ConversationComponent implements OnInit {
 
   selectConversation(id): any {
     this.selectedConversation = false;
-    setTimeout(function(){
+    setTimeout(function () {
       this.selectedConversation = this.conversations.filter(function (conv) {
         return conv.id === id
       })[0];
@@ -85,7 +91,6 @@ export class ConversationComponent implements OnInit {
     }.bind(this))
 
   }
-
 
 
 }

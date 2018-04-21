@@ -4,17 +4,36 @@ module.exports = function (Conversation) {
 
   Conversation.addConversation = function (conversation, next) {
 
-    conversation.creationDate = new Date();
-    // conversation.participantIds = ["5a753fa771a0a8377431aa17","5a7b437bc30fd92aa4264201"];
+    if(conversation.type === 'private'){
+      Conversation.findOne({where:{participantIds:conversation.participantIds , type:'private'}} , function(err , convo){
+        if (err)
+          return next(err);
 
-    Conversation.create(conversation, function (error, createdConversation) {
-      if (error)
-        return next(error);
+        if(convo){
+          return next(null, convo);
+        } else {
+          conversation.creationDate = new Date();
+          Conversation.create(conversation, function (error, createdConversation) {
+            if (error)
+              return next(error);
 
 
-      return next(null, createdConversation);
+            return next(null, createdConversation);
 
-    });
+          });
+        }
+      })
+    } else {
+      conversation.creationDate = new Date();
+      Conversation.create(conversation, function (error, createdConversation) {
+        if (error)
+          return next(error);
+
+
+        return next(null, createdConversation);
+
+      });
+    }
   }
 
   Conversation.remoteMethod('addConversation', {

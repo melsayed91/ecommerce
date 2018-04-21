@@ -90,6 +90,44 @@ export class ConversationApi extends BaseLoopBackApi {
   }
 
   /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
+   *  - `userIds` – `{any}` - 
+   *
+   *  - `message` – `{text}` - 
+   *
+   *  - `accountId` – `{text}` - 
+   *
+   *  - `conversationType` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `conversations` – `{any}` - 
+   */
+  public addBulkConversation(userIds: any, message: any, accountId: any, conversationType: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Conversations/addBulkConversation";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof userIds !== 'undefined' && userIds !== null) _urlParams.userIds = userIds;
+    if (typeof message !== 'undefined' && message !== null) _urlParams.message = message;
+    if (typeof accountId !== 'undefined' && accountId !== null) _urlParams.accountId = accountId;
+    if (typeof conversationType !== 'undefined' && conversationType !== null) _urlParams.conversationType = conversationType;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
    * The name of the model represented by this $resource,
    * i.e. `Conversation`.
    */
