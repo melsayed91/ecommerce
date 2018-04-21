@@ -5,7 +5,7 @@
       <h3 class="box__header-title">stats</h3>
     </div>
     <div class="box__body">
-      <div class="stats stats--main">
+      <div class="stats stats--main"  *ngIf="isBusinessAccount">
         <div class="stats__amount">120239</div>
         <div class="stats__caption">Product Views</div>
         <div class="stats__change">
@@ -14,7 +14,7 @@
         </div>
       </div>
   
-      <div class="stats">
+      <div class="stats"  *ngIf="isBusinessAccount">
         <div class="stats__amount">87331</div>
         <div class="stats__caption">visitors</div>
         <div class="stats__change">
@@ -24,16 +24,25 @@
       </div>
   
       <div class="stats">
-        <div class="stats__amount">29</div>
+        <div class="stats__amount">{{pendingOrders}}</div>
         <div class="stats__caption">Pending Orders</div>
         <div class="stats__change">
           <div class="stats__value">+78</div>
           <div class="stats__period">this week</div>
         </div>
       </div>
-  
+
       <div class="stats">
-        <div class="stats__amount">1201</div>
+        <div class="stats__amount">{{completedOrders}}</div>
+        <div class="stats__caption">Completed Orders</div>
+        <div class="stats__change">
+          <div class="stats__value">+78</div>
+          <div class="stats__period">this week</div>
+        </div>
+      </div>
+  
+      <div class="stats" *ngIf="isBusinessAccount">
+        <div class="stats__amount">{{customers}}</div>
         <div class="stats__caption">Customers</div>
         <div class="stats__change">
           <div class="stats__value">+3</div>

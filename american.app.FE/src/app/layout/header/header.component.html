@@ -7,13 +7,13 @@
   </div>
 
   <div class="middle">
-    <a>
+    <a (click)="navigateTo('home/services')">
       <i class="fa fa-angle-down"></i>&nbsp;Services</a>
-    <a>
+    <a (click)="navigateTo('home/help')">
       <i class="fa fa-angle-down"></i>&nbsp;Help Center</a>
     <a>
       <i class="fa fa-angle-down"></i>&nbsp;Contact Us</a>
-    <a (click)="navigateTo('/admin/approval')">My Dashbaord</a>
+    <a (click)="navigateTo('/account/dashboard')">My Dashbaord</a>
   </div>
 
   <div *ngIf="!auth.userApi.isAuthenticated()" class="right">
