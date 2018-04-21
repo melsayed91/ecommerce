@@ -45,7 +45,13 @@ import { HeaderComponent } from './layout/header/header.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SearchBarComponent } from './layout/search-bar/search-bar.component';
 
-
+//social login
+import {
+  SocialLoginModule,
+  AuthServiceConfig,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+} from "angular5-social-login";
 
 @NgModule({
   imports: [
@@ -62,7 +68,8 @@ import { SearchBarComponent } from './layout/search-bar/search-bar.component';
     attachmentSDK.SDKBrowserModule.forRoot(),
     productSDK.SDKBrowserModule.forRoot(),
     quotationSDK.SDKBrowserModule.forRoot(),
-    messagingSDK.SDKBrowserModule.forRoot()
+    messagingSDK.SDKBrowserModule.forRoot(),
+    SocialLoginModule
   ],
   declarations: [
     AppComponent,
@@ -71,7 +78,28 @@ import { SearchBarComponent } from './layout/search-bar/search-bar.component';
     SearchBarComponent,
     MainLayoutComponent
   ],
+  providers: [
+      {
+        provide: AuthServiceConfig,
+        useFactory: getAuthServiceConfigs
+      }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
 
+export function getAuthServiceConfigs() {
+  let config = new AuthServiceConfig(
+    [
+      {
+        id: FacebookLoginProvider.PROVIDER_ID,
+        provider: new FacebookLoginProvider("1613101348745849")
+      },
+      {
+        id: GoogleLoginProvider.PROVIDER_ID,
+        provider: new GoogleLoginProvider("879896811493-eic5m596rdnmnkgerf0bf56pc7jfertd")
+      },
+    ]
+);
+  return config;
+}

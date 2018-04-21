@@ -2,9 +2,9 @@
     <div class="col-xs-12 col-sm-6 text-center">
         <h2>Welcome Back!</h2>
         <div class="social-links">
-            <h4 class="fb">
+            <h4 class="fb" (click)="socialSignIn('facebook')">
                 <i class="fa fa-facebook"></i> &nbsp; Connect with Facebook</h4>
-            <h4 class="google">
+            <h4 class="google" (click)="socialSignIn('google')">
                 <i class="fa fa-google"></i> &nbsp; Connect with Google</h4>
         </div>
         <form #signinForm>

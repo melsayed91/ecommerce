@@ -4,7 +4,7 @@
     "connector": "memory"
   },
   "americanBizDB": {
-    "url": "mongodb://amtigerteam:%25nUyQmzop%21@cluster0-shard-00-00-u7gvr.mongodb.net:27017,cluster0-shard-00-01-u7gvr.mongodb.net:27017,cluster0-shard-00-02-u7gvr.mongodb.net:27017/americanBizDB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
+    "url": "mongodb://amtigerteam:%25nUyQmzop!@cluster0-shard-00-00-u7gvr.mongodb.net:27017,cluster0-shard-00-01-u7gvr.mongodb.net:27017,cluster0-shard-00-02-u7gvr.mongodb.net:27017/americanBizDB?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
     "database": "americanBizDB",
     "name": "americanBizDB",
     "connector": "mongodb"
