@@ -11,9 +11,9 @@
       <i class="fa fa-angle-down"></i>&nbsp;Services</a>
     <a (click)="navigateTo('home/help')">
       <i class="fa fa-angle-down"></i>&nbsp;Help Center</a>
-    <a>
-      <i class="fa fa-angle-down"></i>&nbsp;Contact Us</a>
+    <a (click)="navigateTo('/home/contactUs')">&nbsp;Contact Us</a>
     <a (click)="navigateTo('/account/dashboard')">My Dashbaord</a>
+
   </div>
 
   <div *ngIf="!auth.userApi.isAuthenticated()" class="right">
@@ -32,8 +32,23 @@
     </div>
   </div>
 
+
   <div class="right dropdown" *ngIf="auth.userApi.isAuthenticated()">
+
+    <div class="header-icon" [routerLink]="['/conversation', conversations[0]?.id]" >
+      <p>{{conversationCount?conversationCount: 0}}</p>
+      <i class="material-icons">chat</i>
+    </div>
+    <div class="header-icon">
+      <p>5</p>
+      <i class="material-icons">notifications</i>
+    </div>
+    <div class="header-icon" (click)="navigateTo('/order/mycart')">
+      <p>2</p>
+      <i class="material-icons">shopping_cart</i>
+    </div>
     <div class="userName dropdown-toggle" data-toggle="dropdown">
+
       <p>{{getUserName()}}</p>
       <p>{{getUserEmail()}}</p>
       <ul class="dropdown-menu">
@@ -58,18 +73,12 @@
         </li>
       </ul>
     </div>
-    <div class="header-icon" [routerLink]="['/conversation', conversations[0].id]" *ngIf="conversations[0]">
-      <p>{{conversationCount?conversationCount: 0}}</p>
-      <i class="fa fa-comments"></i>
+    <div class="photo header-photo">
+      <img *ngIf="auth.account.accountData.profileImage" [src]="attachmentServer + auth.account.accountData.profileImage?.url" />
+      <img *ngIf="!auth.account.accountData.profileImage" [src]="auth.account.accountData.socialImage" />
     </div>
-    <div class="header-icon">
-      <p>5</p>
-      <i class="fa fa-bell"></i>
-    </div>
-    <div class="header-icon" (click)="navigateTo('/order/mycart')">
-      <p>2</p>
-      <i class="fa fa-shopping-cart"></i>
-    </div>
+
+
   </div>
 
 </nav>
