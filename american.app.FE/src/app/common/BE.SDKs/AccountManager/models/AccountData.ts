@@ -23,6 +23,7 @@ export interface AccountDataInterface {
   "documentIds"?: Array<any>;
   "profileImageId"?: any;
   "bannerImageId"?: any;
+  "cartItemId"?: Array<any>;
   account?: any;
   customers?: any[];
   countriesOfOperation?: any[];
@@ -33,6 +34,7 @@ export interface AccountDataInterface {
   documents?: any[];
   profileImage?: any;
   bannerImage?: any;
+  cartItems?: any[];
 }
 
 export class AccountData implements AccountDataInterface {
@@ -57,6 +59,7 @@ export class AccountData implements AccountDataInterface {
   "documentIds": Array<any>;
   "profileImageId": any;
   "bannerImageId": any;
+  "cartItemId": Array<any>;
   account: any;
   customers: any[];
   countriesOfOperation: any[];
@@ -67,6 +70,7 @@ export class AccountData implements AccountDataInterface {
   documents: any[];
   profileImage: any;
   bannerImage: any;
+  cartItems: any[];
   constructor(data?: AccountDataInterface) {
     Object.assign(this, data);
   }
@@ -190,6 +194,11 @@ export class AccountData implements AccountDataInterface {
           name: 'bannerImageId',
           type: 'any'
         },
+        "cartItemId": {
+          name: 'cartItemId',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
       },
       relations: {
         account: {
@@ -270,6 +279,14 @@ export class AccountData implements AccountDataInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'bannerImageId',
+          keyTo: 'id'
+        },
+        cartItems: {
+          name: 'cartItems',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'cartItemId',
           keyTo: 'id'
         },
       }

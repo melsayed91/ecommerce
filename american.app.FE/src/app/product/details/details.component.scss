@@ -45,12 +45,12 @@
     text-align: center;
     font-size: 25px;
     max-width: 110px;
-      &::-webkit-inner-spin-button, &::-webkit-outer-spin-button { 
-          -webkit-appearance: none; 
-          margin: 0; 
+      &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
         }
     }
-    
+
   span{
         font-weight: bold;
         font-size: 17px;
@@ -61,7 +61,7 @@
     display: flex;
     align-items: center;
 
-    img{   
+    img{
         width: 30px;
         height: 30px;
         border-radius: 100%;

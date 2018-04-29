@@ -4,7 +4,7 @@ module.exports = function (accountData) {
 
   accountData.getAccountData = function (accountDataId, next) {
     accountData.find({
-      where: { _id: accountDataId }, 
+      where: { _id: accountDataId },
       include: ['categories', 'account', 'customers', 'gallery', 'profileImage', 'country',
         'bannerImage']
     },
@@ -22,6 +22,8 @@ module.exports = function (accountData) {
     returns: { arg: 'accountData', type: 'any' },
     http: { path: '/getAccountData', verb: 'post' }
   });
+
+
 
 
   accountData.updateAccountData = function (accountDataId, updatesObject, next) {
@@ -85,5 +87,7 @@ module.exports = function (accountData) {
     returns: { arg: 'accountData', type: 'any' },
     http: { path: '/addOperationCountry', verb: 'post' }
   });
+
+
 
 };

@@ -12,10 +12,10 @@
 
 
       <div class="card"  [ngClass]="{'authorMessage': message.owner.id == userAccount.id}">
-        <div *ngIf="message.owner.accountData.profileImage" class="card-header card-header-icon message-image" data-background-color="rose"
+        <div *ngIf="message.owner.accountData.profileImage" class="card-header card-header-icon message-image" data-background-color=""
              [style.background-image]="'url(' + attachmentServer + message.owner.accountData.profileImage.url +')'">
         </div>
-        <div class="card-header card-header-icon message-image" *ngIf="!message.owner.accountData.profileImage" data-background-color="rose"
+        <div class="card-header card-header-icon message-image" *ngIf="!message.owner.accountData.profileImage" data-background-color=""
              [style.background-image]="'url(' + message.owner.accountData.socialImage +')'">
         </div>
         <div class="card-content">

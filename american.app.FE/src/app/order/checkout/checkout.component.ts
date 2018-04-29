@@ -5,6 +5,7 @@ import "rxjs/add/operator/takeWhile";
 import { UserService } from '../../core/services/user.service/user.service';
 import { Product, ProductApi, OrderApi } from '../../common/BE.SDKs/Products';
 import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import {AccountApi} from '../../common/BE.SDKs/AccountManager';
 
 declare var $: any;
 
@@ -77,6 +78,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private productApi: ProductApi,
     private orderApi: OrderApi,
+    private AccountApi: AccountApi,
     private auth: UserService) {
 
     this.userAccount = this.auth.account;
@@ -102,6 +104,27 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               ]
             })
           })
+      } else {
+        this.AccountApi.getCartItems(this.userAccount.accountDataId).subscribe(response => {
+
+          this.products = response.cartItems.cartItems.map(function(item){
+            this.order.shipments.push({
+              shippingFees: 0,
+              sellerId: item.product.accountId,
+              items: [
+                {
+                  quantity: 1,
+                  total: item.product.price,
+                  productId: item.productId
+                }
+              ]
+            })
+            item.product.orderQuantity = item.quantity;
+            return item.product;
+          }.bind(this));
+        })
+
+
       }
     })
 

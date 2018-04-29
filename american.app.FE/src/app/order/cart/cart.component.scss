@@ -1,0 +1,28 @@
+.stats.cart dt {
+  width: 40%;
+  text-align: left;
+}
+.stats.cart dd, .stats.cart dt {
+  margin-bottom: 5px;
+  color: #818181;
+  float: left;
+}
+
+.quantity{
+  input{
+    border: none;
+    background: none;
+    text-align: center;
+    font-size: 17px;
+    max-width: 30px;
+    &::-webkit-inner-spin-button, &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  span{
+    font-weight: bold;
+    font-size: 17px;
+  }
+}

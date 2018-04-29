@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { RfqApi, Rfq } from "../../common/BE.SDKs/quotations";
+import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {RfqApi, Rfq} from "../../common/BE.SDKs/quotations";
 import "rxjs/add/operator/takeWhile";
 
-import { ProductApi } from '../../common/BE.SDKs/Products';
-import { UserService } from '../../core/services/user.service/user.service';
-import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
-import { SpecificationApi } from '../../common/BE.SDKs/quotations';
+import {ProductApi} from '../../common/BE.SDKs/Products';
+import {UserService} from '../../core/services/user.service/user.service';
+import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
+import {SpecificationApi} from '../../common/BE.SDKs/quotations';
+import {ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+
 declare var $: any;
 
 @Component({
@@ -31,11 +33,13 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   requestSpecificationModel = {};
 
   private subs = [];
+
   constructor(private auth: UserService,
-    private route: ActivatedRoute,
-    private RfquataionApi: RfqApi,
-    private productApi: ProductApi,
-    private specificationApi: SpecificationApi) {
+              private route: ActivatedRoute,
+              private RfquataionApi: RfqApi,
+              private productApi: ProductApi,
+              private shoppingCartApi: ShoppingCartApi,
+              private specificationApi: SpecificationApi) {
   }
 
   ngOnInit() {
@@ -51,7 +55,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.productApi.findById(this.productId, {
           include: [
             "attachments",
-            { "account": { "accountData": "profileImage" } }
+            {"account": {"accountData": "profileImage"}}
           ]
         })
           .takeWhile(() => this.alive)
@@ -67,15 +71,19 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.alive = false;
   }
+
   scrollTo(selector) {
-    $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);
+    $('html, body').animate({scrollTop: $(selector).offset().top}, 1000);
   }
+
   formLoaded(id) {
-    this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
+    this.formValidation = $('#' + id).parsley({trigger: "change keyup"});
   }
+
   validatefield(fieldId) {
     $("#" + fieldId).parsley().validate();
   }
+
   addRfq() {
     this.currentRfq.accountId = this.currentAccountId;
     this.currentRfq['productId'] = this.product.id;
@@ -83,11 +91,13 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
     this.RfquataionApi.addRFQ(this.currentRfq).subscribe(resp => {
       this.showRFQForm = false;
       this.currentRfq = new Rfq();
-    }, err => { })
+    }, err => {
+    })
   }
 
   ngAfterViewInit() {
   }
+
   toggleRequestSpecification() {
     this.requestSpecificationMode = !this.requestSpecificationMode;
   }
@@ -104,6 +114,22 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       this.requestSpecificationMode = false;
       this.requestSpecificationLoading = false;
       this.requestSpecificationModel = {};
+    })
+  }
+
+  addProductToShoppingCart() {
+    this.shoppingCartApi.addCartItem({
+      accountDataId: this.auth.account.accountDataId,
+      productId: this.product.id,
+      quantity: this.quantity
+    }).subscribe(resp => {
+      if(this.auth.account.accountData.cartItemId){
+        this.auth.account.accountData.cartItemId.push(resp.accountData)
+      } else {
+        this.auth.account.accountData.cartItemId = [resp.accountData]
+      }
+      this.auth.setAccount(this.auth.account)
+    }, err => {
     })
   }
 }

@@ -27,7 +27,9 @@
       "getBusinessAccounts":true,
       "getAccountByUser":true,
       "approveBusinessAccount":true,
-      "socialLogin":true
+      "socialLogin":true,
+      "addCartItem":true,
+      "getCartItems":true
     }
   }
 }

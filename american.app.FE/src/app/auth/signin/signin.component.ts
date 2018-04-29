@@ -11,6 +11,9 @@ import {
   GoogleLoginProvider
 } from 'angular5-social-login';
 import {SDKToken} from "../../common/BE.SDKs/Authorization/models/BaseModels";
+import {environment} from '../../../environments/environment';
+import {LoopBackAuth} from '../../common/BE.SDKs/Authorization/services/core/auth.service';
+//import { LoopBackAuth } from '../../../../../core/auth.service';
 
 declare var $: any;
 
@@ -33,21 +36,24 @@ export class SigninComponent implements OnInit, OnDestroy {
   password;
   loginFeedback;
 
+  host = environment.baseUrl;
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private auth: UserService,
               private NotifyService: NotifyService,
               private AccountApi: AccountApi,
+              private LoopBackAuth: LoopBackAuth,
               private socialAuthService: AuthService) {
 
-    this.route.params.subscribe((token: SDKToken) => {
+    this.route.params.subscribe((token: any) => {
       if (token.id && token.userId) {
-
         this.AccountApi.getAccountByUser(token.userId).subscribe((userAccount) => {
+          this.LoopBackAuth.setToken(token);
           this.auth.setAccount(userAccount.acc);
           this.auth.setTokenOfAllSDKs(token);
           let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
-            this.router.navigate([redirect]);
+          this.router.navigate([redirect]);
         });
       }
     });
@@ -83,15 +89,15 @@ export class SigninComponent implements OnInit, OnDestroy {
       socialPlatformProvider = FacebookLoginProvider.PROVIDER_ID;
     } else if (socialPlatform == "google") {
 
-        this.router.navigate(['http://localhost:1111/auth/google']);
-      socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
+      this.router.navigate(['http://localhost:1111/auth/google']);
+      //socialPlatformProvider = GoogleLoginProvider.PROVIDER_ID;
     }
-    this.socialAuthService.signIn(socialPlatformProvider).then(
+    /*this.socialAuthService.signIn(socialPlatformProvider).then(
       (userData) => {
         console.log(socialPlatform + " sign in data : ", userData);
         // Now sign-in with userData
       }
-    );
+    );*/
   }
 
   checkStatus() {

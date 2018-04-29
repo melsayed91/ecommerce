@@ -58,6 +58,22 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+   "shoppingCart": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedShoppingCart": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "AccessToken": {
     "dataSource": "americanBizDB",
     "public": false,

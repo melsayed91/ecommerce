@@ -53,6 +53,8 @@ import { UserIdentityApi } from './services/custom/UserIdentity';
 import { AccountApi } from './services/custom/Account';
 import { AccountDataApi } from './services/custom/AccountData';
 import { EmailApi } from './services/custom/Email';
+import { ShoppingCartApi } from './services/custom/ShoppingCart';
+import { ProductApi } from './services/custom/Product';
 import { SysUserApi } from './services/custom/SysUser';
 /**
 * @module SDKBrowserModule
@@ -89,6 +91,8 @@ export class SDKBrowserModule {
         AccountApi,
         AccountDataApi,
         EmailApi,
+        ShoppingCartApi,
+        ProductApi,
         SysUserApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },

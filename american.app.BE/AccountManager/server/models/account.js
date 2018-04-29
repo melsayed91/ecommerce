@@ -72,6 +72,25 @@ module.exports = function (Account) {
         http: { path: '/getAccountByUser', verb: 'get' }
     });
 
+  Account.getCartItems = function (accountDataId, next) {
+    Account.app.models.accountData.find({
+        where: { _id: accountDataId },
+        include: {cartItems:{product:'attachments'}}
+      },
+      function (error, result) {
+        if (error)
+          return next(error);
+
+        return next(null, result[0]);
+
+      });
+  }
+
+  Account.remoteMethod('getCartItems', {
+    accepts: { arg: 'accountDataId', type: 'string', required: true },
+    returns: { arg: 'cartItems', type: 'any' },
+    http: { path: '/getCartItems', verb: 'post' }
+  });
   Account.getBusinessAccounts = function (next) {
     Account.find({
       where:

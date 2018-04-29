@@ -35,6 +35,15 @@
         "forceId": false
       }
     },
+    "cartItems": {
+      "type": "referencesMany",
+      "model": "shoppingCart",
+      "foreignKey": "cartItemId",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
     "countriesOfOperation": {
       "type": "referencesMany",
       "model": "SysCode",

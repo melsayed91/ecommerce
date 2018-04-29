@@ -87,6 +87,35 @@ export class AccountApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
+   *  - `accountDataId` – `{string}` - 
+   *
+   * @returns {object} An empty reference that will be
+   *   populated with the actual data once the response is returned
+   *   from the server.
+   *
+   * Data properties:
+   *
+   *  - `cartItems` – `{any}` - 
+   */
+  public getCartItems(accountDataId: any, customHeaders?: Function): Observable<any> {
+    let _method: string = "POST";
+    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
+    "/Accounts/getCartItems";
+    let _routeParams: any = {};
+    let _postBody: any = {};
+    let _urlParams: any = {};
+    if (typeof accountDataId !== 'undefined' && accountDataId !== null) _urlParams.accountDataId = accountDataId;
+    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
+    return result;
+  }
+
+  /**
+   * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+   *
+   * @param {object} data Request data.
+   *
    * This method does not accept any data. Supply an empty object.
    *
    * @returns {object} An empty reference that will be

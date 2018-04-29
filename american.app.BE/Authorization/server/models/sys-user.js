@@ -28,7 +28,7 @@ module.exports = function (sysUser) {
     sysUser.app.models.Account.findOne(
       {
         where: { userId: ctx.result.userId },
-        include: { accountData: ['profileImage', 'country', 'bannerImage', 'countriesOfOperation' , {customers:'accountData'}] }
+        include: { accountData: ['profileImage', 'country', 'bannerImage', 'countriesOfOperation', {customers:'accountData'}] }
       },
       function (err, account) {
         ctx.result.account = account;
