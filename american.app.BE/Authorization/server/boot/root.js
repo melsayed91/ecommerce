@@ -7,10 +7,10 @@ module.exports = function (server) {
   router.get('/', server.loopback.status());
 
   router.get('/auth/success', function (req, res, next) {
-    res.redirect(req.headers.referer+'/' + req.accessToken.id + '/' + req.accessToken.userId);
+    res.redirect('http://' + req.headers.host.split(':')[0] + ':4200/auth/signin/' + req.accessToken.id + '/' + req.accessToken.userId);
   });
   router.get('/auth/failure', function (req, res, next) {
-    res.redirect(req.headers.referer+'/' + req.accessToken.id + '/' + req.accessToken.userId);
+    res.redirect(req.headers.referer + '/' + req.accessToken.id + '/' + req.accessToken.userId);
   });
   server.use(router);
 };
