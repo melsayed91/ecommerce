@@ -126,18 +126,28 @@
             </div>
             <div [class.active]="paymentMethod == 'paypal'" (click)="paymentMethod = 'paypal'">
               <img src="../../../assets/img/paypal-logo.png">
+
             </div>
           </div>
 
           <h4>
             <b>Payment Information</b>
           </h4>
-          <stripe-form #stripe (onTokenCreated)="tokenCreated($event)"></stripe-form>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" name="addressSame" checked> Billing Address is the same as the Delivery Address
-            </label>
+
+          <div *ngIf="paymentMethod == 'card'">
+            <stripe-form #stripe (onTokenCreated)="tokenCreated($event)"></stripe-form>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="addressSame" checked> Billing Address is the same as the Delivery Address
+              </label>
+            </div>
           </div>
+          <div *ngIf="paymentMethod == 'paypal'">
+            <paypal-form></paypal-form>
+          </div>
+
+
+          
         </div>
 
         <!-- Review -->
