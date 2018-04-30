@@ -13,7 +13,6 @@ import {
 import {SDKToken} from "../../common/BE.SDKs/Authorization/models/BaseModels";
 import {environment} from '../../../environments/environment';
 import {LoopBackAuth} from '../../common/BE.SDKs/Authorization/services/core/auth.service';
-//import { LoopBackAuth } from '../../../../../core/auth.service';
 
 declare var $: any;
 
@@ -46,17 +45,7 @@ export class SigninComponent implements OnInit, OnDestroy {
               private LoopBackAuth: LoopBackAuth,
               private socialAuthService: AuthService) {
 
-    this.route.params.subscribe((token: any) => {
-      if (token.id && token.userId) {
-        this.AccountApi.getAccountByUser(token.userId).subscribe((userAccount) => {
-          this.LoopBackAuth.setToken(token);
-          this.auth.setAccount(userAccount.acc);
-          this.auth.setTokenOfAllSDKs(token);
-          let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
-          this.router.navigate([redirect]);
-        });
-      }
-    });
+
   }
 
   ngOnInit() {
