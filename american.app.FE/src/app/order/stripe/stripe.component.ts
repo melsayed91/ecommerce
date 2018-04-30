@@ -16,7 +16,7 @@ export class StripeComponent implements OnInit {
 
   ngOnInit() {
     // Create a Stripe client.
-    this.stripe = Stripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+    this.stripe = Stripe('pk_test_LATufUaEHv2L8EB4S8XHumOV');
 
     // Create an instance of Elements.
     var elements = this.stripe.elements();

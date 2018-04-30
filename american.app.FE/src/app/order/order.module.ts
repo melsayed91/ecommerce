@@ -8,6 +8,7 @@ import { OrderRoutes } from './routing';
 import { CartComponent } from './cart/cart.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { StripeComponent } from './stripe/stripe.component';
+import { PaypalComponent } from './paypal/paypal.component';
 
 import { SharedDirectivesModule } from '../common/shared/shared.module';
 
@@ -22,7 +23,8 @@ import { SharedDirectivesModule } from '../common/shared/shared.module';
   declarations: [
     CartComponent,
     CheckoutComponent,
-    StripeComponent
+    StripeComponent,
+    PaypalComponent
   ]
 })
 export class OrderModule { }
