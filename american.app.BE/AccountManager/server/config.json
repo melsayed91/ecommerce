@@ -29,6 +29,8 @@
       "approveBusinessAccount":true,
       "socialLogin":true,
       "addCartItem":true,
+      "updateQuantity":true,
+      "deleteCartItem":true,
       "getCartItems":true
     }
   }
