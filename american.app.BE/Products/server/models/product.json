@@ -27,7 +27,10 @@
       "permission": "ALLOW",
       "property": [
         "getUserProducts",
-        "replaceOrCreate"
+        "replaceOrCreate",
+        "upsert",
+        "suggest",
+        "search"
       ]
     },
     {
@@ -37,7 +40,9 @@
       "permission": "ALLOW",
       "property": [
         "find",
-        "findById"
+        "findById",
+        "suggest",
+        "search"
       ]
     }
   ],
