@@ -2,45 +2,21 @@
     <div class="x" (click)="searchMode = false;"></div>
     <div class="searchInput">
         <span class="fa fa-search"></span>
-        <input id="SearchBarInput" name="SearchBarInput" (click)="searchMode = true;" 
-        [placeholder]="searchPlaceHolder"
-        [(ngModel)]="SearchText">   
+        <input id="SearchBarInput" name="SearchBarInput" (click)="searchMode = true;" (input)="onSearchChange($event.target.value)"
+            [placeholder]="searchPlaceHolder" [(ngModel)]="SearchText">
     </div>
 
     <div *ngIf="searchMode" class="searchResults">
-            <div class="section">
-                <h3>History</h3>
-                <div class="searchItem animated fadeIn">Enim sapiente est eius</div>
-                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
-                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                <div class="searchItem animated fadeIn">Voluptatum</div>
-                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
-                <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                <div class="searchItem animated fadeIn">Sapiente aut delectus</div>
-                
-            </div>
-            <div class="section">
-                    <h3>Saved Items</h3>
-                    <div class="searchItem animated fadeIn">Repellendus Voluptatum</div>
-                    <div class="searchItem animated fadeIn">Accusamus fugiat voluptas et rerum</div>
-                    <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
-                    <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
+        <div class="dummy-column">
+            <h3>Popular Products</h3>
+            <a *ngFor="let row of products" class="dummy-media-object" href="http://twitter.com/sss">
+                <img class="round" [src]="attachmentServer + row.image_url" alt="..." />
+                <h3> {{row.text}}
+                    <span>in ({{row.category}})</span>
+                </h3>
+            </a>
+        </div>
 
-                    
-                </div>
-                <div class="section">
-                        <h3>Popular Products</h3>
-                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                        <div class="searchItem animated fadeIn">Sunt iusto in dolor dolor</div>
-                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                        <div class="searchItem animated fadeIn">Repellendus Voluptatum</div>
-                        <div class="searchItem animated fadeIn">Accusamus fugiat voluptas et rerum</div>
-                        <div class="searchItem animated fadeIn">Voluptatum</div>
-                        <div class="searchItem animated fadeIn">Enim sapiente est eius</div>
-                        <div class="searchItem animated fadeIn">Iphone X Lether Case</div>
-                    </div>
 
     </div>
 </div>

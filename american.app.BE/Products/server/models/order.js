@@ -1,5 +1,13 @@
 'use strict';
 const _ = require('underscore');
+const config = require('../config.local');
+const stripe = require('stripe')(config.stripe_secret_key);
+const paypal = require('paypal-rest-sdk');
+paypal.configure({
+    'mode': config.paypal_mode,
+    'client_id': config.paypal_client_id,
+    'client_secret': config.paypal_client_secret
+});
 const async = require('async');
 const shipmentStatus = require('../../../common/enums/common').shipmentStatus;
 
@@ -49,7 +57,15 @@ module.exports = function (Order) {
                     })
                 });
             }, function (err, shipmentInstances) {
-                next(err, orderInstance)
+                if (orderData.paymentInfo.method === "card") {
+                    stripeCharge(orderData.paymentInfo.token.id, orderData.paymentInfo.total, orderInstance.id.toString(), function (err, charge) {
+                        next(err, orderInstance)
+                    });
+                } else {
+                    paypalCharge(function (err, result) {
+                        next(err, orderInstance)
+                    });
+                }
             });
         });
     }
@@ -64,10 +80,7 @@ module.exports = function (Order) {
         returns: { arg: 'order', type: 'any' },
         http: { path: '/placeorder', verb: 'post' }
     });
-    /**
-       * placeOrder 
-  
-       */
+
     Order.updateModelAttributes = function (id, updateObj, next) {
 
         Order.findById(id, function (err, instance) {
@@ -88,4 +101,29 @@ module.exports = function (Order) {
         returns: { arg: 'order', type: 'any' },
         http: { path: '/updatemodelattributes/:id', verb: 'post' }
     });
+
+
+
+    function stripeCharge(stripeToken, amount, orderId, cb) {
+        stripe.charges.create({
+            amount: amount,
+            currency: 'usd',
+            description: orderId,
+            source: stripeToken,
+        }, function (err, charge) {
+
+            stripe.payouts.create({
+                amount: amount,
+                currency: 'usd',
+
+            }, function (err, payout) {
+                cb(err, charge);
+
+            });
+        });
+    }
+
+    function paypalCharge() {
+        paypal.payment.create({})
+    }
 };

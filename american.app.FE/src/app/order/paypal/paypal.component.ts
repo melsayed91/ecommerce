@@ -37,6 +37,7 @@ export class PaypalComponent implements AfterViewChecked {
             });
         },
         onAuthorize: (data, actions) => {
+            debugger;
             return actions.payment.execute().then((payment) => {
                 // show success page
             });

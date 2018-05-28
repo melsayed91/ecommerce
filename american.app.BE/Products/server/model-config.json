@@ -50,7 +50,9 @@
           "replaceOrCreate": true,
           "find": true,
           "findById": true,
-          "placeOrder": true
+          "placeOrder": true,
+          "suggest":true,
+          "search":true
         }
       }
     }

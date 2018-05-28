@@ -102,6 +102,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   openProductForm(isNew) {
+    debugger
     this.productCategory = undefined;
     this.uploaded = [];
     this.isNew = isNew;
@@ -124,6 +125,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   SaveProduct() {
+    debugger
     if (!this.formValidation.validate())
       return;
     this.loading = 'Saving Product';
@@ -150,7 +152,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
     }
 
 
-    this.ProductApi.replaceOrCreate(data)
+    this.ProductApi.upsert(data)
       .takeWhile(() => this.alive)
       .subscribe((response) => {
         //to avoid reloading the whole list we just add it to the array
