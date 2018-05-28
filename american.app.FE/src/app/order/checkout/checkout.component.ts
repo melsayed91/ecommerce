@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
+import {Router,ActivatedRoute} from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 
-import { UserService } from '../../core/services/user.service/user.service';
-import { Product, ProductApi, OrderApi } from '../../common/BE.SDKs/Products';
-import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
-import {AccountApi} from '../../common/BE.SDKs/AccountManager';
+import {UserService} from '../../core/services/user.service/user.service';
+import {Product, ProductApi, OrderApi} from '../../common/BE.SDKs/Products';
+import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
+import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
 
 declare var $: any;
 
@@ -75,11 +75,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   @ViewChild('stripe') stripeCo;
 
-  constructor(private route: ActivatedRoute,
-    private productApi: ProductApi,
-    private orderApi: OrderApi,
-    private AccountApi: AccountApi,
-    private auth: UserService) {
+  constructor(private router: Router,
+              private route: ActivatedRoute,
+              private productApi: ProductApi,
+              private orderApi: OrderApi,
+              private AccountApi: AccountApi,
+              private ShoppingCartApi: ShoppingCartApi,
+              private auth: UserService) {
 
     this.userAccount = this.auth.account;
     this.order.ownerId = this.userAccount.id;
@@ -88,7 +90,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       if (params['id']) {
         this.isPrototype = true;
         this.productId = params['id'];
-        this.productApi.findById(this.productId, { include: ["attachments"] })
+        this.productApi.findById(this.productId, {include: ["attachments"]})
           .takeWhile(() => this.alive)
           .subscribe((response: Product) => {
             this.products.push(response);
@@ -106,22 +108,27 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           })
       } else {
         this.AccountApi.getCartItems(this.userAccount.accountDataId).subscribe(response => {
+          if (response.cartItems.cartItems.length) {
+            this.products = response.cartItems.cartItems.map(function (item) {
+              this.order.shipments.push({
+                shippingFees: 0,
+                sellerId: item.product.accountId,
+                items: [
+                  {
+                    quantity: 1,
+                    total: item.product.price,
+                    productId: item.productId
+                  }
+                ]
+              })
+              item.product.orderQuantity = item.quantity;
+              return item.product;
+            }.bind(this));
+          } else {
+            let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+            this.router.navigate([redirect]);
+          }
 
-          this.products = response.cartItems.cartItems.map(function(item){
-            this.order.shipments.push({
-              shippingFees: 0,
-              sellerId: item.product.accountId,
-              items: [
-                {
-                  quantity: 1,
-                  total: item.product.price,
-                  productId: item.productId
-                }
-              ]
-            })
-            item.product.orderQuantity = item.quantity;
-            return item.product;
-          }.bind(this));
         })
 
 
@@ -136,12 +143,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   formLoaded() {
-    this.formValidation = $('#shippingForm').parsley({ trigger: "change keyup" });
+    this.formValidation = $('#shippingForm').parsley({trigger: "change keyup"});
   }
 
   ngOnDestroy() {
     this.alive = false;
   }
+
   goNext() {
     switch (this.step) {
       //Proceed to Payment
@@ -168,13 +176,16 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         break;
     }
   }
+
   goTo(step) {
     if (this.step < 4 && this.step > step)
       this.step = step;
   }
+
   deliverySelected(e) {
     this.selectedDelivery = e;
   }
+
   getSubTotal() {
     return this.products.reduce((previous, current) => {
       let price = this.isPrototype ? current.prototypePrice : current.price * current.orderQuantity;
@@ -201,10 +212,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderApi.placeOrder(this.order)
       .takeWhile(() => this.alive)
       .subscribe(response => {
-        this.loading = false;
-        this.orderReference = response.order.orderNo;
-        this.orderId = response.order.id;
-        ++this.step;
+        debugger
+        this.ShoppingCartApi.deleteCartItem({accountDataId: this.auth.account.accountData.id}).subscribe(res => {
+          this.auth.account.accountData.cartItemId = [];
+          this.auth.setAccount(this.auth.account)
+          this.loading = false;
+          this.orderReference = response.order.orderNo;
+          this.orderId = response.order.id;
+          ++this.step;
+        })
       })
   }
 

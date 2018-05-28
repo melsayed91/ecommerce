@@ -33,7 +33,7 @@
   </div>
 
 
-  <div class="right dropdown" *ngIf="auth.userApi.isAuthenticated()">
+  <div class="right dropdown" *ngIf="auth.userApi.isAuthenticated()"  >
 
     <div class="header-icon" [routerLink]="['/conversation', conversations[0]?.id]">
       <p>{{conversationCount?conversationCount: 0}}</p>

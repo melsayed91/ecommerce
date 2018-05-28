@@ -52,6 +52,7 @@ import {
   GoogleLoginProvider,
   FacebookLoginProvider,
 } from "angular5-social-login";
+import {HeaderService} from "./common/shared/services/header";
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import {
       {
         provide: AuthServiceConfig,
         useFactory: getAuthServiceConfigs
-      }
+      },
+    HeaderService
   ],
   bootstrap: [AppComponent]
 })

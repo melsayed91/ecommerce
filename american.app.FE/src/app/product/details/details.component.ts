@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import {RfqApi, Rfq} from "../../common/BE.SDKs/quotations";
 import "rxjs/add/operator/takeWhile";
 
@@ -35,6 +35,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   private subs = [];
 
   constructor(private auth: UserService,
+              private router: Router,
               private route: ActivatedRoute,
               private RfquataionApi: RfqApi,
               private productApi: ProductApi,
@@ -85,6 +86,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addRfq() {
+    if (!this.auth.account) {
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+      this.router.navigate([redirect]);
+      return;
+    }
     this.currentRfq.accountId = this.currentAccountId;
     this.currentRfq['productId'] = this.product.id;
     this.currentRfq['productOwnerId'] = this.product.accountId;
@@ -103,7 +109,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   requestSpecification() {
-
+    if (!this.auth.account) {
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+      this.router.navigate([redirect]);
+      return;
+    }
     this.requestSpecificationLoading = true;
     this.specificationApi.addSpecification({
       productId: this.product.id,
@@ -118,12 +128,27 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addProductToShoppingCart() {
+    if (!this.auth.account) {
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+      this.router.navigate([redirect]);
+      return;
+    }
     this.shoppingCartApi.addCartItem({
       accountDataId: this.auth.account.accountDataId,
       productId: this.product.id,
       quantity: this.quantity
     }).subscribe(resp => {
-      if(this.auth.account.accountData.cartItemId){
+      $.notify({
+        message: 'We added <b>' + this.product.name + '</b> to your shopping cart!'
+      }, {
+        type: 'primary',
+        timer: 1000,
+        placement: {
+          from: 'bottom',
+          align: 'right'
+        }
+      });
+      if (this.auth.account.accountData.cartItemId) {
         this.auth.account.accountData.cartItemId.push(resp.accountData)
       } else {
         this.auth.account.accountData.cartItemId = [resp.accountData]
