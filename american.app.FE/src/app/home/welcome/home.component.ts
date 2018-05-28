@@ -4,13 +4,14 @@ import {ProductApi} from '../../common/BE.SDKs/Products';
 import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
 
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 
 import {UserService} from '../../core/services/user.service/user.service';
-import {AccountApi} from '../../common/BE.SDKs/AccountManager';
+import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
 import {LoopBackAuth} from '../../common/BE.SDKs/Authorization/services/core/auth.service';
 import {HeaderService} from '../../common/shared/services/header';
 
+declare var $: any;
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,9 +31,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private productApi: ProductApi,
               private route: ActivatedRoute,
+              private router: Router,
               private auth: UserService,
               private AccountApi: AccountApi,
               private HeaderService: HeaderService,
+              private shoppingCartApi: ShoppingCartApi,
               private LoopBackAuth: LoopBackAuth) {
     this.route.params.subscribe((token: any) => {
       if (token.id && token.userId) {
@@ -55,5 +58,34 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.products = response;
       })
   }
-
+  addProductToShoppingCart(product) {
+    if (!this.auth.account) {
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/auth/signin';
+      this.router.navigate([redirect]);
+      return;
+    }
+    this.shoppingCartApi.addCartItem({
+      accountDataId: this.auth.account.accountDataId,
+      productId: product.id,
+      quantity: 1
+    }).subscribe(resp => {
+      $.notify({
+        message: 'We added <b>' + product.name + '</b> to your shopping cart!'
+      }, {
+        type: 'primary',
+        timer: 1000,
+        placement: {
+          from: 'bottom',
+          align: 'right'
+        }
+      });
+      if (this.auth.account.accountData.cartItemId) {
+        this.auth.account.accountData.cartItemId.push(resp.accountData)
+      } else {
+        this.auth.account.accountData.cartItemId = [resp.accountData]
+      }
+      this.auth.setAccount(this.auth.account)
+    }, err => {
+    })
+  }
 }

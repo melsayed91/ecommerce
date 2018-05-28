@@ -26,7 +26,7 @@
   'vendor/ng2-autocomplete',
   'vendor/file-input';
 
-  
+
 
 // 3. Base stuff
 @import
@@ -85,3 +85,17 @@
 // 7. Themes
 @import
 'themes/default';
+
+@import '~ngx-bar-rating/themes/br-default-theme';
+@import '~ngx-bar-rating/themes/br-fontawesome-o-theme';
+@import '~ngx-bar-rating/themes/br-bootstrap-theme';
+@import '~ngx-bar-rating/themes/br-fontawesome-theme';
+@import '~ngx-bar-rating/themes/br-stars-theme';
+
+
+
+
+
+
+
+.br-units .br-fraction:after{content:'\f123';color:#EDB867}

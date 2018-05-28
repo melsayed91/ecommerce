@@ -1,93 +1,96 @@
 {
-    "name": "sharedProduct",
-    "base": "PersistedModel",
-    "idInjection": true,
-    "options": {
-        "validateUpsert": true
+  "name": "sharedProduct",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "mixins": {
+    "TimeStamp": true
+  },
+  "properties": {
+    "name": {
+      "type": "string",
+      "required": true
     },
-    "mixins": {
-        "TimeStamp": true
+    "description": {
+      "type": "string",
+      "required": true
     },
-    "properties": {
-        "name": {
-            "type": "string",
-            "required": true
-        },
-        "description": {
-            "type": "string",
-            "required": true
-        },
-        "returnPeriode": {
-            "type": "Number",
-            "required": true,
-            "default": 0
-        },
-        "warrantyPeriod": {
-            "type": "Number",
-            "required": true,
-            "default": 0
-        },
-        "price": {
-            "type": "Number",
-            "required": true
-        },
-        "prototypePrice": {
-            "type": "Number",
-            "required": true
-        },
-        "moq": {
-            "type": "Number",
-            "required": true,
-            "default": 1
-        },
-        "specs": {
-            "type": [
-                "object"
-            ]
-        },
-        "stock": {
-            "type": "Number",
-            "required": true
-        },
-        "isActive": {
-            "type": "Boolean",
-            "default": true
-        },
-        "isDeleted": {
-            "type": "Boolean",
-            "default": false
-        }
+    "returnPeriode": {
+      "type": "Number",
+      "required": true,
+      "default": 0
     },
-    "validations": [],
-    "relations": {
-        "account": {
-            "type": "belongsTo",
-            "model": "Account",
-            "foreignKey": "accountId"
-        },
-        "category": {
-            "type": "belongsTo",
-            "model": "SysCode",
-            "foreignKey": "categoryId"
-        },
-        "attachments": {
-            "type": "referencesMany",
-            "model": "attachment",
-            "foreignKey": "attachmentIds",
-            "options": {
-                "validate": true,
-                "forceId": false
-            }
-        }
+    "warrantyPeriod": {
+      "type": "Number",
+      "required": true,
+      "default": 0
     },
-    "acls": [
-        {
-            "accessType": "EXECUTE",
-            "principalType": "ROLE",
-            "principalId": "$owner",
-            "permission": "ALLOW",
-            "property": "updateUserProduct"
-        }
-    ],
-    "methods": {}
+    "price": {
+      "type": "Number",
+      "required": true
+    },
+    "prototypePrice": {
+      "type": "Number",
+      "required": true
+    },
+    "moq": {
+      "type": "Number",
+      "required": true,
+      "default": 1
+    },
+    "specs": {
+      "type": [
+        "object"
+      ]
+    },
+    "stock": {
+      "type": "Number",
+      "required": true
+    },
+    "isActive": {
+      "type": "Boolean",
+      "default": true
+    },
+    "isDeleted": {
+      "type": "Boolean",
+      "default": false
+    },
+    "rating": {
+      "type": "Number"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "category": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "categoryId"
+    },
+    "attachments": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "attachmentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    }
+  },
+  "acls": [
+    {
+      "accessType": "EXECUTE",
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "updateUserProduct"
+    }
+  ],
+  "methods": {}
 }

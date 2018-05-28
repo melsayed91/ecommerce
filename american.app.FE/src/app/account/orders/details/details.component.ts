@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 
-import { UserService } from '../../../core/services/user.service/user.service';
-import { OrderApi } from '../../../common/BE.SDKs/Products';
-import { SysCodeApi } from '../../../common/BE.SDKs/sysCodes';
-import { LoopBackConfig as attachementApiConfig } from '../../../common/BE.SDKs/attachment';
+import {UserService} from '../../../core/services/user.service/user.service';
+import {OrderApi, ProductReviewApi} from '../../../common/BE.SDKs/Products';
+import {SysCodeApi} from '../../../common/BE.SDKs/sysCodes';
+import {LoopBackConfig as attachementApiConfig} from '../../../common/BE.SDKs/attachment';
+
+declare var $: any;
 
 @Component({
   selector: 'app-details',
@@ -14,18 +16,21 @@ import { LoopBackConfig as attachementApiConfig } from '../../../common/BE.SDKs/
 })
 export class OrderDetailsComponent implements OnInit {
   order: any;
+  selectedProduct: any;
+  reviewRating: Number = 0;
+  reviewText: string;
   attachmentServer: string;
   orders: any[];
   alive: any = true;
   userAccount;
 
-  statusOptions = {
-  }
+  statusOptions = {}
 
   constructor(private auth: UserService,
-    private orderApi: OrderApi,
-    private sysCodeService: SysCodeApi,
-    private route: ActivatedRoute) {
+              private orderApi: OrderApi,
+              private productReviewApi: ProductReviewApi,
+              private sysCodeService: SysCodeApi,
+              private route: ActivatedRoute) {
     this.userAccount = this.auth.account;
   }
 
@@ -83,10 +88,47 @@ export class OrderDetailsComponent implements OnInit {
 
   updateOrder(status) {
     this.order.status = status;
-    this.orderApi.updateModelAttributes(this.order.id, { statusId: status.id })
+    this.orderApi.updateModelAttributes(this.order.id, {statusId: status.id})
       .takeWhile(() => this.alive)
       .subscribe(response => {
-        console.log(response)
+        $.notify({
+          message: 'You successfully changed the order status to <b>' + status.name + '</b> !'
+        }, {
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
+      });
+  }
+
+  submitReview() {
+
+    let reviewObject = {
+      rating: this.reviewRating,
+      ownerId: this.userAccount.id,
+      productId: this.selectedProduct.id
+    };
+    if (this.reviewText && this.reviewText.length) {
+      reviewObject['text'] = this.reviewText;
+    }
+    this.productReviewApi.addProductReview(reviewObject)
+      .takeWhile(() => this.alive)
+      .subscribe(response => {
+        this.reviewText = '';
+        this.reviewRating = 0;
+        $.notify({
+          message: 'Thank you for the feedback!'
+        }, {
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
       });
   }
 

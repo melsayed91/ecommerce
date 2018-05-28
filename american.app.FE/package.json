@@ -58,6 +58,7 @@
     "ng2-file-input": "^1.1.0",
     "ng2-nouislider": "1.6.1",
     "ng2-select": "1.2.0",
+    "ngx-bar-rating": "^1.1.0",
     "ngx-chips": "1.4.6",
     "nouislider": "9.2.0",
     "parsleyjs": "^2.8.0",

@@ -82,6 +82,10 @@
                         <h5 class="no-margin">{{item.product.name}}</h5>
                         <p>Qty: {{item.quantity}}</p>
                         <p>Subtotal: $ {{item.total.toFixed(2)}}</p>
+                      <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
+                              class="btn btn-raised btn-default btn-sm" (click)="selectedProduct = item.product;reviewRating = 0;reviewText = ''" data-toggle="modal" data-target="#myModal">
+                        Rate Product
+                      </button>
                     </div>
                 </div>
 
@@ -102,4 +106,30 @@
             <div class="background-masker footer"></div>
         </div>
     </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+          <i class="material-icons">clear</i>
+        </button>
+        <h4 class="modal-title">Rate Your Experience</h4>
+      </div>
+      <div class="modal-body" *ngIf="selectedProduct">
+        <div class="product-img">
+          <img class="lg" width="100" [src]="attachmentServer + selectedProduct.attachments[0]?.url">
+        </div>
+        <div>
+          <h2>{{selectedProduct.name}}</h2>
+
+          <bar-rating [(rate)]="rate" [max]="5" [(ngModel)]="reviewRating" [theme]="'fontawesome'"></bar-rating>
+        </div>
+        <textarea *ngIf="reviewRating > 0" class="form-control" type="text" rows="3" [(ngModel)]="reviewText" placeholder="Write your review!"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button *ngIf="reviewRating > 0" type="button" class="btn btn-primary" data-dismiss="modal"  (click)="submitReview()">submit</button>
+      </div>
+    </div>
+  </div>
 </div>

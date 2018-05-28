@@ -18,8 +18,15 @@
 //     background-size: 800px 104px;
 //     position: relative;
 // }
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .placeholder-home{
-    
+
 .background-masker {
     background: #fff;
     position: absolute;
@@ -34,41 +41,41 @@
         height: 5px;
         width: 100%;
     }
-    
+
     &.header-left{
         top: 5px;
         left: 0;
         width: 10px;
         height: 25px;
     }
-    
+
     &.header-right{
         top: 5px;
         right: 0;
         width: 10px;
-        height: 25px;        
+        height: 25px;
     }
 
-    
-  
+
+
     &.header2-bottom{
         top: 40px;
         height: 20px;
         width: 100%;
     }
-    
+
     &.header2-left{
         top: 35px;
         left: 0;
         width: 10px;
         height: 10px;
     }
-    
+
     &.header2-right{
         top: 35px;
         right: 0;
         width: 10px;
-        height: 10px;        
+        height: 10px;
     }
 
     &.footer{
@@ -87,7 +94,9 @@
         height: 111px;
         width: 30px;
     }
+
 }
+
 
 
 }

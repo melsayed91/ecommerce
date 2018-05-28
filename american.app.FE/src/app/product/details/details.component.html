@@ -12,6 +12,8 @@
     </div>
     <div class="col-xs-12 col-md-6 animated-250 fadeInRight">
       <h3 class="no-margin">{{product.name}}</h3>
+      <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
+
       <div class="seller">
         <span>Sold by:</span>
         <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
@@ -65,7 +67,7 @@
           <button class="btn btn-fab btn-primary btn-simple" (click)="quantity = +quantity+1;">+</button>
         </div>
       </div>
-      <button class="btn btn-raised btn-primary" (click)="addProductToShoppingCart()">
+      <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#noticeModal">
         <i class="fa fa-shopping-cart"></i>&nbsp;&nbsp;&nbsp;Add to Cart
       </button>
       <button class="btn btn-raised btn-primary" (click)="showRFQForm=true;scrollTo('#productDetails')">
@@ -233,11 +235,54 @@
                 </div>
               </div>
               <div class="tab-pane" id="Reviews">
-
+                <div class="col-md-12 message-item" *ngFor="let review of productReviews let i=index" id="{{review.id}}">
+                  <div class="card">
+                    <div *ngIf="review.owner.accountData.profileImage" class="card-header card-header-icon message-image" data-background-color=""
+                         [style.background-image]="'url(' + attachmentServer + review.owner.accountData.profileImage.url +')'">
+                    </div>
+                    <div class="card-header card-header-icon message-image" *ngIf="!review.owner.accountData.profileImage" data-background-color=""
+                         [style.background-image]="'url(' + review.owner.accountData.socialImage +')'">
+                    </div>
+                    <div class="card-content">
+                      <h4 class="card-title">{{review.text}}</h4>
+                      <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="noticeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-notice">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="material-icons">clear</i></button>
+        <h5 class="modal-title" id="myModalLabel">Return Policy!</h5>
+      </div>
+      <div class="modal-body" *ngIf="product">
+        <div class="instruction">
+          <div class="row">
+            <div class="col-md-8">
+              <strong>1. Step One</strong>
+              <p>The first step is to create an account at
+                <a href="https://www.creative-tim.com/">Creative Tim</a>. You can choose a social network or go for the classic version, whatever works best for you.</p>
+            </div>
+            <div class="col-md-4">
+              <div class="picture">
+                <img class="img-rounded img-responsive" [src]="attachmentServer + product.attachments[0]?.url">
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>If you have more questions, don't hesitate to contact us or send us a tweet @creativetim. We're here to help!</p>
+      </div>
+      <div class="modal-footer text-center">
+        <button type="button" class="btn btn-primary btn-round" data-dismiss="modal"  (click)="addProductToShoppingCart()">ADD</button>
       </div>
     </div>
   </div>

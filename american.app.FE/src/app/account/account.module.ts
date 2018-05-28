@@ -24,6 +24,7 @@ import { RequestsComponent } from './requests/requests.component';
 import { OrdersComponent } from './orders/orders.component';
 import { OrderDetailsComponent } from './orders/details/details.component';
 import { CustomersComponent } from './customers/customers.component';
+import { BarRatingModule } from "ngx-bar-rating";
 
 
 
@@ -36,7 +37,8 @@ import { CustomersComponent } from './customers/customers.component';
     MaterialModule,
     SharedVendorsModule,
     SharedDirectivesModule,
-    Ng2FileInputModule.forRoot()
+    Ng2FileInputModule.forRoot(),
+    BarRatingModule
   ],
   declarations: [
     dashboardComponent,

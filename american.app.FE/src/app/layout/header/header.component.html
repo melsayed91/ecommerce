@@ -44,8 +44,8 @@
       <i class="material-icons">notifications</i>
     </div>
     <div class="header-icon" (click)="navigateTo('/order/mycart')">
-      <p *ngIf="!auth.account.accountData.cartItemId">0</p>
-      <p *ngIf="auth.account.accountData.cartItemId">{{auth.account.accountData.cartItemId.length}}</p>
+      <p *ngIf="!auth.account?.accountData.cartItemId">0</p>
+      <p *ngIf="auth.account?.accountData.cartItemId">{{auth.account?.accountData.cartItemId.length}}</p>
       <i class="material-icons">shopping_cart</i>
     </div>
     <div class="userName dropdown-toggle" data-toggle="dropdown">

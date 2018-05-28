@@ -3,7 +3,7 @@ import {Router, ActivatedRoute} from '@angular/router';
 import {RfqApi, Rfq} from "../../common/BE.SDKs/quotations";
 import "rxjs/add/operator/takeWhile";
 
-import {ProductApi} from '../../common/BE.SDKs/Products';
+import {ProductApi, ProductReviewApi} from '../../common/BE.SDKs/Products';
 import {UserService} from '../../core/services/user.service/user.service';
 import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
 import {SpecificationApi} from '../../common/BE.SDKs/quotations';
@@ -20,6 +20,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   alive: boolean = true;
   attachmentServer: any;
+  productReviews: any;
   product;
   productId: string;
   selectedImage;
@@ -40,6 +41,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
               private RfquataionApi: RfqApi,
               private productApi: ProductApi,
               private shoppingCartApi: ShoppingCartApi,
+              private productReviewApi: ProductReviewApi,
               private specificationApi: SpecificationApi) {
   }
 
@@ -64,6 +66,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
             this.quantity = this.product.moq;
+          })
+        this.productReviewApi.getReviews(this.productId)
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
+            this.productReviews = response.reviews;
           })
       })
   }
@@ -129,7 +136,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addProductToShoppingCart() {
     if (!this.auth.account) {
-      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/auth/signin';
       this.router.navigate([redirect]);
       return;
     }

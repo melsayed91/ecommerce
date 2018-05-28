@@ -136,5 +136,22 @@
   "SharedShipmentItem": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "productReview": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "addProductReview": true,
+          "getReviews": true
+        }
+      }
+    }
+  },
+  "sharedProductReview": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

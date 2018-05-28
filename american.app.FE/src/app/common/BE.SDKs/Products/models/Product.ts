@@ -13,6 +13,7 @@ export interface ProductInterface {
   "stock": number;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
+  "rating"?: number;
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
@@ -36,6 +37,7 @@ export class Product implements ProductInterface {
   "stock": number;
   "isActive": boolean;
   "isDeleted": boolean;
+  "rating": number;
   "id": any;
   "accountId": any;
   "categoryId": any;
@@ -126,6 +128,10 @@ export class Product implements ProductInterface {
           name: 'isDeleted',
           type: 'boolean',
           default: false
+        },
+        "rating": {
+          name: 'rating',
+          type: 'number'
         },
         "id": {
           name: 'id',
