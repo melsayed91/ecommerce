@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path')
+var LoopBackContext = require('loopback-context');
 var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 var elasticsearch = require('elasticsearch');
 var es = new elasticsearch.Client({
@@ -71,7 +72,7 @@ module.exports = function (product) {
                             }
                         }
                     }, function (err, response, status) {
-                        if(err && err.status ==404){
+                        if (err && err.status == 404) {
                             es.create({
                                 index: GLOBAL_CONFIG.es_products_index_name,
                                 type: GLOBAL_CONFIG.es_products_index_type,
@@ -95,7 +96,7 @@ module.exports = function (product) {
                             }, function (err, response, status) {
                                 next();
                             });
-                        }else{
+                        } else {
                             next();
                         }
                     });
@@ -129,18 +130,54 @@ module.exports = function (product) {
     }
 
     product.search = function (text, next) {
+        var query = {
+            match_all: {}
+        }
+
+        if (text) {
+            query = {
+                match: {
+                    name: text
+                }
+            }
+        }
+
         es.search({
             index: GLOBAL_CONFIG.es_products_index_name,
             type: GLOBAL_CONFIG.es_products_index_type,
-            // sort: [
-            //     { "views": "desc" },
-            //     { "sells": "desc" },
-            //     "_score"
-            // ],
             body: {
+                sort: [
+                    { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+                    { "views": { "order": "desc", "unmapped_type": "long" } },
+                    { "sells": { "order": "desc", "unmapped_type": "long" } },
+                    { "rate": { "order": "desc", "unmapped_type": "long" } },
+                    "_score"
+                ],
+                query: query
+            }
+        }, function (err, response, status) {
+            if (err)
+                return next(err);
+            return next(null, response);
+        });
+    }
+
+    product.catalog = function (accountId, next) {
+        var ctx = LoopBackContext.getCurrentContext();
+        es.search({
+            index: GLOBAL_CONFIG.es_products_index_name,
+            type: GLOBAL_CONFIG.es_products_index_type,
+            body: {
+                sort: [
+                    { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+                    { "views": { "order": "desc", "unmapped_type": "long" } },
+                    { "sells": { "order": "desc", "unmapped_type": "long" } },
+                    { "rate": { "order": "desc", "unmapped_type": "long" } },
+                    "_score"
+                ],
                 query: {
-                    match: {
-                        name: text
+                    term: {
+                        companyId: accountId
                     }
                 }
             }
@@ -216,8 +253,13 @@ module.exports = function (product) {
     });
 
     product.remoteMethod('search', {
-        accepts: { arg: 'text', type: 'string', required: true },
+        accepts: { arg: 'text', type: 'string' },
         returns: { arg: 'result', type: 'any' },
         http: { path: '/search', verb: 'post' }
+    });
+    product.remoteMethod('catalog', {
+        accepts: { arg: 'accountId', type: 'string', required: true },
+        returns: { arg: 'result', type: 'any' },
+        http: { path: '/catalog', verb: 'post' }
     });
 };

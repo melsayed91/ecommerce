@@ -4,23 +4,21 @@
   <div class="col-lg-2 col-md-6" *ngFor="let product of products let i=index">
     <div class="card card-product">
       <div class="card-image" data-header-animation="true">
-        <a [routerLink]="[ '/product/details' , product.id]">
-          <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.attachments[0].url">
+        <a [routerLink]="[ '/product/details' , product._id]">
+          <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
         </a>
       </div>
       <div class="card-content">
         <div class="card-actions">
-          <button type="button" class="btn btn-default btn-simple"  matTooltip="View" [matTooltipPosition]="'below'"
-                  [routerLink]="[ '/product/details' , product.id]">
+          <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
             <i class="material-icons">art_track</i>
           </button>
-          <button type="button" class="btn btn-primary btn-simple"  matTooltip="Add To Cart" [matTooltipPosition]="'below'"
-          (click)="addProductToShoppingCart(product)">
+          <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
             <i class="material-icons">add_shopping_cart</i>
           </button>
         </div>
         <h4 class="card-title" style="height: 50px;overflow: hidden;">
-          <a [routerLink]="[ '/product/details' , product.id]">{{product.name}}</a>
+          <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
         </h4>
         <div class="card-description truncate">
           {{product.description}}
@@ -31,31 +29,10 @@
           <h4 class="text-primary">${{product.price}}</h4>
           <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
         </div>
-        <!-- <div class="pull-right">
-           <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
-           &lt;!&ndash;<p class="category"><i class="material-icons">place</i> Barcelona, Spain</p>&ndash;&gt;
-         </div>-->
+
       </div>
     </div>
   </div>
-  <!--<div
-    *ngFor="let product of products let i=index"
-    [class]="'product card animated-250 fadeInLeft animation-delay-'+i"
-    [routerLink]="[ '/product/details' , product.id]">
-    <div class="picture" [style.background-image]="'url('+attachmentServer + product.attachments[0].url+')'">
-    </div>
-    <div class="title">{{product.name}}</div>
-    <div>
-
-    </div>
-
-    <div class="footer">
-
-      <h4 class="text-primary">${{product.price}}</h4>
-      <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
-    </div>
-
-  </div>-->
 </div>
 
 <div class="products" *ngIf="products.length == 0">

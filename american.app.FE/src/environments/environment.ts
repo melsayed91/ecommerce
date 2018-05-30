@@ -5,7 +5,8 @@
 
 export const environment = {
   production: false,
-  baseUrl:'192.168.112.131',
-  paypal_env:'sandbox',
-  paypal_clientID:'Aab6Rvb-QgbXC8uNlNDGD06pwCX8nc4hPv66KjcHKxwkeumAMzhxaHL9AY-2z3JgA-McsyX9nSxkY7v6'
+  baseUrl: 'localhost',
+  default_products_page_size: 10,
+  paypal_env: 'sandbox',
+  paypal_clientID: 'Aab6Rvb-QgbXC8uNlNDGD06pwCX8nc4hPv66KjcHKxwkeumAMzhxaHL9AY-2z3JgA-McsyX9nSxkY7v6'
 };

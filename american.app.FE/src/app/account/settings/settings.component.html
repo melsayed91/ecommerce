@@ -2,7 +2,74 @@
 
 
 <div *ngIf="userAccount?.accountType == 'Individual'" class="page-content animated-500 fadeIn">
-    Individual
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <i class="material-icons">settings</i>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">Search Settings -
+                                <small class="category">If you set your settings , it will affect all your search operations</small>
+                            </h4>
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating">
+                                            <mat-select placeholder="Locations" name="city" multiple>
+                                                <mat-option *ngFor="let city of cities" [value]="city.value">
+                                                    {{ city.viewValue }}
+                                                </mat-option>
+                                            </mat-select>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" checked>Show Related Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" checked>Show New Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" checked>Show Hot Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-rose pull-right">Update Settings</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div *ngIf="userAccount?.accountType == 'Business'" class="page-content animated-500 fadeIn">
@@ -25,7 +92,7 @@
                             </div>
                         </div>
 
-                         <!-- Regular:
+                        <!-- Regular:
                         <tag-input [(ngModel)]='blacklistCustomers' theme='filled-theme'></tag-input> -->
                     </div>
                 </div>

@@ -30,7 +30,8 @@
         "replaceOrCreate",
         "upsert",
         "suggest",
-        "search"
+        "search",
+        "catalog"
       ]
     },
     {
@@ -42,7 +43,8 @@
         "find",
         "findById",
         "suggest",
-        "search"
+        "search",
+        "catalog"
       ]
     }
   ],
