@@ -38,7 +38,8 @@ module.exports = function (ProductReview) {
 
           var avgRating = (1 * star1 + 2 * star2 + 3 * star3 + 4 * star4 + 5 * star5) / allProductReview.length;
 
-          ProductReview.app.models.Product.update({_id: review.productId}, {rating: avgRating}, function (err, result) {
+          let rateInfo = {average: avgRating,total : allProductReview.length}
+          ProductReview.app.models.Product.update({_id: review.productId}, {rating: rateInfo}, function (err, result) {
 
           })
         }

@@ -27,7 +27,14 @@
       <div class="card-footer">
         <div class="price">
           <h4 class="text-primary">${{product.price}}</h4>
-          <bar-rating [(rate)]="product.rating" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating>
+          <span *ngIf="product.rating">
+            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
+                        [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+          </span>
+          <span *ngIf="!product.rating">
+          <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
+                      [theme]="'fontawesome'"></bar-rating> (0)
+          </span>
         </div>
 
       </div>

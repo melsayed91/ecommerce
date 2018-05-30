@@ -58,7 +58,7 @@
       "default": false
     },
     "rating": {
-      "type": "Number"
+      "type": "object"
     }
   },
   "validations": [],
