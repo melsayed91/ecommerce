@@ -4,220 +4,226 @@ const path = require('path')
 var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 var elasticsearch = require('elasticsearch');
 var es = new elasticsearch.Client({
-    host: GLOBAL_CONFIG.es_hostname,
-    log: 'trace'
+  host: GLOBAL_CONFIG.es_hostname,
+  log: 'trace'
 });
 
 module.exports = function (product) {
 
 
-    product.observe("after save", function (ctx, next) {
-        var currentProduct = ctx.instance
+  product.observe("after save", function (ctx, next) {
+    var productId = {};
 
-        product.findById(currentProduct.id.toString(),
-            {
-                include: [
-                    "attachments",
-                    "category",
-                    { "account": { "accountData": "profileImage" } }
-                ]
-            }, function (err, productDetails) {
+    if(ctx.instance){
+      productId = ctx.instance.id.toString()
+    } else {
+      productId = ctx.where._id;
+    }
+    product.findById(productId,
+      {
+        include: [
+          "attachments",
+          "category",
+          {"account": {"accountData": "profileImage"}}
+        ]
+      }, function (err, productDetails) {
 
-                if (ctx.isNewInstance) {
-                    es.create({
-                        index: GLOBAL_CONFIG.es_products_index_name,
-                        type: GLOBAL_CONFIG.es_products_index_type,
-                        refresh: true,
-                        id: productDetails.id.toString(),
-                        body: {
-                            views: 0,
-                            sells: 0,
-                            rate: 0,
-                            name: productDetails.name,
-                            price: productDetails.price,
-                            categoryId: productDetails.categoryId,
-                            category: productDetails.__data.category.__data.name,
-                            description: productDetails.description,
-                            companyId: productDetails.accountId,
-                            company: productDetails.__data.account.__data.accountData.__data.name,
-                            stock: productDetails.stock,
-                            createdAt: productDetails.createdAt,
-                            image_url: productDetails.__data.attachments[0].__data.url
-                        }
-                    }, function (err, response, status) {
-                        next();
-                    });
-                } else {
-                    es.update({
-                        index: GLOBAL_CONFIG.es_products_index_name,
-                        type: GLOBAL_CONFIG.es_products_index_type,
-                        refresh: true,
-                        id: productDetails.id.toString(),
-                        body: {
-                            doc: {
-                                views: 0,
-                                sells: 0,
-                                rate: 0,
-                                name: productDetails.name,
-                                price: productDetails.price,
-                                categoryId: productDetails.categoryId,
-                                category: productDetails.__data.category.__data.name,
-                                description: productDetails.description,
-                                companyId: productDetails.accountId,
-                                company: productDetails.__data.account.__data.accountData.__data.name,
-                                stock: productDetails.stock,
-                                createdAt: productDetails.createdAt,
-                                image_url: productDetails.__data.attachments[0].__data.url
-                            }
-                        }
-                    }, function (err, response, status) {
-                        if(err && err.status ==404){
-                            es.create({
-                                index: GLOBAL_CONFIG.es_products_index_name,
-                                type: GLOBAL_CONFIG.es_products_index_type,
-                                refresh: true,
-                                id: productDetails.id.toString(),
-                                body: {
-                                    views: 0,
-                                    sells: 0,
-                                    rate: 0,
-                                    name: productDetails.name,
-                                    price: productDetails.price,
-                                    categoryId: productDetails.categoryId,
-                                    category: productDetails.__data.category.__data.name,
-                                    description: productDetails.description,
-                                    companyId: productDetails.accountId,
-                                    company: productDetails.__data.account.__data.accountData.__data.name,
-                                    stock: productDetails.stock,
-                                    createdAt: productDetails.createdAt,
-                                    image_url: productDetails.__data.attachments[0].__data.url
-                                }
-                            }, function (err, response, status) {
-                                next();
-                            });
-                        }else{
-                            next();
-                        }
-                    });
-                }
 
-            });
-    });
-
-    product.suggest = function (prefix, next) {
-        es.search({
+        if (ctx.isNewInstance) {
+          es.create({
             index: GLOBAL_CONFIG.es_products_index_name,
             type: GLOBAL_CONFIG.es_products_index_type,
+            refresh: true,
+            id: productDetails.id.toString(),
             body: {
-                suggest: {
-                    products: {
-                        prefix: prefix,
-                        completion: {
-                            field: "name.completion",
-                            fuzzy: {
-                                fuzziness: "auto"
-                            }
-                        }
-                    }
-                }
+              views: 0,
+              sells: 0,
+              rating: productDetails.rating,
+              name: productDetails.name,
+              price: productDetails.price,
+              categoryId: productDetails.categoryId,
+              category: productDetails.__data.category.__data.name,
+              description: productDetails.description,
+              companyId: productDetails.accountId,
+              company: productDetails.__data.account.__data.accountData.__data.name,
+              stock: productDetails.stock,
+              createdAt: productDetails.createdAt,
+              image_url: productDetails.__data.attachments[0].__data.url
             }
-        }, function (err, response, status) {
-            if (err)
-                return next(err);
-            return next(null, response);
-        });
-    }
-
-    product.search = function (text, next) {
-        es.search({
+          }, function (err, response, status) {
+            next();
+          });
+        } else {
+          es.update({
             index: GLOBAL_CONFIG.es_products_index_name,
             type: GLOBAL_CONFIG.es_products_index_type,
-            // sort: [
-            //     { "views": "desc" },
-            //     { "sells": "desc" },
-            //     "_score"
-            // ],
+            refresh: true,
+            id: productDetails.id.toString(),
             body: {
-                query: {
-                    match: {
-                        name: text
-                    }
-                }
+              doc: {
+                views: 0,
+                sells: 0,
+                rating: productDetails.rating,
+                name: productDetails.name,
+                price: productDetails.price,
+                categoryId: productDetails.categoryId,
+                category: productDetails.__data.category.__data.name,
+                description: productDetails.description,
+                companyId: productDetails.accountId,
+                company: productDetails.__data.account.__data.accountData.__data.name,
+                stock: productDetails.stock,
+                createdAt: productDetails.createdAt,
+                image_url: productDetails.__data.attachments[0].__data.url
+              }
             }
-        }, function (err, response, status) {
-            if (err)
-                return next(err);
-            return next(null, response);
-        });
-    }
+          }, function (err, response, status) {
+            if (err && err.status === 404) {
+              es.create({
+                index: GLOBAL_CONFIG.es_products_index_name,
+                type: GLOBAL_CONFIG.es_products_index_type,
+                refresh: true,
+                id: productDetails.id.toString(),
+                body: {
+                  views: 0,
+                  sells: 0,
+                  rate: 0,
+                  name: productDetails.name,
+                  price: productDetails.price,
+                  categoryId: productDetails.categoryId,
+                  category: productDetails.__data.category.__data.name,
+                  description: productDetails.description,
+                  companyId: productDetails.accountId,
+                  company: productDetails.__data.account.__data.accountData.__data.name,
+                  stock: productDetails.stock,
+                  createdAt: productDetails.createdAt,
+                  image_url: productDetails.__data.attachments[0].__data.url
+                }
+              }, function (err, response, status) {
+                next();
+              });
+            } else {
+              next();
+            }
+          });
+        }
 
-    product.getUserProducts = function (accountId, categoryId, next) {
+      });
+  });
 
-        var whereFilter = { isDeleted: false, accountId: accountId };
-
-        if (categoryId)
-            whereFilter.categoryId = categoryId;
-
-        product.find({
-            where: whereFilter, include: ['category', 'attachments']
-        }, function (error, products) {
-            if (error)
-                return next(error);
-
-            return next(null, products);
-
-        })
-    }
-
-    product.deleteUserProduct = function (productId, next) {
-        product.update({ _id: productId }, { isDeleted: true }, function (error, result) {
-            if (error)
-                return next(error);
-
-            return next(null, result);
-
-        })
-    }
-
-    product.updateUserProduct = function (updateObj, next) {
-        product.update({ _id: updateObj.productId }, updateObj.data, function (error, result) {
-            if (error)
-                return next(error);
-
-            return next(null, result);
-
-        })
-    }
-
-    product.remoteMethod('getUserProducts', {
-        accepts: [
-            { arg: 'accountId', type: 'string', required: true },
-            { arg: 'categoryId', type: 'string' }],
-        returns: { arg: 'products', type: 'any' },
-        http: { path: '/getUserProducts', verb: 'post' }
+  product.suggest = function (prefix, next) {
+    es.search({
+      index: GLOBAL_CONFIG.es_products_index_name,
+      type: GLOBAL_CONFIG.es_products_index_type,
+      body: {
+        suggest: {
+          products: {
+            prefix: prefix,
+            completion: {
+              field: "name.completion",
+              fuzzy: {
+                fuzziness: "auto"
+              }
+            }
+          }
+        }
+      }
+    }, function (err, response, status) {
+      if (err)
+        return next(err);
+      return next(null, response);
     });
+  }
 
-    product.remoteMethod('updateUserProduct', {
-        accepts: { arg: 'updateObj', type: 'object', required: true },
-        returns: { arg: 'result', type: 'any' },
-        http: { path: '/updateUserProduct', verb: 'post' }
+  product.search = function (text, next) {
+    es.search({
+      index: GLOBAL_CONFIG.es_products_index_name,
+      type: GLOBAL_CONFIG.es_products_index_type,
+      // sort: [
+      //     { "views": "desc" },
+      //     { "sells": "desc" },
+      //     "_score"
+      // ],
+      body: {
+        query: {
+          match: {
+            name: text
+          }
+        }
+      }
+    }, function (err, response, status) {
+      if (err)
+        return next(err);
+      return next(null, response);
     });
+  }
 
-    product.remoteMethod('deleteUserProduct', {
-        accepts: { arg: 'productId', type: 'string', required: true },
-        returns: { arg: 'result', type: 'any' },
-        http: { path: '/deleteUserProduct', verb: 'delete' }
-    });
+  product.getUserProducts = function (accountId, categoryId, next) {
 
-    product.remoteMethod('suggest', {
-        accepts: { arg: 'prefix', type: 'string', required: true },
-        returns: { arg: 'result', type: 'any' },
-        http: { path: '/suggest', verb: 'post' }
-    });
+    var whereFilter = {isDeleted: false, accountId: accountId};
 
-    product.remoteMethod('search', {
-        accepts: { arg: 'text', type: 'string', required: true },
-        returns: { arg: 'result', type: 'any' },
-        http: { path: '/search', verb: 'post' }
-    });
+    if (categoryId)
+      whereFilter.categoryId = categoryId;
+
+    product.find({
+      where: whereFilter, include: ['category', 'attachments']
+    }, function (error, products) {
+      if (error)
+        return next(error);
+
+      return next(null, products);
+
+    })
+  }
+
+  product.deleteUserProduct = function (productId, next) {
+    product.update({_id: productId}, {isDeleted: true}, function (error, result) {
+      if (error)
+        return next(error);
+
+      return next(null, result);
+
+    })
+  }
+
+  product.updateUserProduct = function (updateObj, next) {
+    product.update({_id: updateObj.productId}, updateObj.data, function (error, result) {
+      if (error)
+        return next(error);
+
+      return next(null, result);
+
+    })
+  }
+
+  product.remoteMethod('getUserProducts', {
+    accepts: [
+      {arg: 'accountId', type: 'string', required: true},
+      {arg: 'categoryId', type: 'string'}],
+    returns: {arg: 'products', type: 'any'},
+    http: {path: '/getUserProducts', verb: 'post'}
+  });
+
+  product.remoteMethod('updateUserProduct', {
+    accepts: {arg: 'updateObj', type: 'object', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/updateUserProduct', verb: 'post'}
+  });
+
+  product.remoteMethod('deleteUserProduct', {
+    accepts: {arg: 'productId', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/deleteUserProduct', verb: 'delete'}
+  });
+
+  product.remoteMethod('suggest', {
+    accepts: {arg: 'prefix', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/suggest', verb: 'post'}
+  });
+
+  product.remoteMethod('search', {
+    accepts: {arg: 'text', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/search', verb: 'post'}
+  });
 };
