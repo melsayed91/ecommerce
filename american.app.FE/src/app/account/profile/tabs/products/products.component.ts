@@ -102,7 +102,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   openProductForm(isNew) {
-    debugger
     this.productCategory = undefined;
     this.uploaded = [];
     this.isNew = isNew;
@@ -144,7 +143,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       "attachmentIds": this.isNew ? uploadedAtchmentIds : this.product.attachmentIds.concat(uploadedAtchmentIds),
       "specs": this.product.specs,
       "returnPeriode": this.returnAccepted ? this.product.returnPeriode : 0,
-      "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0
+      "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0,
+      "rating":this.product.rating
     };
 
     if (!this.isNew) {
