@@ -1,10 +1,13 @@
 'use strict';
 
 var loopback = require('loopback');
+var LoopBackContext = require('loopback-context');
 var boot = require('loopback-boot');
-
+require('cls-hooked');
 var app = module.exports = loopback();
 
+app.use(LoopBackContext.perRequest());
+app.use(loopback.token());
 app.start = function() {
   // start the web server
   return app.listen(function() {

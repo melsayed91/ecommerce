@@ -30,7 +30,8 @@
         "replaceOrCreate",
         "upsert",
         "suggest",
-        "search"
+        "search",
+        "catalog"
       ]
     },
     {
@@ -43,6 +44,7 @@
         "findById",
         "suggest",
         "search",
+        "catalog",
         "incrementProductViews"
       ]
     }

@@ -54,7 +54,8 @@
           "findById": true,
           "placeOrder": true,
           "suggest":true,
-          "search":true
+          "search":true,
+          "catalog":true
         }
       }
     }

@@ -57,8 +57,15 @@
                 "sells": {
                     "type": "integer"
                 },
-                "rate": {
-                    "type": "float"
+                "rating": {
+                    "properties": {
+                        "average": {
+                            "type": "float"
+                        },
+                        "total": {
+                           "type": "integer"
+                        }
+                    }
                 },
                 "categoryId": {
                     "type": "text"

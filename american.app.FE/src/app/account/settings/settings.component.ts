@@ -8,6 +8,10 @@ import { UserService } from '../../core/services/user.service/user.service';
 export class SettingsComponent implements OnInit {
   userAccount;
   blacklistCustomers;
+  cities=[
+    { viewValue:"Cairo",value:1},
+    { viewValue: "Dubai", value: 2 },
+  ]
   constructor(private auth: UserService) {
     this.userAccount = this.auth.account;
   }

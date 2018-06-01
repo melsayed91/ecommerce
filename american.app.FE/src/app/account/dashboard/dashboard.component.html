@@ -2,52 +2,86 @@
 
 <div class="box">
     <div class="box__header">
-      <h3 class="box__header-title">stats</h3>
+      <h3 class="box__header-title">Metrics</h3>
     </div>
     <div class="box__body">
       <div class="stats stats--main"  *ngIf="isBusinessAccount">
-        <div class="stats__amount">120239</div>
+        <div class="stats__amount">{{productsView}}</div>
         <div class="stats__caption">Product Views</div>
-        <div class="stats__change">
-          <div class="stats__value stats__value--positive">+6%</div>
-          <div class="stats__period">this week</div>
-        </div>
       </div>
-  
-      <div class="stats"  *ngIf="isBusinessAccount">
-        <div class="stats__amount">87331</div>
-        <div class="stats__caption">visitors</div>
-        <div class="stats__change">
-          <div class="stats__value stats__value--negative">-12%</div>
-          <div class="stats__period">this week</div>
-        </div>
-      </div>
-  
       <div class="stats">
         <div class="stats__amount">{{pendingOrders}}</div>
         <div class="stats__caption">Pending Orders</div>
-        <div class="stats__change">
-          <div class="stats__value">+78</div>
-          <div class="stats__period">this week</div>
-        </div>
       </div>
 
       <div class="stats">
         <div class="stats__amount">{{completedOrders}}</div>
         <div class="stats__caption">Completed Orders</div>
-        <div class="stats__change">
-          <div class="stats__value">+78</div>
-          <div class="stats__period">this week</div>
-        </div>
       </div>
   
       <div class="stats" *ngIf="isBusinessAccount">
         <div class="stats__amount">{{customers}}</div>
         <div class="stats__caption">Customers</div>
-        <div class="stats__change">
-          <div class="stats__value">+3</div>
-          <div class="stats__period">this week</div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="isBusinessAccount">
+    <h3>Products Catalog</h3>
+    
+    <div class="products" *ngIf="products.length > 0">
+      <div class="col-lg-2 col-md-6" *ngFor="let product of products let i=index">
+        <div class="card card-product">
+          <div class="card-image" data-header-animation="true">
+            <a [routerLink]="[ '/product/details' , product._id]">
+              <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
+            </a>
+          </div>
+          <div class="card-content">
+            <div class="card-actions">
+              <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+                <i class="material-icons">art_track</i>
+              </button>
+              <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+                <i class="material-icons">add_shopping_cart</i>
+              </button>
+            </div>
+            <h4 class="card-title" style="height: 50px;overflow: hidden;">
+              <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+            </h4>
+            <div class="card-description truncate">
+              {{product.description}}
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price">
+              <h4 class="text-primary">${{product.price}}</h4>
+              <span *ngIf="product.rating">
+                <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+              </span>
+              <span *ngIf="!product.rating">
+                <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+              </span>
+            </div>
         </div>
+      </div>
+    </div>
+    
+    <div class="products" *ngIf="products.length == 0">
+      <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6,7,8]">
+        <div class="background-masker header-top"></div>
+        <div class="background-masker header-left"></div>
+        <div class="background-masker header-right"></div>
+        <div class="background-masker header-bottom"></div>
+        <div class="background-masker header2-left"></div>
+        <div class="background-masker header2-right"></div>
+        <div class="background-masker header2-bottom"></div>
+    
+        <div class="background-masker left"></div>
+        <div class="background-masker right"></div>
+    
+        <div class="background-masker footer"></div>
       </div>
     </div>
   </div>

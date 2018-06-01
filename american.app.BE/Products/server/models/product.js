@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path')
+var LoopBackContext = require('loopback-context');
 var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 var elasticsearch = require('elasticsearch');
 var es = new elasticsearch.Client({
@@ -14,7 +15,7 @@ module.exports = function (product) {
   product.observe("after save", function (ctx, next) {
     var productId = {};
 
-    if(ctx.instance){
+    if (ctx.instance) {
       productId = ctx.instance.id.toString()
     } else {
       productId = ctx.where._id;
@@ -24,7 +25,7 @@ module.exports = function (product) {
         include: [
           "attachments",
           "category",
-          {"account": {"accountData": "profileImage"}}
+          { "account": { "accountData": "profileImage" } }
         ]
       }, function (err, productDetails) {
 
@@ -38,7 +39,10 @@ module.exports = function (product) {
             body: {
               views: productDetails.views,
               sells: productDetails.sells,
-              rating: productDetails.rating,
+              rating: {
+                average: 0,
+                total: 0
+              },
               name: productDetails.name,
               price: productDetails.price,
               categoryId: productDetails.categoryId,
@@ -63,7 +67,10 @@ module.exports = function (product) {
               doc: {
                 views: productDetails.views,
                 sells: productDetails.sells,
-                rating: productDetails.rating,
+                rating: productDetails.rating ? productDetails.rating : {
+                  average: 0,
+                  total: 0
+                },
                 name: productDetails.name,
                 price: productDetails.price,
                 categoryId: productDetails.categoryId,
@@ -86,7 +93,10 @@ module.exports = function (product) {
                 body: {
                   views: productDetails.views,
                   sells: productDetails.sells,
-                  rating: productDetails.rating,
+                  rating: productDetails.rating ? productDetails.rating : {
+                    average: 0,
+                    total: 0
+                  },
                   name: productDetails.name,
                   price: productDetails.price,
                   categoryId: productDetails.categoryId,
@@ -135,18 +145,56 @@ module.exports = function (product) {
   }
 
   product.search = function (text, next) {
+    var query = {
+      match_all: {}
+    }
+
+    if (text) {
+      query = {
+        match: {
+          name: text
+        }
+      }
+    }
+
     es.search({
       index: GLOBAL_CONFIG.es_products_index_name,
       type: GLOBAL_CONFIG.es_products_index_type,
-      // sort: [
-      //     { "views": "desc" },
-      //     { "sells": "desc" },
-      //     "_score"
-      // ],
       body: {
+        track_scores: true,
+        sort: [
+          { "sells": { "order": "desc", "unmapped_type": "long" } },
+          { "rating.average": { "order": "desc", "unmapped_type": "long" } },
+          { "views": { "order": "desc", "unmapped_type": "long" } },
+          { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+          "_score"
+        ],
+        query: query
+      }
+    }, function (err, response, status) {
+      if (err)
+        return next(err);
+      return next(null, response);
+    });
+  }
+
+  product.catalog = function (accountId, next) {
+    var ctx = LoopBackContext.getCurrentContext();
+    es.search({
+      index: GLOBAL_CONFIG.es_products_index_name,
+      type: GLOBAL_CONFIG.es_products_index_type,
+      body: {
+        track_scores: true,
+        sort: [
+          { "sells": { "order": "desc", "unmapped_type": "long" } },
+          { "rating.average": { "order": "desc", "unmapped_type": "long" } },
+          { "views": { "order": "desc", "unmapped_type": "long" } },
+          { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+          "_score"
+        ],
         query: {
-          match: {
-            name: text
+          term: {
+            companyId: accountId
           }
         }
       }
@@ -159,7 +207,7 @@ module.exports = function (product) {
 
   product.getUserProducts = function (accountId, categoryId, next) {
 
-    var whereFilter = {isDeleted: false, accountId: accountId};
+    var whereFilter = { isDeleted: false, accountId: accountId };
 
     if (categoryId)
       whereFilter.categoryId = categoryId;
@@ -176,7 +224,7 @@ module.exports = function (product) {
   }
 
   product.deleteUserProduct = function (productId, next) {
-    product.update({_id: productId}, {isDeleted: true}, function (error, result) {
+    product.update({ _id: productId }, { isDeleted: true }, function (error, result) {
       if (error)
         return next(error);
 
@@ -186,7 +234,7 @@ module.exports = function (product) {
   }
 
   product.updateUserProduct = function (updateObj, next) {
-    product.update({_id: updateObj.productId}, updateObj.data, function (error, result) {
+    product.update({ _id: updateObj.productId }, updateObj.data, function (error, result) {
       if (error)
         return next(error);
 
@@ -213,10 +261,10 @@ module.exports = function (product) {
 
   product.remoteMethod('getUserProducts', {
     accepts: [
-      {arg: 'accountId', type: 'string', required: true},
-      {arg: 'categoryId', type: 'string'}],
-    returns: {arg: 'products', type: 'any'},
-    http: {path: '/getUserProducts', verb: 'post'}
+      { arg: 'accountId', type: 'string', required: true },
+      { arg: 'categoryId', type: 'string' }],
+    returns: { arg: 'products', type: 'any' },
+    http: { path: '/getUserProducts', verb: 'post' }
   });
 
   product.remoteMethod('incrementProductSells', {
@@ -231,26 +279,31 @@ module.exports = function (product) {
     http: {path: '/incrementProductViews', verb: 'post'}
   });
   product.remoteMethod('updateUserProduct', {
-    accepts: {arg: 'updateObj', type: 'object', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/updateUserProduct', verb: 'post'}
+    accepts: { arg: 'updateObj', type: 'object', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/updateUserProduct', verb: 'post' }
   });
 
   product.remoteMethod('deleteUserProduct', {
-    accepts: {arg: 'productId', type: 'string', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/deleteUserProduct', verb: 'delete'}
+    accepts: { arg: 'productId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/deleteUserProduct', verb: 'delete' }
   });
 
   product.remoteMethod('suggest', {
-    accepts: {arg: 'prefix', type: 'string', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/suggest', verb: 'post'}
+    accepts: { arg: 'prefix', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/suggest', verb: 'post' }
   });
 
   product.remoteMethod('search', {
-    accepts: {arg: 'text', type: 'string', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/search', verb: 'post'}
+    accepts: { arg: 'text', type: 'string' },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/search', verb: 'post' }
+  });
+  product.remoteMethod('catalog', {
+    accepts: { arg: 'accountId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/catalog', verb: 'post' }
   });
 };
