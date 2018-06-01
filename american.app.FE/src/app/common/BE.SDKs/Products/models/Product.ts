@@ -13,7 +13,9 @@ export interface ProductInterface {
   "stock": number;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
-  "rating"?: number;
+  "rating"?: any;
+  "views"?: number;
+  "sells"?: number;
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
@@ -37,7 +39,9 @@ export class Product implements ProductInterface {
   "stock": number;
   "isActive": boolean;
   "isDeleted": boolean;
-  "rating": number;
+  "rating": any;
+  "views": number;
+  "sells": number;
   "id": any;
   "accountId": any;
   "categoryId": any;
@@ -131,7 +135,17 @@ export class Product implements ProductInterface {
         },
         "rating": {
           name: 'rating',
-          type: 'number'
+          type: 'any'
+        },
+        "views": {
+          name: 'views',
+          type: 'number',
+          default: 0
+        },
+        "sells": {
+          name: 'sells',
+          type: 'number',
+          default: 0
         },
         "id": {
           name: 'id',

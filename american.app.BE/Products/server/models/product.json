@@ -42,7 +42,8 @@
         "find",
         "findById",
         "suggest",
-        "search"
+        "search",
+        "incrementProductViews"
       ]
     }
   ],

@@ -36,8 +36,8 @@ module.exports = function (product) {
             refresh: true,
             id: productDetails.id.toString(),
             body: {
-              views: 0,
-              sells: 0,
+              views: productDetails.views,
+              sells: productDetails.sells,
               rating: productDetails.rating,
               name: productDetails.name,
               price: productDetails.price,
@@ -61,8 +61,8 @@ module.exports = function (product) {
             id: productDetails.id.toString(),
             body: {
               doc: {
-                views: 0,
-                sells: 0,
+                views: productDetails.views,
+                sells: productDetails.sells,
                 rating: productDetails.rating,
                 name: productDetails.name,
                 price: productDetails.price,
@@ -84,9 +84,9 @@ module.exports = function (product) {
                 refresh: true,
                 id: productDetails.id.toString(),
                 body: {
-                  views: 0,
-                  sells: 0,
-                  rate: 0,
+                  views: productDetails.views,
+                  sells: productDetails.sells,
+                  rating: productDetails.rating,
                   name: productDetails.name,
                   price: productDetails.price,
                   categoryId: productDetails.categoryId,
@@ -195,6 +195,22 @@ module.exports = function (product) {
     })
   }
 
+  product.incrementProductViews = function (productId, next) {
+    product.update({_id: productId}, {$inc : { views : 1}}, function (error, result) {
+      if (error)
+        return next(error);
+      return next(null, result);
+    })
+  }
+
+  product.incrementProductSells = function (productId, next) {
+    product.update({_id: productId}, {$inc : { sells : 1}}, function (error, result) {
+      if (error)
+        return next(error);
+      return next(null, result);
+    })
+  }
+
   product.remoteMethod('getUserProducts', {
     accepts: [
       {arg: 'accountId', type: 'string', required: true},
@@ -203,6 +219,17 @@ module.exports = function (product) {
     http: {path: '/getUserProducts', verb: 'post'}
   });
 
+  product.remoteMethod('incrementProductSells', {
+    accepts: {arg: 'productId', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/incrementProductSells', verb: 'post'}
+  });
+
+  product.remoteMethod('incrementProductViews', {
+    accepts: {arg: 'productId', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/incrementProductViews', verb: 'post'}
+  });
   product.remoteMethod('updateUserProduct', {
     accepts: {arg: 'updateObj', type: 'object', required: true},
     returns: {arg: 'result', type: 'any'},

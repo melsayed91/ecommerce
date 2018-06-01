@@ -268,14 +268,8 @@
                     </div>
                     <div class="card-content">
                       <h4 class="card-title">{{review.text}}</h4>
-                      <span *ngIf="product.rating">
-            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
-                        [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
-          </span>
-                      <span *ngIf="!product.rating">
-          <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
-                      [theme]="'fontawesome'"></bar-rating> (0)
-          </span>
+                      <bar-rating [(rate)]="review.rating" [max]="5" [readOnly]="true"
+                                  [theme]="'fontawesome'"></bar-rating>
                     </div>
                   </div>
                 </div>

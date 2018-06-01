@@ -54,7 +54,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       .takeWhile(() => this.alive)
       .subscribe(params => {
         this.productId = params['id'];
+        this.productApi.incrementProductViews(this.productId)
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
 
+          })
         this.productApi.findById(this.productId, {
           include: [
             "attachments",
@@ -66,6 +70,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.product = response;
             this.selectedImage = this.product.attachments[0];
             this.quantity = this.product.moq;
+
           })
         this.productReviewApi.getReviews(this.productId)
           .takeWhile(() => this.alive)

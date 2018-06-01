@@ -15,9 +15,14 @@ module.exports = function (ProductReview) {
 
       //calculate average product rating
 
-      ProductReview.find({
-        productId: review.productId
-      }, function (err, allProductReview) {
+      ProductReview.getDataSource().connector.collection(ProductReview.modelName).aggregate([{$match:{
+        productId: createdReview.productId
+      }},
+        {$group:{
+            _id: "$orderId",
+            rating: { $last: "$rating" }
+          }}
+      ], function (err, allProductReview) {
 
         if (allProductReview.length) {
           let star1 = allProductReview.filter(function (_review) {

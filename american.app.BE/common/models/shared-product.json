@@ -59,6 +59,14 @@
     },
     "rating": {
       "type": "object"
+    },
+    "views": {
+      "type": "Number",
+      "default": 0
+    },
+    "sells": {
+      "type": "Number",
+      "default": 0
     }
   },
   "validations": [],
