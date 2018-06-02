@@ -16,26 +16,28 @@
                             </h4>
                             <form>
                                 <div class="row">
-                                    <div class="col-md-6">
+
+                                    <div class="">
                                         <div class="form-group label-floating">
-                                            <mat-select placeholder="Locations" name="city" multiple>
-                                                <mat-option *ngFor="let city of cities" [value]="city.value">
-                                                    {{ city.viewValue }}
+                                          <mat-form-field>
+                                            <mat-select placeholder="Locations" [(ngModel)]="currentCountries" name="country" multiple>
+                                                <mat-option *ngFor="let country of countries" [value]="country.id">
+                                                    {{ country.name }}
                                                 </mat-option>
                                             </mat-select>
+                                          </mat-form-field>
+                                          <!--<small>{{userAccount.accountData.searchSettings.countries}}</small>-->
                                         </div>
-
-
-
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
+
                                             <label class="control-label"></label>
                                             <div class="togglebutton">
                                                 <label>
-                                                    <input type="checkbox" checked>Show Related Products
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showRelated" (change)="showRelated = !showRelated" >Show Related Products
                                                 </label>
                                             </div>
                                         </div>
@@ -43,7 +45,7 @@
                                             <label class="control-label"></label>
                                             <div class="togglebutton">
                                                 <label>
-                                                    <input type="checkbox" checked>Show New Products
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showNew" (change)="showNew = !showNew">Show New Products
                                                 </label>
                                             </div>
                                         </div>
@@ -53,13 +55,13 @@
                                             <label class="control-label"></label>
                                             <div class="togglebutton">
                                                 <label>
-                                                    <input type="checkbox" checked>Show Hot Products
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showHot" (change)="showHot = !showHot">Show Hot Products
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-rose pull-right">Update Settings</button>
+                                <button type="submit" class="btn btn-rose pull-right" (click)="saveSettings()">Update Settings</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>

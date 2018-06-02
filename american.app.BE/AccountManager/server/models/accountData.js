@@ -32,7 +32,7 @@ module.exports = function (accountData) {
     if (updatesObject.categories)
       delete updatesObject.categories;
 
-    accountData.updateAll(
+    accountData.update(
       { id: accountDataId },
       updatesObject,
       function (error, result) {
