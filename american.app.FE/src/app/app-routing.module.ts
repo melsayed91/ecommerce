@@ -1,7 +1,7 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
-import {MainLayoutComponent} from './layout/layout.component';
-import {AuthGuardService} from './core/services/auth.guard.service/auth-guard.service';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { MainLayoutComponent } from './layout/layout.component';
+import { AuthGuardService } from './core/services/auth.guard.service/auth-guard.service';
 
 export const AppRoutes: Routes = [
     {
@@ -30,20 +30,24 @@ export const AppRoutes: Routes = [
                 path: 'product',
                 loadChildren: './product/product.module#ProductModule'
             },
-          {
+            {
+                path: 'search',
+                loadChildren: './search/search.module#SearchModule'
+            },
+            {
                 path: 'order',
                 loadChildren: './order/order.module#OrderModule'
             },
-          {
+            {
                 path: 'admin',
                 loadChildren: './admin/admin.module#AdminModule'
             },
             {
                 path: 'conversation/:id',
-        loadChildren: './conversation/conversation.module#ConversationModule'
-      },
-      {
-        path: '**',
+                loadChildren: './conversation/conversation.module#ConversationModule'
+            },
+            {
+                path: '**',
                 redirectTo: 'home',
                 pathMatch: 'full'
             }
@@ -52,8 +56,8 @@ export const AppRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(AppRoutes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forRoot(AppRoutes)],
+    exports: [RouterModule]
 })
 export class AppRoutingModule {
 }

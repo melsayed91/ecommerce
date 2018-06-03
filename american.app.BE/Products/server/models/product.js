@@ -169,7 +169,14 @@ module.exports = function (product) {
           { "createdAt": { "order": "desc", "unmapped_type": "long" } },
           "_score"
         ],
-        query: query
+        query: query,
+        aggs: {
+          max_price: { max: { field: "price" } },
+          min_price: { min: { field: "price" } },
+          categories: {
+            terms: { field: "category" }
+          }
+        }
       }
     }, function (err, response, status) {
       if (err)
@@ -203,6 +210,10 @@ module.exports = function (product) {
         return next(err);
       return next(null, response);
     });
+  }
+
+  product.facets = function () {
+
   }
 
   product.getUserProducts = function (accountId, categoryId, next) {

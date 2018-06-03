@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   alive: boolean = true;
 
-
+  query: string;
   attachmentServer: string;
   products = [];
 
@@ -51,17 +51,22 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
-    this.productApi.search("")
+    this.route.params
       .takeWhile(() => this.alive)
-      .subscribe(response => {
-        if (response.result.hits.total > 0) {
-          this.products = response.result.hits.hits.map(function (item) {
-            var currentProduct = item._source;
-            currentProduct._id = item._id
-            return currentProduct;
-          });
-        }
-      })
+      .subscribe(params => {        
+        this.query = params['query'];
+        this.productApi.search(this.query)
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
+            if (response.result.hits.total > 0) {
+              this.products = response.result.hits.hits.map(function (item) {
+                var currentProduct = item._source;
+                currentProduct._id = item._id
+                return currentProduct;
+              });
+            }
+          })
+      });
   }
   addProductToShoppingCart(product) {
     if (!this.auth.account) {

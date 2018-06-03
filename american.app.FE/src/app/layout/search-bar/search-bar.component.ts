@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductApi, Product } from '../../common/BE.SDKs/Products';
 import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
 import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
@@ -22,10 +23,17 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   private products = [];
   constructor(
     private ProductApi: ProductApi,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
+  }
+
+
+  search() {
+    this.serachMode = false;
+    this.router.navigate(['/search', this.SearchText.trim()]);
   }
 
   onSearchChange(searchValue: string) {
@@ -36,7 +44,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             return {
               text: item.text,
               image_url: item._source.image_url,
-              category: item._source.category
+              category: item._source.category,
+              _id: item._id
             }
           });
         }, (err) => {

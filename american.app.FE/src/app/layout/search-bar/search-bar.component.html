@@ -3,13 +3,13 @@
     <div class="searchInput">
         <span class="fa fa-search"></span>
         <input id="SearchBarInput" name="SearchBarInput" (click)="searchMode = true;" (input)="onSearchChange($event.target.value)"
-            [placeholder]="searchPlaceHolder" [(ngModel)]="SearchText">
+            [placeholder]="searchPlaceHolder" [(ngModel)]="SearchText" (keyup.enter)="search()">
     </div>
 
     <div *ngIf="searchMode" class="searchResults">
         <div class="dummy-column">
             <h3>Popular Products</h3>
-            <a *ngFor="let row of products" class="dummy-media-object" href="http://twitter.com/sss">
+            <a *ngFor="let row of products" (click)="searchMode = false;" class="dummy-media-object" [routerLink]="[ '/product/details' , row._id]">
                 <img class="round" [src]="attachmentServer + row.image_url" alt="..." />
                 <h3> {{row.text}}
                     <span>in ({{row.category}})</span>

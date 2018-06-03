@@ -124,7 +124,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   SaveProduct() {
-    debugger
     if (!this.formValidation.validate())
       return;
     this.loading = 'Saving Product';

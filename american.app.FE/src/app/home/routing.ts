@@ -10,6 +10,10 @@ export const HomeRoutes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'home/:query',
+    component: HomeComponent
+  },
+  {
     path: ':id/:userId',
     component: HomeComponent
   },

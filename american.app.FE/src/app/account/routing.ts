@@ -1,5 +1,5 @@
-import {Routes} from '@angular/router';
-import {AuthGuardService} from '../core/services/auth.guard.service/auth-guard.service';
+import { Routes } from '@angular/router';
+import { AuthGuardService } from '../core/services/auth.guard.service/auth-guard.service';
 
 import { dashboardComponent } from './dashboard/dashboard.component';
 import { OrdersComponent } from './orders/orders.component';
@@ -8,8 +8,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RequestForProposalComponent } from './request-for-proposal/request-for-proposal.component';
 import { QuatationDetailsComponent } from './request-for-proposal/details/details.component';
-import {RequestsComponent} from './requests/requests.component';
-import {CustomersComponent} from './customers/customers.component';
+import { RequestsComponent } from './requests/requests.component';
+import { CustomersComponent } from './customers/customers.component';
 
 
 export const RegisterRoutes: Routes = [
@@ -30,16 +30,16 @@ export const RegisterRoutes: Routes = [
   },
   {
     path: 'orders',
-        canActivate: [AuthGuardService],
-        component: OrdersComponent
-    },
-    {
-        path: 'orders/:id',
-        canActivate: [AuthGuardService],
-        component: OrderDetailsComponent
-    },
-    {
-        path: 'profile',
+    canActivate: [AuthGuardService],
+    component: OrdersComponent
+  },
+  {
+    path: 'orders/:id',
+    canActivate: [AuthGuardService],
+    component: OrderDetailsComponent
+  },
+  {
+    path: 'profile',
     canActivate: [AuthGuardService],
     component: ProfileComponent
   },
@@ -52,11 +52,11 @@ export const RegisterRoutes: Routes = [
     path: 'rfps',
     canActivate: [AuthGuardService],
     component: RequestForProposalComponent
-    },
-    {
-        path: 'rfq/details/:id',
-        canActivate: [AuthGuardService],
-        component: QuatationDetailsComponent
+  },
+  {
+    path: 'rfq/details/:id',
+    canActivate: [AuthGuardService],
+    component: QuatationDetailsComponent
   },
   {
     path: 'requests',
