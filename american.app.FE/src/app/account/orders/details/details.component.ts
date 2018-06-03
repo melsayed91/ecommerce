@@ -107,6 +107,7 @@ export class OrderDetailsComponent implements OnInit {
   submitReview() {
 
     let reviewObject = {
+      orderId: this.order.id,
       rating: this.reviewRating,
       ownerId: this.userAccount.id,
       productId: this.selectedProduct.id

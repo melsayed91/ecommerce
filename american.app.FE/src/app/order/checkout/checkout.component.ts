@@ -212,7 +212,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderApi.placeOrder(this.order)
       .takeWhile(() => this.alive)
       .subscribe(response => {
-        debugger
+        this.productApi.incrementProductSells(this.productId)
+          .takeWhile(() => this.alive)
+          .subscribe(response => {
+
+          })
         this.ShoppingCartApi.deleteCartItem({accountDataId: this.auth.account.accountData.id}).subscribe(res => {
           this.auth.account.accountData.cartItemId = [];
           this.auth.setAccount(this.auth.account)

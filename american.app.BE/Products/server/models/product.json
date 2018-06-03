@@ -44,7 +44,8 @@
         "findById",
         "suggest",
         "search",
-        "catalog"
+        "catalog",
+        "incrementProductViews"
       ]
     }
   ],

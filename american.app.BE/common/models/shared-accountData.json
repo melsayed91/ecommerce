@@ -15,6 +15,9 @@
     "phone": "string",
     "mobile": "string",
     "socialImage": "string",
+    "searchSettings": {
+      "type": "object"
+    },
     "userCategories": [
       "string"
     ]

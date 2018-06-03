@@ -47,6 +47,8 @@
         "sharedMethods": {
           "*": false,
           "getUserProducts": true,
+          "incrementProductViews": true,
+          "incrementProductSells": true,
           "replaceOrCreate": true,
           "find": true,
           "findById": true,
