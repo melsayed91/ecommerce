@@ -1,5 +1,51 @@
 <h3>LATEST PRODUCTS</h3>
 
+
+<!-- <div class="products" *ngIf="products.length > 0">
+  <ngu-carousel [inputs]="carouselTile" (initData)="initDataFn($event)">
+    <ngu-tile NguCarouselItem *ngFor="let product of carouselTileItems let i=index">
+      <div class="col-lg-2 col-md-6 tile">
+        <div class="card card-product">
+          <div class="card-image" data-header-animation="true">
+            <a [routerLink]="[ '/product/details' , product._id]">
+              <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
+            </a>
+          </div>
+          <div class="card-content">
+            <div class="card-actions">
+              <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+                <i class="material-icons">art_track</i>
+              </button>
+              <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+                <i class="material-icons">add_shopping_cart</i>
+              </button>
+            </div>
+            <h4 class="card-title" style="height: 50px;overflow: hidden;">
+              <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+            </h4>
+            <div class="card-description truncate">
+              {{product.description}}
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price">
+              <h4 class="text-primary">${{product.price}}</h4>
+              <span *ngIf="product.rating">
+                <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+              </span>
+              <span *ngIf="!product.rating">
+                <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </ngu-tile>
+    <button NguCarouselPrev class='leftRs'>&lt;</button>
+    <button NguCarouselNext class='rightRs'>&gt;</button>
+  </ngu-carousel>
+</div> -->
 <div class="products" *ngIf="products.length > 0">
   <div class="col-lg-2 col-md-6" *ngFor="let product of products let i=index">
     <div class="card card-product">
@@ -28,12 +74,10 @@
         <div class="price">
           <h4 class="text-primary">${{product.price}}</h4>
           <span *ngIf="product.rating">
-            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
-                        [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
           </span>
           <span *ngIf="!product.rating">
-          <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
-                      [theme]="'fontawesome'"></bar-rating> (0)
+            <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
           </span>
         </div>
 

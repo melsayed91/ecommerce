@@ -9,7 +9,7 @@ import {ServicesComponent} from './services/services.component';
 import {HelpComponent} from './helpcenter/help.component';
 import {ContactUsComponent} from './contact-us/contact-us.component';
 import {BarRatingModule} from "ngx-bar-rating";
-
+import { NguCarouselModule } from '@ngu/carousel';
 @NgModule({
   exports: [
     MatTooltipModule
@@ -18,7 +18,8 @@ import {BarRatingModule} from "ngx-bar-rating";
     CommonModule,
     RouterModule.forChild(HomeRoutes),
     BarRatingModule,
-    MatTooltipModule
+    MatTooltipModule,
+    NguCarouselModule
   ],
   declarations: [HomeComponent, ServicesComponent, HelpComponent, ContactUsComponent]
 })

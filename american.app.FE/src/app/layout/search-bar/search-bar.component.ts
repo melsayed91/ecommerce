@@ -32,7 +32,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
 
   search() {
-    this.serachMode = false;
     this.router.navigate(['/search', this.SearchText.trim()]);
   }
 

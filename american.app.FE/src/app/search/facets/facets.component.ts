@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import PerfectScrollbar from 'perfect-scrollbar';
 @Component({
   selector: 'app-facets',
@@ -10,23 +10,48 @@ export class FacetsComponent implements OnInit {
   min_price = 0;
   max_price = 0;
   categories = [];
+  selected_categories = [];
+  selected_price_range = [];
   @Input() aggregation: any;
+  @Output() filterApplied = new EventEmitter();
   constructor() { }
 
   ngOnInit() {
     this.min_price = this.aggregation.min_price.value;
     this.max_price = this.aggregation.max_price.value;
     if (this.min_price === this.max_price) {
-      this.min_price =0;
+      this.min_price = 0;
     }
     this.priceRange.push(this.min_price, this.max_price)
     this.categories = this.aggregation.categories.buckets
-    // setTimeout(function(){
-    //   const elemSidebar = <HTMLElement>document.querySelector('#categories_panel');
-    //   var ps = new PerfectScrollbar(elemSidebar, { suppressScrollX: true });
-    // },2000)
-   
-    
+  }
+
+  onCategorySelect(list) {
+    this.selected_categories = list.selectedOptions.selected.map(function (item) {
+      return {
+        field: "category",
+        value: item.value
+      }
+    });
+  }
+
+  onPriceChange(values) {
+
+    this.selected_price_range = [{
+      field: "price",
+      value: values
+    }];
+  }
+  applyFilters() {
+    var filters = [];
+    if (this.selected_categories.length > 0 && this.selected_price_range.length == 0) {
+      filters = this.selected_categories;
+    } else if (this.selected_categories.length == 0 && this.selected_price_range.length > 0) {
+      filters = this.selected_price_range;
+    } else if (this.selected_categories.length > 0 && this.selected_price_range.length > 0) {
+      filters = this.selected_price_range.concat(this.selected_categories);
+    }
+    this.filterApplied.emit(filters)
   }
 
 }

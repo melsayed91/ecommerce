@@ -7,8 +7,10 @@ export interface ProductReviewInterface {
   "rating"?: number;
   "id"?: any;
   "productId"?: any;
+  "orderId"?: any;
   "ownerId"?: any;
   product?: any;
+  order?: any;
   owner?: any;
 }
 
@@ -18,8 +20,10 @@ export class ProductReview implements ProductReviewInterface {
   "rating": number;
   "id": any;
   "productId": any;
+  "orderId": any;
   "ownerId": any;
   product: any;
+  order: any;
   owner: any;
   constructor(data?: ProductReviewInterface) {
     Object.assign(this, data);
@@ -74,6 +78,10 @@ export class ProductReview implements ProductReviewInterface {
           name: 'productId',
           type: 'any'
         },
+        "orderId": {
+          name: 'orderId',
+          type: 'any'
+        },
         "ownerId": {
           name: 'ownerId',
           type: 'any'
@@ -86,6 +94,14 @@ export class ProductReview implements ProductReviewInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'productId',
+          keyTo: 'id'
+        },
+        order: {
+          name: 'order',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'orderId',
           keyTo: 'id'
         },
         owner: {

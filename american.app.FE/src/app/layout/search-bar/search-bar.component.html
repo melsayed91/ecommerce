@@ -3,7 +3,7 @@
     <div class="searchInput">
         <span class="fa fa-search"></span>
         <input id="SearchBarInput" name="SearchBarInput" (click)="searchMode = true;" (input)="onSearchChange($event.target.value)"
-            [placeholder]="searchPlaceHolder" [(ngModel)]="SearchText" (keyup.enter)="search()">
+            [placeholder]="searchPlaceHolder" [(ngModel)]="SearchText" (keyup.enter)="searchMode = false;search()">
     </div>
 
     <div *ngIf="searchMode" class="searchResults">

@@ -15,8 +15,8 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
           <div class="panel-body" id="categories_panel">
-            <mat-selection-list #selected_categories>
-              <mat-list-option *ngFor="let category of categories">
+            <mat-selection-list #categories_list>
+              <mat-list-option *ngFor="let category of categories" (click)="onCategorySelect(categories_list)" [value]="category.key">
                 {{category.key}} ({{category.doc_count}})
               </mat-list-option>
             </mat-selection-list>
@@ -36,17 +36,19 @@
           <div class="panel-body">
             <br>
             <nouislider class="slider slider-info" [connect]="true" [min]="min_price" [max]="max_price" [step]="10" [(ngModel)]="priceRange"
-              [tooltips]="true"></nouislider>
+              [tooltips]="true" (change)="onPriceChange($event)"></nouislider>
           </div>
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-md-2  col-md-offset-7">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" (click)="applyFilters()" [disabled]="selected_categories.length==0 && selected_price_range.length==0">
           Apply
         </button>
       </div>
     </div>
   </div>
+
+ 
 </div>
