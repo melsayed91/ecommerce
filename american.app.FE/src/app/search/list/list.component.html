@@ -2,7 +2,8 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-3">
-        <app-facets [aggregation]="aggregations" *ngIf="(products.length > 0 &&!isSearching) || applyingFilters" (filterApplied)="onFilterApply($event)"></app-facets>
+        <app-facets [aggregation]="aggregations" *ngIf="(products.length > 0 &&!isSearching) ||applyingFilters"
+          (filterApplied)="onFilterApply($event)"></app-facets>
 
         <div class="card products" *ngIf="isSearching">
           <div class="card-header">

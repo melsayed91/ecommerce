@@ -21,8 +21,9 @@ export class dashboardComponent implements OnInit, OnDestroy {
   isBusinessAccount = true;
   pendingOrders = 0;
   completedOrders = 0;
-  productsView=0;
+  productsView = 0;
   alive: any = true;
+  isSearching: any = true;
   constructor(private auth: UserService,
     private orderApi: OrderApi,
     private ProductApi: ProductApi, ) {
@@ -72,6 +73,7 @@ export class dashboardComponent implements OnInit, OnDestroy {
   loadProductCatalog(): any {
     this.ProductApi.catalog(this.userAccount.id).takeWhile(() => this.alive)
       .subscribe((response) => {
+        this.isSearching = false;
         if (response.result.hits.total > 0) {
           this.products = response.result.hits.hits.map(function (item) {
             var currentProduct = item._source;

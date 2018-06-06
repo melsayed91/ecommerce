@@ -48,7 +48,7 @@ module.exports = function (product) {
               categoryId: productDetails.categoryId,
               category: productDetails.__data.category.__data.name,
               description: productDetails.description,
-              companyId: productDetails.accountId,
+              companyId: productDetails.__data.account.userId.toString(),
               company: productDetails.__data.account.__data.accountData.__data.name,
               stock: productDetails.stock,
               createdAt: productDetails.createdAt,
@@ -76,7 +76,7 @@ module.exports = function (product) {
                 categoryId: productDetails.categoryId,
                 category: productDetails.__data.category.__data.name,
                 description: productDetails.description,
-                companyId: productDetails.accountId,
+                companyId: productDetails.__data.account.userId.toString(),
                 company: productDetails.__data.account.__data.accountData.__data.name,
                 stock: productDetails.stock,
                 createdAt: productDetails.createdAt,
@@ -102,7 +102,7 @@ module.exports = function (product) {
                   categoryId: productDetails.categoryId,
                   category: productDetails.__data.category.__data.name,
                   description: productDetails.description,
-                  companyId: productDetails.accountId,
+                  companyId: productDetails.__data.account.userId.toString(),
                   company: productDetails.__data.account.__data.accountData.__data.name,
                   stock: productDetails.stock,
                   createdAt: productDetails.createdAt,
@@ -144,15 +144,21 @@ module.exports = function (product) {
     });
   }
 
-  product.search = function (searchParams, next) {
+  product.search = function (searchParams, options, next) {
     var query = {
-      match_all: {}
+      bool: {
+        must: {
+          match_all: {}
+        }
+      }
     },
+      sortBy_Latest = { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+      sort_By_Hottest = { "sells": { "order": "desc", "unmapped_type": "long" } },
       soryBy = [
-        { "sells": { "order": "desc", "unmapped_type": "long" } },
+        sort_By_Hottest,
         { "rating.average": { "order": "desc", "unmapped_type": "long" } },
         { "views": { "order": "desc", "unmapped_type": "long" } },
-        { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+        sortBy_Latest,
         "_score"
       ],
       aggregations = {
@@ -163,15 +169,19 @@ module.exports = function (product) {
         }
       };
 
-    if (searchParams) {
+    if (options && options.accessToken && options.accessToken.userId) {
+      query.bool["must_not"] = {
+        match: {
+          companyId: options.accessToken.userId.toString()
+        }
+      }
+    }
+
+    if (searchParams && Object.keys(searchParams).length > 0) {
       if (searchParams.text) {
-        query = {
-          bool: {
-            must: {
-              match: {
-                name: searchParams.text
-              }
-            }
+        query.bool.must = {
+          match: {
+            name: searchParams.text
           }
         }
       }
@@ -227,21 +237,41 @@ module.exports = function (product) {
         sortObj[searchParams.sort.field] = { order: searchParams.sort.dir, unmapped_type: "long" }
         soryBy = [sortObj];
       }
+      es.search({
+        index: GLOBAL_CONFIG.es_products_index_name,
+        type: GLOBAL_CONFIG.es_products_index_type,
+        body: {
+          track_scores: true,
+          sort: soryBy,
+          query: query,
+          aggs: aggregations
+        }
+      }, function (err, response, status) {
+        if (err)
+          return next(err);
+        return next(null, response);
+      });
+    } else {
+      es.msearch({
+        body: [
+          { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+          {
+            query: query,
+            sort: sortBy_Latest
+          },
+          { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+          {
+            query: query,
+            sort: sort_By_Hottest
+          }
+        ]
+      }, function (err, response, status) {
+        if (err)
+          return next(err);
+        return next(null, response);
+      })
     }
-    es.search({
-      index: GLOBAL_CONFIG.es_products_index_name,
-      type: GLOBAL_CONFIG.es_products_index_type,
-      body: {
-        track_scores: true,
-        sort: soryBy,
-        query: query,
-        aggs: aggregations
-      }
-    }, function (err, response, status) {
-      if (err)
-        return next(err);
-      return next(null, response);
-    });
+
   }
 
   product.catalog = function (accountId, next) {
@@ -367,7 +397,11 @@ module.exports = function (product) {
   });
 
   product.remoteMethod('search', {
-    accepts: { arg: 'searchParams', type: 'object' },
+    accepts: [
+      { "arg": 'searchParams', type: 'object', http: { source: 'body' } },
+      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+    ],
+
     returns: { arg: 'result', type: 'any' },
     http: { path: '/search', verb: 'post' }
   });
