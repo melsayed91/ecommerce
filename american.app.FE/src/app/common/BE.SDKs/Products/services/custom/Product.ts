@@ -157,7 +157,7 @@ export class ProductApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
-   *  - `text` – `{string}` - 
+   * This method expects a subset of model properties as request parameters.
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -167,14 +167,15 @@ export class ProductApi extends BaseLoopBackApi {
    *
    *  - `result` – `{any}` - 
    */
-  public search(text: any = {}, customHeaders?: Function): Observable<any> {
+  public search(searchParams: any = {}, customHeaders?: Function): Observable<any> {
     let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/products/search";
     let _routeParams: any = {};
-    let _postBody: any = {};
+    let _postBody: any = {
+      searchParams: searchParams
+    };
     let _urlParams: any = {};
-    if (typeof text !== 'undefined' && text !== null) _urlParams.text = text;
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }

@@ -29,7 +29,22 @@
 
   <div *ngIf="isBusinessAccount">
     <h3>Products Catalog</h3>
+    <div class="products" *ngIf="isSearching">
+      <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5]">
+        <div class="background-masker header-top"></div>
+        <div class="background-masker header-left"></div>
+        <div class="background-masker header-right"></div>
+        <div class="background-masker header-bottom"></div>
+        <div class="background-masker header2-left"></div>
+        <div class="background-masker header2-right"></div>
+        <div class="background-masker header2-bottom"></div>
     
+        <div class="background-masker left"></div>
+        <div class="background-masker right"></div>
+    
+        <div class="background-masker footer"></div>
+      </div>
+    </div>
     <div class="products" *ngIf="products.length > 0">
       <div class="col-lg-2 col-md-6" *ngFor="let product of products let i=index">
         <div class="card card-product">
@@ -40,15 +55,12 @@
           </div>
           <div class="card-content">
             <div class="card-actions">
-              <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
-                <i class="material-icons">art_track</i>
-              </button>
-              <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
-                <i class="material-icons">add_shopping_cart</i>
+              <button type="button" class="btn btn-primary btn-simple" matTooltip="Edit Product" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+                <i class="material-icons">edit</i>
               </button>
             </div>
             <h4 class="card-title" style="height: 50px;overflow: hidden;">
-              <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+              {{product.name}}
             </h4>
             <div class="card-description truncate">
               {{product.description}}
@@ -57,6 +69,7 @@
           <div class="card-footer">
             <div class="price">
               <h4 class="text-primary">${{product.price}}</h4>
+              <h4 class="text-primary">{{product.sells}} items sold</h4>
               <span *ngIf="product.rating">
                 <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
               </span>

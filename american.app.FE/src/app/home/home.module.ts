@@ -9,7 +9,6 @@ import {ServicesComponent} from './services/services.component';
 import {HelpComponent} from './helpcenter/help.component';
 import {ContactUsComponent} from './contact-us/contact-us.component';
 import {BarRatingModule} from "ngx-bar-rating";
-
 @NgModule({
   exports: [
     MatTooltipModule

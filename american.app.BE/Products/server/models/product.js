@@ -48,7 +48,7 @@ module.exports = function (product) {
               categoryId: productDetails.categoryId,
               category: productDetails.__data.category.__data.name,
               description: productDetails.description,
-              companyId: productDetails.accountId,
+              companyId: productDetails.__data.account.userId.toString(),
               company: productDetails.__data.account.__data.accountData.__data.name,
               stock: productDetails.stock,
               createdAt: productDetails.createdAt,
@@ -76,7 +76,7 @@ module.exports = function (product) {
                 categoryId: productDetails.categoryId,
                 category: productDetails.__data.category.__data.name,
                 description: productDetails.description,
-                companyId: productDetails.accountId,
+                companyId: productDetails.__data.account.userId.toString(),
                 company: productDetails.__data.account.__data.accountData.__data.name,
                 stock: productDetails.stock,
                 createdAt: productDetails.createdAt,
@@ -102,7 +102,7 @@ module.exports = function (product) {
                   categoryId: productDetails.categoryId,
                   category: productDetails.__data.category.__data.name,
                   description: productDetails.description,
-                  companyId: productDetails.accountId,
+                  companyId: productDetails.__data.account.userId.toString(),
                   company: productDetails.__data.account.__data.accountData.__data.name,
                   stock: productDetails.stock,
                   createdAt: productDetails.createdAt,
@@ -144,45 +144,134 @@ module.exports = function (product) {
     });
   }
 
-  product.search = function (text, next) {
+  product.search = function (searchParams, options, next) {
     var query = {
-      match_all: {}
-    }
+      bool: {
+        must: {
+          match_all: {}
+        }
+      }
+    },
+      sortBy_Latest = { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+      sort_By_Hottest = { "sells": { "order": "desc", "unmapped_type": "long" } },
+      soryBy = [
+        sort_By_Hottest,
+        { "rating.average": { "order": "desc", "unmapped_type": "long" } },
+        { "views": { "order": "desc", "unmapped_type": "long" } },
+        sortBy_Latest,
+        "_score"
+      ],
+      aggregations = {
+        max_price: { max: { field: "price" } },
+        min_price: { min: { field: "price" } },
+        categories: {
+          terms: { field: "category" }
+        }
+      };
 
-    if (text) {
-      query = {
+    if (options && options.accessToken && options.accessToken.userId) {
+      query.bool["must_not"] = {
         match: {
-          name: text
+          companyId: options.accessToken.userId.toString()
         }
       }
     }
 
-    es.search({
-      index: GLOBAL_CONFIG.es_products_index_name,
-      type: GLOBAL_CONFIG.es_products_index_type,
-      body: {
-        track_scores: true,
-        sort: [
-          { "sells": { "order": "desc", "unmapped_type": "long" } },
-          { "rating.average": { "order": "desc", "unmapped_type": "long" } },
-          { "views": { "order": "desc", "unmapped_type": "long" } },
-          { "createdAt": { "order": "desc", "unmapped_type": "long" } },
-          "_score"
-        ],
-        query: query,
-        aggs: {
-          max_price: { max: { field: "price" } },
-          min_price: { min: { field: "price" } },
-          categories: {
-            terms: { field: "category" }
+    if (searchParams && Object.keys(searchParams).length > 0) {
+      if (searchParams.text) {
+        query.bool.must = {
+          match: {
+            name: searchParams.text
           }
         }
       }
-    }, function (err, response, status) {
-      if (err)
-        return next(err);
-      return next(null, response);
-    });
+
+      if (searchParams.facets) {
+        var mustObj = {},
+          shouldObj = [];
+        searchParams.facets.forEach(function (facet) {
+          var facetObj = {};
+          if (facet.value.constructor === Array && facet.value.length == 2) {
+            var rangeObj = {};
+            rangeObj[facet.field] = {
+              gte: facet.value[0],
+              lte: facet.value[1]
+            };
+            mustObj = {
+              range: rangeObj
+            };
+          } else {
+            var currentObj = {};
+            currentObj[facet.field] = facet.value;
+            shouldObj.push({
+              term: currentObj
+            });
+          }
+
+        });
+
+        if (shouldObj.length !== 0 && Object.keys(mustObj).length !== 0) {
+          query.bool["filter"] = {
+            bool: {
+              must: mustObj,
+              should: shouldObj
+            }
+          }
+        } else if (shouldObj.length === 0 && Object.keys(mustObj).length !== 0) {
+          query.bool["filter"] = {
+            bool: {
+              must: mustObj
+            }
+          }
+        } else if (shouldObj.length !== 0 && Object.keys(mustObj).length === 0) {
+          query.bool["filter"] = {
+            bool: {
+              should: shouldObj
+            }
+          }
+        }
+      }
+
+      if (searchParams.sort) {
+        var sortObj = {};
+        sortObj[searchParams.sort.field] = { order: searchParams.sort.dir, unmapped_type: "long" }
+        soryBy = [sortObj];
+      }
+      es.search({
+        index: GLOBAL_CONFIG.es_products_index_name,
+        type: GLOBAL_CONFIG.es_products_index_type,
+        body: {
+          track_scores: true,
+          sort: soryBy,
+          query: query,
+          aggs: aggregations
+        }
+      }, function (err, response, status) {
+        if (err)
+          return next(err);
+        return next(null, response);
+      });
+    } else {
+      es.msearch({
+        body: [
+          { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+          {
+            query: query,
+            sort: sortBy_Latest
+          },
+          { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+          {
+            query: query,
+            sort: sort_By_Hottest
+          }
+        ]
+      }, function (err, response, status) {
+        if (err)
+          return next(err);
+        return next(null, response);
+      })
+    }
+
   }
 
   product.catalog = function (accountId, next) {
@@ -255,7 +344,7 @@ module.exports = function (product) {
   }
 
   product.incrementProductViews = function (productId, next) {
-    product.update({_id: productId}, {$inc : { views : 1}}, function (error, result) {
+    product.update({ _id: productId }, { $inc: { views: 1 } }, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
@@ -263,7 +352,7 @@ module.exports = function (product) {
   }
 
   product.incrementProductSells = function (productId, next) {
-    product.update({_id: productId}, {$inc : { sells : 1}}, function (error, result) {
+    product.update({ _id: productId }, { $inc: { sells: 1 } }, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
@@ -279,15 +368,15 @@ module.exports = function (product) {
   });
 
   product.remoteMethod('incrementProductSells', {
-    accepts: {arg: 'productId', type: 'string', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/incrementProductSells', verb: 'post'}
+    accepts: { arg: 'productId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/incrementProductSells', verb: 'post' }
   });
 
   product.remoteMethod('incrementProductViews', {
-    accepts: {arg: 'productId', type: 'string', required: true},
-    returns: {arg: 'result', type: 'any'},
-    http: {path: '/incrementProductViews', verb: 'post'}
+    accepts: { arg: 'productId', type: 'string', required: true },
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/incrementProductViews', verb: 'post' }
   });
   product.remoteMethod('updateUserProduct', {
     accepts: { arg: 'updateObj', type: 'object', required: true },
@@ -308,7 +397,11 @@ module.exports = function (product) {
   });
 
   product.remoteMethod('search', {
-    accepts: { arg: 'text', type: 'string' },
+    accepts: [
+      { "arg": 'searchParams', type: 'object', http: { source: 'body' } },
+      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+    ],
+
     returns: { arg: 'result', type: 'any' },
     http: { path: '/search', verb: 'post' }
   });

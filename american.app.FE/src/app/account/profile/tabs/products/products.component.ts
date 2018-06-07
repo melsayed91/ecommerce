@@ -143,7 +143,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
       "specs": this.product.specs,
       "returnPeriode": this.returnAccepted ? this.product.returnPeriode : 0,
       "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0,
-      "rating":this.product.rating
+      "rating":this.product.rating,
+      "views": this.product.views,
+      "sells": this.product.sells
     };
 
     if (!this.isNew) {

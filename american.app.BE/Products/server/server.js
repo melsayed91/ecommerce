@@ -1,16 +1,33 @@
 'use strict';
-
 var loopback = require('loopback');
-var LoopBackContext = require('loopback-context');
+// var LoopBackContext = require('loopback-context');
 var boot = require('loopback-boot');
-require('cls-hooked');
-var app = module.exports = loopback();
 
-app.use(LoopBackContext.perRequest());
-app.use(loopback.token());
-app.start = function() {
+var app = module.exports = loopback();
+// app.use(LoopBackContext.perRequest());
+// app.use(loopback.token());
+// function inject(ctx, next) {
+//   if(ctx.req.accessToken){
+//     ctx.args.options = ctx.req.accessToken;
+//   }
+//   next();
+// }
+
+// app.remotes().before('*.*', inject);
+// app.use(function setCurrentUser(req, res, next) {
+//   if (!req.accessToken) {
+//     return next();
+//   } else {
+//     var loopbackContext = LoopBackContext.getCurrentContext();
+//     if (loopbackContext) {
+//       loopbackContext.set('currentUserId', req.accessToken.userId);
+//     }
+//     next();
+//   }
+// });
+app.start = function () {
   // start the web server
-  return app.listen(function() {
+  return app.listen(function () {
     app.emit('started');
     var baseUrl = app.get('url').replace(/\/$/, '');
     console.log('Web server listening at: %s', baseUrl);
@@ -23,7 +40,7 @@ app.start = function() {
 
 // Bootstrap the application, configure models, datasources and middleware.
 // Sub-apps like REST API are mounted via boot scripts.
-boot(app, __dirname, function(err) {
+boot(app, __dirname, function (err) {
   if (err) throw err;
 
   // start the server if `$ node server.js`
