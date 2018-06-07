@@ -16,9 +16,23 @@
                             </h4>
                             <form>
                                 <div class="row">
-
+                                 <!-- <md-input-container>
+                                    <label>Vegetables</label>
+                                    <md-select [(ngModel)]="selectedVegetables"
+                                               md-on-close="clearSearchTerm()"
+                                               multiple>
+                                      <md-select-header class="demo-select-header">
+                                        <input [(ngModel)]="searchTerm"
+                                               type="search"
+                                               placeholder="Search for a vegetable..">
+                                      </md-select-header>
+                                      <md-optgroup label="vegetables">
+                                        <md-option [(ngValue)]="vegetable" *ngFor="vegetable in currentCountries">{{vegetable}}</md-option>
+                                      </md-optgroup>
+                                    </md-select>
+                                  </md-input-container>-->
                                     <div class="">
-                                        <div class="form-group label-floating">
+                                        <div class="form-group label-floating multi-select-width">
                                           <mat-form-field>
                                             <mat-select placeholder="Locations" [(ngModel)]="currentCountries" name="country" multiple>
                                                 <mat-option *ngFor="let country of countries" [value]="country.id">

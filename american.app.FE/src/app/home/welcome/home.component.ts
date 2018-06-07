@@ -11,6 +11,7 @@ import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager
 import { LoopBackAuth } from '../../common/BE.SDKs/Authorization/services/core/auth.service';
 import { HeaderService } from '../../common/shared/services/header';
 
+
 declare var $: any;
 @Component({
   selector: 'app-home',
@@ -51,22 +52,30 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
+    setTimeout(function(){
+      $('.products').slick({infinite: false,variableWidth: true});
+
+    },3000)
     this.route.params
       .takeWhile(() => this.alive)
-      .subscribe(params => {        
+      .subscribe(params => {
         this.query = params['query'];
-        this.productApi.search(this.query)
-          .takeWhile(() => this.alive)
-          .subscribe(response => {
-            if (response.result.hits.total > 0) {
-              this.products = response.result.hits.hits.map(function (item) {
-                var currentProduct = item._source;
-                currentProduct._id = item._id
-                return currentProduct;
-              });
-            }
-          })
+
       });
+  }
+  getProducts(callBack){
+    this.productApi.search(this.query)
+      .takeWhile(() => this.alive)
+      .subscribe(response => {
+        if (response.result.hits.total > 0) {
+          this.products = response.result.hits.hits.map(function (item) {
+            var currentProduct = item._source;
+            currentProduct._id = item._id;
+            return currentProduct;
+          });
+        }
+        callBack(this.products);
+      })
   }
   addProductToShoppingCart(product) {
     if (!this.auth.account) {
