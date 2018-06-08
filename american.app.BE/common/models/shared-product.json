@@ -89,16 +89,19 @@
         "validate": true,
         "forceId": false
       }
+    },
+    "discounts": {
+      "type": "embedsMany",
+      "model": "sharedDiscount",
+      "property": "discountList",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     }
   },
   "acls": [
-    {
-      "accessType": "EXECUTE",
-      "principalType": "ROLE",
-      "principalId": "$owner",
-      "permission": "ALLOW",
-      "property": "updateUserProduct"
-    }
+   
   ],
   "methods": {}
 }

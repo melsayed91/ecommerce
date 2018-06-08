@@ -1,0 +1,13 @@
+{
+    "name": "discount",
+    "base": "sharedDiscount",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {},
+    "validations": [],
+    "relations": {},
+    "acls": [],
+    "methods": {}
+}
