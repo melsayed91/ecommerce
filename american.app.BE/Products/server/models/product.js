@@ -170,19 +170,20 @@ module.exports = function (product) {
         }
       };
 
-    if (options && options.accessToken && options.accessToken.userId) {
-      query.bool["must_not"] = {
-        match: {
-          companyId: options.accessToken.userId.toString()
-        }
-      }
-    }
+
 
     if (searchParams && Object.keys(searchParams).length > 0) {
       if (searchParams.text) {
         query.bool.must = {
           match: {
             name: searchParams.text
+          }
+        }
+        if (options && options.accessToken && options.accessToken.userId) {
+          query.bool["must_not"] = {
+            match: {
+              companyId: options.accessToken.userId.toString()
+            }
           }
         }
       }

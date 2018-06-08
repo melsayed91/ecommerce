@@ -70,7 +70,7 @@
           <a (click)="navigateTo('account/rfps')">RFQs & RFPs</a>
         </li>
         <li>
-          <a (click)="auth.logout()">Sign out</a>
+          <a (click)="auth.logout();navigateTo('/auth/signin')">Sign out</a>
         </li>
       </ul>
     </div>
