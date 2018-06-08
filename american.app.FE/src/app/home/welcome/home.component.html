@@ -1,7 +1,7 @@
 <h3>
   LATEST PRODUCTS</h3>
-<div class="products" *ngIf="isSearching">
-  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6,7,8]">
+<div class="products products-loading" *ngIf="isSearching">
+  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
     <div class="background-masker header-top"></div>
     <div class="background-masker header-left"></div>
     <div class="background-masker header-right"></div>
@@ -65,8 +65,8 @@
   <div class="products" *ngIf="hot_products.length == 0 &&!isSearching">
     No Results From your search , try again
   </div>
-<div class="products" *ngIf="isSearching">
-  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6,7,8]">
+<div class="products products-loading" *ngIf="isSearching">
+  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
     <div class="background-masker header-top"></div>
     <div class="background-masker header-left"></div>
     <div class="background-masker header-right"></div>

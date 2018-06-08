@@ -1,12 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { OrderApi, ShipmentApi, Product, ProductApi } from '../../common/BE.SDKs/Products';
-import { UserService } from '../../core/services/user.service/user.service';
-import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
-import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
-import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
+import {OrderApi, ShipmentApi, Product, ProductApi} from '../../common/BE.SDKs/Products';
+import {UserService} from '../../core/services/user.service/user.service';
+import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+import {AttachmentApi, LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
+import {AttachmentService} from '../../core/services/attachment.service/attachment.service';
 import "rxjs/add/operator/takeWhile";
+import Scrollbar from 'smooth-scrollbar';
+
 declare var $: any;
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -19,9 +22,12 @@ export class ListComponent implements OnInit {
   private query: string;
   private aggregations: any;
   private isSearching: boolean = true;
+  private loadingNextPage: boolean = false;
   private applyingFilters: boolean = false;
   private searchParams = {};
+
   alive: any = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -29,11 +35,13 @@ export class ListComponent implements OnInit {
     private auth: UserService,
     private AccountApi: AccountApi,
     private shoppingCartApi: ShoppingCartApi
-  ) { }
+  ) {
+  }
 
   ngOnDestroy(): void {
     this.alive = false;
   }
+
   ngOnInit() {
     this.attachmentServer = attachementApiConfig.getPath();
     this.route.params
@@ -45,6 +53,18 @@ export class ListComponent implements OnInit {
         this.searchParams['text'] = this.query
         this.doSearch();
       });
+
+    var x = Scrollbar.get(<HTMLElement>document.body)
+    x.addListener((status) => {
+      if (status.offset.y === status.limit.y && !this.loadingNextPage) {
+        this.loadingNextPage = true
+        setTimeout(function(){
+          console.log('OK')
+          this.loadingNextPage = false
+        }.bind(this) , 3000)
+
+      }
+    });
   }
 
   onSortChange(field, direction) {
@@ -67,6 +87,7 @@ export class ListComponent implements OnInit {
     this.aggregations = {};
     this.total = 0;
   }
+
   doSearch() {
     this.resetParams();
     this.isSearching = true;
@@ -105,13 +126,13 @@ export class ListComponent implements OnInit {
       $.notify({
         message: 'We added <b>' + product.name + '</b> to your shopping cart!'
       }, {
-          type: 'primary',
-          timer: 1000,
-          placement: {
-            from: 'bottom',
-            align: 'right'
-          }
-        });
+        type: 'primary',
+        timer: 1000,
+        placement: {
+          from: 'bottom',
+          align: 'right'
+        }
+      });
       if (this.auth.account.accountData.cartItemId) {
         this.auth.account.accountData.cartItemId.push(resp.accountData)
       } else {

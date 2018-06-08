@@ -1,18 +1,18 @@
 // -----------------------------------------------------------------------------
 // This file contains styles that are specific to the home page.
 // -----------------------------------------------------------------------------
-.logo{ 
+.logo{
     cursor: pointer;
-    width: 120px;                         
+    width: 120px;
     .american{
         font-family: 'Dawning of a New Day';
         font-size: 34px;
         margin-bottom: 5px;
         color: #9c9c9c;
-    }          
+    }
     .made{
         font-family: 'Archivo';
-        font-size: 35px;       
+        font-size: 35px;
     }
 }
 
@@ -27,14 +27,14 @@
     width: 100%;
 
     .product{
-        height: 250px;
-        width: 150px;
+        height: 342px;
+        width: 210px;
         margin: 5px 10px;
         border-radius: 0;
         position: relative;
         text-align: center;
         cursor: pointer;
-        
+
         &:hover{
             .picture{
                 transform: scale(1.1);

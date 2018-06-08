@@ -1,6 +1,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
+
       <div class="col-md-3">
         <app-facets [aggregation]="aggregations" *ngIf="(products.length > 0 &&!isSearching) ||applyingFilters"
           (filterApplied)="onFilterApply($event)"></app-facets>
@@ -111,7 +112,7 @@
           </div>
         </div>
         <div class="products" *ngIf="isSearching">
-          <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5]">
+          <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4]">
             <div class="background-masker header-top"></div>
             <div class="background-masker header-left"></div>
             <div class="background-masker header-right"></div>
@@ -130,8 +131,10 @@
         <div class="products" *ngIf="products.length == 0 &&!isSearching">
           No Results From your search , try again
         </div>
+
+
       </div>
     </div>
-
+    <mat-spinner *ngIf="loadingNextPage"></mat-spinner>
   </div>
 </div>

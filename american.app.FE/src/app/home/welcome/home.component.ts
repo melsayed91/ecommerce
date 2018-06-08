@@ -1,16 +1,18 @@
 import "rxjs/add/operator/takeWhile";
 
-import { ProductApi } from '../../common/BE.SDKs/Products';
-import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import {ProductApi} from '../../common/BE.SDKs/Products';
+import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 
-import { UserService } from '../../core/services/user.service/user.service';
-import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
-import { LoopBackAuth } from '../../common/BE.SDKs/Authorization/services/core/auth.service';
-import { HeaderService } from '../../common/shared/services/header';
+import {UserService} from '../../core/services/user.service/user.service';
+import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+import {LoopBackAuth} from '../../common/BE.SDKs/Authorization/services/core/auth.service';
+import {HeaderService} from '../../common/shared/services/header';
+
 declare var $: any;
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -30,13 +32,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   hot_products = [];
 
   constructor(private productApi: ProductApi,
-    private route: ActivatedRoute,
-    private router: Router,
-    private auth: UserService,
-    private AccountApi: AccountApi,
-    private HeaderService: HeaderService,
-    private shoppingCartApi: ShoppingCartApi,
-    private LoopBackAuth: LoopBackAuth) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private auth: UserService,
+              private AccountApi: AccountApi,
+              private HeaderService: HeaderService,
+              private shoppingCartApi: ShoppingCartApi,
+              private LoopBackAuth: LoopBackAuth) {
     this.route.params.subscribe((token: any) => {
       if (token.id && token.userId) {
         this.AccountApi.getAccountByUser(token.userId).subscribe((userAccount) => {
@@ -55,19 +57,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.productApi.search()
       .takeWhile(() => this.alive)
       .subscribe(response => {
-        this.isSearching=false;
+        this.isSearching = false;
         this.handleSearchResponse(response);
 
-        setTimeout(function(){
-          $('.products').slick({infinite: false,variableWidth: true});
-
-        },3000)
+        setTimeout(function () {
+          $('.products').slick({infinite: false, slidesToShow: 6, slidesToScroll: 4});
+        })
       })
   }
 
   handleSearchResponse(response) {
     if (response.result.responses.length > 0) {
-      if (response.result.responses[0] && response.result.responses[0].hits.total>0) {
+      if (response.result.responses[0] && response.result.responses[0].hits.total > 0) {
         this.latest_products = response.result.responses[0].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id
@@ -100,13 +101,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       $.notify({
         message: 'We added <b>' + product.name + '</b> to your shopping cart!'
       }, {
-          type: 'primary',
-          timer: 1000,
-          placement: {
-            from: 'bottom',
-            align: 'right'
-          }
-        });
+        type: 'primary',
+        timer: 1000,
+        placement: {
+          from: 'bottom',
+          align: 'right'
+        }
+      });
       if (this.auth.account.accountData.cartItemId) {
         this.auth.account.accountData.cartItemId.push(resp.accountData)
       } else {
