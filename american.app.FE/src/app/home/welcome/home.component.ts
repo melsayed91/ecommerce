@@ -57,6 +57,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         this.isSearching=false;
         this.handleSearchResponse(response);
+
+        setTimeout(function(){
+          $('.products').slick({infinite: false,variableWidth: true});
+
+        },3000)
       })
   }
 
