@@ -1,6 +1,7 @@
 'use strict';
 
 const path = require('path')
+const es_page_size = 10
 var LoopBackContext = require('loopback-context');
 var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 var elasticsearch = require('elasticsearch');
@@ -14,7 +15,6 @@ module.exports = function (product) {
 
   product.observe("after save", function (ctx, next) {
     var productId = {};
-
     if (ctx.instance) {
       productId = ctx.instance.id.toString()
     } else {
@@ -130,6 +130,7 @@ module.exports = function (product) {
             prefix: prefix,
             completion: {
               field: "name.completion",
+              skip_duplicates: true,
               fuzzy: {
                 fuzziness: "auto"
               }
@@ -237,6 +238,7 @@ module.exports = function (product) {
         sortObj[searchParams.sort.field] = { order: searchParams.sort.dir, unmapped_type: "long" }
         soryBy = [sortObj];
       }
+
       es.search({
         index: GLOBAL_CONFIG.es_products_index_name,
         type: GLOBAL_CONFIG.es_products_index_type,
@@ -244,7 +246,9 @@ module.exports = function (product) {
           track_scores: true,
           sort: soryBy,
           query: query,
-          aggs: aggregations
+          aggs: aggregations,
+          from: searchParams.from ? searchParams.from : 0,
+          size: es_page_size
         }
       }, function (err, response, status) {
         if (err)
@@ -257,12 +261,16 @@ module.exports = function (product) {
           { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
           {
             query: query,
-            sort: sortBy_Latest
+            sort: sortBy_Latest,
+            from: 0,
+            size: es_page_size
           },
           { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
           {
             query: query,
-            sort: sort_By_Hottest
+            sort: sort_By_Hottest,
+            from: 0,
+            size: es_page_size
           }
         ]
       }, function (err, response, status) {
@@ -274,31 +282,36 @@ module.exports = function (product) {
 
   }
 
-  product.catalog = function (accountId, next) {
-    var ctx = LoopBackContext.getCurrentContext();
-    es.search({
-      index: GLOBAL_CONFIG.es_products_index_name,
-      type: GLOBAL_CONFIG.es_products_index_type,
-      body: {
-        track_scores: true,
-        sort: [
-          { "sells": { "order": "desc", "unmapped_type": "long" } },
-          { "rating.average": { "order": "desc", "unmapped_type": "long" } },
-          { "views": { "order": "desc", "unmapped_type": "long" } },
-          { "createdAt": { "order": "desc", "unmapped_type": "long" } },
-          "_score"
-        ],
-        query: {
-          term: {
-            companyId: accountId
-          }
+  product.catalog = function (searchParams, options, next) {
+    if (options && options.accessToken && options.accessToken.userId) {
+      es.search({
+        index: GLOBAL_CONFIG.es_products_index_name,
+        type: GLOBAL_CONFIG.es_products_index_type,
+        body: {
+          track_scores: true,
+          sort: [
+            { "sells": { "order": "desc", "unmapped_type": "long" } },
+            { "rating.average": { "order": "desc", "unmapped_type": "long" } },
+            { "views": { "order": "desc", "unmapped_type": "long" } },
+            { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+            "_score"
+          ],
+          query: {
+            term: {
+              companyId: options.accessToken.userId.toString()
+            }
+          },
+          from: searchParams && searchParams.from ? searchParams.from : 0,
+          size: es_page_size
         }
-      }
-    }, function (err, response, status) {
-      if (err)
-        return next(err);
-      return next(null, response);
-    });
+      }, function (err, response, status) {
+        if (err)
+          return next(err);
+        return next(null, response);
+      });
+    } else {
+      return next(null, null);
+    }
   }
 
   product.facets = function () {
@@ -379,7 +392,8 @@ module.exports = function (product) {
     http: { path: '/incrementProductViews', verb: 'post' }
   });
   product.remoteMethod('updateUserProduct', {
-    accepts: { arg: 'updateObj', type: 'object', required: true },
+    accepts: [{ arg: 'updateObj', type: 'object', required: true, http: { source: 'body' } },
+    { "arg": "options", "type": "object", "http": "optionsFromRequest" }],
     returns: { arg: 'result', type: 'any' },
     http: { path: '/updateUserProduct', verb: 'post' }
   });
@@ -406,7 +420,8 @@ module.exports = function (product) {
     http: { path: '/search', verb: 'post' }
   });
   product.remoteMethod('catalog', {
-    accepts: { arg: 'accountId', type: 'string', required: true },
+    accepts: [{ "arg": 'searchParams', type: 'object', http: { source: 'body' } },
+    { "arg": "options", "type": "object", "http": "optionsFromRequest" }],
     returns: { arg: 'result', type: 'any' },
     http: { path: '/catalog', verb: 'post' }
   });

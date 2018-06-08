@@ -4,7 +4,7 @@
       <button class="btn btn-simple" *ngIf="!showProductForm" (click)="openProductForm(true)">
         <i class="fa fa-plus"></i>&nbsp;&nbsp;Add New Product
       </button>
-      <button class="btn btn-simple" *ngIf="!showProductForm">
+      <button class="btn btn-simple" *ngIf="!showProductForm"  [disabled]="!canAddDiscount" (click)="openSaleDialog()">
         <i class="fa fa-tag"></i>&nbsp;&nbsp; Start a sale
       </button>
       <button class="btn btn-simple" *ngIf="showProductForm" (click)="SaveProduct()">
@@ -35,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let row of products" (click)="toggleRow(row)" [class.selected]="row.selected">
+        <tr *ngFor="let row of products" >
           <td>
             <div class="img-container" [class.stacked-effect]="row.attachments.length > 1">
               <img *ngIf="row.attachments.length>0" [src]="attachmentServer + row.attachments[0].url" alt="...">

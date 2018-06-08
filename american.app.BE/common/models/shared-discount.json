@@ -1,0 +1,38 @@
+{
+    "name": "sharedDiscount",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "notes": "string",
+        "value": {
+            "type": "number",
+            "required": true
+        },
+        "start_date": {
+            "type": "Date",
+            "required": true
+        },
+        "end_date": {
+            "type": "Date",
+            "required": true
+        }
+    },
+    "validations": [],
+    "relations": {
+        "status": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "statusId"
+        },
+        "type": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "typeId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

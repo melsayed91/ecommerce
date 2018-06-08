@@ -1,15 +1,14 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
 import "rxjs/add/operator/takeWhile";
-
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { SaleComponent } from "./sale/sale.component";
 import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
-
 import { UserService } from '../../../../core/services/user.service/user.service';
 import { ProductApi, Product } from '../../../../common/BE.SDKs/Products';
 import { SysCodeApi } from '../../../../common/BE.SDKs/sysCodes';
 import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../../../common/BE.SDKs/attachment';
 import { AttachmentService } from '../../../../core/services/attachment.service/attachment.service';
 declare var $: any;
-
 @Component({
   selector: 'profile-products',
   templateUrl: './products.component.html',
@@ -22,6 +21,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   alive: boolean = true;
+  canAddDiscount: boolean = false;
   attachmentServer: any;
   account;
   isNew: any;
@@ -41,6 +41,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   returnAccepted = true;
   warrantyProvided = true;
   constructor(
+    private dialog: MatDialog,
     private auth: UserService,
     private ng2FileInputService: Ng2FileInputService,
     private ProductApi: ProductApi,
@@ -61,6 +62,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   loadUserProducts(): any {
+    this.ProductApi.updateAttributes("mm", {})
     this.ProductApi.getUserProducts(this.account.id)
       .takeWhile(() => this.alive)
       .subscribe((response) => {
@@ -71,11 +73,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   initDataTable() {
-    console.log('init table')
     if (this.table)
       this.table.destroy();
 
     this.table = $('#datatables').DataTable({
+      select: {
+        style: 'single'
+      },
       columnDefs: [
         {
           targets: [0, 4],
@@ -95,10 +99,31 @@ export class ProductsComponent implements OnInit, OnDestroy {
         searchPlaceholder: 'Search Products'
       }
     });
+
+    this.table.on('select', function (e, dt, type, indexes) {
+      this.canAddDiscount = this.table.rows({ selected: true }).count() > 0;
+    }.bind(this))
+    this.table.on('deselect', function (e, dt, type, indexes) {
+      this.canAddDiscount = this.table.rows({ selected: true }).count() > 0;
+    }.bind(this))
   }
 
-  toggleRow(row) {
-    // row.selected = !row.selected;
+  openSaleDialog() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    dialogConfig.data = {
+    };
+
+    const dialogRef = this.dialog.open(SaleComponent,
+      dialogConfig);
+
+
+    dialogRef.afterClosed().subscribe(
+      val => console.log("Dialog output:", val)
+    );
   }
 
   openProductForm(isNew) {
@@ -143,7 +168,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       "specs": this.product.specs,
       "returnPeriode": this.returnAccepted ? this.product.returnPeriode : 0,
       "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0,
-      "rating":this.product.rating,
+      "rating": this.product.rating,
       "views": this.product.views,
       "sells": this.product.sells
     };

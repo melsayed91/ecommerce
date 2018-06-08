@@ -19,11 +19,13 @@ export interface ProductInterface {
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
+  "discountList"?: Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds"?: Array<any>;
   account?: any;
   category?: any;
+  discounts?: any[];
   attachments?: any[];
 }
 
@@ -45,11 +47,13 @@ export class Product implements ProductInterface {
   "id": any;
   "accountId": any;
   "categoryId": any;
+  "discountList": Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds": Array<any>;
   account: any;
   category: any;
+  discounts: any[];
   attachments: any[];
   constructor(data?: ProductInterface) {
     Object.assign(this, data);
@@ -159,6 +163,11 @@ export class Product implements ProductInterface {
           name: 'categoryId',
           type: 'any'
         },
+        "discountList": {
+          name: 'discountList',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
         "createdAt": {
           name: 'createdAt',
           type: 'Date'
@@ -188,6 +197,14 @@ export class Product implements ProductInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
+          keyTo: 'id'
+        },
+        discounts: {
+          name: 'discounts',
+          type: 'any[]',
+          model: '',
+          relationType: 'embedsMany',
+                  keyFrom: 'discountList',
           keyTo: 'id'
         },
         attachments: {

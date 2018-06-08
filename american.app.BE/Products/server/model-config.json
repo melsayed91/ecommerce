@@ -39,13 +39,17 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "sharedDiscount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "product": {
     "dataSource": "americanBizDB",
     "public": true,
     "options": {
       "remoting": {
         "sharedMethods": {
-          "*": false,
+          "*": true,
           "getUserProducts": true,
           "incrementProductViews": true,
           "incrementProductSells": true,
@@ -53,9 +57,9 @@
           "find": true,
           "findById": true,
           "placeOrder": true,
-          "suggest":true,
-          "search":true,
-          "catalog":true
+          "suggest": true,
+          "search": true,
+          "catalog": true
         }
       }
     }

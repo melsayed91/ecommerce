@@ -25,7 +25,8 @@ import { OrdersComponent } from './orders/orders.component';
 import { OrderDetailsComponent } from './orders/details/details.component';
 import { CustomersComponent } from './customers/customers.component';
 import { BarRatingModule } from "ngx-bar-rating";
-
+import { SaleComponent } from './profile/tabs/products/sale/sale.component';
+import { FieldErrorDisplayComponent } from './profile/tabs/products/sale/field-error-display/field-error-display.component';
 
 
 @NgModule({
@@ -55,7 +56,10 @@ import { BarRatingModule } from "ngx-bar-rating";
     ProfileInfoComponent,
     OrdersComponent,
     OrderDetailsComponent,
-    CustomersComponent]
+    CustomersComponent,
+    SaleComponent,
+    FieldErrorDisplayComponent],
+  entryComponents: [SaleComponent]
 })
 export class AccountModule {
 

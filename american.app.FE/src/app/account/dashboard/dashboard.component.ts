@@ -71,7 +71,7 @@ export class dashboardComponent implements OnInit, OnDestroy {
   }
 
   loadProductCatalog(): any {
-    this.ProductApi.catalog(this.userAccount.id).takeWhile(() => this.alive)
+    this.ProductApi.catalog().takeWhile(() => this.alive)
       .subscribe((response) => {
         this.isSearching = false;
         if (response.result.hits.total > 0) {

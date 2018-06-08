@@ -1,3 +1,11 @@
+
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .product-images{
     display: flex;
     justify-content: flex-start;
