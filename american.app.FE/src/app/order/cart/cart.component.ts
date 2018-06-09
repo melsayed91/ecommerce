@@ -1,8 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {UserService} from '../../core/services/user.service/user.service';
-import {AttachmentApi, LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
-import {AttachmentService} from '../../core/services/attachment.service/attachment.service';
-import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { UserService } from '../../core/services/user.service/user.service';
+import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
+import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
 
 @Component({
   selector: 'app-cart',
@@ -15,7 +15,7 @@ export class CartComponent implements OnInit, OnDestroy {
   attachmentServer: any;
   totalAmount = 0;
   totalItems = 0;
-
+  totalDiscount = 0;
   ngOnDestroy(): void {
     this.alive = false;
   }
@@ -29,7 +29,6 @@ export class CartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     if (this.auth.account) {
       this.currentAccount = this.auth.account;
-
       this.AccountApi.getCartItems(this.auth.account.accountDataId).subscribe((resp) => {
         this.cartItems = resp.cartItems.cartItems;
         this.calculate()
@@ -44,9 +43,19 @@ export class CartComponent implements OnInit, OnDestroy {
   calculate() {
     this.totalItems = 0;
     this.totalAmount = 0;
-    this.cartItems.forEach(function (item) {
+    this.cartItems = this.cartItems.map(function (item) {
+      if (item.product.discount &&
+        item.product.discount.isActive &&
+        new Date(item.product.discount.start_date) <= new Date() &&
+        new Date(item.product.discount.end_date) >= new Date()) {
+        this.totalDiscount += (item.product.discount.sale_value * item.quantity);
+        item.product.activeDiscount = item.product.discount;
+      } else {
+        item.product.activeDiscount = false;
+      }
       this.totalItems += item.quantity;
       this.totalAmount += item.product.price * item.quantity;
+      return item;
     }.bind(this))
   }
 

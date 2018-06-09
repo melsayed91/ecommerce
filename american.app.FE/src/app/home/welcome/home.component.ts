@@ -128,7 +128,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
     this.shoppingCartApi.addCartItem({
       accountDataId: this.auth.account.accountDataId,
-      productId: product.id,
+      productId: product._id,
       quantity: 1
     }).subscribe(resp => {
       $.notify({

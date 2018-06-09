@@ -138,7 +138,7 @@ export class ListComponent implements OnInit {
     }
     this.shoppingCartApi.addCartItem({
       accountDataId: this.auth.account.accountDataId,
-      productId: product.id,
+      productId: product._id,
       quantity: 1
     }).subscribe(resp => {
       $.notify({
