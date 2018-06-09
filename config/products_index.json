@@ -75,20 +75,22 @@
                         "end_date": {
                             "type": "date"
                         },
-                        "amount": {
+                        "sale_value": {
                             "type": "float"
                         },
-                        "status": {
-                            "type": "keyword",
-                            "index": true
+                        "percentage": {
+                            "type": "float"
                         },
-                        "statusId": {
-                            "type": "text"
+                        "price": {
+                            "type": "float"
+                        },
+                        "isActive": {
+                            "type": "boolean"
                         },
                         "notes": {
                             "type": "text"
                         },
-                        "typeId": {
+                        "sale_type": {
                             "type": "text"
                         }
                     }
