@@ -4,7 +4,7 @@
 
       <div class="col-md-3">
         <app-facets [aggregation]="aggregations" *ngIf="(products.length > 0 &&!isSearching) ||applyingFilters"
-          (filterApplied)="onFilterApply($event)"></app-facets>
+                    (filterApplied)="onFilterApply($event)"></app-facets>
 
         <div class="card products" *ngIf="isSearching">
           <div class="card-header">
@@ -50,7 +50,8 @@
                   </i>
                 </span>
 
-                <div class="dropdown" style="border-left: .0714285714rem solid #d6d6d6; float: right;padding-left: 8px;">
+                <div class="dropdown"
+                     style="border-left: .0714285714rem solid #d6d6d6; float: right;padding-left: 8px;">
                   <a class="dropdown-toggle" data-toggle="dropdown">Sort By
                     <b class="caret"></b>
                   </a>
@@ -83,10 +84,12 @@
               </div>
               <div class="card-content">
                 <div class="card-actions">
-                  <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+                  <button type="button" class="btn btn-default btn-simple" matTooltip="View"
+                          [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
                     <i class="material-icons">art_track</i>
                   </button>
-                  <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+                  <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart"
+                          [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
                     <i class="material-icons">add_shopping_cart</i>
                   </button>
                 </div>
@@ -101,10 +104,12 @@
                 <div class="price">
                   <h4 class="text-primary">${{product.price}}</h4>
                   <span *ngIf="product.rating">
-                    <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+                    <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
+                                [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
                   </span>
                   <span *ngIf="!product.rating">
-                    <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+                    <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
+                                [theme]="'fontawesome'"></bar-rating> (0)
                   </span>
                 </div>
               </div>
@@ -132,9 +137,16 @@
           No Results From your search , try again
         </div>
 
-
+        <div style="height: 5px">
+          <mat-progress-bar *ngIf="loadingNextPage" mode="indeterminate"></mat-progress-bar>
+        </div>
       </div>
     </div>
-    <mat-spinner *ngIf="loadingNextPage"></mat-spinner>
+
+<!--
+    <mat-progress-bar *ngIf="!loadingNextPage" mode="determinate" value="100"></mat-progress-bar>
+-->
+
+
   </div>
 </div>

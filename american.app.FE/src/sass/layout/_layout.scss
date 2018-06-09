@@ -3,6 +3,7 @@ body {
 }
 
 .biz-content {
+  min-height: calc(100vh - 102px);
   max-width: $max-width;
   margin: 25px auto 0 auto;
   padding: 30px;
@@ -24,3 +25,5 @@ body {
 mat-spinner {
   margin: 0 auto;
 }
+
+[hidden] { display: none !important;}

@@ -18,6 +18,7 @@ declare var $: any;
 export class ListComponent implements OnInit {
   private products = [];
   private total = 0;
+  private skip = 0;
   private attachmentServer: any;
   private query: string;
   private aggregations: any;
@@ -48,21 +49,18 @@ export class ListComponent implements OnInit {
       .takeWhile(() => this.alive)
       .subscribe(params => {
         this.applyingFilters = false;
-        this.resetParams();
+        this.resetParams(false);
         this.query = params['query'];
         this.searchParams['text'] = this.query
-        this.doSearch();
+        this.doSearch(false);
       });
 
     var x = Scrollbar.get(<HTMLElement>document.body)
     x.addListener((status) => {
-      if (status.offset.y === status.limit.y && !this.loadingNextPage) {
-        this.loadingNextPage = true
-        setTimeout(function(){
-          console.log('OK')
-          this.loadingNextPage = false
-        }.bind(this) , 3000)
-
+      if (status.offset.y === status.limit.y && !this.loadingNextPage && this.total !== this.products.length) {
+        this.loadingNextPage = true;
+        this.skip += 1;
+        this.doSearch(true);
       }
     });
   }
@@ -72,25 +70,31 @@ export class ListComponent implements OnInit {
       field: field,
       dir: direction
     }
-    this.doSearch();
+    this.doSearch(false);
   }
 
   onFilterApply(filters) {
     this.applyingFilters = true;
     this.searchParams['facets'] = filters;
-    this.doSearch();
+    this.doSearch(false);
   }
 
 
-  resetParams() {
-    this.products = [];
-    this.aggregations = {};
-    this.total = 0;
+  resetParams(isScroll) {
+    if (!isScroll) {
+      this.products = [];
+      this.aggregations = {};
+      this.total = 0;
+    }
   }
 
-  doSearch() {
-    this.resetParams();
-    this.isSearching = true;
+  doSearch(isScroll) {
+    if (!isScroll) {
+      this.skip = 0;
+    }
+    this.resetParams(isScroll);
+    this.isSearching = !isScroll;
+    this.searchParams['from'] = this.skip;
     this.productApi.search(this.searchParams)
       .takeWhile(() => this.alive)
       .subscribe(response => {
@@ -99,15 +103,29 @@ export class ListComponent implements OnInit {
           this.aggregations = response.result.aggregations;
         }
         if (response.result.hits.total > 0) {
-          this.total = response.result.hits.total;
-          this.products = response.result.hits.hits.map(function (item) {
-            var currentProduct = item._source;
-            currentProduct._id = item._id
-            return currentProduct;
-          });
+          if (!isScroll) {
+            this.total = response.result.hits.total;
+            this.products = response.result.hits.hits.map(function (item) {
+              var currentProduct = item._source;
+              currentProduct._id = item._id
+              return currentProduct;
+            });
+          } else {
+            this.products = this.products.concat(response.result.hits.hits.map(function (item) {
+              var currentProduct = item._source;
+              currentProduct._id = item._id
+              return currentProduct;
+            }));
+            this.loadingNextPage = false
+          }
+
 
         } else {
-          this.products = [];
+          if (!isScroll) {
+            this.products = [];
+          } else {
+            this.loadingNextPage = false
+          }
         }
       })
   }
