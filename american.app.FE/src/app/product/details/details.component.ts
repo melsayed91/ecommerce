@@ -67,7 +67,15 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         })
           .takeWhile(() => this.alive)
           .subscribe(response => {
-            this.product = response;            
+            this.product = response;
+            if (this.product.discount &&
+              this.product.discount.isActive &&
+              new Date(this.product.discount.start_date) <= new Date() &&
+              new Date(this.product.discount.end_date) >= new Date()) {
+              this.product.activeDiscount = this.product.discount;
+            } else {
+              this.product.activeDiscount = false;
+            }
             this.selectedImage = this.product.attachments[0];
             this.quantity = this.product.moq;
 

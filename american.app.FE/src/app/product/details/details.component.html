@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-md-6  animated-250 fadeInLeft">
       <div class="images-slider">
         <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
-          <span class="discount">20 %  off</span>
+          <span class="discount" *ngIf="product.activeDiscount">{{product.activeDiscount.percentage}} %  off</span>
         </div>
         <div class="thumbnails">
           <div class="picture" *ngFor="let image of product.attachments"
@@ -36,9 +36,10 @@
         <img [src]="attachmentServer + product.account?.accountData?.profileImage?.url">
         <span>{{product.account?.accountData?.name}}</span>
       </div>
-      <h3>
-        <b>$ {{product.price}}</b>
-      </h3>
+      <h4 class="text-primary" *ngIf="product.activeDiscount">${{product.activeDiscount.price}}</h4>
+      <h4 class="text-primary" style="color:#3C4858" *ngIf="product.activeDiscount"><span class="was">${{product.price}}</span>   - You Save ${{product.activeDiscount.sale_value}}</h4>
+
+      <h4 class="text-primary" *ngIf="!product.activeDiscount">${{product.price}}</h4>
       <p>{{product.description?.substring(0, 150)}}...
         <button class="btn btn-primary btn-simple btn-sm no-margin" (click)="scrollTo('#productDetails')">
           <b>More</b>

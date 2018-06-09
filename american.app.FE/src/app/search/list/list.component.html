@@ -78,9 +78,10 @@
           <div class="col-lg-3" *ngFor="let product of products let i=index">
             <div class="card card-product">
               <div class="card-image" data-header-animation="true">
-                <a [routerLink]="[ '/product/details' , product._id]">
-                  <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
-                </a>
+                <div class="ribbon green" *ngIf="product.views > 100 && product.sells < 100"><span>POPULAR</span></div>
+                <div class="ribbon red" *ngIf="product.sells > 100"><span>HOT</span></div>
+                <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
+                <span class="discount" *ngIf="product.activeDiscount">{{product.activeDiscount.percentage}} %  off</span>
               </div>
               <div class="card-content">
                 <div class="card-actions">
@@ -101,17 +102,22 @@
                 </div>
               </div>
               <div class="card-footer">
+        <span *ngIf="product.rating">
+            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
+                        [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+          </span>
                 <div class="price">
-                  <h4 class="text-primary">${{product.price}}</h4>
-                  <span *ngIf="product.rating">
-                    <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true"
-                                [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
-                  </span>
+                  <h4 class="text-primary was" *ngIf="product.activeDiscount">${{product.price}}</h4>
+                  <h4 class="text-primary" *ngIf="product.activeDiscount">${{product.activeDiscount.price}}</h4>
+                  <h4 class="text-primary was" *ngIf="!product.activeDiscount"></h4>
+                  <h4 class="text-primary" *ngIf="!product.activeDiscount">${{product.price}}</h4>
+
                   <span *ngIf="!product.rating">
-                    <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
-                                [theme]="'fontawesome'"></bar-rating> (0)
-                  </span>
+            <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true"
+                        [theme]="'fontawesome'"></bar-rating> (0)
+          </span>
                 </div>
+
               </div>
             </div>
           </div>

@@ -108,12 +108,28 @@ export class ListComponent implements OnInit {
             this.products = response.result.hits.hits.map(function (item) {
               var currentProduct = item._source;
               currentProduct._id = item._id
+              if (currentProduct.discount &&
+                currentProduct.discount.isActive &&
+                new Date(currentProduct.discount.start_date) <= new Date() &&
+                new Date(currentProduct.discount.end_date) >= new Date()) {
+                currentProduct.activeDiscount = currentProduct.discount;
+              } else {
+                currentProduct.activeDiscount = false;
+              }
               return currentProduct;
             });
           } else {
             this.products = this.products.concat(response.result.hits.hits.map(function (item) {
               var currentProduct = item._source;
               currentProduct._id = item._id
+              if (currentProduct.discount &&
+                currentProduct.discount.isActive &&
+                new Date(currentProduct.discount.start_date) <= new Date() &&
+                new Date(currentProduct.discount.end_date) >= new Date()) {
+                currentProduct.activeDiscount = currentProduct.discount;
+              } else {
+                currentProduct.activeDiscount = false;
+              }
               return currentProduct;
             }));
             this.loadingNextPage = false

@@ -5,6 +5,119 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.discount {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  z-index: 8;
+  color: #FFF;
+  background: rgba(255, 69, 56, 0.9);
+  padding: .3571428571rem;
+  border-radius: 0 5px 0 5px;
+}
+
+.was {
+  height: 25px;
+  text-decoration: line-through;
+  color: #aeaeae;
+}
+
+.card .card-footer h4 {
+  margin: 0;
+}
+
+.price {
+  width: 100%;
+}
+
+.br.br-fontawesome {
+  margin: 0 !important;
+}
+
+.card .card-image {
+  overflow: visible;
+}
+
+.ribbon {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 75px;
+  height: 75px;
+  text-align: right;
+}
+
+.ribbon span {
+  font-size: 10px;
+  font-weight: bold;
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 20px;
+  transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  width: 100px;
+  display: block;
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 19px;
+  right: -21px;
+}
+
+.ribbon span::before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid;
+}
+
+.ribbon span::after {
+  content: "";
+  position: absolute;
+  right: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid transparent;
+  border-right: 3px solid;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid;
+}
+
+.ribbon.green span{
+  background: #4ca750;
+  background: linear-gradient(60deg, #66bb6a, #43a047);
+}
+
+.ribbon.green span::before {
+  border-left-color: #4ca750;
+  border-top-color: #4ca750;
+}
+
+.ribbon.green span::after {
+  border-right-color: #4ca750;
+  border-top-color: #4ca750;
+}
+
+.ribbon.red span{
+  background: #f44336;
+}
+
+.ribbon.red span::before {
+  border-left-color: #f44336;
+  border-top-color: #f44336;
+}
+
+.ribbon.red span::after {
+  border-right-color: #f44336;
+  border-top-color: #f44336;
+}
 .placeholder-home{
 
 .background-masker {
