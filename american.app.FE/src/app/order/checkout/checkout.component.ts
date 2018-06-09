@@ -94,6 +94,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           .takeWhile(() => this.alive)
           .subscribe((response: Product) => {
             this.products.push(response);
+            if(this.products && this.products.length){
+              if (this.products[0].discount &&
+                this.products[0].discount.isActive &&
+                new Date(this.products[0].discount.start_date) <= new Date() &&
+                new Date(this.products[0].discount.end_date) >= new Date()) {
+                this.products[0].activeDiscount = this.products[0].discount;
+                this.discount += this.products[0].activeDiscount.sale_value;
+              } else {
+                this.products[0].activeDiscount = false;
+              }
+            }
+
             this.order.shipments.push({
               shippingFees: 0,
               sellerId: response.accountId,
@@ -122,6 +134,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 ]
               })
               item.product.orderQuantity = item.quantity;
+              if (item.product.discount &&
+                item.product.discount.isActive &&
+                new Date(item.product.discount.start_date) <= new Date() &&
+                new Date(item.product.discount.end_date) >= new Date()) {
+                item.product.activeDiscount = item.product.discount;
+                this.discount += item.product.activeDiscount.sale_value;
+              } else {
+                item.product.activeDiscount = false;
+              }
               return item.product;
             }.bind(this));
           } else {
@@ -194,7 +215,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   getTotal() {
-    return (this.getSubTotal() + this.taxes + this.discount + this.selectedDelivery.fees);
+    return (this.getSubTotal() + this.taxes + this.selectedDelivery.fees - this.discount);
   }
 
   tokenCreated(token) {
