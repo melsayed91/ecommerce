@@ -139,7 +139,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
                 new Date(item.product.discount.start_date) <= new Date() &&
                 new Date(item.product.discount.end_date) >= new Date()) {
                 item.product.activeDiscount = item.product.discount;
-                this.discount += item.product.activeDiscount.sale_value;
+                this.discount += item.product.activeDiscount.sale_value * item.product.orderQuantity;
               } else {
                 item.product.activeDiscount = false;
               }
