@@ -90,7 +90,7 @@
                         "notes": {
                             "type": "text"
                         },
-                        "typeId": {
+                        "sale_type": {
                             "type": "text"
                         }
                     }
