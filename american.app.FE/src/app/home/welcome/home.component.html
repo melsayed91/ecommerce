@@ -1,70 +1,7 @@
-<h3>
-  LATEST PRODUCTS</h3>
-<div class="products products-loading" *ngIf="isSearching">
-  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
-    <div class="background-masker header-top"></div>
-    <div class="background-masker header-left"></div>
-    <div class="background-masker header-right"></div>
-    <div class="background-masker header-bottom"></div>
-    <div class="background-masker header2-left"></div>
-    <div class="background-masker header2-right"></div>
-    <div class="background-masker header2-bottom"></div>
-
-    <div class="background-masker left"></div>
-    <div class="background-masker right"></div>
-
-    <div class="background-masker footer"></div>
-  </div>
-</div>
-  <div class="products" *ngIf="latest_products.length == 0 &&!isSearching">
-    No Results From your search , try again
-  </div>
-<div class="products" *ngIf="latest_products.length > 0">
-
-  <div class="col-lg-2 col-md-6" *ngFor="let product of latest_products let i=index">
-    <div class="card card-product">
-      <div class="card-image" data-header-animation="true">
-        <a [routerLink]="[ '/product/details' , product._id]">
-          <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
-        </a>
-      </div>
-      <div class="card-content">
-        <div class="card-actions">
-          <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
-            <i class="material-icons">art_track</i>
-          </button>
-          <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
-            <i class="material-icons">add_shopping_cart</i>
-          </button>
-        </div>
-        <h4 class="card-title" style="height: 50px;overflow: hidden;">
-          <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
-        </h4>
-        <div class="card-description truncate">
-          {{product.description}}
-        </div>
-      </div>
-      <div class="card-footer">
-        <div class="price">
-          <h4 class="text-primary">${{product.price}}</h4>
-          <span *ngIf="product.rating">
-            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
-          </span>
-          <span *ngIf="!product.rating">
-            <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
-          </span>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <h3>Hot PRODUCTS</h3>
-  <div class="products" *ngIf="hot_products.length == 0 &&!isSearching">
-    No Results From your search , try again
-  </div>
+<div class="products" *ngIf="hot_products.length == 0 &&!isSearching">
+  No Results From your search , try again
+</div>
 <div class="products products-loading" *ngIf="isSearching">
   <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
     <div class="background-masker header-top"></div>
@@ -112,6 +49,145 @@
           <span *ngIf="product.rating">
             <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
           </span>
+          <span *ngIf="!product.rating">
+            <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h3>
+  POPULAR PRODUCTS</h3>
+<div class="products products-loading" *ngIf="isSearching">
+  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
+    <div class="background-masker header-top"></div>
+    <div class="background-masker header-left"></div>
+    <div class="background-masker header-right"></div>
+    <div class="background-masker header-bottom"></div>
+    <div class="background-masker header2-left"></div>
+    <div class="background-masker header2-right"></div>
+    <div class="background-masker header2-bottom"></div>
+
+    <div class="background-masker left"></div>
+    <div class="background-masker right"></div>
+
+    <div class="background-masker footer"></div>
+  </div>
+</div>
+  <div class="products" *ngIf="most_viewed_products.length == 0 &&!isSearching">
+    No Results From your search , try again
+  </div>
+
+<div class="products" *ngIf="most_viewed_products.length > 0">
+
+  <div class="col-lg-2 col-md-6" *ngFor="let product of most_viewed_products let i=index">
+    <div class="card card-product">
+      <div class="card-image" data-header-animation="true">
+        <a [routerLink]="[ '/product/details' , product._id]">
+          <div class="ribbon green" *ngIf="product.views > 100 && product.sells < 100"><span>POPULAR</span></div>
+          <div class="ribbon red" *ngIf="product.sells > 100"><span>HOT</span></div>
+          <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
+          <span class="discount">20 %  off</span>
+        </a>
+      </div>
+      <div class="card-content">
+        <div class="card-actions">
+          <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+            <i class="material-icons">art_track</i>
+          </button>
+          <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+            <i class="material-icons">add_shopping_cart</i>
+          </button>
+        </div>
+        <h4 class="card-title" style="height: 50px;overflow: hidden;">
+          <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+        </h4>
+        <div class="card-description truncate">
+          {{product.description}}
+        </div>
+      </div>
+      <div class="card-footer">
+        <span *ngIf="product.rating">
+            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+          </span>
+        <div class="price">
+          <h4 class="text-primary was">${{product.price}}</h4>
+          <h4 class="text-primary">${{product.price}}</h4>
+
+          <span *ngIf="!product.rating">
+            <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<h3>
+  LATEST PRODUCTS</h3>
+<div class="products products-loading" *ngIf="isSearching">
+  <div class="product card animated-background placeholder-home" *ngFor="let product of [1,2,3,4,5,6]">
+    <div class="background-masker header-top"></div>
+    <div class="background-masker header-left"></div>
+    <div class="background-masker header-right"></div>
+    <div class="background-masker header-bottom"></div>
+    <div class="background-masker header2-left"></div>
+    <div class="background-masker header2-right"></div>
+    <div class="background-masker header2-bottom"></div>
+
+    <div class="background-masker left"></div>
+    <div class="background-masker right"></div>
+
+    <div class="background-masker footer"></div>
+  </div>
+</div>
+<div class="products" *ngIf="latest_products.length == 0 &&!isSearching">
+  No Results From your search , try again
+</div>
+
+<div class="products" *ngIf="latest_products.length > 0">
+
+  <div class="col-lg-2 col-md-6" *ngFor="let product of latest_products let i=index">
+    <div class="card card-product">
+      <div class="card-image" data-header-animation="true">
+        <a [routerLink]="[ '/product/details' , product._id]">
+          <div class="ribbon green" *ngIf="product.views > 100 && product.sells < 100"><span>POPULAR</span></div>
+          <div class="ribbon red" *ngIf="product.sells > 100"><span>HOT</span></div>
+          <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
+          <span class="discount">20 %  off</span>
+        </a>
+      </div>
+      <div class="card-content">
+        <div class="card-actions">
+          <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+            <i class="material-icons">art_track</i>
+          </button>
+          <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+            <i class="material-icons">add_shopping_cart</i>
+          </button>
+        </div>
+        <h4 class="card-title" style="height: 50px;overflow: hidden;">
+          <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+        </h4>
+        <div class="card-description truncate">
+          {{product.description}}
+        </div>
+      </div>
+      <div class="card-footer">
+        <span *ngIf="product.rating">
+            <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+          </span>
+        <div class="price">
+          <h4 class="text-primary was">${{product.price}}</h4>
+          <h4 class="text-primary">${{product.price}}</h4>
+
           <span *ngIf="!product.rating">
             <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
           </span>

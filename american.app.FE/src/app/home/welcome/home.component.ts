@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   attachmentServer: string;
   latest_products = [];
   hot_products = [];
+  most_viewed_products = [];
 
   constructor(private productApi: ProductApi,
               private route: ActivatedRoute,
@@ -78,6 +79,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       if (response.result.responses[1] && response.result.responses[1].hits.total > 0) {
         this.hot_products = response.result.responses[1].hits.hits.map(function (item) {
+          var currentProduct = item._source;
+          currentProduct._id = item._id
+          return currentProduct;
+        });
+      }
+
+      if (response.result.responses[2] && response.result.responses[2].hits.total > 0) {
+        this.most_viewed_products = response.result.responses[2].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id
           return currentProduct;

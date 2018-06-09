@@ -6,6 +6,16 @@
   background-position: 50% 50%;
   border-radius: 50%;
 }
+
+.discount{
+  position: absolute;
+  top: 10px;
+  left: 90px;
+  z-index: 8;
+  color: #FFF;
+  background: rgba(255, 69, 56, 0.9);
+  padding: .3571428571rem;
+}
 .images-slider{
     position: relative;
     .main{
