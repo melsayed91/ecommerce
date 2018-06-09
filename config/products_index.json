@@ -63,7 +63,33 @@
                             "type": "float"
                         },
                         "total": {
-                           "type": "integer"
+                            "type": "integer"
+                        }
+                    }
+                },
+                "discount": {
+                    "properties": {
+                        "start_date": {
+                            "type": "date"
+                        },
+                        "end_date": {
+                            "type": "date"
+                        },
+                        "amount": {
+                            "type": "float"
+                        },
+                        "status": {
+                            "type": "keyword",
+                            "index": true
+                        },
+                        "statusId": {
+                            "type": "text"
+                        },
+                        "notes": {
+                            "type": "text"
+                        },
+                        "typeId": {
+                            "type": "text"
                         }
                     }
                 },

@@ -77,9 +77,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
       this.table.destroy();
 
     this.table = $('#datatables').DataTable({
-      select: {
-        style: 'single'
-      },
+      select: false,
       columnDefs: [
         {
           targets: [0, 4],

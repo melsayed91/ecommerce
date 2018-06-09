@@ -32,6 +32,16 @@ module.exports = {
     },
     shipmentStatus: {
         pending: "5a89a6c29fcea8171cb0f0d4"
+    },
+    discountTypes: {
+        percentage: "5b1adb4e2a868c48d0fecf1c",
+        value: "5b1adb552a868c48d0fecf1d"
+    },
+    discountStatus: {
+        pending: "5b1adb9e2a868c48d0fecf1f",
+        active: "5b1adbbe2a868c48d0fecf20",
+        finished: "5b1adbca2a868c48d0fecf21",
+        stopped: "5b1adbd62a868c48d0fecf22"
     }
 
 }
