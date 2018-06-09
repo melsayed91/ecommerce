@@ -43,6 +43,10 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "discount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "product": {
     "dataSource": "americanBizDB",
     "public": true,
@@ -59,7 +63,9 @@
           "placeOrder": true,
           "suggest": true,
           "search": true,
-          "catalog": true
+          "catalog": true,
+          "startSale": true,
+          "stopSale": true
         }
       }
     }

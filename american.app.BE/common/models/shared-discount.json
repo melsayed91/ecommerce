@@ -7,8 +7,8 @@
     },
     "properties": {
         "notes": "string",
-        "value": {
-            "type": "number",
+        "amount": {
+            "type": "Number",
             "required": true
         },
         "start_date": {

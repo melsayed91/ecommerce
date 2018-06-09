@@ -3,13 +3,14 @@
 const path = require('path')
 const es_page_size = 10
 var LoopBackContext = require('loopback-context');
+var moment = require('moment');
 var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 var elasticsearch = require('elasticsearch');
 var es = new elasticsearch.Client({
   host: GLOBAL_CONFIG.es_hostname,
   log: 'trace'
 });
-
+const discountStatus = require('../../../common/enums/common').discountStatus;
 module.exports = function (product) {
 
 
@@ -25,10 +26,60 @@ module.exports = function (product) {
         include: [
           "attachments",
           "category",
+          {
+            relation: 'discounts',
+            scope: {
+              where: {
+                and: [
+                  { statusId: discountStatus.active }
+                ]
+              },
+              include: [{
+                relation: 'status',
+                fields: ['name']
+              },
+              {
+                relation: 'type',
+                fields: ['name']
+              }]
+            }
+          },
           { "account": { "accountData": "profileImage" } }
         ]
       }, function (err, productDetails) {
+        var _doc = {
+          views: productDetails.views,
+          sells: productDetails.sells,
+          rating: productDetails.rating ? productDetails.rating : {
+            average: 0,
+            total: 0
+          },
+          name: productDetails.name,
+          price: productDetails.price,
+          categoryId: productDetails.categoryId,
+          category: productDetails.__data.category.__data.name,
+          description: productDetails.description,
+          companyId: productDetails.__data.account.userId.toString(),
+          company: productDetails.__data.account.__data.accountData.__data.name,
+          stock: productDetails.stock,
+          createdAt: productDetails.createdAt,
+          image_url: productDetails.__data.attachments[0].__data.url
+        };
 
+        if (productDetails.__data.discounts && productDetails.__data.discounts.length > 0) {
+          var active_discount = productDetails.__data.discounts[0].__data;
+          _doc.discount = {
+            start_date: active_discount.start_date,
+            end_date: active_discount.end_date,
+            amount: active_discount.amount,
+            statusId: active_discount.statusId.toString(),
+            typeId: active_discount.typeId.toString(),
+            notes: active_discount.notes,
+            status: active_discount.status.__data.name
+          }
+        } else {
+          _doc.discount = undefined;
+        }
 
         if (ctx.isNewInstance) {
           es.create({
@@ -36,24 +87,7 @@ module.exports = function (product) {
             type: GLOBAL_CONFIG.es_products_index_type,
             refresh: true,
             id: productDetails.id.toString(),
-            body: {
-              views: productDetails.views,
-              sells: productDetails.sells,
-              rating: {
-                average: 0,
-                total: 0
-              },
-              name: productDetails.name,
-              price: productDetails.price,
-              categoryId: productDetails.categoryId,
-              category: productDetails.__data.category.__data.name,
-              description: productDetails.description,
-              companyId: productDetails.__data.account.userId.toString(),
-              company: productDetails.__data.account.__data.accountData.__data.name,
-              stock: productDetails.stock,
-              createdAt: productDetails.createdAt,
-              image_url: productDetails.__data.attachments[0].__data.url
-            }
+            body: _doc
           }, function (err, response, status) {
             next();
           });
@@ -64,24 +98,7 @@ module.exports = function (product) {
             refresh: true,
             id: productDetails.id.toString(),
             body: {
-              doc: {
-                views: productDetails.views,
-                sells: productDetails.sells,
-                rating: productDetails.rating ? productDetails.rating : {
-                  average: 0,
-                  total: 0
-                },
-                name: productDetails.name,
-                price: productDetails.price,
-                categoryId: productDetails.categoryId,
-                category: productDetails.__data.category.__data.name,
-                description: productDetails.description,
-                companyId: productDetails.__data.account.userId.toString(),
-                company: productDetails.__data.account.__data.accountData.__data.name,
-                stock: productDetails.stock,
-                createdAt: productDetails.createdAt,
-                image_url: productDetails.__data.attachments[0].__data.url
-              }
+              doc: _doc
             }
           }, function (err, response, status) {
             if (err && err.status === 404) {
@@ -90,24 +107,7 @@ module.exports = function (product) {
                 type: GLOBAL_CONFIG.es_products_index_type,
                 refresh: true,
                 id: productDetails.id.toString(),
-                body: {
-                  views: productDetails.views,
-                  sells: productDetails.sells,
-                  rating: productDetails.rating ? productDetails.rating : {
-                    average: 0,
-                    total: 0
-                  },
-                  name: productDetails.name,
-                  price: productDetails.price,
-                  categoryId: productDetails.categoryId,
-                  category: productDetails.__data.category.__data.name,
-                  description: productDetails.description,
-                  companyId: productDetails.__data.account.userId.toString(),
-                  company: productDetails.__data.account.__data.accountData.__data.name,
-                  stock: productDetails.stock,
-                  createdAt: productDetails.createdAt,
-                  image_url: productDetails.__data.attachments[0].__data.url
-                }
+                body: _doc
               }, function (err, response, status) {
                 next();
               });
@@ -116,7 +116,6 @@ module.exports = function (product) {
             }
           });
         }
-
       });
   });
 
@@ -327,7 +326,24 @@ module.exports = function (product) {
       whereFilter.categoryId = categoryId;
 
     product.find({
-      where: whereFilter, include: ['category', 'attachments']
+      where: whereFilter, include: ['category', 'attachments', {
+        relation: 'discounts',
+        scope: {
+          where: {
+            and: [
+              { statusId: discountStatus.active }
+            ]
+          },
+          include: [{
+            relation: 'status',
+            fields: ['name']
+          },
+          {
+            relation: 'type',
+            fields: ['name']
+          }]
+        }
+      }]
     }, function (error, products) {
       if (error)
         return next(error);
@@ -367,6 +383,39 @@ module.exports = function (product) {
 
   product.incrementProductSells = function (productId, next) {
     product.update({ _id: productId }, { $inc: { sells: 1 } }, function (error, result) {
+      if (error)
+        return next(error);
+      return next(null, result);
+    })
+  }
+
+  product.startSale = function (sale, options, next) {
+
+
+    sale.statusId = discountStatus.active
+    // var now_date = moment().startOf('day'),
+    //   sale_start_date = moment(sale.start_date).startOf('day');
+
+    // if (sale_start_date.isAfter(now_date)) {
+    //   sale.statusId = discountStatus.pending
+    // } else if (sale_start_date.isSame(now_date)) {
+    //   sale.statusId = discountStatus.active
+    // }
+
+    product.app.models.discount.create(sale, function (err, createdDiscount) {
+      if (err)
+        return next(err);
+      product.update({ _id: sale.productId }, { $push: { "discountIds": createdDiscount.id } }, function (error, result) {
+        if (error)
+          return next(error);
+        return next(null, result);
+      })
+    })
+
+  }
+
+  product.stopSale = function (saleId, options, next) {
+    product.app.models.discount.update({ _id: saleId }, { statusId: discountStatus.stopped }, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
@@ -425,5 +474,24 @@ module.exports = function (product) {
     { "arg": "options", "type": "object", "http": "optionsFromRequest" }],
     returns: { arg: 'result', type: 'any' },
     http: { path: '/catalog', verb: 'post' }
+  });
+
+  product.remoteMethod('startSale', {
+    accepts: [
+      { "arg": 'sale', type: 'object', http: { source: 'body' }, required: true },
+      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+    ],
+
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/sale/start', verb: 'post' }
+  });
+  product.remoteMethod('stopSale', {
+    accepts: [
+      { "arg": 'saleId', type: 'string', required: true },
+      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+    ],
+
+    returns: { arg: 'result', type: 'any' },
+    http: { path: '/sale/stop', verb: 'post' }
   });
 };

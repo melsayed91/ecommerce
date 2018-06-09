@@ -31,7 +31,9 @@
         "incrementProductViews",
         "upsert",
         "search",
-        "catalog"
+        "catalog",
+        "startSale",
+        "stopSale"
       ]
     },
     {
@@ -43,7 +45,9 @@
         "find",
         "findById",
         "suggest",
-        "search"
+        "search",
+        "startSale",
+        "stopSale"
       ]
     }
   ],

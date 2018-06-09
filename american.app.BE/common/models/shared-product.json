@@ -91,9 +91,9 @@
       }
     },
     "discounts": {
-      "type": "embedsMany",
-      "model": "sharedDiscount",
-      "property": "discountList",
+      "type": "referencesMany",
+      "model": "discount",
+      "property": "discountIds",
       "options": {
         "validate": true,
         "forceId": false
