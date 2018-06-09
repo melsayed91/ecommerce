@@ -91,7 +91,7 @@
           <div class="ribbon green" *ngIf="product.views > 100 && product.sells < 100"><span>POPULAR</span></div>
           <div class="ribbon red" *ngIf="product.sells > 100"><span>HOT</span></div>
           <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.image_url">
-          <span class="discount">20 %  off</span>
+          <span class="discount" *ngIf="product.activeDiscount">{{product.activeDiscount.percentage}} %  off</span>
         </a>
       </div>
       <div class="card-content">

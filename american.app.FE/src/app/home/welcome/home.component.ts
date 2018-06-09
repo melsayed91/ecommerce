@@ -73,6 +73,14 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.latest_products = response.result.responses[0].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id
+          if (currentProduct.discount &&
+            currentProduct.discount.isActive &&
+            new Date(currentProduct.discount.start_date) <= new Date() &&
+            new Date(currentProduct.discount.end_date) >= new Date()) {
+            currentProduct.activeDiscount = currentProduct.discount;
+          } else {
+            currentProduct.activeDiscount = false;
+          }
           return currentProduct;
         });
       }
@@ -80,7 +88,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (response.result.responses[1] && response.result.responses[1].hits.total > 0) {
         this.hot_products = response.result.responses[1].hits.hits.map(function (item) {
           var currentProduct = item._source;
-          currentProduct._id = item._id
+          currentProduct._id = item._id;
+          if (currentProduct.discount &&
+            currentProduct.discount.isActive &&
+            new Date(currentProduct.discount.start_date) <= new Date() &&
+            new Date(currentProduct.discount.end_date) >= new Date()) {
+            currentProduct.activeDiscount = currentProduct.discount;
+          } else {
+            currentProduct.activeDiscount = false;
+          }
           return currentProduct;
         });
       }
@@ -88,7 +104,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (response.result.responses[2] && response.result.responses[2].hits.total > 0) {
         this.most_viewed_products = response.result.responses[2].hits.hits.map(function (item) {
           var currentProduct = item._source;
-          currentProduct._id = item._id
+          currentProduct._id = item._id;
+          if (currentProduct.discount &&
+            currentProduct.discount.isActive &&
+            new Date(currentProduct.discount.start_date) <= new Date() &&
+            new Date(currentProduct.discount.end_date) >= new Date()) {
+            currentProduct.activeDiscount = currentProduct.discount;
+          } else {
+            currentProduct.activeDiscount = false;
+          }
           return currentProduct;
         });
       }

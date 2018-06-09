@@ -28,7 +28,7 @@
       "property": [
         "getUserProducts",
         "replaceOrCreate",
-        "incrementProductViews",
+
         "upsert",
         "search",
         "catalog",
@@ -46,6 +46,7 @@
         "findById",
         "suggest",
         "search",
+        "incrementProductViews",
         "startSale",
         "stopSale"
       ]

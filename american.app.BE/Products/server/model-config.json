@@ -39,14 +39,6 @@
     "dataSource": "americanBizDB",
     "public": false
   },
-  "sharedDiscount": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
-  "discount": {
-    "dataSource": "americanBizDB",
-    "public": false
-  },
   "product": {
     "dataSource": "americanBizDB",
     "public": true,

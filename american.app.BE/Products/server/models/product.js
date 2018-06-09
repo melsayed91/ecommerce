@@ -26,25 +26,7 @@ module.exports = function (product) {
         include: [
           "attachments",
           "category",
-          {
-            relation: 'discounts',
-            scope: {
-              where: {
-                and: [
-                  { statusId: discountStatus.active }
-                ]
-              },
-              include: [{
-                relation: 'status',
-                fields: ['name']
-              },
-              {
-                relation: 'type',
-                fields: ['name']
-              }]
-            }
-          },
-          { "account": { "accountData": "profileImage" } }
+          {"account": {"accountData": "profileImage"}}
         ]
       }, function (err, productDetails) {
         var _doc = {
@@ -63,23 +45,16 @@ module.exports = function (product) {
           company: productDetails.__data.account.__data.accountData.__data.name,
           stock: productDetails.stock,
           createdAt: productDetails.createdAt,
-          image_url: productDetails.__data.attachments[0].__data.url
+          image_url: productDetails.__data.attachments[0].__data.url,
+          discount: productDetails.__data.discount
         };
 
-        if (productDetails.__data.discounts && productDetails.__data.discounts.length > 0) {
-          var active_discount = productDetails.__data.discounts[0].__data;
-          _doc.discount = {
-            start_date: active_discount.start_date,
-            end_date: active_discount.end_date,
-            amount: active_discount.amount,
-            statusId: active_discount.statusId.toString(),
-            typeId: active_discount.typeId.toString(),
-            notes: active_discount.notes,
-            status: active_discount.status.__data.name
-          }
-        } else {
-          _doc.discount = undefined;
-        }
+        /*  if (productDetails.__data.discount) {
+            //var active_discount = productDetails.__data.discounts[0].__data;
+
+          } else {
+            _doc.discount = undefined;
+          }*/
 
         if (ctx.isNewInstance) {
           es.create({
@@ -169,7 +144,6 @@ module.exports = function (product) {
           terms: {field: "category"}
         }
       };
-
 
 
     if (searchParams && Object.keys(searchParams).length > 0) {
@@ -334,24 +308,7 @@ module.exports = function (product) {
       whereFilter.categoryId = categoryId;
 
     product.find({
-      where: whereFilter, include: ['category', 'attachments', {
-        relation: 'discounts',
-        scope: {
-          where: {
-            and: [
-              { statusId: discountStatus.active }
-            ]
-          },
-          include: [{
-            relation: 'status',
-            fields: ['name']
-          },
-          {
-            relation: 'type',
-            fields: ['name']
-          }]
-        }
-      }]
+      where: whereFilter, include: ['category', 'attachments']
     }, function (error, products) {
       if (error)
         return next(error);
@@ -400,7 +357,7 @@ module.exports = function (product) {
   product.startSale = function (sale, options, next) {
 
 
-    sale.statusId = discountStatus.active
+    //sale.statusId = discountStatus.active
     // var now_date = moment().startOf('day'),
     //   sale_start_date = moment(sale.start_date).startOf('day');
 
@@ -410,20 +367,35 @@ module.exports = function (product) {
     //   sale.statusId = discountStatus.active
     // }
 
-    product.app.models.discount.create(sale, function (err, createdDiscount) {
-      if (err)
-        return next(err);
-      product.update({ _id: sale.productId }, { $push: { "discountIds": createdDiscount.id } }, function (error, result) {
+    sale.isActive = true;
+
+    product.findById(sale.productId, {price: 1}, function (error, _product) {
+      if (error)
+        return next(error);
+      // type 1 is for percentage type
+      if (sale.sale_type === "1") {
+        sale.percentage = Math.round(sale.sale_value);
+        sale.price = _product.price - ((_product.price * sale.percentage) / 100);
+        sale.sale_value = _product.price - sale.price;
+      } else {
+        sale.price = _product.price - sale.sale_value;
+        sale.percentage = Math.round((sale.sale_value / _product.price) * 100);
+      }
+
+
+      product.update({_id: sale.productId}, {$set: {discount: sale}}, function (error, result) {
         if (error)
           return next(error);
         return next(null, result);
       })
+
     })
+
 
   }
 
-  product.stopSale = function (saleId, options, next) {
-    product.app.models.discount.update({ _id: saleId }, { statusId: discountStatus.stopped }, function (error, result) {
+  product.stopSale = function (productId, options, next) {
+    product.update({_id: productId}, {$set: {"discount.isActive": false}}, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
@@ -486,20 +458,20 @@ module.exports = function (product) {
 
   product.remoteMethod('startSale', {
     accepts: [
-      { "arg": 'sale', type: 'object', http: { source: 'body' }, required: true },
-      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+      {"arg": 'sale', type: 'object', http: {source: 'body'}, required: true},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}
     ],
 
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/sale/start', verb: 'post' }
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/sale/start', verb: 'post'}
   });
   product.remoteMethod('stopSale', {
     accepts: [
-      { "arg": 'saleId', type: 'string', required: true },
-      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+      {"arg": 'productId', type: 'string', required: true},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}
     ],
 
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/sale/stop', verb: 'post' }
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/sale/stop', verb: 'post'}
   });
 };

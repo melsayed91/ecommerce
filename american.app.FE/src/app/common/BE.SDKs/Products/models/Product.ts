@@ -10,6 +10,7 @@ export interface ProductInterface {
   "prototypePrice": number;
   "moq": number;
   "specs"?: Array<any>;
+  "discount"?: any;
   "stock": number;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
@@ -19,13 +20,11 @@ export interface ProductInterface {
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
-  "discountList"?: Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds"?: Array<any>;
   account?: any;
   category?: any;
-  discounts?: any[];
   attachments?: any[];
 }
 
@@ -38,6 +37,7 @@ export class Product implements ProductInterface {
   "prototypePrice": number;
   "moq": number;
   "specs": Array<any>;
+  "discount": any;
   "stock": number;
   "isActive": boolean;
   "isDeleted": boolean;
@@ -47,13 +47,11 @@ export class Product implements ProductInterface {
   "id": any;
   "accountId": any;
   "categoryId": any;
-  "discountList": Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds": Array<any>;
   account: any;
   category: any;
-  discounts: any[];
   attachments: any[];
   constructor(data?: ProductInterface) {
     Object.assign(this, data);
@@ -123,6 +121,10 @@ export class Product implements ProductInterface {
           name: 'specs',
           type: 'Array&lt;any&gt;'
         },
+        "discount": {
+          name: 'discount',
+          type: 'any'
+        },
         "stock": {
           name: 'stock',
           type: 'number'
@@ -163,11 +165,6 @@ export class Product implements ProductInterface {
           name: 'categoryId',
           type: 'any'
         },
-        "discountList": {
-          name: 'discountList',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
-        },
         "createdAt": {
           name: 'createdAt',
           type: 'Date'
@@ -197,14 +194,6 @@ export class Product implements ProductInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
-          keyTo: 'id'
-        },
-        discounts: {
-          name: 'discounts',
-          type: 'any[]',
-          model: '',
-          relationType: 'embedsMany',
-                  keyFrom: 'discountList',
           keyTo: 'id'
         },
         attachments: {

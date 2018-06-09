@@ -1,14 +1,16 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, Inject } from '@angular/core';
+import {Component, OnInit, AfterViewInit, OnDestroy, Inject} from '@angular/core';
 import "rxjs/add/operator/takeWhile";
-import { MatDialog, MatDialogConfig } from "@angular/material";
-import { SaleComponent } from "./sale/sale.component";
-import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
-import { UserService } from '../../../../core/services/user.service/user.service';
-import { ProductApi, Product } from '../../../../common/BE.SDKs/Products';
-import { SysCodeApi } from '../../../../common/BE.SDKs/sysCodes';
-import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../../../common/BE.SDKs/attachment';
-import { AttachmentService } from '../../../../core/services/attachment.service/attachment.service';
+import {MatDialog, MatDialogConfig} from "@angular/material";
+import {SaleComponent} from "./sale/sale.component";
+import {Ng2FileInputService, Ng2FileInputAction} from 'ng2-file-input';
+import {UserService} from '../../../../core/services/user.service/user.service';
+import {ProductApi, Product} from '../../../../common/BE.SDKs/Products';
+import {SysCodeApi} from '../../../../common/BE.SDKs/sysCodes';
+import {AttachmentApi, LoopBackConfig as attachementApiConfig} from '../../../../common/BE.SDKs/attachment';
+import {AttachmentService} from '../../../../core/services/attachment.service/attachment.service';
+
 declare var $: any;
+
 @Component({
   selector: 'profile-products',
   templateUrl: './products.component.html',
@@ -34,12 +36,13 @@ export class ProductsComponent implements OnInit, OnDestroy {
   products = [];
   categories = []
   attachments = [];
-  spec = { name: "", value: "" };
+  spec = {name: "", value: ""};
   uploadIconHtml = "<i class='fa fa-upload'></i>";
   removeHtml = "<i class='fa fa-times'></i>";
   uploaded = [];
   returnAccepted = true;
   warrantyProvided = true;
+
   constructor(
     private dialog: MatDialog,
     private auth: UserService,
@@ -58,7 +61,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       .takeWhile(() => this.alive)
       .subscribe((response: any) => {
         this.categories = response.subIndustries;
-      }, (err) => { });
+      }, (err) => {
+      });
   }
 
   loadUserProducts(): any {
@@ -86,8 +90,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
         }
       ],
       dom: "<'table-top'<'info'i><'filter'f>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'table-bottom'<'length'l><'paging'p>>",
+      "<'row'<'col-sm-12'tr>>" +
+      "<'table-bottom'<'length'l><'paging'p>>",
       lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
       pagingType: 'full_numbers',
       responsive: true,
@@ -99,10 +103,10 @@ export class ProductsComponent implements OnInit, OnDestroy {
     });
 
     this.table.on('select', function (e, dt, type, indexes) {
-      this.canAddDiscount = this.table.rows({ selected: true }).count() > 0;
+      this.canAddDiscount = this.table.rows({selected: true}).count() > 0;
     }.bind(this))
     this.table.on('deselect', function (e, dt, type, indexes) {
-      this.canAddDiscount = this.table.rows({ selected: true }).count() > 0;
+      this.canAddDiscount = this.table.rows({selected: true}).count() > 0;
     }.bind(this))
   }
 
@@ -112,15 +116,33 @@ export class ProductsComponent implements OnInit, OnDestroy {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
-    dialogConfig.data = {
-    };
+    dialogConfig.data = {};
 
     const dialogRef = this.dialog.open(SaleComponent,
       dialogConfig);
 
 
     dialogRef.afterClosed().subscribe(
-      val => console.log("Dialog output:", val)
+      function (val) {
+        console.log("Dialog output:", val)
+        if (val) {
+          val.productId = this.product.id;
+          this.ProductApi.startSale(val)
+            .takeWhile(() => this.alive)
+            .subscribe((response: any) => {
+              $.notify({
+                message: 'We added sale successfully!'
+              }, {
+                type: 'primary',
+                timer: 1000,
+                placement: {
+                  from: 'bottom',
+                  align: 'right'
+                }
+              });
+            })
+        }
+      }.bind(this)
     );
   }
 
@@ -151,7 +173,9 @@ export class ProductsComponent implements OnInit, OnDestroy {
       return;
     this.loading = 'Saving Product';
 
-    let uploadedAtchmentIds = this.uploaded.map(function (item) { return item.id });
+    let uploadedAtchmentIds = this.uploaded.map(function (item) {
+      return item.id
+    });
     let data = {
       "name": this.product.name,
       "description": this.product.description,
@@ -168,7 +192,8 @@ export class ProductsComponent implements OnInit, OnDestroy {
       "warrantyPeriod": this.warrantyProvided ? this.product.warrantyPeriod : 0,
       "rating": this.product.rating,
       "views": this.product.views,
-      "sells": this.product.sells
+      "sells": this.product.sells,
+      "discount": this.product.discount
     };
 
     if (!this.isNew) {
@@ -197,7 +222,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   formLoaded() {
-    this.formValidation = $('#productForm').parsley({ trigger: "change keyup" });
+    this.formValidation = $('#productForm').parsley({trigger: "change keyup"});
   }
 
   validatefield(fieldId) {
@@ -214,7 +239,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   scrollToBottom(selector) {
-    $(selector).animate({ scrollTop: $(selector).prop("scrollHeight") }, 1000);
+    $(selector).animate({scrollTop: $(selector).prop("scrollHeight")}, 1000);
   }
 
   onAdded(event: any) {
@@ -249,7 +274,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   addSpec() {
     if (this.validatefield("specDesc") === true && this.validatefield("specKey") === true) {
       this.product.specs.push(this.spec);
-      this.spec = { name: "", value: "" };
+      this.spec = {name: "", value: ""};
     }
   }
 }
