@@ -10,9 +10,13 @@ export interface ProductInterface {
   "prototypePrice": number;
   "moq": number;
   "specs"?: Array<any>;
+  "discount"?: any;
   "stock": number;
   "isActive"?: boolean;
   "isDeleted"?: boolean;
+  "rating"?: any;
+  "views"?: number;
+  "sells"?: number;
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
@@ -33,9 +37,13 @@ export class Product implements ProductInterface {
   "prototypePrice": number;
   "moq": number;
   "specs": Array<any>;
+  "discount": any;
   "stock": number;
   "isActive": boolean;
   "isDeleted": boolean;
+  "rating": any;
+  "views": number;
+  "sells": number;
   "id": any;
   "accountId": any;
   "categoryId": any;
@@ -113,6 +121,10 @@ export class Product implements ProductInterface {
           name: 'specs',
           type: 'Array&lt;any&gt;'
         },
+        "discount": {
+          name: 'discount',
+          type: 'any'
+        },
         "stock": {
           name: 'stock',
           type: 'number'
@@ -126,6 +138,20 @@ export class Product implements ProductInterface {
           name: 'isDeleted',
           type: 'boolean',
           default: false
+        },
+        "rating": {
+          name: 'rating',
+          type: 'any'
+        },
+        "views": {
+          name: 'views',
+          type: 'number',
+          default: 0
+        },
+        "sells": {
+          name: 'sells',
+          type: 'number',
+          default: 0
         },
         "id": {
           name: 'id',

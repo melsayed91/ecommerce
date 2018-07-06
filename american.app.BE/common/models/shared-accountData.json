@@ -89,15 +89,6 @@
       "model": "attachment",
       "foreignKey": "bannerImageId"
     },
-    "disabledCategories": {
-      "type": "referencesMany",
-      "model": "SysCode",
-      "foreignKey": "disabledCategoriesIds",
-      "options": {
-        "validate": true,
-        "forceId": false
-      }
-    },
     "categories": {
       "type": "referencesMany",
       "model": "SysCode",

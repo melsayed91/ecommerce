@@ -181,6 +181,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   register() {
+    debugger
     if (!this.formValidation.validate())
       return;
     let user = {

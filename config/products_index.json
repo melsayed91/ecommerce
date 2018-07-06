@@ -120,7 +120,8 @@
                 },
                 "image_url": {
                     "type": "text"
-                }
+                },
+                "countries":{}
             }
         }
     }

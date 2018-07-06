@@ -11,13 +11,13 @@ export interface AccountDataInterface {
   "phone"?: string;
   "mobile"?: string;
   "socialImage"?: string;
+  "searchSettings"?: any;
   "userCategories"?: Array<any>;
   "id"?: any;
   "accountId"?: any;
   "customerIds"?: Array<any>;
   "countriesOfOperationIds"?: Array<any>;
   "countryId"?: any;
-  "disabledCategoriesIds"?: Array<any>;
   "categoryIds"?: Array<any>;
   "galleryIds"?: Array<any>;
   "documentIds"?: Array<any>;
@@ -28,7 +28,6 @@ export interface AccountDataInterface {
   customers?: any[];
   countriesOfOperation?: any[];
   country?: any;
-  disabledCategories?: any[];
   categories?: any[];
   gallery?: any[];
   documents?: any[];
@@ -47,13 +46,13 @@ export class AccountData implements AccountDataInterface {
   "phone": string;
   "mobile": string;
   "socialImage": string;
+  "searchSettings": any;
   "userCategories": Array<any>;
   "id": any;
   "accountId": any;
   "customerIds": Array<any>;
   "countriesOfOperationIds": Array<any>;
   "countryId": any;
-  "disabledCategoriesIds": Array<any>;
   "categoryIds": Array<any>;
   "galleryIds": Array<any>;
   "documentIds": Array<any>;
@@ -64,7 +63,6 @@ export class AccountData implements AccountDataInterface {
   customers: any[];
   countriesOfOperation: any[];
   country: any;
-  disabledCategories: any[];
   categories: any[];
   gallery: any[];
   documents: any[];
@@ -140,6 +138,10 @@ export class AccountData implements AccountDataInterface {
           name: 'socialImage',
           type: 'string'
         },
+        "searchSettings": {
+          name: 'searchSettings',
+          type: 'any'
+        },
         "userCategories": {
           name: 'userCategories',
           type: 'Array&lt;any&gt;'
@@ -165,11 +167,6 @@ export class AccountData implements AccountDataInterface {
         "countryId": {
           name: 'countryId',
           type: 'any'
-        },
-        "disabledCategoriesIds": {
-          name: 'disabledCategoriesIds',
-          type: 'Array&lt;any&gt;',
-          default: <any>[]
         },
         "categoryIds": {
           name: 'categoryIds',
@@ -231,14 +228,6 @@ export class AccountData implements AccountDataInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'countryId',
-          keyTo: 'id'
-        },
-        disabledCategories: {
-          name: 'disabledCategories',
-          type: 'any[]',
-          model: '',
-          relationType: 'referencesMany',
-                  keyFrom: 'disabledCategoriesIds',
           keyTo: 'id'
         },
         categories: {

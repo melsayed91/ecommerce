@@ -45,7 +45,9 @@ module.exports = function (accountData) {
   }
 
   accountData.remoteMethod('updateAccountData', {
-    accepts: [{ arg: 'accountDataId', type: 'string', required: true }, { arg: 'updatesObject', type: 'object', required: true }],
+    accepts: [
+      { arg: 'accountDataId', type: 'string', required: true },
+      { arg: 'updatesObject', type: 'object', required: true, http: { source: 'body' } }],
     returns: { arg: 'accountData', type: 'any' },
     http: { path: '/updateAccountData', verb: 'post' }
   });

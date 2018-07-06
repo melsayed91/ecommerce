@@ -18,6 +18,7 @@ export class dashboardComponent implements OnInit, OnDestroy {
   orders;
   private attachmentServer: any;
   private products = [];
+  private products_stream = [];
   isBusinessAccount = true;
   pendingOrders = 0;
   completedOrders = 0;
@@ -42,6 +43,8 @@ export class dashboardComponent implements OnInit, OnDestroy {
     this.attachmentServer = attachementApiConfig.getPath();
     if (this.isBusinessAccount) {
       this.loadProductCatalog();
+    } else {
+      this.loadProductStream();
     }
     this.loadOrders();
   }
@@ -83,7 +86,59 @@ export class dashboardComponent implements OnInit, OnDestroy {
           }.bind(this));
         }
 
+      }, (error) => {
+        this.isSearching = false;
+        $.notify({
+          icon: 'notifications',
+          message: 'An Error Occured While Getting Your Product Catalog.'
+        }, {
+            type: 'danger',
+            timer: 2000,
+            placement: {
+              from: 'bottom',
+              align: 'right'
+            }
+          });
       })
   }
 
+  loadProductStream(): any {
+    this.ProductApi.search({ isDashboard: true }).takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.isSearching = false;
+        if (response.result.hits.total > 0) {
+          this.products_stream = response.result.hits.hits.map(function (item) {
+            var currentProduct = item._source;
+            currentProduct._id = item._id
+            if (currentProduct.discount &&
+              currentProduct.discount.isActive &&
+              new Date(currentProduct.discount.start_date) <= new Date() &&
+              new Date(currentProduct.discount.end_date) >= new Date()) {
+              currentProduct.activeDiscount = currentProduct.discount;
+            } else {
+              currentProduct.activeDiscount = false;
+            }
+            return currentProduct;
+          });
+          if (response.result.hits.total > 6) {
+            setTimeout(function () {
+              $('.products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
+            });
+          }
+        }
+      }, (error) => {
+        this.isSearching = false;
+        $.notify({
+          icon: 'notifications',
+          message: 'An Error Occured While Getting Product Stream.'
+        }, {
+            type: 'danger',
+            timer: 2000,
+            placement: {
+              from: 'bottom',
+              align: 'right'
+            }
+          });
+      });
+  }
 }
