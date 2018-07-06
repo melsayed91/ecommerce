@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import "rxjs/add/operator/takeWhile";
+import {MatDialogModule} from '@angular/material/dialog';
 
 import {UserService} from '../../../core/services/user.service/user.service';
-import {OrderApi, ProductReviewApi} from '../../../common/BE.SDKs/Products';
+import {OrderApi, ProductReviewApi,ProductComplaintApi} from '../../../common/BE.SDKs/Products';
 import {SysCodeApi} from '../../../common/BE.SDKs/sysCodes';
 import {LoopBackConfig as attachementApiConfig} from '../../../common/BE.SDKs/attachment';
 
@@ -19,9 +20,11 @@ export class OrderDetailsComponent implements OnInit {
   selectedProduct: any;
   reviewRating: Number = 0;
   reviewText: string;
+  complaintDescription: string;
   attachmentServer: string;
   orders: any[];
   alive: any = true;
+  filingComplaint: any = false;
   userAccount;
 
   statusOptions = {}
@@ -29,6 +32,7 @@ export class OrderDetailsComponent implements OnInit {
   constructor(private auth: UserService,
               private orderApi: OrderApi,
               private productReviewApi: ProductReviewApi,
+              private productComplaintApi: ProductComplaintApi,
               private sysCodeService: SysCodeApi,
               private route: ActivatedRoute) {
     this.userAccount = this.auth.account;
@@ -120,6 +124,36 @@ export class OrderDetailsComponent implements OnInit {
       .subscribe(response => {
         this.reviewText = '';
         this.reviewRating = 0;
+        $.notify({
+          message: 'Thank you for the feedback!'
+        }, {
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
+      });
+  }
+
+  submitComplaint(product) {
+
+    debugger;
+    let reviewObject = {
+      orderId: this.order.id,
+      text: this.complaintDescription,
+      ownerId: this.userAccount.id,
+      vendorId: product.accountId,
+      productId: product.id
+    };
+
+    this.productComplaintApi.addProductComplaint(reviewObject)
+      .takeWhile(() => this.alive)
+      .subscribe(response => {
+        this.reviewText = '';
+        this.reviewRating = 0;
+        this.filingComplaint = false
         $.notify({
           message: 'Thank you for the feedback!'
         }, {

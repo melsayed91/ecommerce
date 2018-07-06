@@ -89,6 +89,13 @@ export class NavbarComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.links.push({
+      name: 'complaints',
+      redirectTo: '/account/complaints',
+      text: 'Complaints',
+      icon: 'warning',
+      showTo: this.auth.account.isAdmin ? 'Individual' : 'Business'
+    })
     this.viewLinks = this.links.filter(function (link) { return !link.showTo || link.showTo == this.userType }.bind(this));
   }
 

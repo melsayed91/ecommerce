@@ -12,10 +12,10 @@
       </div>
       <ul class="nav nav-pills nav-pills-rose nav-stacked container_ui" *ngIf="!emptyConversations">
 
-        <li class="conv_list" *ngFor="let row of conversations let i=index" [routerLink]="['/conversation', row.id]" [ngClass]="{'active' : row.id === selectedConversationId}">
+        <li class="conv_list" *ngFor="let row of conversations let i=index"  [routerLink]="['/conversation', row.id]" [ngClass]="{'active' : row.id === selectedConversationId}">
 
 
-          <label href='#move'>
+          <label href='#move' *ngIf="row.accounts && row.accounts.length">
             <div class='container_ui__item'>
               <div class='face'>
                 <img *ngIf="row.accounts[0].accountData.profileImage" src='{{attachmentServer + row.accounts[0].accountData.profileImage.url}}'>
@@ -29,8 +29,9 @@
                 {{row.accounts[0].accountData.name}}
               </h2>
               <div class='dot active'></div>
-              <h3>subj: thanks, you are amazing</h3>
-              <h4>Your generous donation saved 3 million puppies...</h4>
+              <h3 *ngIf="row.type">subj: {{row.type}}</h3>
+              <h3 *ngIf="!row.type">subj: specification request</h3>
+              <!--<h4>Your generous donation saved 3 million puppies...</h4>-->
             </div>
 
           </label>

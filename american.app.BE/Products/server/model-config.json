@@ -160,5 +160,22 @@
   "sharedProductReview": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "productComplaint": {
+    "dataSource": "americanBizDB",
+    "public": true,
+    "options": {
+      "remoting": {
+        "sharedMethods": {
+          "*": false,
+          "addProductComplaint": true,
+          "getComplaints": true
+        }
+      }
+    }
+  },
+  "sharedProductComplaint": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

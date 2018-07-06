@@ -53,6 +53,7 @@ import { ProductApi } from './services/custom/Product';
 import { OrderApi } from './services/custom/Order';
 import { ShipmentApi } from './services/custom/Shipment';
 import { ProductReviewApi } from './services/custom/ProductReview';
+import { ProductComplaintApi } from './services/custom/ProductComplaint';
 /**
 * @module SDKBrowserModule
 * @description
@@ -88,6 +89,7 @@ export class SDKBrowserModule {
         OrderApi,
         ShipmentApi,
         ProductReviewApi,
+        ProductComplaintApi,
         internalStorageProvider,
         { provide: SDKStorage, useClass: StorageBrowser },
         { provide: SocketDriver, useClass: SocketBrowser }

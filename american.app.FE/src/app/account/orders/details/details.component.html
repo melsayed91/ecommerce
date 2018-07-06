@@ -2,110 +2,159 @@
 
 
 <div class="page-content">
-    <div *ngIf="order" class="order">
-        <div class="order-header">
+  <div *ngIf="order" class="order">
+    <div class="order-header">
+      <div>
+        <h5 class="no-margin">Order #
+          <b>{{order.orderNo}}</b>
+        </h5>
+        <p class="muted no-margin">Placed on: {{order.createdAt | amDateFormat:'LL'}}</p>
+        <p class="muted">Updated {{order.updatedAt | amTimeAgo}}</p>
+      </div>
+
+      <p *ngIf="auth.account?.accountType == 'Individual'" [class]="'status '+ order.status.class">
+        <i [class]="'fa '+ order.status.icon"></i> &nbsp; {{order.status.name}}</p>
+
+      <div class="dropdown" *ngIf="auth.account?.accountType == 'Business'">
+        <p [class]="'status dropdown-toggle '+ order.status.class" data-toggle="dropdown">
+          <i [class]="'fa '+ order.status.icon"></i> &nbsp; {{order.status.name}}</p>
+        <ul class="dropdown-menu">
+          <li *ngFor="let status of statusOptions">
+            <a (click)="updateOrder(status)">
+              <i [class]="'fa '+ status.icon"></i> &nbsp; {{status.name}}</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+    <br>
+    <div class="row order-info">
+      <div class="col-xs-12 col-sm-4">
+        <i class="fa fa-truck fa-2x fa-flip-horizontal text-primary"></i>
+        <h4>
+          <b>Delivery Method</b>
+        </h4>
+        <p>{{order.shippingInfo.method}}</p>
+
+      </div>
+      <div class="col-xs-12 col-sm-4">
+
+        <i class="fa fa-money fa-2x text-primary"></i>
+        <h4>
+          <b>Payment Method</b>
+        </h4>
+        <div *ngIf="order.paymentInfo.method != 'free'">
+          <p>Credit Card / {{order.paymentInfo.token.card.brand}}</p>
+          <p>**** **** **** {{order.paymentInfo.token.card.last4}}</p>
+          <p>Zip Code: {{order.paymentInfo.token.card.address_zip}}</p>
+        </div>
+        <div *ngIf="order.paymentInfo.method == 'free'">
+          <p>
+            <b>Free Order</b>
+          </p>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-4">
+        <i class="fa fa-map-o fa-2x text-primary"></i>
+        <h4>
+          <b>Shipping Address</b>
+        </h4>
+        <p>{{order.shippingInfo.address.recipient}}</p>
+        <p>{{order.shippingInfo.address.address}}</p>
+        <p>{{order.shippingInfo.address.city}}, {{order.shippingInfo.address.state}}.
+          {{order.shippingInfo.address.zip}}.</p>
+        <p>{{order.shippingInfo.address.country}}</p>
+        <p>{{order.shippingInfo.address.phone}}</p>
+      </div>
+
+    </div>
+
+    <div>
+      <h5>
+        <b>Shipment 1 of {{order.shipments.length}}</b>
+      </h5>
+      <div *ngFor="let shipment of order.shipments" class="shipment">
+
+        <div *ngFor="let item of shipment.items" class="item">
+          <div class="product-img">
+            <img class="lg" [src]="attachmentServer + item.product.attachments[0]?.url">
+          </div>
+          <div>
+            <h5 class="no-margin">{{item.product.name}}</h5>
+            <p>Qty: {{item.quantity}}</p>
+            <p>Subtotal: $ {{item.total.toFixed(2)}}</p>
+            <!--<div>
+              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
+                      class="btn btn-raised btn-default btn-sm"
+                      (click)="selectedProduct = item.product;reviewRating = 0;reviewText = ''" data-toggle="modal"
+                      data-target="#myModal">
+                Rate Product
+              </button>
+              <form *ngIf="ratingProduct" view-init-spy
+                    (onAfterViewInit)="formLoaded('specificationForm')">
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group-sm required">
+                        <textarea required class="form-control" type="text" rows="3" id="description" name="description"
+                                  [(ngModel)]="reviewDescription"
+                                  data-parsley-required-message="Description is required"
+                                  placeholder="Leave a description">
+                                        </textarea>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-raised btn-primary" (click)="selectedProduct = item.product;reviewRating = 0;reviewText = ''">
+                  <i *ngIf="!requestSpecificationLoading" class="fa fa-send-o"></i>
+                  <i *ngIf="requestSpecificationLoading" class="fa fa-spin fa-spinner"></i>
+                  {{requestSpecificationLoading? '&nbsp;&nbsp;&nbsp;We are sending your request...':'Send'}}
+                </button>
+                <button class="btn btn-raised btn-danger" (click)="toggleRequestSpecification()">Cancel</button>
+              </form>
+            </div>-->
+
             <div>
-                <h5 class="no-margin">Order #
-                    <b>{{order.orderNo}}</b>
-                </h5>
-                <p class="muted no-margin">Placed on: {{order.createdAt | amDateFormat:'LL'}}</p>
-                <p class="muted">Updated {{order.updatedAt | amTimeAgo}}</p>
-            </div>
+              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
+                      class="btn btn-raised btn-default btn-sm"
+                      (click)="filingComplaint = !filingComplaint">
+                File a complaint
+              </button>
+              <form *ngIf="filingComplaint">
 
-            <p *ngIf="auth.account?.accountType == 'Individual'" [class]="'status '+ order.status.class">
-                <i [class]="'fa '+ order.status.icon"></i> &nbsp; {{order.status.name}}</p>
-
-            <div class="dropdown" *ngIf="auth.account?.accountType == 'Business'">
-                <p [class]="'status dropdown-toggle '+ order.status.class" data-toggle="dropdown">
-                    <i [class]="'fa '+ order.status.icon"></i> &nbsp; {{order.status.name}}</p>
-                <ul class="dropdown-menu">
-                    <li *ngFor="let status of statusOptions">
-                        <a (click)="updateOrder(status)">
-                            <i [class]="'fa '+ status.icon"></i> &nbsp; {{status.name}}</a>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-        <br>
-        <div class="row order-info">
-            <div class="col-xs-12 col-sm-4">
-                <i class="fa fa-truck fa-2x fa-flip-horizontal text-primary"></i>
-                <h4>
-                    <b>Delivery Method</b>
-                </h4>
-                <p>{{order.shippingInfo.method}}</p>
-
-            </div>
-            <div class="col-xs-12 col-sm-4">
-
-                <i class="fa fa-money fa-2x text-primary"></i>
-                <h4>
-                    <b>Payment Method</b>
-                </h4>
-                <div *ngIf="order.paymentInfo.method != 'free'">
-                    <p>Credit Card / {{order.paymentInfo.token.card.brand}}</p>
-                    <p>**** **** **** {{order.paymentInfo.token.card.last4}}</p>
-                    <p>Zip Code: {{order.paymentInfo.token.card.address_zip}}</p>
-                </div>
-                <div *ngIf="order.paymentInfo.method == 'free'">
-                    <p>
-                        <b>Free Order</b>
-                    </p>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-                <i class="fa fa-map-o fa-2x text-primary"></i>
-                <h4>
-                    <b>Shipping Address</b>
-                </h4>
-                <p>{{order.shippingInfo.address.recipient}}</p>
-                <p>{{order.shippingInfo.address.address}}</p>
-                <p>{{order.shippingInfo.address.city}}, {{order.shippingInfo.address.state}}. {{order.shippingInfo.address.zip}}.</p>
-                <p>{{order.shippingInfo.address.country}}</p>
-                <p>{{order.shippingInfo.address.phone}}</p>
-            </div>
-
-        </div>
-
-        <div>
-            <h5>
-                <b>Shipment 1 of {{order.shipments.length}}</b>
-            </h5>
-            <div *ngFor="let shipment of order.shipments" class="shipment">
-
-                <div *ngFor="let item of shipment.items" class="item">
-                    <div class="product-img">
-                        <img class="lg" [src]="attachmentServer + item.product.attachments[0]?.url">
+                <div class="row">
+                  <div class="col-xs-12">
+                    <div class="form-group label-floating">
+                      <label class="control-label">Description</label>
+                      <input type="email" class="form-control" [(ngModel)]="complaintDescription" name="complaintDescription">
                     </div>
-                    <div>
-                        <h5 class="no-margin">{{item.product.name}}</h5>
-                        <p>Qty: {{item.quantity}}</p>
-                        <p>Subtotal: $ {{item.total.toFixed(2)}}</p>
-                      <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
-                              class="btn btn-raised btn-default btn-sm" (click)="selectedProduct = item.product;reviewRating = 0;reviewText = ''" data-toggle="modal" data-target="#myModal">
-                        Rate Product
-                      </button>
-                    </div>
+                  </div>
                 </div>
-
+                <button class="btn btn-raised btn-primary btn-sm" (click)="submitComplaint(item.product)">
+                  Send
+                </button>
+                <button class="btn btn-raised btn-danger btn-sm" (click)="filingComplaint = false">Cancel</button>
+              </form>
             </div>
+          </div>
         </div>
 
+      </div>
     </div>
 
-    <div *ngIf="!order">
-        <div class="placeholder-order animated-background">
-            <div class="background-masker header-top"></div>
-            <div class="background-masker header-left"></div>
-            <div class="background-masker header-right"></div>
-            <div class="background-masker header-bottom"></div>
-            <div class="background-masker header2-left"></div>
-            <div class="background-masker header2-right"></div>
-            <div class="background-masker header2-bottom"></div>
-            <div class="background-masker footer"></div>
-        </div>
+  </div>
+
+  <div *ngIf="!order">
+    <div class="placeholder-order animated-background">
+      <div class="background-masker header-top"></div>
+      <div class="background-masker header-left"></div>
+      <div class="background-masker header-right"></div>
+      <div class="background-masker header-bottom"></div>
+      <div class="background-masker header2-left"></div>
+      <div class="background-masker header2-right"></div>
+      <div class="background-masker header2-bottom"></div>
+      <div class="background-masker footer"></div>
     </div>
+  </div>
 </div>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -125,10 +174,13 @@
 
           <bar-rating [(rate)]="rate" [max]="5" [(ngModel)]="reviewRating" [theme]="'fontawesome'"></bar-rating>
         </div>
-        <textarea *ngIf="reviewRating > 0" class="form-control" type="text" rows="3" [(ngModel)]="reviewText" placeholder="Write your review!"></textarea>
+        <textarea *ngIf="reviewRating > 0" class="form-control" type="text" rows="3" [(ngModel)]="reviewText"
+                  placeholder="Write your review!"></textarea>
       </div>
       <div class="modal-footer">
-        <button *ngIf="reviewRating > 0" type="button" class="btn btn-primary" data-dismiss="modal"  (click)="submitReview()">submit</button>
+        <button *ngIf="reviewRating > 0" type="button" class="btn btn-primary" data-dismiss="modal"
+                (click)="submitReview()">submit
+        </button>
       </div>
     </div>
   </div>

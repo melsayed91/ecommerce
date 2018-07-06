@@ -4,12 +4,17 @@ module.exports = function (Conversation) {
 
   Conversation.addConversation = function (conversation, next) {
 
-    if(conversation.type === 'private'){
-      Conversation.findOne({where:{participantIds:conversation.participantIds , type:'private'}} , function(err , convo){
+    if (conversation.type === 'private' || conversation.type === 'complaint') {
+      Conversation.findOne({
+        where: {
+          participantIds: conversation.participantIds,
+          type: conversation.type
+        }
+      }, function (err, convo) {
         if (err)
           return next(err);
 
-        if(convo){
+        if (convo) {
           return next(null, convo);
         } else {
           conversation.creationDate = new Date();
@@ -37,9 +42,9 @@ module.exports = function (Conversation) {
   }
 
   Conversation.remoteMethod('addConversation', {
-    accepts: { arg: 'conversation', type: 'object', required: true },
-    returns: { arg: 'conversation', type: 'any' },
-    http: { path: '/addConversation', verb: 'post' }
+    accepts: {arg: 'conversation', type: 'object', required: true},
+    returns: {arg: 'conversation', type: 'any'},
+    http: {path: '/addConversation', verb: 'post'}
   });
 
 
@@ -47,8 +52,8 @@ module.exports = function (Conversation) {
 
     Conversation.find(
       {
-        where: { participantIds: accountId },
-        include: [{ accounts: { accountData: "profileImage" } }, { specificationRequest: { product: 'attachments' } }]
+        where: {participantIds: accountId},
+        include: [{accounts: {accountData: "profileImage"}}, {specificationRequest: {product: 'attachments'}}]
         , order: 'creationDate DESC'
       }, function (error, result) {
         if (error)
@@ -60,9 +65,9 @@ module.exports = function (Conversation) {
   }
 
   Conversation.remoteMethod('getConversations', {
-    accepts: { arg: 'accountId', type: 'string', required: true },
-    returns: { arg: 'conversations', type: 'any' },
-    http: { path: '/getConversations', verb: 'post' }
+    accepts: {arg: 'accountId', type: 'string', required: true},
+    returns: {arg: 'conversations', type: 'any'},
+    http: {path: '/getConversations', verb: 'post'}
   });
 
 
@@ -100,12 +105,12 @@ module.exports = function (Conversation) {
   }
 
   Conversation.remoteMethod('addBulkConversation', {
-    accepts: [{ arg: 'userIds', type: 'array', required: true },
-    { arg: 'message', type: 'text', required: true },
-    { arg: 'accountId', type: 'text', required: true },
-      { arg: 'conversationType', type: 'string', required: true }],
-    returns: { arg: 'conversations', type: 'any' },
-    http: { path: '/addBulkConversation', verb: 'post' }
+    accepts: [{arg: 'userIds', type: 'array', required: true},
+      {arg: 'message', type: 'text', required: true},
+      {arg: 'accountId', type: 'text', required: true},
+      {arg: 'conversationType', type: 'string', required: true}],
+    returns: {arg: 'conversations', type: 'any'},
+    http: {path: '/addBulkConversation', verb: 'post'}
   });
 
 };

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import "rxjs/add/operator/takeWhile";
 
 import { AccountApi } from '../../common/BE.SDKs/AccountManager';
-import { ProductApi } from "../../common/BE.SDKs/Products";
+
 
 
 @Component({
