@@ -49,10 +49,8 @@
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="form-group required" id="fg-email">
-                                <input type="email" class="form-control" name="email" placeholder="Email address" 
-                                [(ngModel)]="userCredentials.email" (focusin)="editingEmail()"
-                                data-parsley-required-message="Email is required"
-                                    required>
+                                <input type="email" class="form-control" name="email" placeholder="Email address" [(ngModel)]="userCredentials.email" (focusin)="editingEmail()"
+                                    data-parsley-required-message="Email is required" required>
                             </div>
                         </div>
                     </div>
@@ -82,10 +80,8 @@
                                 <span *ngIf="userData.country && userData.country.id" [class]="'country-icon flag-icon flag-icon-' + userData.country.countryCode.toLowerCase()"></span>
                                 <input class="form-control" id="country" name="Country" placeholder="Country" [(ngModel)]="userData.country" auto-complete
                                     [source]="countries" [list-formatter]="autocompleListFormatter" [accept-user-input]="false"
-                                    display-property-name="name"
-                                     value-property-name="id"
-                                    [no-match-found-text]="'[!] Country not found ...'" (valueChanged)="countryChanged($event)"
-                                    data-parsley-validation-threshold="1" data-parsley-required-message="Country is required"
+                                    display-property-name="name" value-property-name="id" [no-match-found-text]="'[!] Country not found ...'"
+                                    (valueChanged)="countryChanged($event)" data-parsley-validation-threshold="1" data-parsley-required-message="Country is required"
                                     required>
                             </div>
                         </div>
@@ -163,7 +159,7 @@
             <div *ngIf="step == 2" class="animated-500" [class.fadeInUp-20]="previousStep < 2" [class.fadeInDown-20]="previousStep > 2">
                 <h1 class="title">Let's go deeper!</h1>
                 <h4 class="title">Pick relevant sub-industries for your business</h4>
-              
+
                 <div class="industries sub">
                     <div *ngFor="let subIndustry of subIndustries" class="item" (click)="toggleSubIndustry(subIndustry)" [class.selected]="selectedsubIndustries.indexOf(subIndustry) != -1">
                         {{subIndustry.name}}
@@ -272,10 +268,20 @@
                             </div>
                         </div>
                         <div class="row">
+
+
                             <div class="col-xs-12 col-md-6">
                                 <div class="form-group required">
-                                    <input type="text" class="form-control" name="countries" placeholder="Countries of operation" data-parsley-required-message="Mobile is required"
-                                        required>
+                                    <mat-form-field>
+                                        <mat-select placeholder="Locations" [(ngModel)]="userData.countriesOfOperationIds" name="countries" multiple>
+                                            <mat-option *ngFor="let country of countries" [value]="country.id">
+                                                {{ country.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <!-- <input type="text" class="form-control" name="countries" placeholder="Countries of operation" data-parsley-required-message="Mobile is required"
+                                        required> -->
                                 </div>
                             </div>
                             <div class="col-xs-12 col-md-6">
@@ -312,7 +318,8 @@
             <div class="animated-500 fadeIn">
                 <h1 class="title">Congratulations {{userData.name}}, You are in!</h1>
                 <h4 class="title">Your account is succesfully created.</h4>
-                <h4 class="title">We've sent a verification email to your email address: {{userCredentials.email}}. Please check your inbox to complete your registration.</h4>
+                <h4 class="title">We've sent a verification email to your email address: {{userCredentials.email}}. Please check your inbox
+                    to complete your registration.</h4>
                 <p class="resend"> You didn't receive the verification email?
                     <button class="btn btn-simple btn-sm">Resend Email</button>
                 </p>

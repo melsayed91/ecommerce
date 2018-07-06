@@ -1,15 +1,15 @@
 import "rxjs/add/operator/takeWhile";
 
-import {ProductApi} from '../../common/BE.SDKs/Products';
-import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
+import { ProductApi } from '../../common/BE.SDKs/Products';
+import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
-import {UserService} from '../../core/services/user.service/user.service';
-import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
-import {LoopBackAuth} from '../../common/BE.SDKs/Authorization/services/core/auth.service';
-import {HeaderService} from '../../common/shared/services/header';
+import { UserService } from '../../core/services/user.service/user.service';
+import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
+import { LoopBackAuth } from '../../common/BE.SDKs/Authorization/services/core/auth.service';
+import { HeaderService } from '../../common/shared/services/header';
 
 declare var $: any;
 
@@ -25,21 +25,23 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   alive: boolean = true;
   isSearching: boolean = true;
-
+  searchSettings: any;
   query: string;
   attachmentServer: string;
   latest_products = [];
   hot_products = [];
   most_viewed_products = [];
+  hide_hot_products = false;
+  hide_latest_products = false;
 
   constructor(private productApi: ProductApi,
-              private route: ActivatedRoute,
-              private router: Router,
-              private auth: UserService,
-              private AccountApi: AccountApi,
-              private HeaderService: HeaderService,
-              private shoppingCartApi: ShoppingCartApi,
-              private LoopBackAuth: LoopBackAuth) {
+    private route: ActivatedRoute,
+    private router: Router,
+    private auth: UserService,
+    private AccountApi: AccountApi,
+    private HeaderService: HeaderService,
+    private shoppingCartApi: ShoppingCartApi,
+    private LoopBackAuth: LoopBackAuth) {
     this.route.params.subscribe((token: any) => {
       if (token.id && token.userId) {
         this.AccountApi.getAccountByUser(token.userId).subscribe((userAccount) => {
@@ -53,7 +55,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    if (this.auth.account && this.auth.account.accountData) {
+      this.searchSettings = this.auth.account.accountData.searchSettings;
+      if (this.searchSettings) {
+        if (this.searchSettings.showHot) {
+          this.hide_hot_products = this.searchSettings.showHot;
+        }
+        if (this.searchSettings.showNew) {
+          this.hide_latest_products = this.searchSettings.showNew;
+        }
+      }
+    }
     this.attachmentServer = attachementApiConfig.getPath();
     this.productApi.search()
       .takeWhile(() => this.alive)
@@ -62,15 +74,33 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.handleSearchResponse(response);
 
         setTimeout(function () {
-          $('.products').slick({infinite: false, slidesToShow: 6, slidesToScroll: 4});
+          $('.products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
         })
       })
   }
 
   handleSearchResponse(response) {
     if (response.result.responses.length > 0) {
-      if (response.result.responses[0] && response.result.responses[0].hits.total > 0) {
-        this.latest_products = response.result.responses[0].hits.hits.map(function (item) {
+      var newResponses = response.result.responses
+      // if (this.searchSettings) {
+      //   if (!this.searchSettings.showHot) {
+      //     newResponses = [response.result.responses[0], false, response.result.responses[1]]
+      //   }
+      //   if (!this.searchSettings.showNew) {
+      //     newResponses = [response.result.responses[0], response.result.responses[1], false]
+      //   }
+      //   if (!this.searchSettings.showNew && !this.searchSettings.showHot) {
+      //     newResponses = [response.result.responses[0], false, false]
+      //   }
+      //   if (this.searchSettings.showNew && this.searchSettings.showHot) {
+      //     newResponses = response.result.responses;
+      //   }
+      // } else {
+      //   newResponses = response.result.responses;
+      // }
+
+      if (newResponses[0] && newResponses[0].hits.total > 0) {
+        this.latest_products = newResponses[0].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id
           if (currentProduct.discount &&
@@ -85,8 +115,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
 
-      if (response.result.responses[1] && response.result.responses[1].hits.total > 0) {
-        this.hot_products = response.result.responses[1].hits.hits.map(function (item) {
+      if (newResponses[1] && newResponses[1].hits.total > 0) {
+        this.hot_products = newResponses[1].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id;
           if (currentProduct.discount &&
@@ -101,8 +131,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         });
       }
 
-      if (response.result.responses[2] && response.result.responses[2].hits.total > 0) {
-        this.most_viewed_products = response.result.responses[2].hits.hits.map(function (item) {
+      if (newResponses[2] && newResponses[2].hits.total > 0) {
+        this.most_viewed_products = newResponses[2].hits.hits.map(function (item) {
           var currentProduct = item._source;
           currentProduct._id = item._id;
           if (currentProduct.discount &&
@@ -134,13 +164,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       $.notify({
         message: 'We added <b>' + product.name + '</b> to your shopping cart!'
       }, {
-        type: 'primary',
-        timer: 1000,
-        placement: {
-          from: 'bottom',
-          align: 'right'
-        }
-      });
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
       if (this.auth.account.accountData.cartItemId) {
         this.auth.account.accountData.cartItemId.push(resp.accountData)
       } else {

@@ -16,33 +16,46 @@
                             </h4>
                             <form>
                                 <div class="row">
-                                 <!-- <md-input-container>
-                                    <label>Vegetables</label>
-                                    <md-select [(ngModel)]="selectedVegetables"
-                                               md-on-close="clearSearchTerm()"
-                                               multiple>
-                                      <md-select-header class="demo-select-header">
-                                        <input [(ngModel)]="searchTerm"
-                                               type="search"
-                                               placeholder="Search for a vegetable..">
-                                      </md-select-header>
-                                      <md-optgroup label="vegetables">
-                                        <md-option [(ngValue)]="vegetable" *ngFor="vegetable in currentCountries">{{vegetable}}</md-option>
-                                      </md-optgroup>
-                                    </md-select>
-                                  </md-input-container>-->
+
                                     <div class="">
                                         <div class="form-group label-floating multi-select-width">
-                                          <mat-form-field>
-                                            <mat-select placeholder="Locations" [(ngModel)]="currentCountries" name="country" multiple>
-                                                <mat-option *ngFor="let country of countries" [value]="country.id">
-                                                    {{ country.name }}
-                                                </mat-option>
-                                            </mat-select>
-                                          </mat-form-field>
-                                          <!--<small>{{userAccount.accountData.searchSettings.countries}}</small>-->
+                                            <mat-form-field>
+                                                <mat-select placeholder="Locations" [(ngModel)]="currentCountries" name="country" multiple>
+                                                    <mat-option *ngFor="let country of countries" [value]="country.id">
+                                                        {{ country.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating multi-select-width">
+                                            <mat-form-field>
+                                                <mat-select (change)="onCategoriesChange()" placeholder="Enabled Categories" [(ngModel)]="enabledCategories" name="enabledCategories"
+                                                    multiple>
+                                                    <mat-option *ngFor="let category of enabledCategoriesData" [value]="category.id">
+                                                        {{ category.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating multi-select-width">
+                                            <mat-form-field>
+                                                <mat-select (change)="onCategoriesChange()" placeholder="Disabled Categories" [(ngModel)]="disabledCategories" name="disabledCategories"
+                                                    multiple>
+                                                    <mat-option *ngFor="let category of disabledCategoriesData" [value]="category.id">
+                                                        {{ category.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -51,7 +64,7 @@
                                             <label class="control-label"></label>
                                             <div class="togglebutton">
                                                 <label>
-                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showRelated" (change)="showRelated = !showRelated" >Show Related Products
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showRelated" (change)="showRelated = !showRelated">Show Related Products
                                                 </label>
                                             </div>
                                         </div>
