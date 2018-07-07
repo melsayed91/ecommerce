@@ -19,7 +19,7 @@
       <div class="background-masker footer"></div>
     </div>
   </div>
-  <div class="products" *ngIf="hot_products.length > 0">
+  <div class="products" id="hot-products" *ngIf="hot_products.length > 0">
 
     <div class="col-lg-2 col-md-6" *ngFor="let product of hot_products let i=index">
       <div class="card card-product">
@@ -88,11 +88,11 @@
     <div class="background-masker footer"></div>
   </div>
 </div>
-<div class="products" *ngIf="most_viewed_products.length == 0 &&!isSearching">
+<div class="products "  *ngIf="most_viewed_products.length == 0 &&!isSearching">
   No Results From your search , try again
 </div>
 
-<div class="products" *ngIf="most_viewed_products.length > 0">
+<div class="products" id="popular-products" *ngIf="most_viewed_products.length > 0">
 
   <div class="col-lg-2 col-md-6" *ngFor="let product of most_viewed_products let i=index">
     <div class="card card-product">
@@ -167,7 +167,7 @@
     No Results From your search , try again
   </div>
 
-  <div class="products" *ngIf="latest_products.length > 0">
+  <div class="products"  id="new-products" *ngIf="latest_products.length > 0">
 
     <div class="col-lg-2 col-md-6" *ngFor="let product of latest_products let i=index">
       <div class="card card-product">

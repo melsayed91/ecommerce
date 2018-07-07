@@ -73,9 +73,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.isSearching = false;
         this.handleSearchResponse(response);
 
-        setTimeout(function () {
-          $('.products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
-        })
+
       })
   }
 
@@ -113,6 +111,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           return currentProduct;
         });
+        if(this.latest_products.length > 6){
+          setTimeout(function () {
+            $('#new-products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
+          })
+        }
       }
 
       if (newResponses[1] && newResponses[1].hits.total > 0) {
@@ -129,6 +132,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           return currentProduct;
         });
+        if(this.hot_products.length > 6){
+          setTimeout(function () {
+            $('#hot-products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
+          })
+        }
       }
 
       if (newResponses[2] && newResponses[2].hits.total > 0) {
@@ -145,6 +153,11 @@ export class HomeComponent implements OnInit, OnDestroy {
           }
           return currentProduct;
         });
+        if(this.most_viewed_products.length > 6){
+          setTimeout(function () {
+            $('#popular-products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
+          })
+        }
       }
     }
   }
