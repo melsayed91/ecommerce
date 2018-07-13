@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../../core/services/user.service/user.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AccountApi, ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
 import { OrderApi, ShipmentApi, Product, ProductApi } from '../../common/BE.SDKs/Products';
 import { AttachmentApi, LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
 import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
@@ -27,6 +29,9 @@ export class dashboardComponent implements OnInit, OnDestroy {
   isSearching: any = true;
   constructor(private auth: UserService,
     private orderApi: OrderApi,
+    private route: ActivatedRoute,
+    private router: Router,
+    private shoppingCartApi: ShoppingCartApi,
     private ProductApi: ProductApi, ) {
     this.userAccount = this.auth.account;
     if (this.userAccount.accountType === "Business") {
@@ -140,5 +145,36 @@ export class dashboardComponent implements OnInit, OnDestroy {
             }
           });
       });
+  }
+
+  addProductToShoppingCart(product) {
+    if (!this.auth.account) {
+      let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/auth/signin';
+      this.router.navigate([redirect]);
+      return;
+    }
+    this.shoppingCartApi.addCartItem({
+      accountDataId: this.auth.account.accountDataId,
+      productId: product._id,
+      quantity: 1
+    }).subscribe(resp => {
+      $.notify({
+        message: 'We added <b>' + product.name + '</b> to your shopping cart!'
+      }, {
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
+      if (this.auth.account.accountData.cartItemId) {
+        this.auth.account.accountData.cartItemId.push(resp.accountData)
+      } else {
+        this.auth.account.accountData.cartItemId = [resp.accountData]
+      }
+      this.auth.setAccount(this.auth.account)
+    }, err => {
+    })
   }
 }
