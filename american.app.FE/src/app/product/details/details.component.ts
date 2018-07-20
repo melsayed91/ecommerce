@@ -1,13 +1,13 @@
-import {Component, OnInit, OnDestroy, AfterViewInit} from '@angular/core';
-import {Router, ActivatedRoute} from '@angular/router';
-import {RfqApi, Rfq} from "../../common/BE.SDKs/quotations";
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { RfqApi, Rfq } from "../../common/BE.SDKs/quotations";
 import "rxjs/add/operator/takeWhile";
 
-import {ProductApi, ProductReviewApi} from '../../common/BE.SDKs/Products';
-import {UserService} from '../../core/services/user.service/user.service';
-import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
-import {SpecificationApi} from '../../common/BE.SDKs/quotations';
-import {ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+import { ProductApi, ProductReviewApi } from '../../common/BE.SDKs/Products';
+import { UserService } from '../../core/services/user.service/user.service';
+import { LoopBackConfig as attachementApiConfig } from '../../common/BE.SDKs/attachment';
+import { SpecificationApi } from '../../common/BE.SDKs/quotations';
+import { ShoppingCartApi } from '../../common/BE.SDKs/AccountManager';
 
 declare var $: any;
 
@@ -32,17 +32,18 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   requestSpecificationMode = false;
   requestSpecificationLoading = false;
   requestSpecificationModel = {};
-
+  related_products = [];
+  isSearching = true;
   private subs = [];
 
   constructor(private auth: UserService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private RfquataionApi: RfqApi,
-              private productApi: ProductApi,
-              private shoppingCartApi: ShoppingCartApi,
-              private productReviewApi: ProductReviewApi,
-              private specificationApi: SpecificationApi) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private RfquataionApi: RfqApi,
+    private productApi: ProductApi,
+    private shoppingCartApi: ShoppingCartApi,
+    private productReviewApi: ProductReviewApi,
+    private specificationApi: SpecificationApi) {
   }
 
   ngOnInit() {
@@ -62,7 +63,7 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.productApi.findById(this.productId, {
           include: [
             "attachments",
-            {"account": {"accountData": "profileImage"}}
+            { "account": { "accountData": "profileImage" } }
           ]
         })
           .takeWhile(() => this.alive)
@@ -79,12 +80,49 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.selectedImage = this.product.attachments[0];
             this.quantity = this.product.moq;
 
+
+            this.productApi.search({
+              facets: [{
+                field: "categoryId",
+                value: this.product.categoryId
+              }]
+            }).takeWhile(() => this.alive)
+              .subscribe(response => {
+                this.isSearching = false;
+                if (response.result.hits.total > 0) {
+
+
+                  this.related_products = response.result.hits.hits.map(function (item) {
+                    var currentProduct = item._source;
+                    currentProduct._id = item._id
+                    if (currentProduct.discount &&
+                      currentProduct.discount.isActive &&
+                      new Date(currentProduct.discount.start_date) <= new Date() &&
+                      new Date(currentProduct.discount.end_date) >= new Date()) {
+                      currentProduct.activeDiscount = currentProduct.discount;
+                    } else {
+                      currentProduct.activeDiscount = false;
+                    }
+                    return currentProduct;
+                  });
+                  
+
+                  if (this.related_products.length > 6) {
+                    setTimeout(function () {
+                      $('#related-products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
+                    })
+                  }
+                }
+              });
           })
         this.productReviewApi.getReviews(this.productId)
           .takeWhile(() => this.alive)
           .subscribe(response => {
             this.productReviews = response.reviews;
           })
+
+
+
       })
   }
 
@@ -94,11 +132,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   scrollTo(selector) {
-    $('html, body').animate({scrollTop: $(selector).offset().top}, 1000);
+    $('html, body').animate({ scrollTop: $(selector).offset().top }, 1000);
   }
 
   formLoaded(id) {
-    this.formValidation = $('#' + id).parsley({trigger: "change keyup"});
+    this.formValidation = $('#' + id).parsley({ trigger: "change keyup" });
   }
 
   validatefield(fieldId) {
@@ -161,13 +199,13 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
       $.notify({
         message: 'We added <b>' + this.product.name + '</b> to your shopping cart!'
       }, {
-        type: 'primary',
-        timer: 1000,
-        placement: {
-          from: 'bottom',
-          align: 'right'
-        }
-      });
+          type: 'primary',
+          timer: 1000,
+          placement: {
+            from: 'bottom',
+            align: 'right'
+          }
+        });
       if (this.auth.account.accountData.cartItemId) {
         this.auth.account.accountData.cartItemId.push(resp.accountData)
       } else {
