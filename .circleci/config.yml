@@ -1,7 +1,7 @@
 version: 2
 jobs:
   build:
-    working_directory: /ambizphase1-main-impl-dev/american.app.BE/SysCode
+    working_directory: /ambizphase1-main-impl-dev/american.app.BE/SysCodess
     docker: 
        - image: docker:stable-git
     steps:
