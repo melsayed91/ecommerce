@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build_syscode_service:
+  build:
     working_directory: ~/american.app.BE/SysCode
     docker: 
        - image: docker:stable-git
@@ -36,4 +36,4 @@ workflows:
   version: 2
   build_docker_images:
     jobs:
-      - build_syscode_service
+      - build
