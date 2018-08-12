@@ -23,11 +23,11 @@ jobs:
             mkdir -p /caches
             docker save -o /caches/app.tar app
 
-     - save_cache:
+      - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/app.tar
-     - run:
+      - run:
           name: Push SysCode Service to DockerHub
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
