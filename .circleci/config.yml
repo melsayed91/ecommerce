@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build_syscode_service:
+    machine: true
     working_directory: /ambizphase1-main-impl-dev
     steps:
       - checkout
