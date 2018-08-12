@@ -2,7 +2,7 @@ version: 2
 jobs:
   build_syscode_service:
      machine: circleci/node:7.10
-     working_directory: ~/ambizphase1-main-impl-dev/american.app.BE/SysCode
+     working_directory: ~/american.app.BE/SysCode
     steps:
       - checkout
       - setup_remote_docker:
