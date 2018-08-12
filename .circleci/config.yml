@@ -22,13 +22,13 @@ jobs:
          name: Build SysCode Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=app -t melsayedalaa/americanbiz/syscode:$CIRCLE_SHA1 .
 
       - run:
           name: Save SysCode Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/app.tar melsayedalaa/americanbiz/syscode:$CIRCLE_SHA1
 
       - save_cache:
           key: v1-{{ .Branch }}-{{ epoch }}
@@ -38,7 +38,7 @@ jobs:
           name: Push SysCode Service to DockerHub
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
-            docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker push melsayedalaa/americanbiz/syscode:$CIRCLE_SHA1
 workflows:
   version: 2
   build_docker_images:
