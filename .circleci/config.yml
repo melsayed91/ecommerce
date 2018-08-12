@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:      
-     - restore_cache:
+      - restore_cache:
           keys:
             - v1-{{ .Branch }}
           paths:
@@ -25,7 +25,7 @@ jobs:
           paths:
             - /caches/app.tar
      - run:
-          name: Push SysCode to DockerHub
+          name: Push SysCode Service to DockerHub
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
