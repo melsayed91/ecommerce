@@ -5,7 +5,7 @@ jobs:
     working_directory: /ambizphase1-main-impl-dev
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
