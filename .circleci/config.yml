@@ -14,8 +14,15 @@ jobs:
           paths:
             - /caches/app.tar
       - run:
+           name: Build dummy container for common files
+           command: |
+              cd american.app.BE/common             
+              docker build -t abz/abz-1/common:0.0.1 .
+      - run:
          name: Build SysCode Service Docker image
-         command: cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode && docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode 
+            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save SysCode Docker image layer cache
