@@ -3,11 +3,10 @@ jobs:
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
-       - image: docker:stable-git
-       - image: docker/compose
+       - image: circleci/node:7.10
     steps:
       - checkout
-      - setup_remote_docker
+      # - setup_remote_docker
       # - run:
       #    name: Install Docker Compose
       #    command: |
