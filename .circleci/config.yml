@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
        - image: docker:stable-git
@@ -43,4 +43,4 @@ workflows:
   version: 2
   build_docker_images:
     jobs:
-      - build
+      - build_syscode_service
