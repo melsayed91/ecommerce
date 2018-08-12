@@ -60,7 +60,7 @@ spec:
           ports:
           - containerPort: 3333
         - name: syscode
-          image: okc/amb/syscode:0.0.1
+          image: melsayedalaa/americanbiz:syscode
           imagePullPolicy: Always
           ports:
           - containerPort: 5555
