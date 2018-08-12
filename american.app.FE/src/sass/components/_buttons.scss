@@ -56,6 +56,10 @@
         }
     }
 
+    &.btn-dark{
+        @include btn-styles($gray-dark);
+      }
+
     // social buttons
     &.btn-facebook {
     	@include social-buttons-color($social-facebook);

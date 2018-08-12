@@ -1,0 +1,131 @@
+<app-navbar page="settings"></app-navbar>
+
+
+<div *ngIf="userAccount?.accountType == 'Individual'" class="page-content animated-500 fadeIn">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header card-header-icon" data-background-color="rose">
+                            <i class="material-icons">settings</i>
+                        </div>
+                        <div class="card-content">
+                            <h4 class="card-title">Search Settings -
+                                <small class="category">If you set your settings , it will affect all your search operations</small>
+                            </h4>
+                            <form>
+                                <div class="row">
+
+                                    <div class="">
+                                        <div class="form-group label-floating multi-select-width">
+                                            <mat-form-field>
+                                                <mat-select placeholder="Locations" [(ngModel)]="currentCountries" name="country" multiple>
+                                                    <mat-option *ngFor="let country of countries" [value]="country.id">
+                                                        {{ country.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating multi-select-width">
+                                            <mat-form-field>
+                                                <mat-select (change)="onCategoriesChange()" placeholder="Enabled Categories" [(ngModel)]="enabledCategories" name="enabledCategories"
+                                                    multiple>
+                                                    <mat-option *ngFor="let category of enabledCategoriesData" [value]="category.id">
+                                                        {{ category.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group label-floating multi-select-width">
+                                            <mat-form-field>
+                                                <mat-select (change)="onCategoriesChange()" placeholder="Disabled Categories" [(ngModel)]="disabledCategories" name="disabledCategories"
+                                                    multiple>
+                                                    <mat-option *ngFor="let category of disabledCategoriesData" [value]="category.id">
+                                                        {{ category.name }}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showRelated" (change)="showRelated = !showRelated">Show Related Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showNew" (change)="showNew = !showNew">Show New Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label"></label>
+                                            <div class="togglebutton">
+                                                <label>
+                                                    <input type="checkbox" [(checked)]="this.userAccount.accountData.searchSettings.showHot" (change)="showHot = !showHot">Show Hot Products
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-rose pull-right" (click)="saveSettings()">Update Settings</button>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="userAccount?.accountType == 'Business'" class="page-content animated-500 fadeIn">
+    <div id="settings" class="page-layout simple tabbed">
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+
+
+                        <div class="card">
+                            <div class="card-content">
+                                <h4 class="card-title">Messages
+                                </h4>
+                                <div class="togglebutton">
+                                    <label>
+                                        <input type="checkbox" checked> Enable Live Chat
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Regular:
+                        <tag-input [(ngModel)]='blacklistCustomers' theme='filled-theme'></tag-input> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

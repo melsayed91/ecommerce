@@ -11,6 +11,7 @@
       "loopback/common/mixins",
       "loopback/server/mixins",
       "../common/mixins",
+      "../../common/mixins",
       "./mixins"
     ]
   },
@@ -18,7 +19,39 @@
     "dataSource": "americanBizDB",
     "public": true
   },
+  "userIdentity": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "userCredential": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
   "sharedUser": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "SysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
     "dataSource": "americanBizDB",
     "public": false
   },
@@ -28,7 +61,7 @@
     "relations": {
       "user": {
         "type": "belongsTo",
-        "model": "sharedUser",
+        "model": "sysUser",
         "foreignKey": "userId"
       }
     }

@@ -1,6 +1,29 @@
-.biz-content{
-    max-width: $max-width;
-    margin: 63px auto 0 auto;
-    padding: 30px;
-    min-height: 75vh;
+body {
+  height: 100%;
 }
+
+.biz-content {
+  min-height: calc(100vh - 102px);
+  max-width: $max-width;
+  margin: 25px auto 0 auto;
+  padding: 30px;
+  padding-bottom: 200px;
+}
+
+.page-content {
+  padding: 25px;
+}
+
+.products .slick-track {
+  padding-top: 55px;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: black;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}
+
+[hidden] { display: none !important;}

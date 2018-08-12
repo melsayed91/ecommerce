@@ -1,0 +1,13 @@
+{
+  "name": "productComplaint",
+  "base": "sharedProductComplaint",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

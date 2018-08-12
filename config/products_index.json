@@ -1,0 +1,128 @@
+{
+    "settings": {
+        "index": {
+            "number_of_shards": 5,
+            "number_of_replicas": 1
+        },
+        "analysis": {
+            "filter": {
+                "gramFilter": {
+                    "type": "nGram",
+                    "min_gram": 1,
+                    "max_gram": 20,
+                    "token_chars": [
+                        "letter",
+                        "digit"
+                    ]
+                }
+            },
+            "analyzer": {
+                "gramAnalyzer": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": [
+                        "lowercase",
+                        "gramFilter"
+                    ]
+                },
+                "whitespaceAnalyzer": {
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": [
+                        "lowercase"
+                    ]
+                }
+            }
+        }
+    },
+    "mappings": {
+        "product": {
+            "properties": {
+                "name": {
+                    "type": "text",
+                    "fields": {
+                        "completion": {
+                            "type": "completion"
+                        }
+                    },
+                    "analyzer": "gramAnalyzer",
+                    "search_analyzer": "whitespaceAnalyzer"
+                },
+                "price": {
+                    "type": "float"
+                },
+                "views": {
+                    "type": "integer"
+                },
+                "sells": {
+                    "type": "integer"
+                },
+                "rating": {
+                    "properties": {
+                        "average": {
+                            "type": "float"
+                        },
+                        "total": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "discount": {
+                    "properties": {
+                        "start_date": {
+                            "type": "date"
+                        },
+                        "end_date": {
+                            "type": "date"
+                        },
+                        "sale_value": {
+                            "type": "float"
+                        },
+                        "percentage": {
+                            "type": "float"
+                        },
+                        "price": {
+                            "type": "float"
+                        },
+                        "isActive": {
+                            "type": "boolean"
+                        },
+                        "notes": {
+                            "type": "text"
+                        },
+                        "sale_type": {
+                            "type": "text"
+                        }
+                    }
+                },
+                "categoryId": {
+                    "type": "text"
+                },
+                "category": {
+                    "type": "keyword",
+                    "index": true
+                },
+                "description": {
+                    "type": "text"
+                },
+                "companyId": {
+                    "type": "text"
+                },
+                "company": {
+                    "type": "keyword",
+                    "index": true
+                },
+                "stock": {
+                    "type": "integer"
+                },
+                "createdAt": {
+                    "type": "date"
+                },
+                "image_url": {
+                    "type": "text"
+                },
+                "countries":{}
+            }
+        }
+    }
+}

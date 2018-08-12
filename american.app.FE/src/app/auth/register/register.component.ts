@@ -1,252 +1,344 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import "rxjs/add/operator/takeWhile";
+
+import { Ng2FileInputService, Ng2FileInputAction } from 'ng2-file-input';
 
 import { SysUserApi } from '../../common/BE.SDKs/AccountManager';
+import { AttachmentApi } from '../../common/BE.SDKs/attachment';
+import { SysCodeApi } from '../../common/BE.SDKs/sysCodes';
 import { NotifyService } from '../../core/services/notify.service/notify.service';
+import { AttachmentService } from '../../core/services/attachment.service/attachment.service';
 
-import swal from 'sweetalert2';
 declare var $: any;
+
+export class State {
+  constructor(public name: string, public population: string, public flag: string) { }
+}
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  animations: [
+    trigger('flyInOutUp', [
+      state('in', style({ transform: 'translateY(0) rotateY(0)' })),
+      transition(':enter', [
+        style({ transform: 'translateY(-100%) rotateY(180deg)', opacity: "0", position: "absolute", right: "0" }),
+        animate('200ms 300ms ease-in')
+      ]),
+      transition(':leave', [
+        animate('100ms ease-in', style({ transform: 'translateY(-100%)', opacity: "0" }))
+      ])
+    ], ),
+    trigger('flyInOutDown', [
+      state('in', style({ transform: 'translateY(0)' })),
+      transition(':enter', [
+        style({ transform: 'translateY(100%)', opacity: "0" }),
+        animate('200ms 300ms ease-out')
+      ]),
+      transition(':leave', [
+        animate('100ms ease-in', style({ transform: 'translateY(100%)', opacity: "0" }))
+      ])
+    ], )
+  ]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  ngOnDestroy(): void {
+    this.alive = false;
+  }
+
+  alive: boolean = true;
+
+  isBusiness = true;
+  previousStep = 0;
+  step = 1;
+  done = 100;
   loading: boolean;
-  cities = [
-    { value: "Afghanistan", viewValue: "Afghanistan" },
-    { value: "Albania", viewValue: "Albania" },
-    { value: "Algeria", viewValue: "Algeria" },
-    { value: "Andorra", viewValue: "Andorra" },
-    { value: "Angola", viewValue: "Angola" },
-    { value: "Anguilla", viewValue: "Anguilla" },
-    { value: "Antigua & Barbuda", viewValue: "Antigua & Barbuda" },
-    { value: "Argentina", viewValue: "Argentina" },
-    { value: "Armenia", viewValue: "Armenia" },
-    { value: "Australia", viewValue: "Australia" },
-    { value: "Austria", viewValue: "Austria" },
-    { value: "Azerbaijan", viewValue: "Azerbaijan" },
-    { value: "Bahamas", viewValue: "Bahamas" },
-    { value: "Bahrain", viewValue: "Bahrain" },
-    { value: "Bangladesh", viewValue: "Bangladesh" },
-    { value: "Barbados", viewValue: "Barbados" },
-    { value: "Belarus", viewValue: "Belarus" },
-    { value: "Belgium", viewValue: "Belgium" },
-    { value: "Belize", viewValue: "Belize" },
-    { value: "Benin", viewValue: "Benin" },
-    { value: "Bermuda", viewValue: "Bermuda" },
-    { value: "Bhutan", viewValue: "Bhutan" },
-    { value: "Bolivia", viewValue: "Bolivia" },
-    { value: "Bosnia & Herzegovina", viewValue: "Bosnia & Herzegovina" },
-    { value: "Botswana", viewValue: "Botswana" },
-    { value: "Brazil", viewValue: "Brazil" },
-    { value: "Brunei Darussalam", viewValue: "Brunei Darussalam" },
-    { value: "Bulgaria", viewValue: "Bulgaria" },
-    { value: "Burkina Faso", viewValue: "Burkina Faso" },
-    { value: "Myanmar/Burma", viewValue: "Myanmar/Burma" },
-    { value: "Burundi", viewValue: "Burundi" },
-    { value: "Cambodia", viewValue: "Cambodia" },
-    { value: "Cameroon", viewValue: "Cameroon" },
-    { value: "Canada", viewValue: "Canada" },
-    { value: "Cape Verde", viewValue: "Cape Verde" },
-    { value: "Cayman Islands", viewValue: "Cayman Islands" },
-    { value: "Central African Republic", viewValue: "Central African Republic" },
-    { value: "Chad", viewValue: "Chad" },
-    { value: "Chile", viewValue: "Chile" },
-    { value: "China", viewValue: "China" },
-    { value: "Colombia", viewValue: "Colombia" },
-    { value: "Comoros", viewValue: "Comoros" },
-    { value: "Congo", viewValue: "Congo" },
-    { value: "Costa Rica", viewValue: "Costa Rica" },
-    { value: "Croatia", viewValue: "Croatia" },
-    { value: "Cuba", viewValue: "Cuba" },
-    { value: "Cyprus", viewValue: "Cyprus" },
-    { value: "Czech Republic", viewValue: "Czech Republic" },
-    { value: "Democratic Republic of the Congo", viewValue: "Democratic Republic of the Congo" },
-    { value: "Denmark", viewValue: "Denmark" },
-    { value: "Djibouti", viewValue: "Djibouti" },
-    { value: "Dominican Republic", viewValue: "Dominican Republic" },
-    { value: "Dominica", viewValue: "Dominica" },
-    { value: "Ecuador", viewValue: "Ecuador" },
-    { value: "Egypt", viewValue: "Egypt" },
-    { value: "El Salvador", viewValue: "El Salvador" },
-    { value: "Equatorial Guinea", viewValue: "Equatorial Guinea" },
-    { value: "Eritrea", viewValue: "Eritrea" },
-    { value: "Estonia", viewValue: "Estonia" },
-    { value: "Ethiopia", viewValue: "Ethiopia" },
-    { value: "Fiji", viewValue: "Fiji" },
-    { value: "Finland", viewValue: "Finland" },
-    { value: "France", viewValue: "France" },
-    { value: "French Guiana", viewValue: "French Guiana" },
-    { value: "Gabon", viewValue: "Gabon" },
-    { value: "Gambia", viewValue: "Gambia" },
-    { value: "Georgia", viewValue: "Georgia" },
-    { value: "Germany", viewValue: "Germany" },
-    { value: "Ghana", viewValue: "Ghana" },
-    { value: "Great Britain", viewValue: "Great Britain" },
-    { value: "Greece", viewValue: "Greece" },
-    { value: "Grenada", viewValue: "Grenada" },
-    { value: "Guadeloupe", viewValue: "Guadeloupe" },
-    { value: "Guatemala", viewValue: "Guatemala" },
-    { value: "Guinea", viewValue: "Guinea" },
-    { value: "Guinea-Bissau", viewValue: "Guinea-Bissau" },
-    { value: "Guyana", viewValue: "Guyana" },
-    { value: "Haiti", viewValue: "Haiti" },
-    { value: "Honduras", viewValue: "Honduras" },
-    { value: "Hungary", viewValue: "Hungary" },
-    { value: "Iceland", viewValue: "Iceland" },
-    { value: "India", viewValue: "India" },
-    { value: "Indonesia", viewValue: "Indonesia" },
-    { value: "Iran", viewValue: "Iran" },
-    { value: "Iraq", viewValue: "Iraq" },
-    { value: "Israel and the Occupied Territories", viewValue: "Israel and the Occupied Territories" },
-    { value: "Italy", viewValue: "Italy" },
-    { value: "Ivory Coast (Cote d'Ivoire)", viewValue: "Ivory Coast (Cote d'Ivoire)" },
-    { value: "Jamaica", viewValue: "Jamaica" },
-    { value: "Japan", viewValue: "Japan" },
-    { value: "Jordan", viewValue: "Jordan" },
-    { value: "Kazakhstan", viewValue: "Kazakhstan" },
-    { value: "Kenya", viewValue: "Kenya" },
-    { value: "Kosovo", viewValue: "Kosovo" },
-    { value: "Kuwait", viewValue: "Kuwait" },
-    { value: "Kyrgyz Republic (Kyrgyzstan)", viewValue: "Kyrgyz Republic (Kyrgyzstan)" },
-    { value: "Laos", viewValue: "Laos" },
-    { value: "Latvia", viewValue: "Latvia" },
-    { value: "Lebanon", viewValue: "Lebanon" },
-    { value: "Lesotho", viewValue: "Lesotho" },
-    { value: "Liberia", viewValue: "Liberia" },
-    { value: "Libya", viewValue: "Libya" },
-    { value: "Liechtenstein", viewValue: "Liechtenstein" },
-    { value: "Lithuania", viewValue: "Lithuania" },
-    { value: "Luxembourg", viewValue: "Luxembourg" },
-    { value: "Republic of Macedonia", viewValue: "Republic of Macedonia" },
-    { value: "Madagascar", viewValue: "Madagascar" },
-    { value: "Malawi", viewValue: "Malawi" },
-    { value: "Malaysia", viewValue: "Malaysia" },
-    { value: "Maldives", viewValue: "Maldives" },
-    { value: "Mali", viewValue: "Mali" },
-    { value: "Malta", viewValue: "Malta" },
-    { value: "Martinique", viewValue: "Martinique" },
-    { value: "Mauritania", viewValue: "Mauritania" },
-    { value: "Mauritius", viewValue: "Mauritius" },
-    { value: "Mayotte", viewValue: "Mayotte" },
-    { value: "Mexico", viewValue: "Mexico" },
-    { value: "Moldova, Republic of", viewValue: "Moldova, Republic of" },
-    { value: "Monaco", viewValue: "Monaco" },
-    { value: "Mongolia", viewValue: "Mongolia" },
-    { value: "Montenegro", viewValue: "Montenegro" },
-    { value: "Montserrat", viewValue: "Montserrat" },
-    { value: "Morocco", viewValue: "Morocco" },
-    { value: "Mozambique", viewValue: "Mozambique" },
-    { value: "Namibia", viewValue: "Namibia" },
-    { value: "Nepal", viewValue: "Nepal" },
-    { value: "Netherlands", viewValue: "Netherlands" },
-    { value: "New Zealand", viewValue: "New Zealand" },
-    { value: "Nicaragua", viewValue: "Nicaragua" },
-    { value: "Niger", viewValue: "Niger" },
-    { value: "Nigeria", viewValue: "Nigeria" },
-    { value: "Korea, Democratic Republic of (North Korea)", viewValue: "Korea, Democratic Republic of (North Korea)" },
-    { value: "Norway", viewValue: "Norway" },
-    { value: "Oman", viewValue: "Oman" },
-    { value: "Pacific Islands", viewValue: "Pacific Islands" },
-    { value: "Pakistan", viewValue: "Pakistan" },
-    { value: "Panama", viewValue: "Panama" },
-    { value: "Papua New Guinea", viewValue: "Papua New Guinea" },
-    { value: "Paraguay", viewValue: "Paraguay" },
-    { value: "Peru", viewValue: "Peru" },
-    { value: "Philippines", viewValue: "Philippines" },
-    { value: "Poland", viewValue: "Poland" },
-    { value: "Portugal", viewValue: "Portugal" },
-    { value: "Puerto Rico", viewValue: "Puerto Rico" },
-    { value: "Qatar", viewValue: "Qatar" },
-    { value: "Reunion", viewValue: "Reunion" },
-    { value: "Romania", viewValue: "Romania" },
-    { value: "Russian Federation", viewValue: "Russian Federation" },
-    { value: "Rwanda", viewValue: "Rwanda" },
-    { value: "Saint Kitts and Nevis", viewValue: "Saint Kitts and Nevis" },
-    { value: "Saint Lucia", viewValue: "Saint Lucia" },
-    { value: "Saint Vincent's & Grenadines", viewValue: "Saint Vincent's & Grenadines" },
-    { value: "Samoa", viewValue: "Samoa" },
-    { value: "Sao Tome and Principe", viewValue: "Sao Tome and Principe" },
-    { value: "Saudi Arabia", viewValue: "Saudi Arabia" },
-    { value: "Senegal", viewValue: "Senegal" },
-    { value: "Serbia", viewValue: "Serbia" },
-    { value: "Seychelles", viewValue: "Seychelles" },
-    { value: "Sierra Leone", viewValue: "Sierra Leone" },
-    { value: "Singapore", viewValue: "Singapore" },
-    { value: "Slovak Republic (Slovakia)", viewValue: "Slovak Republic (Slovakia)" },
-    { value: "Slovenia", viewValue: "Slovenia" },
-    { value: "Solomon Islands", viewValue: "Solomon Islands" },
-    { value: "Somalia", viewValue: "Somalia" },
-    { value: "South Africa", viewValue: "South Africa" },
-    { value: "Korea, Republic of (South Korea)", viewValue: "Korea, Republic of (South Korea)" },
-    { value: "South Sudan", viewValue: "South Sudan" },
-    { value: "Spain", viewValue: "Spain" },
-    { value: "Sri Lanka", viewValue: "Sri Lanka" },
-    { value: "Sudan", viewValue: "Sudan" },
-    { value: "Suriname", viewValue: "Suriname" },
-    { value: "Swaziland", viewValue: "Swaziland" },
-    { value: "Sweden", viewValue: "Sweden" },
-    { value: "Switzerland", viewValue: "Switzerland" },
-    { value: "Syria", viewValue: "Syria" },
-    { value: "Tajikistan", viewValue: "Tajikistan" },
-    { value: "Tanzania", viewValue: "Tanzania" },
-    { value: "Thailand", viewValue: "Thailand" },
-    { value: "Timor Leste", viewValue: "Timor Leste" },
-    { value: "Togo", viewValue: "Togo" },
-    { value: "Trinidad & Tobago", viewValue: "Trinidad & Tobago" },
-    { value: "Tunisia", viewValue: "Tunisia" },
-    { value: "Turkey", viewValue: "Turkey" },
-    { value: "Turkmenistan", viewValue: "Turkmenistan" },
-    { value: "Turks & Caicos Islands", viewValue: "Turks & Caicos Islands" },
-    { value: "Uganda", viewValue: "Uganda" },
-    { value: "Ukraine", viewValue: "Ukraine" },
-    { value: "United Arab Emirates", viewValue: "United Arab Emirates" },
-    { value: "United States of America (USA)", viewValue: "United States of America (USA)" },
-    { value: "Uruguay", viewValue: "Uruguay" },
-    { value: "Uzbekistan", viewValue: "Uzbekistan" },
-    { value: "Venezuela", viewValue: "Venezuela" },
-    { value: "Vietnam", viewValue: "Vietnam" },
-    { value: "Virgin Islands (UK)", viewValue: "Virgin Islands (UK)" },
-    { value: "Virgin Islands (US)", viewValue: "Virgin Islands (US)" },
-    { value: "Yemen", viewValue: "Yemen" },
-    { value: "Zambia", viewValue: "Zambia" },
-    { value: "Zimbabwe", viewValue: "Zimbabwe" }]
-
-
+  countries = [];
+  uploadIconHtml = "<i class='fa fa-upload'></i>";
+  removeHtml = "<i class='fa fa-times'></i>";
+  industries = [];
+  selectedIndustries = [];
+  subIndustries = [
+  ];
+  selectedsubIndustries = [];
+  userSubIndustries = [];
   userData = {};
   userCredentials = {};
   userType = "Individual";
-  passwordsMatching = true;
   confirmPassword;
+  formValidation;
+  exitStep;
+  subSearch;
+  uploaded = [];
   constructor(private userService: SysUserApi,
     private router: Router,
-    private NotifyService: NotifyService) { }
+    private route: ActivatedRoute,
+    private NotifyService: NotifyService,
+    private location: Location,
+    private ng2FileInputService: Ng2FileInputService,
+    private sysCodeService: SysCodeApi,
+    private AttachmentService: AttachmentService,
+    private AttachmentServiceAPI: AttachmentApi) {
+
+    this.route.params
+      .takeWhile(() => this.alive)
+      .subscribe(params => {
+        if (params['mode'])
+          this.userType = params['mode'];
+      })
+
+  }
 
 
   ngOnInit() {
+    //has uppercase
+    if (!window['Parsley'].hasValidator('uppercase'))
+      window['Parsley'].addValidator('uppercase', {
+        requirementType: 'number',
+        validateString: function (value, requirement) {
+          var uppercases = value.match(/[A-Z]/g) || [];
+          return uppercases.length >= requirement;
+        },
+        messages: {
+          en: 'Your password must contain at least (%s) uppercase letter.'
+        }
+      });
+
+    //has lowercase
+    if (!window['Parsley'].hasValidator('lowercase'))
+      window['Parsley'].addValidator('lowercase', {
+        requirementType: 'number',
+        validateString: function (value, requirement) {
+          var lowecases = value.match(/[a-z]/g) || [];
+          return lowecases.length >= requirement;
+        },
+        messages: {
+          en: 'Your password must contain at least (%s) lowercase letter.'
+        }
+      });
+
+    //has number
+    if (!window['Parsley'].hasValidator('number'))
+      window['Parsley'].addValidator('number', {
+        requirementType: 'number',
+        validateString: function (value, requirement) {
+          var numbers = value.match(/[0-9]/g) || [];
+          return numbers.length >= requirement;
+        },
+        messages: {
+          en: 'Your password must contain at least (%s) number.'
+        }
+      });
+
+    //has special char
+    if (!window['Parsley'].hasValidator('special'))
+      window['Parsley'].addValidator('special', {
+        requirementType: 'number',
+        validateString: function (value, requirement) {
+          var specials = value.match(/[^a-zA-Z0-9]/g) || [];
+          return specials.length >= requirement;
+        },
+        messages: {
+          en: 'Your password must contain at least (%s) special characters.'
+        }
+      });
+
+
+    this.lookup("5a651615f22fe122e0862672", "industries", true)
+    this.lookup("5a669889218e000a3c209a6e", "countries", true)
+  }
+
+  ngAfterViewInit() {
+  }
+
+
+  lookup(key, obj, overwrite) {
+    this.sysCodeService.findByParent(key)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        if (overwrite)
+          this[obj] = response.sysCode;
+        else {
+          this[obj] = this[obj].concat(response.sysCode);
+        }
+
+      }, (err) => {
+
+      })
+  }
+
+  formLoaded() {
+    this.formValidation = $('#registerForm').parsley({ trigger: "change keyup" });
+  }
+
+  cancel() {
+    this.location.back(); // <-- go back to previous location on cancel
   }
 
   register() {
-
+    debugger
+    if (!this.formValidation.validate())
+      return;
     let user = {
       credentials: this.userCredentials,
       data: this.userData,
+      categories: this.selectedsubIndustries.map(function (item) { return item.id }),
+      userSubIndustries: this.userSubIndustries,
+      userDocuments: this.uploaded.map(function (item) { return item.id }),
+      userCategories: this.userSubIndustries,
       type: this.userType
     }
     this.loading = true;
-    this.userService.register(user).subscribe((response) => {
-      this.loading = false;
-      this.NotifyService.showSuccessMessage('Your account is created!', 'Please check your inbox to activate your account.');
-      this.router.navigate(['/auth/signin']);
-    }, (err) => {
-      this.loading = false;
-      if (err.message.includes('Email already exists')) {
-        $('#fg-email').addClass("has-error");
-        this.NotifyService.showErrorMessage('Oops!', 'This email address is already taken');
-      }
-    })
+    this.userService.register(user)
+      .takeWhile(() => this.alive)
+      .subscribe((response) => {
+        this.loading = false;
+        this.step = this.done;
+      }, (err) => {
+        this.loading = false;
+        if (err.message.includes('Email already exists')) {
+          $('#fg-email').addClass("has-error");
+          $('#fg-email .parsley-errors-list').append("<li class='email-exists'>This email is already taken</li>")
+        }
+      })
+  }
+
+
+  editingEmail() {
+    $('#fg-email').removeClass("has-error");
+    $('#fg-email .parsley-errors-list > .email-exists').remove();
+  }
+
+  autocompleListFormatter = (data: any) => {
+    let html = `
+                <i class='flag-icon flag-icon-${data.countryCode.toLowerCase()}'></i> 
+                 &nbsp; | &nbsp; ${data.name}
+              `;
+    return html;
+  }
+
+  validatefield(fieldId) {
+    $("#" + fieldId).parsley().validate();
+  }
+
+  countryChanged(e) {
+    this.validatefield('country');
+  }
+
+  selectIndustry(industry) {
+    if (industry.selected) {
+      const index = this.selectedIndustries.findIndex(ind => ind.id == industry.id);
+
+      this.subIndustries = this.subIndustries.reduce(function (prev, subIndustry, subIndustryIndex) {
+        if (subIndustry.parentId !== industry.id)
+          prev.push(subIndustry);
+        return prev
+      }.bind(this), []);
+
+      this.selectedIndustries.splice(index, 1);
+    }
+    else if (this.selectedIndustries.length < 3) {
+      this.lookup(industry.id, "subIndustries", false);
+      this.selectedIndustries.push(industry);
+    }
+    else
+      return;
+
+    industry.selected = !industry.selected;
+  }
+
+  toggleSubIndustry(subIndustry) {
+    if (this.selectedsubIndustries.findIndex(function (item) {
+      return item.id === subIndustry.id
+    }) == -1)
+      this.selectedsubIndustries.push(subIndustry);
+    else
+      this.selectedsubIndustries.splice(this.selectedsubIndustries.findIndex(function (item) {
+        return item.id === subIndustry.id
+      }), 1)
+  }
+
+  addedSubCategory(e) {
+    if (e) {
+      this.userSubIndustries.push(e);
+    }
+    this.subSearch = null;
+  }
+
+  removeUserSubIndustry(index) {
+    this.userSubIndustries.splice(index, 1);
+  }
+  enterPressedSubSearch() {
+    if (this.subSearch) {
+      this.userSubIndustries.push(this.subSearch);
+      // this.selectedsubIndustries.push(this.subSearch);
+    }
+    this.subSearch = null;
+    this.scrollToBottom('.industries.sub');
+  }
+
+  isNextValid() {
+    switch (this.step) {
+      case 1:
+        return this.selectedIndustries.length > 0;
+      case 2:
+        return this.selectedsubIndustries.length > 0;
+      case 3:
+        return this.uploaded.filter(file => file.isLoaded).length > 0;
+      default:
+        return false;
+    }
+  }
+
+  scrollToBottom(selector) {
+    $(selector).animate({ scrollTop: $(selector).prop("scrollHeight") }, 1000);
+  }
+
+  goNext() {
+    this.previousStep = this.step;
+    ++this.step;
+  }
+
+  goBack() {
+    this.previousStep = this.step;
+    --this.step;
+  }
+
+  onAdded(event: any) {
+    var form = new FormData();
+    form.append("file", event.file, event.file.name);
+    this.AttachmentService.upload(form, event.file.name, {})
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.push(response);
+        this.scrollToBottom('.ulpoaded');
+        setTimeout(() => {
+          response.isLoaded = true;
+        }, this.uploaded.length * 1000);
+        console.log(this.uploaded)
+      }, (err) => {
+
+      })
+
+  }
+
+  removeFile(index, fileId) {
+    this.AttachmentServiceAPI.deleteById(fileId)
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.uploaded.splice(index, 1)
+      }, (err) => {
+      })
+  }
+
+  getCurrentFiles() {
+    let files = this.ng2FileInputService.getCurrentFiles('multiFilesInput');
+    return files;
   }
 
 }

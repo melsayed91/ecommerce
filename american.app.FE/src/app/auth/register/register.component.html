@@ -1,102 +1,329 @@
-<div class="card signin row">
-    <div class="col-xs-12 col-sm-6 animated fadeInRight">
-        <div class="registerPanel">
-            <div>
-                <h2>One of us?</h2>
-                <p>If you already have an account just sign in and access your profile. We've missed you!</p>
+<div class="register-form animated-500 slideInRight">
+    <div class="form-wrapper darken-overlay">
+        <div class="x" (click)="cancel()"></div>
+        <div class="register-links">
+            <div class="link" *ngIf="step < done" [class.active]="userType == 'Business'" (click)="userType = 'Business'; userData={}">
+                <span class="fa fa-briefcase"></span>
+                <p>Business Account</p>
+                <i class="fa fa-check check-icon"></i>
             </div>
-            <div class="register-links">
-                <div class="link" routerLink="/auth/signin">
-                    <span class="fa fa-sign-in">
-                    </span>
-                    <p>Sign In</p>
+            <div class="link" *ngIf="step == 1" [@flyInOutUp]="'in'" [class.active]="userType == 'Individual'" (click)="userType = 'Individual';">
+                <span class="fa fa-user-circle-o"></span>
+                <p>Individual Account</p>
+                <i class="fa fa-check check-icon"></i>
+            </div>
+            <div *ngIf="step > 1 && step < done" [@flyInOutDown]="'in'" class="step-summary">
+                <div class="summary-icons">
+                    <i *ngFor="let industry of selectedIndustries" [class]="'fa fa-lg ' + industry.icon"></i>
+                </div>
+
+                <p class="no-margin">{{selectedIndustries.length}} Industries Selected</p>
+                <p class="no-margin">{{selectedsubIndustries.length}} Sub-Industries Selected</p>
+            </div>
+        </div>
+        <!-- Individual Registration -->
+        <div class="form-content" *ngIf="userType == 'Individual' && step < done">
+            <h1 class="title">Join now for free!</h1>
+            <div class="social-links">
+                <h4 class="fb">
+                    <i class="fa fa-facebook"></i> &nbsp; Join with Facebook</h4>
+                <h4 class="google">
+                    <i class="fa fa-google"></i> &nbsp; Join with Google</h4>
+            </div>
+            <h6 class="title-with-border">
+                <span>Or sign up the classic way</span>
+            </h6>
+
+            <form id="registerForm" view-init-spy (onAfterViewInit)="formLoaded()">
+
+                <fieldset>
+                    <div class="text-center">
+                        <span class="required-mark"></span>Required Fields</div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required required">
+                                <input type="text" class="form-control" name="name" placeholder="Full Name" [(ngModel)]="userData.name" data-parsley-pattern="/^([a-z]{2,}[ ]){1,2}[a-z]{2,}$/i"
+                                    maxlength="40" data-parsley-pattern-message="First Name and Last Name are required (Max. 3 names)"
+                                    data-parsley-required-message="Full Name is required" required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required" id="fg-email">
+                                <input type="email" class="form-control" name="email" placeholder="Email address" [(ngModel)]="userCredentials.email" (focusin)="editingEmail()"
+                                    data-parsley-required-message="Email is required" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+
+                            <div class="form-group required error-area-static">
+                                <input id="password" type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="userCredentials.password"
+                                    (keyup)="validatefield('confirmPassword')" data-parsley-minlength="8" data-parsley-uppercase="1"
+                                    data-parsley-lowercase="1" data-parsley-number="1" data-parsley-special="1" data-parsley-required-message="Password is required"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+
+                            <div class="form-group required">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword"
+                                    data-parsley-equalto="#password" data-parsley-equalto-message="Passwords are not matching"
+                                    data-parsley-required-message="Confirmation is required" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required" [class.country-input]="userData.country && userData.country.id">
+                                <span *ngIf="userData.country && userData.country.id" [class]="'country-icon flag-icon flag-icon-' + userData.country.countryCode.toLowerCase()"></span>
+                                <input class="form-control" id="country" name="Country" placeholder="Country" [(ngModel)]="userData.country" auto-complete
+                                    [source]="countries" [list-formatter]="autocompleListFormatter" [accept-user-input]="false"
+                                    display-property-name="name" value-property-name="id" [no-match-found-text]="'[!] Country not found ...'"
+                                    (valueChanged)="countryChanged($event)" data-parsley-validation-threshold="1" data-parsley-required-message="Country is required"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                                <input type="text" class="form-control" name="State" placeholder="State" [(ngModel)]="userData.state" data-parsley-required-message="State is required"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                                <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="userData.city" data-parsley-required-message="City is required"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                                <input type="text" class="form-control" name="zip" placeholder="Zip Code" [(ngModel)]="userData.zipCode" data-parsley-pattern="/^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$/i"
+                                    maxlength="12" data-parsley-pattern-message="A valid zip code contains only digits, letters, space and dash"
+                                    data-parsley-validation-threshold="1" data-parsley-required-message="Zip Code is required"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group required">
+                                <input type="text" class="form-control" name="Mobile" placeholder="Mobile Number" [(ngModel)]="userData.mobile" maxlength="20"
+                                    PhoneNumberValidator data-parsley-pattern-message="This should be a valid international mobile number<br/> Format: + [Country Code] [Phone Number]"
+                                    data-parsley-validation-threshold="1" data-parsley-required-message="Mobile is required"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="userData.phone" maxlength="20"
+                                    PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
+                                    data-parsley-validation-threshold="1">
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <button class="btn btn-raised btn-simple register" type="button" (click)="register()">
+                    <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                    {{loading? '&nbsp;&nbsp;&nbsp;We are setting up your account...':'Register'}}
+                </button>
+            </form>
+        </div>
+
+        <!-- Business Registration -->
+        <div class="form-content" *ngIf="userType == 'Business' && step < done">
+
+            <!-- Previous Button -->
+            <div *ngIf="step > 1" class="stepper">
+                <div class="btn-navigator back valid" (click)="goBack()">
+                    <i class="fa fa-angle-double-up fa-xl"></i>
+                    <p class="no-margin">PREVIOUS</p>
                 </div>
             </div>
 
+            <div *ngIf="step == 1" class="animated-500" [class.fadeInDown-20]="previousStep > 1" [class.fadeIn]="previousStep == 0">
+                <h1 class="title">Which Industries your business belongs to?</h1>
+                <h4 class="title">(Max. 3 Industries)</h4>
+                <div class="industries">
+                    <div *ngFor="let industry of industries" class="item" (click)="selectIndustry(industry)" [class.selected]="industry.selected">
+                        <i [class]="'fa '+industry.icon"></i>
+                        {{industry.name}}
+                        <i class="checked fa fa-check"></i>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="step == 2" class="animated-500" [class.fadeInUp-20]="previousStep < 2" [class.fadeInDown-20]="previousStep > 2">
+                <h1 class="title">Let's go deeper!</h1>
+                <h4 class="title">Pick relevant sub-industries for your business</h4>
 
+                <div class="industries sub">
+                    <div *ngFor="let subIndustry of subIndustries" class="item" (click)="toggleSubIndustry(subIndustry)" [class.selected]="selectedsubIndustries.indexOf(subIndustry) != -1">
+                        {{subIndustry.name}}
+                    </div>
+                    <div *ngFor="let userSubIndustry of userSubIndustries let i=index" class="item selected" (click)="removeUserSubIndustry(i)">
+                        {{userSubIndustry}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="subs" placeholder="Couldn't find a sub-category? Add it to the list" auto-complete
+                        [source]="subIndustries" [accept-user-input]="true" [min-chars]="4" no-match-found-text="We didn't hear of this before.. Just press enter to add it to your list"
+                        blank-option-text="Click Enter to add sub-category" (valueChanged)="addedSubCategory($event)" [(ngModel)]="subSearch"
+                        watch-enter-key (onEnterPressed)="enterPressedSubSearch()">
+                </div>
+            </div>
+            <div *ngIf="step == 3" class="animated-500" [class.fadeInUp-20]="previousStep < 3" [class.fadeInDown-20]="previousStep > 3">
+                <h1 class="title">Upload your documents</h1>
+                <h4 class="title">Provide company documents (Licenses... or any other information that will prove legitimacy)</h4>
+                <div class="ulpoad-area">
+                    <ng2-file-input [id]="'multiFilesInput'" [show-previews]="false" [multiple]="true" (onAdded)="onAdded($event)" extensions="['jpg', 'JPG', 'pdf', 'PDF', 'doc', 'docx', 'DOC', 'DOCX']"
+                        [browse-text]="uploadIconHtml" [drop-text]="'Drag and drop files here or click the button below to select files'">
+                    </ng2-file-input>
+
+                    <div class="ulpoaded">
+                        <div *ngFor="let file of uploaded let i = index" class="file">
+
+                            <span>
+                                <i class="fa fa-file"></i> &nbsp;&nbsp; {{file.originalFileName}}
+                            </span>
+                            <mat-progress-bar *ngIf="!file.isLoaded" class="upload-progress" mode="indeterminate"></mat-progress-bar>
+                            <i *ngIf="file.isLoaded" class="fa fa-times remove" (click)="removeFile(i,file.id)"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="step == 4" class="animated-500" [class.fadeInUp-20]="previousStep < 4" [class.fadeInDown-20]="previousStep > 4">
+                <h1 class="title">Last thing...</h1>
+                <h4 class="title">Provide your account and profile information</h4>
+
+                <form id="registerForm" view-init-spy (onAfterViewInit)="formLoaded()">
+
+                    <fieldset>
+                        <div class="text-center">
+                            <span class="required-mark"></span>Required Fields</div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required required">
+                                    <input type="text" class="form-control" name="CompanyName" placeholder="Company Name" [(ngModel)]="userData.name" maxlength="65"
+                                        data-parsley-required-message="Company Name is required" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required" id="fg-email">
+                                    <input type="email" class="form-control" name="email" placeholder="Email address" [(ngModel)]="userCredentials.email" data-parsley-required-message="Email is required"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required error-area-static">
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="userCredentials.password"
+                                        (keyup)="validatefield('confirmPassword')" data-parsley-minlength="8" data-parsley-uppercase="1"
+                                        data-parsley-lowercase="1" data-parsley-number="1" data-parsley-special="1" data-parsley-required-message="Password is required"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+
+                                <div class="form-group required">
+                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" [(ngModel)]="confirmPassword"
+                                        data-parsley-equalto="#password" data-parsley-equalto-message="Passwords are not matching"
+                                        data-parsley-required-message="Confirmation is required" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <input type="text" class="form-control" name="address" placeholder="Business Main Address" [(ngModel)]="userData.address"
+                                        data-parsley-required-message="Address is required" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <input type="text" class="form-control" name="State" placeholder="State" [(ngModel)]="userData.state" data-parsley-required-message="State is required"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="userData.city" data-parsley-required-message="City is required"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <input type="text" class="form-control" name="zip" placeholder="Zip Code" [(ngModel)]="userData.zipCode" data-parsley-pattern="/^[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$/i"
+                                        maxlength="12" data-parsley-pattern-message="A valid zip code contains only digits, letters, space and dash"
+                                        data-parsley-validation-threshold="1" data-parsley-required-message="Zip Code is required"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Locations" [(ngModel)]="userData.countriesOfOperationIds" name="countries" multiple>
+                                            <mat-option *ngFor="let country of countries" [value]="country.id">
+                                                {{ country.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <!-- <input type="text" class="form-control" name="countries" placeholder="Countries of operation" data-parsley-required-message="Mobile is required"
+                                        required> -->
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-6">
+                                <div class="form-group required">
+                                    <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="userData.phone" maxlength="20"
+                                        PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
+                                        data-parsley-validation-threshold="1">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <button class="btn btn-raised btn-simple register" type="button" (click)="register()">
+                        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                        {{loading? '&nbsp;&nbsp;&nbsp;We are setting up your account...':'Register'}}
+                    </button>
+                </form>
+            </div>
+
+            <!-- Next Button -->
+            <div *ngIf="step < 4" class="stepper">
+                <div class="btn-navigator next" [class.valid]="isNextValid()" (click)="goNext()">
+                    <i class="fa fa-angle-double-down fa-xl"></i>
+                    <p class="no-margin">NEXT</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Done-->
+        <div class="form-content" *ngIf="step == done">
+            <h1 class="title">
+                <i class="fa fa-envelope-o fadeInLeft animated-500"></i>
+            </h1>
+            <div class="animated-500 fadeIn">
+                <h1 class="title">Congratulations {{userData.name}}, You are in!</h1>
+                <h4 class="title">Your account is succesfully created.</h4>
+                <h4 class="title">We've sent a verification email to your email address: {{userCredentials.email}}. Please check your inbox
+                    to complete your registration.</h4>
+                <p class="resend"> You didn't receive the verification email?
+                    <button class="btn btn-simple btn-sm">Resend Email</button>
+                </p>
+            </div>
         </div>
     </div>
-
-    <div class="col-xs-12 col-sm-6">
-        <h2 class="text-center">Join now for free!</h2>
-        <div class="social-links">
-            <h4 class="fb">
-                <i class="fa fa-facebook"></i> &nbsp; Join with Facebook</h4>
-            <h4 class="google">
-                <i class="fa fa-google"></i> &nbsp; Join with Google</h4>
-        </div>
-        <form>
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group label-floating">
-                        <label class="control-label">Full Name * </label>
-                        <input type="text" class="form-control" name="name" [(ngModel)]="userData.name" required>
-                    </div>
-                    <div class="form-group label-floating">
-                        <label class="control-label">Password * </label>
-                        <input type="password" class="form-control" name="password" [(ngModel)]="userCredentials.password" required>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group label-floating" id="fg-email">
-                        <label class="control-label">Email address * </label>
-                        <input type="email" class="form-control" name="email" [(ngModel)]="userCredentials.email" required>
-                    </div>
-                    <div class="form-group label-floating">
-                        <label class="control-label">Confirm Password * </label>
-                        <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword" required>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group countries label-floating">
-                        <mat-form-field>
-                            <mat-select placeholder="Country of residence" name="country" [(ngModel)]="userData.country">
-                                <mat-option *ngFor="let city of cities" [value]="city.value">
-                                    {{ city.viewValue }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
-
-                    <div class="form-group label-floating">
-                        <label class="control-label">City * </label>
-                        <input type="text" class="form-control" name="City" [(ngModel)]="userData.City" required>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group label-floating">
-                        <label class="control-label">State * </label>
-                        <input type="text" class="form-control" name="State" [(ngModel)]="userData.State" required>
-                    </div>
-                    <div class="form-group label-floating">
-                        <label class="control-label">Zip Code * </label>
-                        <input type="number" class="form-control" name="zip" [(ngModel)]="userData.zipCode" required>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group label-floating">
-                        <label class="control-label">Phone * </label>
-                        <input type="number" class="form-control" name="Phone" [(ngModel)]="userData.Phone" required>
-                    </div>
-
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <div class="form-group label-floating">
-                        <label class="control-label">Mobile * </label>
-                        <input type="number" class="form-control" name="Mobile" [(ngModel)]="userData.Mobile" required>
-                    </div>
-
-                </div>
-            </div>
-            <button class="btn btn-raised btn-primary" type="button" (click)="register()">
-                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>{{loading? '&nbsp;&nbsp;&nbsp;We are setting up your account...':'Register now!'}}
-            </button>
-
-        </form>
-    </div>
-
 </div>

@@ -1,8 +1,7 @@
 /* tslint:disable */
 import { Injectable, Inject, Optional } from '@angular/core';
-import { Http, Headers, Request, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpRequest, HttpParams, HttpResponse } from '@angular/common/http';
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { JSONSearchParams } from './search.params';
 import { ErrorHandler } from './error.service';
 import { LoopBackAuth } from './auth.service';
 import { LoopBackConfig } from '../../lb.config';
@@ -13,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import { SocketConnection } from '../../sockets/socket.connections';
 // Making Sure EventSource Type is available to avoid compilation issues.
 declare var EventSource: any;
@@ -34,11 +34,10 @@ export abstract class BaseLoopBackApi {
   protected model: any;
 
   constructor(
-    @Inject(Http) protected http: Http,
+    @Inject(HttpClient) protected http: HttpClient,
     @Inject(SocketConnection) protected connection: SocketConnection,
     @Inject(SDKModels) protected models: SDKModels,
     @Inject(LoopBackAuth) protected auth: LoopBackAuth,
-    @Inject(JSONSearchParams) protected searchParams: JSONSearchParams,
     @Optional() @Inject(ErrorHandler) protected errorHandler: ErrorHandler
   ) {
     this.model = this.models.get(this.getModelName());
@@ -78,11 +77,12 @@ export abstract class BaseLoopBackApi {
       this.connection.on(event, (res: any) => subject.next(res));
       return subject.asObservable();
     } else {
+      let httpParams = new HttpParams();
       // Headers to be sent
-      let headers: Headers = new Headers();
-      headers.append('Content-Type', 'application/json');
+      let headers: HttpHeaders = new HttpHeaders();
+      headers = headers.append('Content-Type', 'application/json');
       // Authenticate request
-      this.authenticate(url, headers);
+      headers = this.authenticate(url, headers);
       // Body fix for built in remote methods using "data", "options" or "credentials
       // that are the actual body, Custom remote method properties are different and need
       // to be wrapped into a body object
@@ -93,42 +93,63 @@ export abstract class BaseLoopBackApi {
       } else {
         body = postBody;
       }
-      let filter: string = '';
+      
+      let queryString: string = '';
+
       // Separate filter object from url params and add to search query
       if (urlParams.filter) {
         if (LoopBackConfig.isHeadersFilteringSet()) {
-          headers.append('filter', JSON.stringify(urlParams.filter));
+          headers = headers.append('filter', JSON.stringify(urlParams.filter));
         } else {
-          filter = `?filter=${ encodeURIComponent(JSON.stringify(urlParams.filter))}`;
+          queryString = `?filter=${encodeURIComponent(JSON.stringify(urlParams.filter))}`;
         }
         delete urlParams.filter;
       }
+
       // Separate where object from url params and add to search query
-      /**
-      CODE BELOW WILL GENERATE THE FOLLOWING ISSUES:
-      - https://github.com/mean-expert-official/loopback-sdk-builder/issues/356
-      - https://github.com/mean-expert-official/loopback-sdk-builder/issues/328 
       if (urlParams.where) {
-        headers.append('where', JSON.stringify(urlParams.where));
+        if (LoopBackConfig.isHeadersWhereSet()) {
+          /**
+          CODE BELOW WILL GENERATE THE FOLLOWING ISSUES:
+          - https://github.com/mean-expert-official/loopback-sdk-builder/issues/356
+          - https://github.com/mean-expert-official/loopback-sdk-builder/issues/328 
+          **/
+          headers.append('where', JSON.stringify(urlParams.where));
+        } else {
+          queryString = `?where=${encodeURIComponent(JSON.stringify(urlParams.where))}`;
+        }
         delete urlParams.where;
       }
-      **/
+    
       if (typeof customHeaders === 'function') {
         headers = customHeaders(headers);
       }
+/* enhancement/configure-where-headers
       this.searchParams.setJSON(urlParams);
       let request: Request = new Request(
         new RequestOptions({
           headers        : headers,
           method         : method,
-          url            : `${url}${filter}`,
+          url            : `${url}${queryString}`,
           search         : Object.keys(urlParams).length > 0 ? this.searchParams.getURLSearchParams() : null,
           body           : body ? JSON.stringify(body) : undefined,
           withCredentials: LoopBackConfig.getRequestOptionsCredentials()
         })
       );
+TODO Fix Merge Conflict */
+      Object.keys(urlParams).forEach(paramKey => {
+        let paramValue = urlParams[paramKey];
+        paramValue = typeof paramValue === 'object' ? JSON.stringify(paramValue) : paramValue;
+        httpParams = httpParams.append(paramKey, paramValue);
+      });
+      let request = new HttpRequest(method, url, body, {
+        headers        : headers,
+        params         : httpParams,
+        withCredentials: LoopBackConfig.getRequestOptionsCredentials()
+      });
       return this.http.request(request)
-        .map((res: any) => (res.text() != "" ? res.json() : {}))
+        .filter(event => event instanceof HttpResponse)
+        .map((res: HttpResponse<any>) => res.body)
         .catch((e) => this.errorHandler.handleError(e));
     }
   }
@@ -142,13 +163,15 @@ export abstract class BaseLoopBackApi {
    * @description
    * This method will try to authenticate using either an access_token or basic http auth
    */
-  public authenticate<T>(url: string, headers: Headers): void {
+  public authenticate<T>(url: string, headers: HttpHeaders): HttpHeaders {
     if (this.auth.getAccessTokenId()) {
-      headers.append(
+      headers = headers.append(
         'Authorization',
         LoopBackConfig.getAuthPrefix() + this.auth.getAccessTokenId()
       );
     }
+
+    return headers;
   }
   /**
    * @method create

@@ -127,3 +127,41 @@ form{
         margin: 9px 0 0;
     }
 }
+
+
+fieldset{
+    border: none;
+    margin: 0 0 20px;
+    padding: 0;
+}        
+
+.required-mark{
+    position: relative;
+    padding: 9px 0;
+    @include add-required-mark();
+}
+
+
+
+#shippingForm, #paymentForm, #productForm, #specForm{
+    .checkbox label, .radio label{
+        color: black;
+    }
+    input, textarea{
+        background: #ececec;
+        color: black;
+        border: none;
+        padding: 7px;
+    }
+    .form-group {
+        margin: 10px 0 0 0;
+    }
+    .delivery-options{
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .form-group.required::after {
+        top: 0px;
+    }
+}

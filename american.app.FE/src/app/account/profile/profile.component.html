@@ -1,0 +1,58 @@
+<app-navbar page="profile"></app-navbar>
+
+<!-- User Profile -->
+<div *ngIf="userAccount?.accountType == 'Individual'" class="page-content animated-500 fadeIn">
+    <div id="profile" class="page-layout simple tabbed">
+        <profile-info></profile-info>
+
+    </div>
+</div>
+
+<!-- Business Profile -->
+<div *ngIf="userAccount?.accountType == 'Business'" class="page-content animated-500 fadeIn">
+    <div id="profile" class="page-layout simple tabbed">
+        <!-- HEADER -->
+        <div class="header">
+            <div *ngIf="accountData?.bannerImage" class="background-image" [style.background-image]="'url('+attachmentServer + accountData?.bannerImage.url +')'"></div>
+            <div *ngIf="!accountData?.bannerImage" class="background-image" [style.background-image]="'url(../../../assets/img/banner.jpg)'"></div>
+            <div class="background-overlay"></div>
+            <div class="user-info">
+                <div class="name">
+                    <p>{{userAccount?.accountData.name}}</p>
+                    <p class="email">{{user?.email}}</p>
+                </div>
+            </div>
+            <div class="actions" [class.loading]="pictureLoading">
+                <button class="btn btn-fab btn-fab-mini btn-simple btn-white" (click)="triggerUpload()">
+                    <input id="bannerImage" accept="image/*" type="file" (change)="uploadPicture($event)">
+                    <i *ngIf="!pictureLoading" class="fa fa-camera"></i>
+                    <i *ngIf="pictureLoading" class="fa fa-spin fa-spinner"></i>
+                </button>
+            </div>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT -->
+        <div class="content">
+
+            <mat-tab-group (selectedTabChange)="productsList.initDataTable()" dynamicHeight="true">
+
+                <mat-tab label="Account Information">
+                    <profile-info></profile-info>
+                </mat-tab>
+
+                <mat-tab label="Products">
+                    <profile-products #productsList></profile-products>
+                </mat-tab>
+
+                <mat-tab label="Media Gallery">
+                    <profile-gallery></profile-gallery>
+                </mat-tab>
+
+            </mat-tab-group>
+
+        </div>
+        <!-- / CONTENT -->
+
+    </div>
+</div>

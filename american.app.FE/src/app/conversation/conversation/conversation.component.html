@@ -1,0 +1,80 @@
+
+
+<div class="card-content">
+  <div class="row">
+    <div class="col-md-4 scroll-conversations" style="height:400px">
+      <div *ngIf="!conversations.length && !emptyConversations" class="no-items">
+        <i class="fa fa-spinner fa-xl fa-spin"></i>
+        Loading Conversations...
+      </div>
+      <div *ngIf="emptyConversations" style="text-align: center">
+        No conversations yet!
+      </div>
+      <ul class="nav nav-pills nav-pills-rose nav-stacked container_ui" *ngIf="!emptyConversations">
+
+        <li class="conv_list" *ngFor="let row of conversations let i=index"  [routerLink]="['/conversation', row.id]" [ngClass]="{'active' : row.id === selectedConversationId}">
+
+
+          <label href='#move' *ngIf="row.accounts && row.accounts.length">
+            <div class='container_ui__item'>
+              <div class='face'>
+                <img *ngIf="row.accounts[0].accountData.profileImage" src='{{attachmentServer + row.accounts[0].accountData.profileImage.url}}'>
+                <img *ngIf="!row.accounts[0].accountData.profileImage" src='{{row.accounts[0].accountData.socialImage}}'>
+                <div class='color_bar one' >
+                  <p>Now Reading</p>
+                  <span>Read</span>
+                </div>
+              </div>
+              <h2>
+                {{row.accounts[0].accountData.name}}
+              </h2>
+              <div class='dot active'></div>
+              <h3 *ngIf="row.type">subj: {{row.type}}</h3>
+              <h3 *ngIf="!row.type">subj: specification request</h3>
+              <!--<h4>Your generous donation saved 3 million puppies...</h4>-->
+            </div>
+
+          </label>
+         <!-- <a data-toggle="tab" href="#{{row.id}}" aria-expanded="false">{{row.accounts[0].accountData.name}}</a>-->
+        </li>
+      </ul>
+    </div>
+
+    <div class="col-md-8" *ngIf="selectedConversation">
+
+          <div class="col-md-4 pull-right" style="height:400px" *ngIf="selectedConversation && selectedConversation.specificationRequest">
+            <div class="card card-product" data-count="5">
+              <div class="card-image" data-header-animation="true">
+                <a href="#pablo">
+                  <img class="img" src="{{attachmentServer + selectedConversation.specificationRequest.product.attachments[0].url}}">
+                </a>
+                <div class="ripple-container"></div>
+              </div>
+              <div class="card-content">
+                <div class="card-actions">
+                  <button class="btn btn-raised btn-primary" style="margin: 0"
+                          [routerLink]="[ '/product/details' , selectedConversation.specificationRequest.product.id]">
+                    Details
+                    <div class="ripple-container"></div>
+                  </button>
+
+                </div>
+                <h4 class="card-title">
+                  <a href="#pablo">{{selectedConversation.specificationRequest.product.name}}</a>
+                </h4>
+                <div class="card-description">
+                  {{selectedConversation.specificationRequest.product.description}}
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="price">
+                  <h4>${{selectedConversation.specificationRequest.product.price}}</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+          <app-message [selectedConversationId]="selectedConversation.id"></app-message>
+
+    </div>
+  </div>
+</div>

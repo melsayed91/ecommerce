@@ -1,0 +1,73 @@
+version: '2' 
+services:
+  # elasticsearch:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:${TAG}
+  #   container_name: elasticsearch
+  #   environment:
+  #     - cluster.name=docker-cluster
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   volumes:
+  #     - esdata1:/usr/share/elasticsearch/data
+  #   ports: ['0.0.0.0:9200:9200']
+  #   networks: ['esnet']
+
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:${TAG}
+  #   container_name: kibana
+  #   environment:
+  #     - ELASTICSEARCH_USERNAME=kibana
+  #     - ELASTICSEARCH_PASSWORD=${ELASTIC_PASSWORD}
+  #   ports: ['0.0.0.0:5601:5601']
+  #   networks: ['esnet']
+  #   depends_on: ['elasticsearch']
+
+  accountManager:
+    image: okc/amb/accountmanager:0.0.1
+    build: american.app.BE/AccountManager
+    ports:
+      - "2222:2222"
+  attachment:
+    image: okc/amb/attachment:0.0.1
+    build: american.app.BE/Attachment 
+    ports:
+      - "5000:5000"
+  Authorization:
+    image: okc/amb/authorization:0.0.1
+    build: american.app.BE/Authorization 
+    ports:
+      - "1111:1111" 
+  Messaging:
+    image: okc/amb/messaging:0.0.1
+    build: american.app.BE/Messaging 
+    ports:
+      - "3000:3000" 
+  Products:
+    image: okc/amb/products:0.0.1
+    build: american.app.BE/Products 
+    ports:
+      - "7777:7777"
+  quotations:
+    image: okc/amb/quotations:0.0.1
+    build: american.app.BE/Quotations 
+    ports:
+      - "3333:3333"
+  sysCode:
+    image: okc/amb/syscode:0.0.1
+    build: american.app.BE/SysCode 
+    ports:
+      - "5555:5555" 
+  frontend:
+    image: okc/amb/frontend:0.0.1
+    build: american.app.FE 
+    ports:
+      - "8080:80" 
+# volumes:
+#   esdata1:
+#     driver: local
+
+# networks: {esnet: {}}

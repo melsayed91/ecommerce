@@ -1,0 +1,32 @@
+
+.truncate {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-images{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .product-image {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        width: 150px;
+        height: 150px;
+        border: 3px solid #cfcfcf;
+        margin: 10px 5px;
+
+        img {
+            height: 100%;
+            width: auto;
+            max-width: none;
+            object-fit: scale-down;
+        }
+    }
+}

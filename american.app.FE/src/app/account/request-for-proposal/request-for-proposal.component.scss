@@ -1,0 +1,54 @@
+.no-rfp{
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+
+    .fa{
+        padding: 10px 0;
+    }
+}
+
+#rfpForm{
+    margin: 0 auto;
+    max-width: 900px;
+}
+.rfq-header{
+    color: green !important;
+}
+.myrfps{
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    .card{
+        width: 250px;
+        background-color: white;
+        border-radius: 0;
+        margin: 10px;
+        
+        .icon{
+            padding: 15px;
+            height: 120px;
+            width: auto;
+            text-align: center;         
+        }
+         img {
+            height: 100%;
+            width: auto;
+        }
+        button{
+            margin: 0;
+        }
+
+        .card-content{
+            margin-bottom: 100px;
+        }
+
+        .rfp-actions{
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+        }
+    }
+}

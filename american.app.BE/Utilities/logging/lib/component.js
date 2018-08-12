@@ -1,8 +1,17 @@
 let winston = require('winston');
 let os = require('os');
 let utility = require('./utility');
+const path = require('path')
+var GLOBAL_CONFIG = require(path.join(__dirname, '../../../common/global.config'));
 require('winston-mongodb').MongoDB
 require('winston-elasticsearch')
+
+var esTransportOpts = {
+    clientOpts: {
+        host: GLOBAL_CONFIG.es_hostname
+    }
+};
+winston.add(winston.transports.Elasticsearch, esTransportOpts);
 
 winston.emitErrs = true;
 let errorMeta = {

@@ -1,0 +1,104 @@
+{
+  "name": "sharedAccountData",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "name": "string",
+    "bio": "string",
+    "city": "string",
+    "state": "string",
+    "address": "string",
+    "zipCode": "string",
+    "phone": "string",
+    "mobile": "string",
+    "socialImage": "string",
+    "searchSettings": {
+      "type": "object"
+    },
+    "userCategories": [
+      "string"
+    ]
+  },
+  "validations": [],
+  "relations": {
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "customers": {
+      "type": "referencesMany",
+      "model": "Account",
+      "foreignKey": "customerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "cartItems": {
+      "type": "referencesMany",
+      "model": "shoppingCart",
+      "foreignKey": "cartItemId",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "countriesOfOperation": {
+      "type": "referencesMany",
+      "model": "SysCode",
+      "foreignKey": "countriesOfOperationIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "gallery": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "galleryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "documents": {
+      "type": "referencesMany",
+      "model": "attachment",
+      "foreignKey": "documentIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "profileImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "profileImageId"
+    },
+    "country": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "countryId"
+    },
+    "bannerImage": {
+      "type": "belongsTo",
+      "model": "attachment",
+      "foreignKey": "bannerImageId"
+    },
+    "categories": {
+      "type": "referencesMany",
+      "model": "SysCode",
+      "foreignKey": "categoryIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

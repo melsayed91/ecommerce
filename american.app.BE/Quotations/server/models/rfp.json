@@ -1,0 +1,20 @@
+{
+  "name": "rfp",
+  "base": "sharedRFP",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {
+
+  },
+  "acls": [],
+  "methods": {},
+  "mixins": {
+    "HideRelationsMethods": {
+      "expose": []
+    }
+  }
+}

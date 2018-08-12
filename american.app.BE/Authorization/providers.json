@@ -1,0 +1,60 @@
+{
+  "facebook-login": {
+    "provider": "facebook",
+    "module": "passport-facebook",
+    "profileFields": [
+      "gender",
+      "link",
+      "locale",
+      "name",
+      "timezone",
+      "verified",
+      "email",
+      "updated_time"
+    ],
+    "clientID": "160795631276388",
+    "clientSecret": "04ce1592e36ae4dcfb54dbc680093d09",
+    "callbackURL": "/auth/facebook/callback",
+    "authPath": "/auth/facebook",
+    "callbackPath": "/auth/facebook/callback",
+    "successRedirect": "/auth/success",
+    "failureRedirect": "/auth/failure",
+    "scope": [
+      "email"
+    ],
+    "failureFlash": true
+  },
+  "google-login": {
+    "provider": "google",
+    "module": "passport-google-oauth",
+    "strategy": "OAuth2Strategy",
+    "clientID": "879896811493-eic5m596rdnmnkgerf0bf56pc7jfertd.apps.googleusercontent.com",
+    "clientSecret": "1qVqBKgA9-hsFu6iHaRdKjcC",
+    "callbackURL": "/auth/google/callback",
+    "authPath": "/auth/google",
+    "callbackPath": "/auth/google/callback",
+    "successRedirect": "/auth/success",
+    "failureRedirect": "/auth/failure",
+    "scope": [
+      "email",
+      "profile"
+    ],
+    "failureFlash": true
+  },
+  "google-link": {
+    "provider": "google",
+    "module": "passport-google-oauth",
+    "strategy": "OAuth2Strategy",
+    "clientID": "879896811493-eic5m596rdnmnkgerf0bf56pc7jfertd.apps.googleusercontent.com",
+    "clientSecret": "1qVqBKgA9-hsFu6iHaRdKjcC",
+    "callbackURL": "http://localhost:2222/venus/Accounts/socialLogin",
+    "authPath": "/link/google",
+    "callbackPath": "/link/google/callback",
+    "successRedirect": "http://localhost:4200",
+    "scope": [
+      "email",
+      "profile"
+    ],
+    "link": true
+  }
+}

@@ -1,0 +1,113 @@
+<div class="box">
+  <div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-sm-offset-1 pull-right">
+          <div class="card card-testimonial">
+            <form class="col-md-12">
+              <div class="account-info" style="text-align: left">
+                <h3>total : {{totalAmount}}</h3>
+                <h3>discount : {{totalDiscount}}</h3>
+                <hr>
+                <h3>total after discount : {{totalAmount-totalDiscount}}</h3>
+                <button class="proceed btn btn-raised btn-primary btn-block" [routerLink]="[ '/order/checkout']" [class.animated-background]="loading">Check Out
+                  <i class="fa fa-angle-right"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm-6 col-sm-offset-2">
+          <h2>Shopping Cart ({{totalItems}})</h2>
+          <div class="card card-product" *ngFor="let item of cartItems let i=index">
+
+            <form class="col-md-12">
+              <div class="account-info" style="text-align: left">
+
+
+                <div class="col-lg-3">
+                  <img *ngIf="item.product.attachments && item.product.attachments[0]" [src]="attachmentServer + item.product.attachments[0].url">
+                </div>
+
+                <div class="col-lg-8">
+                  <h4>{{item.product.name}} ({{item.product.price}})</h4>
+                  <div>
+                    <h4 class="text-primary pull-left was" *ngIf="item.product.activeDiscount">${{item.product.price*item.quantity}}</h4>
+                    <br>
+                    <h4 class="text-primary pull-left" *ngIf="item.product.activeDiscount">${{item.product.activeDiscount.price*item.quantity}}</h4>
+                    <h4 class="text-primary pull-left" *ngIf="!item.product.activeDiscount">${{item.product.price*item.quantity}}</h4>
+                  </div>
+
+                  <div class="quantity pull-right">
+
+                    <button class="btn btn-fab btn-primary btn-simple" (click)="decrementQuantity(item)">-
+                    </button>
+                    <input name="quantity" type="number" [(ngModel)]="item.quantity">
+                    <button class="btn btn-fab btn-primary btn-simple" (click)="incrementQuantity(item)">
+                      +
+                    </button>
+
+                    <button class="btn btn-fab btn-primary btn-simple" (click)="deleteCartItem(item.id);">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                  <div class="row" style="padding: 0">
+
+                    <dl class="stats cart col-lg-6">
+                      <dt>
+                        <small>Sold by:</small>
+                      </dt>
+                      <dd>
+                        <small>ranjanmathew</small>
+                      </dd>
+                      <div class="clearfix"></div>
+                      <dt>
+                        <small>Condition:</small>
+                      </dt>
+                      <dd>
+                        <small>New</small>
+                      </dd>
+                      <div class="clearfix"></div>
+                      <dt>
+                        <small>Color:</small>
+                      </dt>
+                      <dd>
+                        <small>Black</small>
+                      </dd>
+                      <div class="clearfix"></div>
+                      <dt>
+                        <small>Band Material:</small>
+                      </dt>
+                      <dd>
+                        <small>Leather</small>
+                      </dd>
+                      <div class="clearfix"></div>
+                    </dl>
+                    <div *ngIf="item.product.stock <= 5" style="text-align: center" class="col-lg-6 text-danger">
+                      Order now, only {{item.product.stock}} left in stock!
+                    </div>
+                    <div *ngIf="item.product.stock > 5" style="text-align: center" class="col-lg-6 text-primary">
+                      {{item.product.stock}} left in stock!
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+              </div>
+            </form>
+
+
+
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,18 +1,16 @@
 /* tslint:disable */
 import { Injectable, Inject, Optional } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { SDKModels } from './SDKModels';
 import { BaseLoopBackApi } from '../core/base.service';
 import { LoopBackConfig } from '../../lb.config';
 import { LoopBackAuth } from '../core/auth.service';
 import { LoopBackFilter, SDKToken, AccessToken } from '../../models/BaseModels';
-import { JSONSearchParams } from '../core/search.params';
 import { ErrorHandler } from '../core/error.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Rx';
 import { SysUser } from '../../models/SysUser';
 import { SocketConnection } from '../../sockets/socket.connections';
-import { Account } from '../../models/Account';
 
 
 /**
@@ -22,298 +20,13 @@ import { Account } from '../../models/Account';
 export class SysUserApi extends BaseLoopBackApi {
 
   constructor(
-    @Inject(Http) protected http: Http,
+    @Inject(HttpClient) protected http: HttpClient,
     @Inject(SocketConnection) protected connection: SocketConnection,
     @Inject(SDKModels) protected models: SDKModels,
     @Inject(LoopBackAuth) protected auth: LoopBackAuth,
-    @Inject(JSONSearchParams) protected searchParams: JSONSearchParams,
     @Optional() @Inject(ErrorHandler) protected errorHandler: ErrorHandler
   ) {
-    super(http,  connection,  models, auth, searchParams, errorHandler);
-  }
-
-  /**
-   * Fetches hasOne relation Account.
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {boolean} refresh 
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public getAccount(id: any, refresh: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/Account";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {};
-    let _urlParams: any = {};
-    if (typeof refresh !== 'undefined' && refresh !== null) _urlParams.refresh = refresh;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Creates a new instance in Account of this model.
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public createAccount(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/Account";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Update Account of this model.
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public updateAccount(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "PUT";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/Account";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Deletes Account of this model.
-   *
-   * @param {any} id sysUser id
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public destroyAccount(id: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "DELETE";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/Account";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {};
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Patch an existing model instance or insert a new one into the data source.
-   *
-   * @param {object} data Request data.
-   *
-   *  - `data` – `{object}` - Model instance data
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public patchOrCreate(data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "PATCH";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers";
-    let _routeParams: any = {};
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Patch attributes for a model instance and persist it into the data source.
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {object} data Request data.
-   *
-   *  - `data` – `{object}` - An object of model property name/value pairs
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public patchAttributes(id: any, data: any = {}, customHeaders?: Function): Observable<any> {
-    let _method: string = "PATCH";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Login a user with username/email and password.
-   *
-   * @param {string} include Related objects to include in the response. See the description of return value for more details.
-   *   Default value: `user`.
-   *
-   *  - `rememberMe` - `boolean` - Whether the authentication credentials
-   *     should be remembered in localStorage across app/browser restarts.
-   *     Default: `true`.
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * The response body contains properties of the AccessToken created on login.
-   * Depending on the value of `include` parameter, the body may contain additional properties:
-   * 
-   *   - `user` - `U+007BUserU+007D` - Data of the currently logged in user. (`include=user`)
-   * 
-   *
-   */
-  public login(credentials: any, include: any = 'user', rememberMe: boolean = true, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/login";
-    let _routeParams: any = {};
-    let _postBody: any = {
-      credentials: credentials
-    };
-    let _urlParams: any = {};
-    if (typeof include !== 'undefined' && include !== null) _urlParams.include = include;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders)
-      .map(
-        (response: any) => {
-          response.ttl = parseInt(response.ttl);
-          response.rememberMe = rememberMe;
-          this.auth.setToken(response);
-          return response;
-        }
-      );
-      return result;
-      
-  }
-
-  /**
-   * Logout a user with access token.
-   *
-   * @param {object} data Request data.
-   *
-   * This method does not accept any data. Supply an empty object.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public logout(customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/logout";
-    let _routeParams: any = {};
-    let _postBody: any = {};
-    let _urlParams: any = {};
-       _urlParams.access_token = this.auth.getAccessTokenId();
-    this.auth.clear(); 
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Trigger user's identity verification with configured verifyOptions
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {object} data Request data.
-   *
-   * This method does not accept any data. Supply an empty object.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public verify(id: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/verify";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {};
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
+    super(http,  connection,  models, auth, errorHandler);
   }
 
   /**
@@ -346,96 +59,13 @@ export class SysUserApi extends BaseLoopBackApi {
   }
 
   /**
-   * Reset password for a user with email.
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public resetPassword(options: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/reset";
-    let _routeParams: any = {};
-    let _postBody: any = {
-      options: options
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Change a user's password.
-   *
-   * @param {object} data Request data.
-   *
-   *  - `oldPassword` – `{string}` - 
-   *
-   *  - `newPassword` – `{string}` - 
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public changePassword(oldPassword: any, newPassword: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/change-password";
-    let _routeParams: any = {};
-    let _postBody: any = {
-      data: {
-        oldPassword: oldPassword,
-        newPassword: newPassword
-      }
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Reset user's password via a password-reset token.
-   *
-   * @param {object} data Request data.
-   *
-   *  - `newPassword` – `{string}` - 
-   *
-   * @returns {object} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * This method returns no data.
-   */
-  public setPassword(newPassword: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/reset-password";
-    let _routeParams: any = {};
-    let _postBody: any = {
-      data: {
-        newPassword: newPassword
-      }
-    };
-    let _urlParams: any = {};
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
    * <em>
          * (The remote method definition does not provide any description.)
          * </em>
    *
-   * @param {object} user 
+   * @param {object} data Request data.
+   *
+   *  - `user` – `{object}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned
@@ -446,46 +76,13 @@ export class SysUserApi extends BaseLoopBackApi {
    *  - `user` – `{any}` - 
    */
   public register(user: any, customHeaders?: Function): Observable<any> {
-    let _method: string = "GET";
+    let _method: string = "POST";
     let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
     "/sysUsers/register";
     let _routeParams: any = {};
     let _postBody: any = {};
     let _urlParams: any = {};
     if (typeof user !== 'undefined' && user !== null) _urlParams.user = user;
-    let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
-    return result;
-  }
-
-  /**
-   * Creates a new instance in Account of this model.
-   *
-   * @param {any} id sysUser id
-   *
-   * @param {object} data Request data.
-   *
-   * This method expects a subset of model properties as request parameters.
-   *
-   * @returns {object[]} An empty reference that will be
-   *   populated with the actual data once the response is returned
-   *   from the server.
-   *
-   * <em>
-   * (The remote method definition does not provide any description.
-   * This usually means the response is a `SysUser` object.)
-   * </em>
-   */
-  public createManyAccount(id: any, data: any[] = [], customHeaders?: Function): Observable<any> {
-    let _method: string = "POST";
-    let _url: string = LoopBackConfig.getPath() + "/" + LoopBackConfig.getApiVersion() +
-    "/sysUsers/:id/Account";
-    let _routeParams: any = {
-      id: id
-    };
-    let _postBody: any = {
-      data: data
-    };
-    let _urlParams: any = {};
     let result = this.request(_method, _url, _routeParams, _urlParams, _postBody, null, customHeaders);
     return result;
   }

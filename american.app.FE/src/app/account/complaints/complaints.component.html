@@ -1,0 +1,42 @@
+<app-navbar page="complaints"></app-navbar>
+<h2>
+  Complaints List
+</h2>
+
+<div class="table-responsive">
+  <table id="datatables" class="table table-shopping" width="100%" style="width:100%" view-init-spy>
+    <thead>
+    <tr>
+      <th>Customer Name</th>
+      <th>Description</th>
+      <th>Product</th>
+      <th>Vendor Name</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of complaints">
+      <td>
+        <label>{{row.owner.accountData.name}}</label>
+      </td><td>
+        <label>{{row.text}}</label>
+      </td>
+      <td>
+        <a [routerLink]="[ '/product/details' , row.product.id]">{{row.product.name}}</a>
+      </td>
+      <td>
+        <label>{{row.vendor.accountData.name}}</label>
+      </td>
+      <td>
+        <label>{{row.creationDate | amDateFormat:'LL'}}</label>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm" (click)="openConversation(row.owner.id)">
+          Contact customer
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

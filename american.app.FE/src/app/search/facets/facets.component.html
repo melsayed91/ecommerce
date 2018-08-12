@@ -1,0 +1,55 @@
+<div class="card">
+  <div class="card-header">
+    <h4 class="card-title">Search Filters</h4>
+  </div>
+  <div class="card-content">
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingOne">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseOne">
+            <h4 class="panel-title">
+              Categories
+              <i class="material-icons">keyboard_arrow_down</i>
+            </h4>
+          </a>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body" id="categories_panel">
+            <mat-selection-list #categories_list>
+              <mat-list-option *ngFor="let category of categories" (click)="onCategorySelect(categories_list)" [value]="category.key">
+                {{category.key}} ({{category.doc_count}})
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="headingThree">
+          <a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" aria-controls="collapseThree">
+            <h4 class="panel-title">
+              Price
+              <i class="material-icons">keyboard_arrow_down</i>
+            </h4>
+          </a>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            <br>
+            <nouislider class="slider slider-info" [connect]="true" [min]="min_price" [max]="max_price" [step]="10" [(ngModel)]="priceRange"
+              [tooltips]="true" (change)="onPriceChange($event)"></nouislider>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2  col-md-offset-7">
+        <!-- [disabled]="selected_categories.length==0 && selected_price_range.length==0" -->
+        <button class="btn btn-primary" (click)="applyFilters()" >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+
+ 
+</div>

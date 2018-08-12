@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>Configure Your Sale</h2>
+
+
+<mat-dialog-content [formGroup]="saleForm">
+  <mat-form-field>
+
+    <mat-select placeholder="Select Discount Type" formControlName="sale_type">
+
+      <mat-option value="1">
+        Percentage</mat-option>
+      <mat-option value="2">
+        Value</mat-option>
+    </mat-select>
+    <control-messages [control]="saleForm.controls.sale_type" [display]="'Discount Type'">
+    </control-messages>
+  </mat-form-field>
+
+  <mat-form-field>
+    <span matPrefix *ngIf="saleForm.value && saleForm.value.sale_type=='1'">%&nbsp;</span>
+    <span matPrefix *ngIf="saleForm.value && saleForm.value.sale_type=='2'">$&nbsp;</span>
+    <input matInput placeholder="Sale Value" formControlName="sale_value" type="number">
+    <control-messages [control]="saleForm.controls.sale_value" [display]="'Sale Value'">
+    </control-messages>
+  </mat-form-field>
+
+
+  <mat-form-field>
+
+    <input matInput [matDatepicker]="startDatepicker" formControlName="start_date" placeholder="Start Date">
+
+    <mat-datepicker-toggle matSuffix [for]="startDatepicker">
+
+    </mat-datepicker-toggle>
+
+    <mat-datepicker #startDatepicker [touchUi]="touch" [startView]="'month'"></mat-datepicker>
+    <control-messages [control]="saleForm.controls.start_date" [display]="'Start Date'">
+    </control-messages>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput [matDatepicker]="endDatepicker" formControlName="end_date" placeholder="End Date">
+
+    <mat-datepicker-toggle matSuffix [for]="endDatepicker">
+
+    </mat-datepicker-toggle>
+
+    <mat-datepicker #endDatepicker [touchUi]="touch" [startView]="'month'"></mat-datepicker>
+    <control-messages [control]="saleForm.controls.end_date" [display]="'End Date'">
+    </control-messages>
+  </mat-form-field>
+
+  <mat-form-field hintLabel="Max 100 characters">
+    <textarea matInput #input placeholder="Notes" formControlName="notes" maxlength="100"></textarea>
+    <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
+  </mat-form-field>
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button class="mat-raised-button" (click)="close()">
+    Close
+  </button>
+
+  <button class="mat-raised-button mat-primary" (click)="save()">
+    Save
+  </button>
+
+</mat-dialog-actions>

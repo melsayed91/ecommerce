@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "sources": [
+      "loopback/common/models",
+      "loopback/server/models",
+      "../../common/enums",
+      "../../common/models",
+      "../common/models",
+      "./models"
+    ],
+    "mixins": [
+      "loopback/common/mixins",
+      "loopback/server/mixins",
+      "../common/mixins",
+      "../../common/mixins",
+      "./mixins",
+      "../node_modules/@mean-expert/loopback-component-realtime/dist/mixins"
+
+    ]
+  },
+  "User": {
+    "dataSource": "americanBizDB"
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "options": {
+      "strictObjectIDCoercion": true
+    }
+  },
+  "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Conversation": {
+  "dataSource": "americanBizDB",
+  "public": true
+},
+  "sharedConversation": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Message": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedMessage": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Account": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAccount": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "specification": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedSpecification": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  }
+}

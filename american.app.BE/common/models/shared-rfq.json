@@ -6,28 +6,63 @@
     "validateUpsert": true
   },
   "properties": {
-    "categoryId": {
-      "type": "number",
-      "required": true
-    },
     "description": {
       "type": "string",
       "required": true
     },
-    "statusId": {
-      "type": "Number",
+    "quantity": {
+      "type": "number",
+      "required": true
+    },
+    "title": {
+      "type": "string",
       "required": true
     },
     "creationDate": {
       "type": "Date",
-      "required": true
+      "required": true,
+      "defaultFn": "now"
     },
-    "updateDate": {
+    "modificationDate": {
       "type": "Date"
+    },
+    "isDeleted": {
+      "type": "Boolean",
+      "default": false
     }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "product": {
+      "type": "belongsTo",
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "productOwner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "productOwnerId"
+    },
+    "offers": {
+      "type": "referencesMany",
+      "model": "offer",
+      "foreignKey": "offerIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
+    },
+    "account": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "accountId"
+    },
+    "status": {
+      "type": "belongsTo",
+      "model": "SysCode",
+      "foreignKey": "statusId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

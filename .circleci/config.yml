@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  build_syscode_service:
+    docker:
+      - image: circleci/node:8.9
+    working_directory: ~/ambizphase1-main-impl-dev/american.app.BE/SysCode
+    steps:
+      - checkout
+      - setup_remote_docker:      
+     - restore_cache:
+          keys:
+            - v1-{{ .Branch }}
+          paths:
+            - /caches/app.tar
+      - run:
+         name: Build SysCode Service Docker image
+         command: docker build --cache-from=app -t docker pull melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+      - run:
+          name: Save SysCode Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/app.tar app
+     - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
+     - run:
+          name: Push SysCode to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
+workflows:
+  version: 2
+  jobs:
+      - build_syscode_service

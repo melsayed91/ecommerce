@@ -13,38 +13,28 @@
     "accountType": {
       "type": "string"
     },
-    "data": {
-      "name": "string",
-      "city": "string",
-      "state": "string",
-      "address": "string",
-      "countriesOfOperation": "string",
-      "zipCode": "string",
-      "Phone": "string",
-      "mobile": "string"
+    "isApproved": {
+      "type": "Boolean"
     },
-    "categories": [
-      {
-        "categrotyId": "number",
-        "subCategories": [
-          "number"
-        ]
-      }
-    ],
-    "disabledCategories": [
-      {
-        "categrotyId": "number",
-        "subCategories": [
-          "number"
-        ]
-      }
-    ],
-    "customers": [
-      "string"
-    ]
+    "isAdmin": {
+      "type": "Boolean"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "modificationDate": {
+      "type": "Date"
+    }
   },
   "validations": [],
-  "relations": {},
+  "relations": {
+    "accountData": {
+      "type": "belongsTo",
+      "model": "accountData",
+      "foreignKey": "accountDataId"
+    }
+  },
   "acls": [],
   "methods": {}
 }

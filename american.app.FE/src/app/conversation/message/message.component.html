@@ -1,0 +1,41 @@
+<div class="col-lg-8 scroll-messages" style="height:400px">
+
+  <div class="col-lg-12 scroll-messages{{selectedConversationId}}" style="height:400px">
+    <div *ngIf="!messages.length && !emptyMessages" class="no-items">
+      <i class="fa fa-spinner fa-xl fa-spin"></i>
+      Loading Messages...
+    </div>
+    <div *ngIf="emptyMessages" style="text-align: center">
+      Start the conversation by sending a message
+    </div>
+    <div class="col-md-12 message-item" *ngFor="let message of messages let i=index" id="{{message.id}}">
+
+
+      <div class="card"  [ngClass]="{'authorMessage': message.owner.id == userAccount.id}">
+        <div *ngIf="message.owner.accountData.profileImage" class="card-header card-header-icon message-image" data-background-color=""
+             [style.background-image]="'url(' + attachmentServer + message.owner.accountData.profileImage.url +')'">
+        </div>
+        <div class="card-header card-header-icon message-image" *ngIf="!message.owner.accountData.profileImage" data-background-color=""
+             [style.background-image]="'url(' + message.owner.accountData.socialImage +')'">
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">{{message.text}}</h4>
+
+          <div class="footer">{{message.creationDate | amLocal | amDateFormat:'MM.DD.YYYY HH:mm:ss'}}</div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="form-group">
+      <label class="control-label" style="font-size: large">Enter Message...</label>
+      <input [(ngModel)]="newMessage" type="text" class="form-control" watch-enter-key
+             (onEnterPressed)="addNewMessage()">
+      <!-- <span class="help-block">A block of help text that breaks onto a new line.</span>-->
+    </div>
+
+  </div>
+
+
+</div>

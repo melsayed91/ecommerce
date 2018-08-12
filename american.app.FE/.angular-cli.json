@@ -23,6 +23,11 @@
         "../node_modules/sweetalert2/dist/sweetalert2.css",
         "../node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
         "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/flag-icon-css/css/flag-icon.min.css",
+        "../node_modules/slick-carousel/slick/slick.css",
+        "../node_modules/slick-carousel/slick/slick-theme.css",
+        "../node_modules/datatables.net-select-bs/css/select.bootstrap.css",
+        "assets/fonts/fontello/css/fontello-icons.css",
         "sass/main.scss"
       ],
       "scripts": [
@@ -43,6 +48,7 @@
         "../node_modules/datatables/media/js/jquery.dataTables.js",
         "../node_modules/datatables.net-bs/js/dataTables.bootstrap.js",
         "../node_modules/datatables.net-responsive/js/dataTables.responsive.js",
+        "../node_modules/datatables.net-select/js/dataTables.select.min.js",
         "../node_modules/fullcalendar/dist/fullcalendar.js",
         "../node_modules/bootstrap-tagsinput/dist/bootstrap-tagsinput.js",
         "../node_modules/jasny-bootstrap/dist/js/jasny-bootstrap.min.js",
@@ -52,7 +58,9 @@
         "../node_modules/jvectormap/tests/assets/jquery-jvectormap-map.js",
         "../node_modules/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js",
         "../node_modules/sweetalert2/dist/sweetalert2.js",
-        "../node_modules/jquery-validation/dist/jquery.validate.min.js"
+        "../node_modules/jquery-validation/dist/jquery.validate.min.js",
+        "../node_modules/parsleyjs/dist/parsley.min.js",
+        "../node_modules/slick-carousel/slick/slick.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

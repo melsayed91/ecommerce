@@ -1,0 +1,40 @@
+{
+  "name": "sharedProductReview",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "text": {
+      "type": "string"
+    },
+    "creationDate": {
+      "type": "Date",
+      "required": true
+    },
+    "rating": {
+      "type": "Number"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "product": {
+      "type": "belongsTo",
+      "model": "product",
+      "foreignKey": "productId"
+    },
+    "order": {
+      "type": "belongsTo",
+      "model": "Order",
+      "foreignKey": "orderId"
+    },
+    "owner": {
+      "type": "belongsTo",
+      "model": "Account",
+      "foreignKey": "ownerId"
+    }
+  },
+  "acls": [],
+  "methods": {}
+}

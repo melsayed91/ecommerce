@@ -1,0 +1,160 @@
+<div class="main-content" *ngIf="!this.isEditMode">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card card-testimonial">
+          <div class="card-content">
+            <div class="form-group user-bio">
+              <i *ngIf="bioLoading" class="fa fa-spin fa-spinner"></i>
+              <textarea class="form-control" type="text" [(ngModel)]="userBio" (focusout)="bioEdited()" placeholder="You can leave some welcome words here for your visitor..."
+                rows="3" maxlength="75"></textarea>
+            </div>
+          </div>
+          <div class="footer">
+            <h4 class="card-title">{{accountData?.name}}</h4>
+            <p *ngIf="userAccount?.accountType == 'Individual'">
+              <i [class]=" 'flag-icon flag-icon-' + accountData?.country?.countryCode.toLowerCase()"></i>
+              &nbsp; | &nbsp; {{accountData?.country?.name}}
+            </p>
+            <div class="card-avatar profile-picture" [class.loading]="pictureLoading" (click)="triggerUpload()">
+              <div class="dark-overlay">
+                <i *ngIf="!pictureLoading" class="fa fa-camera"></i>
+                <i *ngIf="pictureLoading" class="fa fa-spin fa-spinner"></i>
+              </div>
+              <input id="profilePicture" accept="image/*" type="file" (change)="uploadPicture($event)">
+              <div *ngIf="!accountData?.profileImage" class="image" style="background-image:url(../../../assets/img/image_placeholder.jpg)"></div>
+              <div *ngIf="accountData?.profileImage" class="image" [style.background-image]="'url('+attachmentServer + accountData?.profileImage.url +')'"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-content">
+
+            <div class="account-info">
+              <div class="info-section" *ngIf="userAccount?.accountType == 'Business'">
+
+                <i class="fa fa-map"></i>
+                <div>
+                  <h4>COUNTRIES OF OPERATION</h4>
+                  <p *ngFor="let country of accountData?.countriesOfOperation">
+                    <i [class]=" 'flag-icon flag-icon-' + country?.countryCode.toLowerCase()"></i>
+                    &nbsp; | &nbsp; {{country?.name}}
+                  </p>
+                </div>
+              </div>
+              <div class="info-section">
+
+                <i class="fa fa-envelope"></i>
+                <div>
+                  <h4>REGISTRED EMAIL</h4>
+                  <p>{{user?.email}}</p>
+                </div>
+              </div>
+              <div class="info-section">
+                <i class="fa fa-phone"></i>
+                <div>
+                  <h4>CONTACT NUMBERS</h4>
+                  <p class="no-margin" *ngIf="userAccount?.accountType == 'Individual'">Mobile: {{accountData?.mobile}}</p>
+                  <p class="no-margin">Phone: {{accountData?.phone}}</p>
+                </div>
+              </div>
+              <div class="info-section">
+                <i class="fa fa-map"></i>
+                <div>
+                  <h4>ADDRESS</h4>
+                  <p>{{accountData?.address? accountData.address + ', ': ''}} {{accountData?.city}}, {{accountData?.state}},
+                    {{accountData?.zipCode}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button (click)="toggleEditProfile() " class="btn btn-rose pull-right ">Edit Profile</button>
+          <div class="clearfix "></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="main-content " *ngIf="this.isEditMode ">
+  <div class="container-fluid ">
+    <div class="row ">
+      <div class="col-md-8 ">
+        <div class="card ">
+
+          <div class="card-content ">
+            <h4 class="card-title ">Edit Profile
+            </h4>
+            <!-- Individual Registration -->
+            <div class="form-content ">
+
+              <form id="editProfileForm" view-init-spy (onAfterViewInit)="formLoaded()">
+
+                <fieldset>
+                  <div class="text-center ">
+                    <span class="required-mark "></span>Required Fields</div>
+                  <div class="row ">
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required required">
+                        <input type="text" class="form-control" name="name" placeholder="Full Name" [(ngModel)]="profileData.name" data-parsley-pattern="/^([a-z]{2,}[ ]){1,2}[a-z]{2,}$/i" maxlength="40" data-parsley-pattern-message="First Name and Last Name are required (Max. 3 names)" data-parsley-required-message="Full Name is required"
+                          required>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="row ">
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required" [class.country-input]="profileData.country&& profileData.country.id">
+                        <span *ngIf="profileData.country && profileData.country.id" [class]="'country-icon flag-icon flag-icon-' + profileData.country.countryCode.toLowerCase()"></span>
+                        <input class="form-control" id="country " name="Country" placeholder="Country" [(ngModel)]="profileData.country" auto-complete [source]="countries"
+                          [list-formatter]="autocompleListFormatter" [accept-user-input]="false" display-property-name="name" value-property-name="id" [no-match-found-text]="'[!] Country not found ...'" data-parsley-validation-threshold="1" data-parsley-required-message="Country is required " required>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required ">
+                        <input type="text " class="form-control " name="State" placeholder="State " [(ngModel)]="profileData.state " data-parsley-required-message="State is required "
+                          required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required ">
+                        <input type="text" class="form-control" name="City" placeholder="City" [(ngModel)]="profileData.city" data-parsley-required-message="City is required " required>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required ">
+                        <input type="text" class="form-control" name="zip" placeholder="Zip Code" [(ngModel)]="profileData.zipCode" data-parsley-pattern="/^[a-z0-9][a-z0-9\-]{0,10}[a-z0-9]$/i" maxlength="12" data-parsley-pattern-message="A valid zip code contains only digits, letters, space and dash " data-parsley-validation-threshold="1" data-parsley-required-message="Zip Code is required " required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row ">
+                    <div class="col-xs-12 col-md-6 ">
+                      <div class="form-group required ">
+                        <input type="text " class="form-control" name="Mobile" placeholder="Mobile Number " [(ngModel)]="profileData.Mobile " maxlength="20" PhoneNumberValidator data-parsley-pattern-message="This should be a valid international mobile number<br/> Format: + [Country Code] [Phone Number]"
+                          data-parsley-validation-threshold="1" data-parsley-required-message="Mobile is required" required>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                      <div class="form-group">
+                        <input type="text" class="form-control" name="Phone" placeholder="Phone Number" [(ngModel)]="profileData.Phone" maxlength="20"
+                          PhoneNumberValidator data-parsley-pattern-message="This should be a valid international phone number<br/> Format: + [Country Code] [Phone Number]"
+                          data-parsley-validation-threshold="1">
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </form>
+            </div>
+          </div>
+          <button (click)="toggleEditProfile()" class="btn btn-rose pull-right">Cancel</button>
+          <button (click)="saveProfile()" class="btn btn-rose pull-left">Save Profile</button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,17 +5,36 @@
     "options": {
         "validateUpsert": true
     },
+    "mixins": {
+        "TimeStamp": true
+    },
     "properties": {
         "name": {
             "type": "string",
             "required": true
         },
-        "parentId": {
+        "icon": {
+            "type": "string"
+        },
+        "class": {
+            "type": "string"
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
+        },
+        "countryCode": {
             "type": "string"
         }
     },
     "validations": [],
-    "relations": {},
+    "relations": {
+        "parent": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "parentId"
+        }
+    },
     "acls": [],
     "methods": {}
 }

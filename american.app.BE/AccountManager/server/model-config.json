@@ -11,6 +11,7 @@
       "loopback/common/mixins",
       "loopback/server/mixins",
       "../common/mixins",
+      "../../common/mixins",
       "./mixins"
     ]
   },
@@ -18,9 +19,9 @@
     "dataSource": "americanBizDB",
     "public": true
   },
-  "sharedUser": {
+  "userIdentity": {
     "dataSource": "americanBizDB",
-    "public": false
+    "public": true
   },
   "Account": {
     "dataSource": "americanBizDB",
@@ -30,7 +31,70 @@
     "dataSource": "americanBizDB",
     "public": false
   },
+  "accountData": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedAccountData": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
   "Email": {
     "dataSource": "emailDs"
+  },
+  "sharedSysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "SysCode": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "attachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedAttachment": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+   "shoppingCart": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedShoppingCart": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "product": {
+    "dataSource": "americanBizDB",
+    "public": true
+  },
+  "sharedProduct": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "AccessToken": {
+    "dataSource": "americanBizDB",
+    "public": false,
+    "relations": {
+      "user": {
+        "type": "belongsTo",
+        "model": "sysUser",
+        "foreignKey": "userId"
+      }
+    }
+  },
+  "ACL": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "RoleMapping": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "Role": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

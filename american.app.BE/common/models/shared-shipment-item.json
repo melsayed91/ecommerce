@@ -1,0 +1,33 @@
+{
+    "name": "SharedShipmentItem",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "mixins": {
+        "TimeStamp": true
+    },
+    "properties": {
+        "quantity": {
+            "type": "number",
+            "required": true
+        },
+        "total": {
+            "type": "number",
+            "required": true
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": [
+        {
+            "accessType": "EXECUTE",
+            "principalType": "ROLE",
+            "principalId": "$owner",
+            "permission": "ALLOW",
+            "property": "updateUserProduct"
+        }
+    ],
+    "methods": {}
+}

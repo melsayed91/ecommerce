@@ -1,32 +1,86 @@
 <nav>
   <div class="left">
-    <div class="logo" routerLink="/Home">
+    <div class="logo" (click)="navigateTo('/home')">
       <p class="american">American</p>
       <p class="made">Made</p>
     </div>
   </div>
 
   <div class="middle">
-    <a>
+    <a (click)="navigateTo('home/services')">
       <i class="fa fa-angle-down"></i>&nbsp;Services</a>
-    <a>
+    <a (click)="navigateTo('home/help')">
       <i class="fa fa-angle-down"></i>&nbsp;Help Center</a>
-    <a>
-      <i class="fa fa-angle-down"></i>&nbsp;Contact Us</a>
+    <a (click)="navigateTo('/home/contactUs')">&nbsp;Contact Us</a>
+    <a (click)="navigateTo('/account/dashboard')">My Dashbaord</a>
+
   </div>
 
-  <div class="right">
-    <div class="button-with-icon" routerLink="/auth/signin">
+  <div *ngIf="!auth.userApi.isAuthenticated()" class="right">
+
+    <div class="button-with-icon" (click)="navigateTo('/auth/signin')">
       <span>
         <i class="fa fa-sign-in"></i>
         <p>Sign in</p>
       </span>
     </div>
-    <div class="button-with-icon" routerLink="/auth/register" >
+    <div class="button-with-icon" (click)="navigateTo('/auth/register')">
       <span>
         <i class="fa fa-pencil"></i>
         <p>Join For Free</p>
       </span>
     </div>
   </div>
+
+
+  <div class="right dropdown" *ngIf="auth.userApi.isAuthenticated()"  >
+
+    <div class="header-icon" [routerLink]="['/conversation', conversations[0]?.id]">
+      <p>{{conversationCount?conversationCount: 0}}</p>
+      <i class="material-icons">chat</i>
+    </div>
+    <div class="header-icon">
+      <p>5</p>
+      <i class="material-icons">notifications</i>
+    </div>
+    <div class="header-icon" (click)="navigateTo('/order/mycart')">
+      <p *ngIf="!auth.account?.accountData.cartItemId">0</p>
+      <p *ngIf="auth.account?.accountData.cartItemId">{{auth.account?.accountData.cartItemId.length}}</p>
+      <i class="material-icons">shopping_cart</i>
+    </div>
+    <div class="userName dropdown-toggle" data-toggle="dropdown">
+
+      <p>{{getUserName()}}</p>
+      <p>{{getUserEmail()}}</p>
+      <ul class="dropdown-menu">
+
+        <li *ngIf="this.auth.account?.isAdmin">
+          <a (click)="navigateTo('/admin/approval')">Admin Approval</a>
+        </li>
+        <li>
+          <a (click)="navigateTo('account/dashboard')">Dashbaord</a>
+        </li>
+        <li>
+          <a (click)="navigateTo('account/orders')">Orders</a>
+        </li>
+        <li>
+          <a (click)="navigateTo('account/messages')">Messages</a>
+        </li>
+        <li>
+          <a (click)="navigateTo('account/rfps')">RFQs & RFPs</a>
+        </li>
+        <li>
+          <a (click)="auth.logout();navigateTo('/auth/signin')">Sign out</a>
+        </li>
+      </ul>
+    </div>
+    <div class="photo header-photo">
+      <img *ngIf="auth.account.accountData.profileImage"
+           [src]="attachmentServer + auth.account.accountData.profileImage?.url"/>
+      <img *ngIf="!auth.account.accountData.profileImage" [src]="auth.account.accountData.socialImage"/>
+    </div>
+
+
+  </div>
+
 </nav>

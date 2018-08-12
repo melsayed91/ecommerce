@@ -1,0 +1,8 @@
+<div class="links-bar">
+  <div *ngFor="let link of viewLinks" class="link" 
+        [class.active]="page == link.name"
+        [routerLink]="link.redirectTo">
+      <i [class]="'fa fa-' + link.icon"></i>
+      <p>{{link.text}}</p>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 {
   "restApiRoot": "/venus",
-  "host": "127.0.0.1",
+  "host": "127.0.0.5",
   "port": 2222,
   "remoting": {
     "context": false,
@@ -17,6 +17,21 @@
       "extended": true,
       "limit": "100kb"
     },
-    "cors": false
+    "cors": false,
+    "sharedMethods": {
+      "*": false,
+      "getAccountData": true,
+      "updateAccountData": true,
+      "register": true,
+      "confirm": true,
+      "getBusinessAccounts":true,
+      "getAccountByUser":true,
+      "approveBusinessAccount":true,
+      "socialLogin":true,
+      "addCartItem":true,
+      "updateQuantity":true,
+      "deleteCartItem":true,
+      "getCartItems":true
+    }
   }
 }

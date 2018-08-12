@@ -1,0 +1,13 @@
+{
+  "name": "product",
+  "base": "sharedProduct",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {},
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

@@ -1,0 +1,58 @@
+<app-navbar page="orders"></app-navbar>
+
+<div class="page-content">
+  <div *ngIf="orders?.length > 0" class="orders">
+    <div *ngFor="let order of orders" class="order">
+      <div class="order-header">
+        <div>
+          <h5 class="no-margin">Order #
+            <b>{{order.orderNo}}</b>
+          </h5>
+          <p class="muted no-margin">Placed on: {{order.createdAt | amDateFormat:'LL'}}</p>
+          <p class="muted">Updated {{order.updatedAt | amTimeAgo}}</p>
+        </div>
+
+        <p [class]="'status ' + order.status.class">
+          <i [class]="'fa '+ order.status.icon"></i> &nbsp; {{order.status.name}}</p>
+      </div>
+      <div class="order-body">
+        <div class="shipments">
+          <h5 class="no-margin">
+            <b>Shipments : &nbsp;</b>
+          </h5>
+
+          <div *ngFor="let shipment of order.shipments" class="shipment">
+
+            <div *ngFor="let item of shipment.items" class="item">
+              <div class="product-img">
+                <span class="badge">{{item.quantity}}</span>
+                <img [src]="attachmentServer + item.product.attachments[0]?.url">
+              </div>
+              <div>
+                <h5>{{item.product.name}}</h5>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <button class="btn btn-dark btn-raised" [routerLink]="[ '/account/orders' , order.id]">
+          More &nbsp;
+          <i class="fa fa-angle-double-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+  <div *ngIf="!orders" class="orders">
+    <div *ngFor="let item of [1,2,3]" class="placeholder-orders animated-background">
+      <div class="background-masker header-top"></div>
+      <div class="background-masker header-left"></div>
+      <div class="background-masker header-right"></div>
+      <div class="background-masker header-bottom"></div>
+      <div class="background-masker header2-left"></div>
+      <div class="background-masker header2-right"></div>
+      <div class="background-masker header2-bottom"></div>
+      <div class="background-masker footer"></div>
+    </div>
+  </div>
+</div>
