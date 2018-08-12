@@ -34,5 +34,6 @@ jobs:
             docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
 workflows:
   version: 2
-  jobs:
+  build_docker_images:
+    jobs:
       - build_syscode_service
