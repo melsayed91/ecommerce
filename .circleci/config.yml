@@ -1,11 +1,18 @@
 version: 2
 jobs:
   build_syscode_service:
-    machine: true
     working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
     steps:
       - checkout
-      # - setup_remote_docker
+      - setup_remote_docker
+      # - run:
+      #    name: Install Docker Compose
+      #    command: |
+      #       curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -14,7 +21,7 @@ jobs:
       - run:
            name: Build dummy container for common files
            command: |
-              docker-compose -v
+              # docker-compose -v
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
       - run:
@@ -37,6 +44,7 @@ jobs:
           name: Push SysCode Service to DockerHub
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag $CIRCLE_SHA1 melsayedalaa/americanbiz:syscode
             docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
 workflows:
   version: 2
