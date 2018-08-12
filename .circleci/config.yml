@@ -4,6 +4,7 @@ jobs:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
        - image: docker:stable-git
+       - image: docker/compose
     steps:
       - checkout
       - setup_remote_docker
