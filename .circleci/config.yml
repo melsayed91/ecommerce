@@ -45,7 +45,7 @@ jobs:
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker tag $CIRCLE_SHA1 melsayedalaa/americanbiz:syscode
-            docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker push melsayedalaa/americanbiz
 workflows:
   version: 2
   build_docker_images:
