@@ -16,6 +16,7 @@ jobs:
       - run:
            name: Build dummy container for common files
            command: |
+              docker-compose -v
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
       - run:
