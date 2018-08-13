@@ -42,6 +42,10 @@ jobs:
           paths:
             - /caches/syscode.tar
       - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
          name: Build SysCode Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode 
