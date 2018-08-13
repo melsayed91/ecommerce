@@ -19,7 +19,7 @@ jobs:
             docker save -o /caches/common.tar abz/abz-1/common:0.0.1
 
       - save_cache:
-          key: v1-common-{{ .Branch }}-{{ epoch }}
+          key: v1-common-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /caches/common.tar
       - save_cache:
@@ -37,7 +37,7 @@ jobs:
             - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
-            - v1-common-{{ .Branch }}-{{ epoch }}
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
             - v1-syscode-{{ .Branch }}
