@@ -1,9 +1,9 @@
 version: 2
 jobs:
   build_syscode_service:
-    working_directory: /ambizphase1-main-impl-dev
     docker: 
-       - image: circleci/node:7.10
+      - image: circleci/node:7.10
+    working_directory: /ambizphase1-main-impl-dev
     steps:
       - run:
          name: Modify Permisions
