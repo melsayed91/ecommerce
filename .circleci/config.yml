@@ -3,7 +3,7 @@ jobs:
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
-       - image: docker:stable-git
+       - image: circleci/node:7.10
     steps:
       - checkout
       - setup_remote_docker
@@ -23,7 +23,7 @@ jobs:
            command: |
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
-               # docker-compose -v
+              docker-compose -v
       - run:
          name: Build SysCode Service Docker image
          command: |
