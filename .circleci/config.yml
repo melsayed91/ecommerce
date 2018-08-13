@@ -3,16 +3,16 @@ jobs:
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
-       - image: circleci/node:7.10
+       - image: docker:stable-git
     steps:
       - checkout
+      - run:
+         name: Install Docker Compose
+         command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - setup_remote_docker
-      # - run:
-      #    name: Install Docker Compose
-      #    command: |
-      #       curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-      #       chmod +x ~/docker-compose
-      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
