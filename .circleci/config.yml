@@ -12,6 +12,20 @@ jobs:
            command: |
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
+      - run:
+          name: Save SysCode Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/common.tar abz/abz-1/common:0.0.1
+
+      - save_cache:
+          key: v1-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/app.tar
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /ambizphase1-main-impl-dev
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
@@ -56,6 +70,6 @@ workflows:
   build_docker_images:
     jobs:
       - build_common_image
-      - build_syscode_service
-          requires:
-            - build_common_image
+      # - build_syscode_service
+      #     requires:
+      #       - build_common_image
