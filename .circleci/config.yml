@@ -13,7 +13,7 @@ jobs:
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
       - run:
-          name: Save SysCode Docker image layer cache
+          name: Save common Docker image layer cache
           command: |
             mkdir -p /caches
             docker save -o /caches/common.tar abz/abz-1/common:0.0.1
@@ -22,6 +22,7 @@ jobs:
           key: v1-common-{{ .Branch }}-{{ epoch }}
           paths:
             - /caches/common.tar
+      - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - /ambizphase1-main-impl-dev
@@ -29,19 +30,19 @@ jobs:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
        - image: docker:stable-git
-    steps:
-      - checkout
+    steps:      
       - setup_remote_docker
+       - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
       - restore_cache:
           keys:
-            - v1-{{ .Branch }}
+            - v1-common-{{ .Branch }}-{{ epoch }}
+      - restore_cache:
+          keys:
+            - v1-syscode-{{ .Branch }}
           paths:
-            - /caches/app.tar
-      # - run:
-      #      name: Build dummy container for common files
-      #      command: |
-      #         cd american.app.BE/common             
-      #         docker build -t abz/abz-1/common:0.0.1 .
+            - /caches/syscode.tar
       - run:
          name: Build SysCode Service Docker image
          command: |
@@ -52,12 +53,12 @@ jobs:
           name: Save SysCode Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/syscode.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
 
       - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+          key: v1-syscode-{{ .Branch }}-{{ epoch }}
           paths:
-            - /caches/app.tar
+            - /caches/syscode.tar
       - run:
           name: Push SysCode Service to DockerHub
           command: |
@@ -69,6 +70,6 @@ workflows:
   build_docker_images:
     jobs:
       - build_common_image
-      # - build_syscode_service
-      #     requires:
-      #       - build_common_image
+      - build_syscode_service:
+          requires:
+            - build_common_image
