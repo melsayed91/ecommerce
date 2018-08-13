@@ -15,13 +15,11 @@ jobs:
       - run:
           name: Save common Docker image layer cache
           command: |
-            mkdir -p /caches
-            docker save -o /caches/common.tar abz/abz-1/common:0.0.1
-
+            docker save -o /common.tar abz/abz-1/common:0.0.1
       - save_cache:
           key: v1-common-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - /caches/common.tar
+            - /common.tar
       - save_cache:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
