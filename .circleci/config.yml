@@ -365,7 +365,6 @@ workflows:
   build_docker_images:
     jobs:
       - build_common_image
-      - build_frontend
       - build_syscode_service:
           requires:
             - build_common_image
@@ -385,5 +384,8 @@ workflows:
           requires:
             - build_common_image
       - build_products_service:
+          requires:
+            - build_common_image
+       - build_frontend:
           requires:
             - build_common_image
