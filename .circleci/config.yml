@@ -6,9 +6,9 @@ jobs:
     working_directory: /ambizphase1-main-impl-dev
     steps:
       - run:
-         name: Modify Permisions
-         command: |
-            chown -R circleci:circleci /var/www 
+          name: Modify Permisions
+          command: |
+             chown -R circleci:circleci /var/www 
       - checkout
       - setup_remote_docker
       - restore_cache:
