@@ -1,16 +1,18 @@
 version: 2
 jobs:
   build_syscode_service:
-    docker: 
-      - image: circleci/node:7.10
     working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
     steps:
-      - run:
-          name: Modify Permisions
-          command: |
-             chown -R circleci:circleci /var/www 
       - checkout
       - setup_remote_docker
+      # - run:
+      #    name: Install Docker Compose
+      #    command: |
+      #       curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+      #       chmod +x ~/docker-compose
+      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
@@ -21,7 +23,7 @@ jobs:
            command: |
               cd american.app.BE/common             
               docker build -t abz/abz-1/common:0.0.1 .
-              docker-compose -v
+              # docker-compose -v
       - run:
          name: Build SysCode Service Docker image
          command: |
