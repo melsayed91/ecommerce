@@ -1,5 +1,17 @@
 version: 2
 jobs:
+  build_common_image:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+           name: Build Common container
+           command: |
+              cd american.app.BE/common             
+              docker build -t abz/abz-1/common:0.0.1 .
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
@@ -7,23 +19,16 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      # - run:
-      #    name: Install Docker Compose
-      #    command: |
-      #       curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-      #       chmod +x ~/docker-compose
-      #       sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - restore_cache:
           keys:
             - v1-{{ .Branch }}
           paths:
             - /caches/app.tar
-      - run:
-           name: Build dummy container for common files
-           command: |
-              cd american.app.BE/common             
-              docker build -t abz/abz-1/common:0.0.1 .
-              # docker-compose -v
+      # - run:
+      #      name: Build dummy container for common files
+      #      command: |
+      #         cd american.app.BE/common             
+      #         docker build -t abz/abz-1/common:0.0.1 .
       - run:
          name: Build SysCode Service Docker image
          command: |
@@ -50,4 +55,7 @@ workflows:
   version: 2
   build_docker_images:
     jobs:
+      - build_common_image
       - build_syscode_service
+          requires:
+            - build_common_image

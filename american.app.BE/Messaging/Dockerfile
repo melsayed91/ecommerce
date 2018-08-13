@@ -1,7 +1,6 @@
 FROM abz/abz-1/common:0.0.1 as common
-FROM  mhart/alpine-node
-RUN npm install -g npm@5.6.0
-RUN apk --no-cache --virtual build-dependecies add python make g++
+FROM  mhart/alpine-node:latest
+RUN apk --virtual build-dependecies add python make g++
 WORKDIR /usr/src/Messaging
 RUN mkdir -p /usr/src/Messaging
 RUN mkdir -p /usr/src/common
