@@ -386,6 +386,6 @@ workflows:
       - build_products_service:
           requires:
             - build_common_image
-       - build_frontend:
+      - build_frontend:
           requires:
             - build_common_image
