@@ -49,13 +49,13 @@ jobs:
          name: Build SysCode Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=syscode -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save SysCode Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/syscode.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/syscode.tar syscode
 
       - save_cache:
           key: v1-syscode-{{ .Branch }}-{{ epoch }}
@@ -92,13 +92,13 @@ jobs:
          name: Build Quotation Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Quotations 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=quotation -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Quotation Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/quotation.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/quotation.tar quotation
 
       - save_cache:
           key: v1-quotation-{{ .Branch }}-{{ epoch }}
@@ -135,13 +135,13 @@ jobs:
          name: Build Account Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/AccountManager 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=account -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Account Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/account.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/account.tar account
 
       - save_cache:
           key: v1-account-{{ .Branch }}-{{ epoch }}
@@ -178,13 +178,13 @@ jobs:
          name: Build Attachment Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Attachment 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=attachment -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Attachment Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/attachment.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/attachment.tar attachment
 
       - save_cache:
           key: v1-attachment-{{ .Branch }}-{{ epoch }}
@@ -221,13 +221,13 @@ jobs:
          name: Build Authorization Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Authorization 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=authorization -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Authorization Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/authorization.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/authorization.tar authorization
 
       - save_cache:
           key: v1-authorization-{{ .Branch }}-{{ epoch }}
@@ -264,13 +264,13 @@ jobs:
          name: Build Messaging Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Messaging 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=messaging -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Messaging Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/messaging.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/messaging.tar messaging
 
       - save_cache:
           key: v1-messaging-{{ .Branch }}-{{ epoch }}
@@ -307,13 +307,13 @@ jobs:
          name: Build Products Service Docker image
          command: |
             cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Products 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            docker build --cache-from=products -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
 
       - run:
           name: Save Products Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/products.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/products.tar products
 
       - save_cache:
           key: v1-products-{{ .Branch }}-{{ epoch }}
@@ -342,13 +342,13 @@ jobs:
       - run:
          name: Build Frontend Docker image
          command: |
-            cd $CIRCLE_WORKING_DIRECTORY/american.app.FE 
-            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.FE/
+            docker build --cache-from=frontend -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
       - run:
           name: Save Frontend Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/frontend.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker save -o /caches/frontend.tar frontend
       - save_cache:
           key: v1-frontend-{{ .Branch }}-{{ epoch }}
           paths:
