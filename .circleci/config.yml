@@ -3,15 +3,13 @@ jobs:
   build_syscode_service:
     working_directory: /ambizphase1-main-impl-dev
     docker: 
-       - image: docker:stable-git
+       - image: circleci/node:7.10
     steps:
-      - checkout
       - run:
-         name: Install Docker Compose
+         name: Modify Permisions
          command: |
-            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-            chmod +x ~/docker-compose
-            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+            chown -R circleci:circleci /var/www 
+      - checkout
       - setup_remote_docker
       - restore_cache:
           keys:
