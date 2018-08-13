@@ -325,13 +325,47 @@ jobs:
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
             docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:products
             docker push melsayedalaa/americanbiz
-
+  build_frontend:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-frontend-{{ .Branch }}
+          paths:
+            - /caches/frontend.tar
+      - run:
+         name: Build Frontend Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.FE 
+            docker build --cache-from=app -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+      - run:
+          name: Save Frontend Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/frontend.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+      - save_cache:
+          key: v1-frontend-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/frontend.tar
+      - run:
+          name: Push Frontend Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:frontend
+            docker push melsayedalaa/americanbiz
 
 workflows:
   version: 2
   build_docker_images:
     jobs:
       - build_common_image
+      - build_frontend
       - build_syscode_service:
           requires:
             - build_common_image
