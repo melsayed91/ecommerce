@@ -3,7 +3,7 @@ var enums = require("../../../common/enums/common");
 module.exports = function (ProductReturn) {
     ProductReturn.requestProductReturn = function (data, options, next) {
         data.statusId = enums.productReturnStatus.pending;
-        data.customerId = options.accessToken.userId.toString();
+        // data.customerId = options.accessToken.userId.toString();
         data.creationDate=new Date();
         data.modificationDate=new Date();
         data.isDeleted=false;
@@ -13,7 +13,7 @@ module.exports = function (ProductReturn) {
             ProductReturn.app.models.productReturnTransaction.create({
                 transactionId: createdPR.id,
                 statusId: enums.productReturnStatus.pending,
-                accountId: options.accessToken.userId.toString()
+                accountId: createdPR.customerId
             }, function (error, createdReturnTransaction) {
                 if (error)
                     return next(error);
