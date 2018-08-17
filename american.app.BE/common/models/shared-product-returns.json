@@ -37,7 +37,7 @@
         "vendorAttachment": {
             "type": "referencesMany",
             "model": "attachment",
-            "foreignKey": "attachmentIds",
+            "foreignKey": "vendorAttachmentIds",
             "options": {
                 "validate": true,
                 "forceId": false
@@ -46,7 +46,7 @@
         "customerAttachment": {
             "type": "referencesMany",
             "model": "attachment",
-            "foreignKey": "attachmentIds",
+            "foreignKey": "customerAttachmentIds",
             "options": {
                 "validate": true,
                 "forceId": false
