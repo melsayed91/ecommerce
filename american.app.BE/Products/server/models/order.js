@@ -16,7 +16,7 @@ module.exports = function (Order) {
 
 
     /**
-     * placeOrder 
+     * placeOrder
      * @param {object} orderData full order object including shipments and shipmentItems
      * @param {*} next Callback function
      */
@@ -111,15 +111,15 @@ module.exports = function (Order) {
             description: orderId,
             source: stripeToken,
         }, function (err, charge) {
+          cb(err, charge);
 
-            stripe.payouts.create({
-                amount: amount,
-                currency: 'usd',
-
-            }, function (err, payout) {
-                cb(err, charge);
-
-            });
+            // stripe.payouts.create({
+            //     amount: amount,
+            //     currency: 'usd',
+            //
+            // }, function (err, payout) {
+            //
+            // });
         });
     }
 

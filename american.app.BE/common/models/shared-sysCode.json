@@ -25,7 +25,10 @@
         },
         "countryCode": {
             "type": "string"
-        }
+        },
+        "relatedCategories": [
+            "string"
+        ]
     },
     "validations": [],
     "relations": {

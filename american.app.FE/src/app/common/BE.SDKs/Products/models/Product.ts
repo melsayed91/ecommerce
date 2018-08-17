@@ -20,11 +20,13 @@ export interface ProductInterface {
   "id"?: any;
   "accountId"?: any;
   "categoryId"?: any;
+  "buyWithIds"?: Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds"?: Array<any>;
   account?: any;
   category?: any;
+  buyWith?: any[];
   attachments?: any[];
 }
 
@@ -47,11 +49,13 @@ export class Product implements ProductInterface {
   "id": any;
   "accountId": any;
   "categoryId": any;
+  "buyWithIds": Array<any>;
   "createdAt": Date;
   "updatedAt": Date;
   "attachmentIds": Array<any>;
   account: any;
   category: any;
+  buyWith: any[];
   attachments: any[];
   constructor(data?: ProductInterface) {
     Object.assign(this, data);
@@ -165,6 +169,11 @@ export class Product implements ProductInterface {
           name: 'categoryId',
           type: 'any'
         },
+        "buyWithIds": {
+          name: 'buyWithIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
         "createdAt": {
           name: 'createdAt',
           type: 'Date'
@@ -194,6 +203,14 @@ export class Product implements ProductInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'categoryId',
+          keyTo: 'id'
+        },
+        buyWith: {
+          name: 'buyWith',
+          type: 'any[]',
+          model: '',
+          relationType: 'referencesMany',
+                  keyFrom: 'buyWithIds',
           keyTo: 'id'
         },
         attachments: {

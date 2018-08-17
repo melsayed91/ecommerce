@@ -63,11 +63,13 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.productApi.findById(this.productId, {
           include: [
             "attachments",
+            {"buyWith":"attachments"},
             { "account": { "accountData": "profileImage" } }
           ]
         })
           .takeWhile(() => this.alive)
           .subscribe(response => {
+            debugger;
             this.product = response;
             if (this.product.discount &&
               this.product.discount.isActive &&
@@ -81,6 +83,11 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
             this.quantity = this.product.moq;
 
 
+            if (this.product.buyWith.length > 4) {
+              setTimeout(function () {
+                $('#frequently-bought').slick({ infinite: false, slidesToShow: 4, slidesToScroll: 2 });
+              })
+            }
             this.productApi.search({
               facets: [{
                 field: "categoryId",
@@ -105,13 +112,14 @@ export class DetailsComponent implements OnInit, OnDestroy, AfterViewInit {
                     }
                     return currentProduct;
                   });
-                  
+
 
                   if (this.related_products.length > 6) {
                     setTimeout(function () {
                       $('#related-products').slick({ infinite: false, slidesToShow: 6, slidesToScroll: 4 });
                     })
                   }
+
                 }
               });
           })

@@ -120,6 +120,15 @@
         "validate": true,
         "forceId": false
       }
+    },
+    "buyWith": {
+      "type": "referencesMany",
+      "model": "product",
+      "foreignKey": "buyWithIds",
+      "options": {
+        "validate": true,
+        "forceId": false
+      }
     }
   },
   "acls": [
