@@ -42,6 +42,11 @@ module.exports = {
         active: "5b1adbbe2a868c48d0fecf20",
         finished: "5b1adbca2a868c48d0fecf21",
         stopped: "5b1adbd62a868c48d0fecf22"
+    },
+    productReturnStatus: {
+        pending: "5b76d7b2e977003518e553d6",
+        accept: "5b76d7bae977003518e553d7",
+        reject: "5b76d7bee977003518e553d8"
     }
 
 }

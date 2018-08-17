@@ -1,5 +1,5 @@
 ### STAGE 1: Build ###
-FROM mhart/alpine-node as builder
+FROM mhart/alpine-node:latest as builder
 
 WORKDIR /app
 

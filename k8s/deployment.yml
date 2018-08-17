@@ -21,54 +21,56 @@ spec:
           volumeMounts:
           - name: esdata1
             mountPath: /usr/share/elasticsearch/data  
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 9300
         - name: kibana
           image: docker.elastic.co/kibana/kibana:6.2.4
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 5601
         - name: account
-          image: okc/amb/accountmanager:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:account
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 2222
         - name: attachment
-          image: okc/amb/attachment:0.0.1
-          imagePullPolicy: Always        
+          image: melsayedalaa/americanbiz:attachment
+          imagePullPolicy: IfNotPresent        
           ports:
           - containerPort: 5000
         - name: authorization
-          image: okc/amb/authorization:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:authorization
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 1111
         - name: messaging
-          image: okc/amb/messaging:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:messaging
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 3000
         - name: products
-          image: okc/amb/products:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:products
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 7777
         - name: quotations
-          image: okc/amb/quotations:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:quotation
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 3333
         - name: syscode
-          image: okc/amb/syscode:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:syscode
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 5555
         - name: frontend
-          image: okc/amb/frontend:0.0.1
-          imagePullPolicy: Always
+          image: melsayedalaa/americanbiz:frontend
+          imagePullPolicy: IfNotPresent
           ports:
           - containerPort: 8080
+      imagePullSecrets:
+        - name: myregistrykey
       volumes:
        - name: esdata1
          emptyDir: {}

@@ -1,0 +1,78 @@
+{
+    "name": "sharedProductReturn",
+    "base": "PersistedModel",
+    "idInjection": true,
+    "options": {
+        "validateUpsert": true
+    },
+    "properties": {
+        "description": {
+            "type": "string",
+            "required": true
+        },
+        "creationDate": {
+            "type": "Date",
+            "required": true
+        },
+        "modificationDate": {
+            "type": "Date"
+        },
+        "isDeleted": {
+            "type": "Boolean",
+            "default": false
+        }
+    },
+    "validations": [],
+    "relations": {
+        "status": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "statusId"
+        },
+        "reason": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "reasonId"
+        },
+        "vendorAttachment": {
+            "type": "referencesMany",
+            "model": "attachment",
+            "foreignKey": "attachmentIds",
+            "options": {
+                "validate": true,
+                "forceId": false
+            }
+        },
+        "customerAttachment": {
+            "type": "referencesMany",
+            "model": "attachment",
+            "foreignKey": "attachmentIds",
+            "options": {
+                "validate": true,
+                "forceId": false
+            }
+        },
+        "vendor": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "vendorId"
+        },
+        "customer": {
+            "type": "belongsTo",
+            "model": "Account",
+            "foreignKey": "customerId"
+        },
+        "product": {
+            "type": "belongsTo",
+            "model": "product",
+            "foreignKey": "productId"
+        },
+        "order": {
+            "type": "belongsTo",
+            "model": "Order",
+            "foreignKey": "orderId"
+        }
+    },
+    "acls": [],
+    "methods": {}
+}

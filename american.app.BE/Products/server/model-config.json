@@ -177,5 +177,17 @@
   "sharedProductComplaint": {
     "dataSource": "americanBizDB",
     "public": false
+  },
+  "sharedProductReturn": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "sharedProductReturnTransactions": {
+    "dataSource": "americanBizDB",
+    "public": false
+  },
+  "productReturn": {
+    "dataSource": "americanBizDB",
+    "public": true
   }
 }
