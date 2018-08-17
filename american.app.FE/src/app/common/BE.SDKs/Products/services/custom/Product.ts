@@ -124,7 +124,7 @@ export class ProductApi extends BaseLoopBackApi {
    *
    * @param {object} data Request data.
    *
-   *  - `productId` – `{string}` - 
+   *  - `productId` – `{any}` - 
    *
    * @returns {object} An empty reference that will be
    *   populated with the actual data once the response is returned

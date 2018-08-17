@@ -29,6 +29,7 @@ import { SaleComponent } from './profile/tabs/products/sale/sale.component';
 import { FieldErrorDisplayComponent } from './profile/tabs/products/sale/field-error-display/field-error-display.component';
 import { ComplaintsComponent } from './complaints/complaints.component';
 import { ReturnsComponent } from './returns/returns.component';
+import { ReturnsDetailsComponent } from './returns/details/details.component';
 
 
 @NgModule({
@@ -62,7 +63,8 @@ import { ReturnsComponent } from './returns/returns.component';
     SaleComponent,
     FieldErrorDisplayComponent,
     ComplaintsComponent,
-    ReturnsComponent],
+    ReturnsComponent,
+    ReturnsDetailsComponent],
   entryComponents: [SaleComponent]
 })
 export class AccountModule {
