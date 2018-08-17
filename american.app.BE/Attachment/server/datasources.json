@@ -3,7 +3,7 @@
     "name": "storage",
     "connector": "loopback-component-storage",
     "provider": "filesystem",
-    "root": "./uploads",
+    "root": "../uploads",
     "nameConflict":"makeUnique"
   },
   "americanBizDB": {

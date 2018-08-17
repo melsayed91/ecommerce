@@ -9,7 +9,8 @@ export interface ProductReturnInterface {
   "id"?: any;
   "statusId"?: any;
   "reasonId"?: any;
-  "attachmentIds"?: Array<any>;
+  "vendorAttachmentIds"?: Array<any>;
+  "customerAttachmentIds"?: Array<any>;
   "vendorId"?: any;
   "customerId"?: any;
   "productId"?: any;
@@ -32,7 +33,8 @@ export class ProductReturn implements ProductReturnInterface {
   "id": any;
   "statusId": any;
   "reasonId": any;
-  "attachmentIds": Array<any>;
+  "vendorAttachmentIds": Array<any>;
+  "customerAttachmentIds": Array<any>;
   "vendorId": any;
   "customerId": any;
   "productId": any;
@@ -107,8 +109,13 @@ export class ProductReturn implements ProductReturnInterface {
           name: 'reasonId',
           type: 'any'
         },
-        "attachmentIds": {
-          name: 'attachmentIds',
+        "vendorAttachmentIds": {
+          name: 'vendorAttachmentIds',
+          type: 'Array&lt;any&gt;',
+          default: <any>[]
+        },
+        "customerAttachmentIds": {
+          name: 'customerAttachmentIds',
           type: 'Array&lt;any&gt;',
           default: <any>[]
         },
@@ -151,7 +158,7 @@ export class ProductReturn implements ProductReturnInterface {
           type: 'any[]',
           model: '',
           relationType: 'referencesMany',
-                  keyFrom: 'attachmentIds',
+                  keyFrom: 'vendorAttachmentIds',
           keyTo: 'id'
         },
         customerAttachment: {
@@ -159,7 +166,7 @@ export class ProductReturn implements ProductReturnInterface {
           type: 'any[]',
           model: '',
           relationType: 'referencesMany',
-                  keyFrom: 'attachmentIds',
+                  keyFrom: 'customerAttachmentIds',
           keyTo: 'id'
         },
         vendor: {

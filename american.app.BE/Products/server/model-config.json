@@ -193,7 +193,8 @@
       "remoting": {
         "sharedMethods": {
           "*": false,
-          "getReturns": true
+          "getReturns": true,
+          "getReturnById": true
         }
       }
     }

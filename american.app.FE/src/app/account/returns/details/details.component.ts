@@ -16,6 +16,7 @@ export class ReturnsDetailsComponent implements OnInit {
 
   attachmentServer: string;
   returnItem: any;
+  selectedImage: any;
   alive: any = true;
 
   ngOnInit() {
@@ -23,37 +24,12 @@ export class ReturnsDetailsComponent implements OnInit {
     this.route.params
       .takeWhile(() => this.alive)
       .subscribe(params => {
+        debugger;
         if (params['id']) {
-          this.productReturnApi.findById(params['id'], {
-            order: "createdAt DESC",
-            include: [
-              {
-                shipments: [
-                  "seller",
-                  {
-                    relation: "items",
-                    scope: {
-                      include: {
-                        relation: "product",
-                        scope: {
-                          include: {
-                            relation: "attachments",
-                            scope: {
-                              fields: ['url'],
-                              limit: 1
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "status"
-                ]
-              },
-              "status"]
-          }).takeWhile(() => this.alive)
+          this.productReturnApi.getReturnById(params['id']).takeWhile(() => this.alive)
             .subscribe((response) => {
-              this.returnItem = response;
+              this.returnItem = response.returnItem;
+              this.selectedImage = this.returnItem.customerAttachment[0];
             })
         }
       })
