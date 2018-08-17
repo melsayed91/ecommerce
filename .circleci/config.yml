@@ -1,35 +1,418 @@
 version: 2
 jobs:
-  build_syscode_service:
-    docker:
-      - image: circleci/node:8.9
-    working_directory: ~/ambizphase1-main-impl-dev/american.app.BE/SysCode
+  build_common_image:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
     steps:
       - checkout
-      - setup_remote_docker:      
-     - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
+      - setup_remote_docker
+      - run:
+           name: Build Common container
+           command: |
+              cd american.app.BE/common             
+              docker build -t abz/abz-1/common:0.0.1 .
+      - run:
+          name: Save common Docker image layer cache
+          command: |
+            docker save -o /common.tar abz/abz-1/common:0.0.1
+      - save_cache:
+          key: v1-common-{{ .Environment.CIRCLE_SHA1 }}
           paths:
-            - /caches/app.tar
+            - /common.tar
+      - save_cache:
+          key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+          paths:
+            - /ambizphase1-main-impl-dev
+  build_syscode_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-syscode-{{ .Branch }}
+          paths:
+            - /caches/syscode.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
       - run:
          name: Build SysCode Service Docker image
-         command: docker build --cache-from=app -t docker pull melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/SysCode 
+            docker build --cache-from=syscode -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
       - run:
           name: Save SysCode Docker image layer cache
           command: |
             mkdir -p /caches
-            docker save -o /caches/app.tar app
-     - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
+            docker save -o /caches/syscode.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-syscode-{{ .Branch }}-{{ epoch }}
           paths:
-            - /caches/app.tar
-     - run:
-          name: Push SysCode to DockerHub
+            - /caches/syscode.tar
+      - run:
+          name: Push SysCode Service to DockerHub
           command: |
             docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
-            docker push melsayedalaa/americanbiz:$CIRCLE_SHA1
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:syscode
+            docker push melsayedalaa/americanbiz
+  build_quotation_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-quotation-{{ .Branch }}
+          paths:
+            - /caches/quotation.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Quotation Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Quotations 
+            docker build --cache-from=quotation -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Quotation Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/quotation.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-quotation-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/quotation.tar
+      - run:
+          name: Push Quotation Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:quotation
+            docker push melsayedalaa/americanbiz  
+  build_account_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-account-{{ .Branch }}
+          paths:
+            - /caches/account.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Account Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/AccountManager 
+            docker build --cache-from=account -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Account Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/account.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-account-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/account.tar
+      - run:
+          name: Push Account Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:account
+            docker push melsayedalaa/americanbiz
+  build_attachment_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-attachment-{{ .Branch }}
+          paths:
+            - /caches/attachment.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Attachment Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Attachment 
+            docker build --cache-from=attachment -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Attachment Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/attachment.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-attachment-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/attachment.tar
+      - run:
+          name: Push Attachment Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:attachment
+            docker push melsayedalaa/americanbiz
+  build_authorization_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-authorization-{{ .Branch }}
+          paths:
+            - /caches/authorization.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Authorization Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Authorization 
+            docker build --cache-from=authorization -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Authorization Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/authorization.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-authorization-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/authorization.tar
+      - run:
+          name: Push Authorization Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:authorization
+            docker push melsayedalaa/americanbiz
+  build_messaging_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-messaging-{{ .Branch }}
+          paths:
+            - /caches/messaging.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Messaging Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Messaging 
+            docker build --cache-from=messaging -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Messaging Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/messaging.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-messaging-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/messaging.tar
+      - run:
+          name: Push Messaging Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:messaging
+            docker push melsayedalaa/americanbiz
+  build_products_service:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-common-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-products-{{ .Branch }}
+          paths:
+            - /caches/products.tar
+      - run:
+         name: Load Common Docker Image
+         command: |
+            docker load < /common.tar
+      - run:
+         name: Build Products Service Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.BE/Products 
+            docker build --cache-from=products -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+
+      - run:
+          name: Save Products Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/products.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+
+      - save_cache:
+          key: v1-products-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/products.tar
+      - run:
+          name: Push Products Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:products
+            docker push melsayedalaa/americanbiz
+  build_frontend:
+    working_directory: /ambizphase1-main-impl-dev
+    docker: 
+       - image: docker:stable-git
+    steps:      
+      - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-repo-{{ .Environment.CIRCLE_SHA1 }}
+      - restore_cache:
+          keys:
+            - v1-frontend-{{ .Branch }}
+          paths:
+            - /caches/frontend.tar
+      - run:
+         name: Build Frontend Docker image
+         command: |
+            cd $CIRCLE_WORKING_DIRECTORY/american.app.FE/
+            docker build --cache-from=frontend -t melsayedalaa/americanbiz:$CIRCLE_SHA1 .
+      - run:
+          name: Save Frontend Docker image layer cache
+          command: |
+            mkdir -p /caches
+            docker save -o /caches/frontend.tar melsayedalaa/americanbiz:$CIRCLE_SHA1
+      - save_cache:
+          key: v1-frontend-{{ .Branch }}-{{ epoch }}
+          paths:
+            - /caches/frontend.tar
+      - run:
+          name: Push Frontend Service to DockerHub
+          command: |
+            docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASSWORD
+            docker tag melsayedalaa/americanbiz:$CIRCLE_SHA1 melsayedalaa/americanbiz:frontend
+            docker push melsayedalaa/americanbiz
+
 workflows:
   version: 2
-  jobs:
-      - build_syscode_service
+  build_docker_images:    
+    jobs:
+      - build_common_image:
+          filters:
+            branches:
+              only: master
+      - build_syscode_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master 
+      - build_quotation_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
+      - build_account_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
+      - build_attachment_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
+      - build_authorization_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
+      - build_messaging_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
+      - build_products_service:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master 
+      - build_frontend:
+          requires:
+            - build_common_image
+          filters:
+            branches:
+              only: master
