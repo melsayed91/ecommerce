@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: "okc"
+  name: okc
+  labels:
+    app: okc
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: okc
+    spec:
+      containers:
+        - name: elasticsearch
+          image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+          env:
+          - name: cluster.name
+            value: okc-cluster
+          volumeMounts:
+          - name: esdata1
+            mountPath: /usr/share/elasticsearch/data  
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 9300
+        - name: kibana
+          image: docker.elastic.co/kibana/kibana:6.2.4
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5601
+        - name: account
+          image: okc/amb/accountmanager:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 2222
+        - name: attachment
+          image: okc/amb/attachment:0.0.1
+          imagePullPolicy: Always        
+          ports:
+          - containerPort: 5000
+        - name: authorization
+          image: okc/amb/authorization:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 1111
+        - name: messaging
+          image: okc/amb/messaging:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3000
+        - name: products
+          image: okc/amb/products:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 7777
+        - name: quotations
+          image: okc/amb/quotations:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 3333
+        - name: syscode
+          image: okc/amb/syscode:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 5555
+        - name: frontend
+          image: okc/amb/frontend:0.0.1
+          imagePullPolicy: Always
+          ports:
+          - containerPort: 8080
+      volumes:
+       - name: esdata1
+         emptyDir: {}

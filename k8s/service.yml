@@ -1,0 +1,139 @@
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: "okc"
+  name: elasticsearch
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 9200
+      targetPort: 9200
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kibana
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 5601
+      targetPort: 5601
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: account
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 2222
+      targetPort: 2222
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: attachment
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: authorization
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 1111
+      targetPort: 1111
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: messaging
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: products
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 7777
+      targetPort: 7777
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: quotations
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 3333
+      targetPort: 3333
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: syscodes
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 5555
+      targetPort: 5555
+  type: LoadBalancer
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: frontend
+  namespace: "okc"
+spec:
+  selector:
+    app: okc
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+  type: LoadBalancer

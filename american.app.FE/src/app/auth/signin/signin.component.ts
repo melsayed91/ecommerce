@@ -124,6 +124,7 @@ export class SigninComponent implements OnInit, OnDestroy {
     this.auth.userApi.login({email: this.email, password: this.password})
       .takeWhile(() => this.alive)
       .subscribe((response) => {
+        debugger
           this.auth.setAccount(response.account);
           this.auth.setTokenOfAllSDKs(response);
           let redirect = this.auth.redirectUrl ? this.auth.redirectUrl : '/home';
