@@ -364,10 +364,12 @@ workflows:
   version: 2
   build_docker_images:
     triggers:
-      filters:
-        branches:
-          only:
-            - master
+      - schedule:
+        filters:
+           branches:
+             only:
+               - master    
+           
     jobs:
       - build_common_image
       - build_syscode_service:
