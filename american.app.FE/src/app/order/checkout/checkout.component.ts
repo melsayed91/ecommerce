@@ -1,11 +1,12 @@
 import {Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
-import {Router,ActivatedRoute} from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import "rxjs/add/operator/takeWhile";
 
 import {UserService} from '../../core/services/user.service/user.service';
 import {Product, ProductApi, OrderApi} from '../../common/BE.SDKs/Products';
 import {LoopBackConfig as attachementApiConfig} from '../../common/BE.SDKs/attachment';
 import {AccountApi, ShoppingCartApi} from '../../common/BE.SDKs/AccountManager';
+import {SysCodeApi} from '../../common/BE.SDKs/sysCodes';
 
 declare var $: any;
 
@@ -81,6 +82,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
               private orderApi: OrderApi,
               private AccountApi: AccountApi,
               private ShoppingCartApi: ShoppingCartApi,
+              private SysCodeApi: SysCodeApi,
               private auth: UserService) {
 
     this.userAccount = this.auth.account;
@@ -90,11 +92,11 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       if (params['id']) {
         this.isPrototype = true;
         this.productId = params['id'];
-        this.productApi.findById(this.productId, {include: ["attachments"]})
+        this.productApi.findById(this.productId, {include: ["attachments","category"]})
           .takeWhile(() => this.alive)
           .subscribe((response: Product) => {
             this.products.push(response);
-            if(this.products && this.products.length){
+            if (this.products && this.products.length) {
               if (this.products[0].discount &&
                 this.products[0].discount.isActive &&
                 new Date(this.products[0].discount.start_date) <= new Date() &&
@@ -233,19 +235,36 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.orderApi.placeOrder(this.order)
       .takeWhile(() => this.alive)
       .subscribe(response => {
-        this.productApi.incrementProductSells(this.productId)
+
+        let productsToBuyWith = [];
+        this.products.forEach(function (product) {
+          let matchedProducts =[];
+          if (product.category.relatedCategories) {
+            this.products.forEach(function (_product) {
+              if (_product.id !== product.id && product.category.relatedCategories.indexOf(_product.categoryId) > -1 && matchedProducts.indexOf(_product.id) == -1) {
+                matchedProducts.push(_product.id);
+              }
+            })
+          }
+          productsToBuyWith.push({id: product.id, buyWith: matchedProducts})
+        }.bind(this))
+        // save matchedProducts in mongo
+        this.productApi.incrementProductSells(productsToBuyWith)
           .takeWhile(() => this.alive)
           .subscribe(response => {
 
+            /*this.ShoppingCartApi.deleteCartItem({accountDataId: this.auth.account.accountData.id}).subscribe(res => {
+              this.auth.account.accountData.cartItemId = [];
+              this.auth.setAccount(this.auth.account)
+              this.loading = false;
+              this.orderReference = response.order.orderNo;
+              this.orderId = response.order.id;
+              ++this.step;
+            })*/
           })
-        this.ShoppingCartApi.deleteCartItem({accountDataId: this.auth.account.accountData.id}).subscribe(res => {
-          this.auth.account.accountData.cartItemId = [];
-          this.auth.setAccount(this.auth.account)
-          this.loading = false;
-          this.orderReference = response.order.orderNo;
-          this.orderId = response.order.id;
-          ++this.step;
-        })
+
+
+
       })
   }
 

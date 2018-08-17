@@ -10,6 +10,9 @@ var es = new elasticsearch.Client({
   host: GLOBAL_CONFIG.es_hostname,
   log: 'trace'
 });
+const async = require('async');
+var objectId = require('mongodb').ObjectID;
+
 const discountStatus = require('../../../common/enums/common').discountStatus;
 module.exports = function (product) {
 
@@ -26,7 +29,7 @@ module.exports = function (product) {
         include: [
           "attachments",
           "category",
-          { "account": { "accountData": "profileImage" } }
+          {"account": {"accountData": "profileImage"}}
         ]
       }, function (err, productDetails) {
         var _doc = {
@@ -47,7 +50,9 @@ module.exports = function (product) {
           createdAt: productDetails.createdAt,
           image_url: productDetails.__data.attachments[0].__data.url,
           discount: productDetails.__data.discount,
-          countries: productDetails.__data.account.__data.accountData.__data.countriesOfOperationIds.map(function (item) { return item.toString() })
+          countries: productDetails.__data.account.__data.accountData.__data.countriesOfOperationIds.map(function (item) {
+            return item.toString()
+          })
         };
 
         /*  if (productDetails.__data.discount) {
@@ -123,27 +128,27 @@ module.exports = function (product) {
   product.search = function (searchParams, options, next) {
 
     var query = {
-      bool: {
-        must: {
-          match_all: {}
+        bool: {
+          must: {
+            match_all: {}
+          }
         }
-      }
-    },
-      sortBy_Latest = { "createdAt": { "order": "desc", "unmapped_type": "long" } },
-      sort_By_Hottest = { "sells": { "order": "desc", "unmapped_type": "long" } },
-      sort_By_Views = { "views": { "order": "desc", "unmapped_type": "long" } },
+      },
+      sortBy_Latest = {"createdAt": {"order": "desc", "unmapped_type": "long"}},
+      sort_By_Hottest = {"sells": {"order": "desc", "unmapped_type": "long"}},
+      sort_By_Views = {"views": {"order": "desc", "unmapped_type": "long"}},
       soryBy = [
         sort_By_Hottest,
-        { "rating.average": { "order": "desc", "unmapped_type": "long" } },
+        {"rating.average": {"order": "desc", "unmapped_type": "long"}},
         sort_By_Views,
         sortBy_Latest,
         "_score"
       ],
       aggregations = {
-        max_price: { max: { field: "price" } },
-        min_price: { min: { field: "price" } },
+        max_price: {max: {field: "price"}},
+        min_price: {min: {field: "price"}},
         categories: {
-          terms: { field: "category" }
+          terms: {field: "category"}
         }
       },
       isHome = true,
@@ -207,7 +212,7 @@ module.exports = function (product) {
           if (searchParams.sort) {
             isHome = false;
             var sortObj = {};
-            sortObj[searchParams.sort.field] = { order: searchParams.sort.dir, unmapped_type: "long" }
+            sortObj[searchParams.sort.field] = {order: searchParams.sort.dir, unmapped_type: "long"}
             soryBy = [sortObj];
           }
         }
@@ -222,7 +227,7 @@ module.exports = function (product) {
 
           var body = [],
             latest_query = [
-              { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+              {index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type},
               {
                 query: query,
                 sort: sortBy_Latest,
@@ -231,7 +236,7 @@ module.exports = function (product) {
               }
             ],
             hot_query = [
-              { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+              {index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type},
               {
                 query: query,
                 sort: sort_By_Hottest,
@@ -240,7 +245,7 @@ module.exports = function (product) {
               }
             ],
             views_query = [
-              { index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type },
+              {index: GLOBAL_CONFIG.es_products_index_name, type: GLOBAL_CONFIG.es_products_index_type},
               {
                 query: query,
                 sort: sort_By_Views,
@@ -341,10 +346,10 @@ module.exports = function (product) {
         body: {
           track_scores: true,
           sort: [
-            { "sells": { "order": "desc", "unmapped_type": "long" } },
-            { "rating.average": { "order": "desc", "unmapped_type": "long" } },
-            { "views": { "order": "desc", "unmapped_type": "long" } },
-            { "createdAt": { "order": "desc", "unmapped_type": "long" } },
+            {"sells": {"order": "desc", "unmapped_type": "long"}},
+            {"rating.average": {"order": "desc", "unmapped_type": "long"}},
+            {"views": {"order": "desc", "unmapped_type": "long"}},
+            {"createdAt": {"order": "desc", "unmapped_type": "long"}},
             "_score"
           ],
           query: {
@@ -371,7 +376,7 @@ module.exports = function (product) {
 
   product.getUserProducts = function (accountId, categoryId, next) {
 
-    var whereFilter = { isDeleted: false, accountId: accountId };
+    var whereFilter = {isDeleted: false, accountId: accountId};
 
     if (categoryId)
       whereFilter.categoryId = categoryId;
@@ -388,7 +393,7 @@ module.exports = function (product) {
   }
 
   product.deleteUserProduct = function (productId, next) {
-    product.update({ _id: productId }, { isDeleted: true }, function (error, result) {
+    product.update({_id: productId}, {isDeleted: true}, function (error, result) {
       if (error)
         return next(error);
 
@@ -398,7 +403,7 @@ module.exports = function (product) {
   }
 
   product.updateUserProduct = function (updateObj, next) {
-    product.update({ _id: updateObj.productId }, updateObj.data, function (error, result) {
+    product.update({_id: updateObj.productId}, updateObj.data, function (error, result) {
       if (error)
         return next(error);
 
@@ -408,18 +413,32 @@ module.exports = function (product) {
   }
 
   product.incrementProductViews = function (productId, next) {
-    product.update({ _id: productId }, { $inc: { views: 1 } }, function (error, result) {
+    product.update({_id: productId}, {$inc: {views: 1}}, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
     })
   }
 
-  product.incrementProductSells = function (productId, next) {
-    product.update({ _id: productId }, { $inc: { sells: 1 } }, function (error, result) {
+  product.incrementProductSells = function (products, next) {
+
+    async.times(products.length, function (i, itemsNext) {
+      let item = products[i];
+      let updateQuery = {$inc: {sells: 1}};
+      if (item.buyWith) {
+        let buyWithIds = item.buyWith.map(function(itemId){
+          return objectId(itemId)
+        });
+        updateQuery.$addToSet = {buyWithIds: {$each: buyWithIds}};
+      }
+      product.update({_id: item.id}, updateQuery, function (error, result) {
+        itemsNext(error,result)
+      })
+
+    }, function (error, shipmentItemsInstances) {
       if (error)
         return next(error);
-      return next(null, result);
+      return next(null, shipmentItemsInstances);
     })
   }
 
@@ -438,7 +457,7 @@ module.exports = function (product) {
 
     sale.isActive = true;
 
-    product.findById(sale.productId, { price: 1 }, function (error, _product) {
+    product.findById(sale.productId, {price: 1}, function (error, _product) {
       if (error)
         return next(error);
       // type 1 is for percentage type
@@ -452,7 +471,7 @@ module.exports = function (product) {
       }
 
 
-      product.update({ _id: sale.productId }, { $set: { discount: sale } }, function (error, result) {
+      product.update({_id: sale.productId}, {$set: {discount: sale}}, function (error, result) {
         if (error)
           return next(error);
         return next(null, result);
@@ -464,7 +483,7 @@ module.exports = function (product) {
   }
 
   product.stopSale = function (productId, options, next) {
-    product.update({ _id: productId }, { $set: { "discount.isActive": false } }, function (error, result) {
+    product.update({_id: productId}, {$set: {"discount.isActive": false}}, function (error, result) {
       if (error)
         return next(error);
       return next(null, result);
@@ -474,7 +493,7 @@ module.exports = function (product) {
 
   function getUserSettings(userId, cb) {
     product.app.models.Account.findOne({
-      where: { userId: userId.toString() },
+      where: {userId: userId.toString()},
       include: [
         {
           relation: "accountData",
@@ -490,74 +509,74 @@ module.exports = function (product) {
 
   product.remoteMethod('getUserProducts', {
     accepts: [
-      { arg: 'accountId', type: 'string', required: true },
-      { arg: 'categoryId', type: 'string' }],
-    returns: { arg: 'products', type: 'any' },
-    http: { path: '/getUserProducts', verb: 'post' }
+      {arg: 'accountId', type: 'string', required: true},
+      {arg: 'categoryId', type: 'string'}],
+    returns: {arg: 'products', type: 'any'},
+    http: {path: '/getUserProducts', verb: 'post'}
   });
 
   product.remoteMethod('incrementProductSells', {
-    accepts: { arg: 'productId', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/incrementProductSells', verb: 'post' }
+    accepts: {arg: 'productId', type: 'any', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/incrementProductSells', verb: 'post'}
   });
 
   product.remoteMethod('incrementProductViews', {
-    accepts: { arg: 'productId', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/incrementProductViews', verb: 'post' }
+    accepts: {arg: 'productId', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/incrementProductViews', verb: 'post'}
   });
   product.remoteMethod('updateUserProduct', {
-    accepts: [{ arg: 'updateObj', type: 'object', required: true, http: { source: 'body' } },
-    { "arg": "options", "type": "object", "http": "optionsFromRequest" }],
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/updateUserProduct', verb: 'post' }
+    accepts: [{arg: 'updateObj', type: 'object', required: true, http: {source: 'body'}},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}],
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/updateUserProduct', verb: 'post'}
   });
 
   product.remoteMethod('deleteUserProduct', {
-    accepts: { arg: 'productId', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/deleteUserProduct', verb: 'delete' }
+    accepts: {arg: 'productId', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/deleteUserProduct', verb: 'delete'}
   });
 
   product.remoteMethod('suggest', {
-    accepts: { arg: 'prefix', type: 'string', required: true },
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/suggest', verb: 'post' }
+    accepts: {arg: 'prefix', type: 'string', required: true},
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/suggest', verb: 'post'}
   });
 
   product.remoteMethod('search', {
     accepts: [
-      { "arg": 'searchParams', type: 'object', http: { source: 'body' } },
-      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+      {"arg": 'searchParams', type: 'object', http: {source: 'body'}},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}
     ],
 
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/search', verb: 'post' }
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/search', verb: 'post'}
   });
   product.remoteMethod('catalog', {
-    accepts: [{ "arg": 'searchParams', type: 'object', http: { source: 'body' } },
-    { "arg": "options", "type": "object", "http": "optionsFromRequest" }],
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/catalog', verb: 'post' }
+    accepts: [{"arg": 'searchParams', type: 'object', http: {source: 'body'}},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}],
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/catalog', verb: 'post'}
   });
 
   product.remoteMethod('startSale', {
     accepts: [
-      { "arg": 'sale', type: 'object', http: { source: 'body' }, required: true },
-      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+      {"arg": 'sale', type: 'object', http: {source: 'body'}, required: true},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}
     ],
 
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/sale/start', verb: 'post' }
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/sale/start', verb: 'post'}
   });
   product.remoteMethod('stopSale', {
     accepts: [
-      { "arg": 'productId', type: 'string', required: true },
-      { "arg": "options", "type": "object", "http": "optionsFromRequest" }
+      {"arg": 'productId', type: 'string', required: true},
+      {"arg": "options", "type": "object", "http": "optionsFromRequest"}
     ],
 
-    returns: { arg: 'result', type: 'any' },
-    http: { path: '/sale/stop', verb: 'post' }
+    returns: {arg: 'result', type: 'any'},
+    http: {path: '/sale/stop', verb: 'post'}
   });
 };

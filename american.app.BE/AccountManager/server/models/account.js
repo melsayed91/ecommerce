@@ -75,7 +75,7 @@ module.exports = function (Account) {
   Account.getCartItems = function (accountDataId, next) {
     Account.app.models.accountData.find({
         where: { _id: accountDataId },
-        include: {cartItems:{product:'attachments'}}
+        include: {cartItems:{product:['attachments','category']}}
       },
       function (error, result) {
         if (error)

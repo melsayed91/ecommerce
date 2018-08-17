@@ -97,6 +97,102 @@
       </button>
     </div>
   </div>
+
+  <div>
+    <h3>Frequently bought together</h3>
+    <div class="products" id="related-products" >
+
+      <div class="col-lg-2 col-md-6 add-padding">
+        <div class="card card-product">
+          <div class="card-image" data-header-animation="true">
+            <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.attachments[0].url">
+            <span class="discount" *ngIf="product.activeDiscount">{{product.activeDiscount.percentage}} % off</span>
+          </div>
+          <div class="card-content">
+            <h4 class="card-title" style="height: 50px;overflow: hidden;">
+              <span>{{product.name}}</span>
+            </h4>
+            <div class="card-description truncate">
+              {{product.description}}
+            </div>
+          </div>
+          <div class="card-footer">
+
+            <div class="price">
+              <h4 class="text-primary was" *ngIf="product.activeDiscount">${{product.price}}</h4>
+              <h4 class="text-primary" *ngIf="product.activeDiscount">${{product.activeDiscount.price}}</h4>
+              <h4 class="text-primary was" *ngIf="!product.activeDiscount"></h4>
+              <h4 class="text-primary" *ngIf="!product.activeDiscount">${{product.price}}</h4>
+
+              <span *ngIf="!product.rating">
+                <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+              </span>
+              <span *ngIf="product.rating">
+              <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+            </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+      <i class="fa fa-plus frequently-bought"></i>
+<div class="col-md-9 offset-md-4" id="frequently-bought" [ngClass]="{'add-padding':product.buyWith.length <= 4}">
+  <div class="col-lg-3 col-md-6" *ngFor="let product of product.buyWith let i=index">
+    <div class="card card-product">
+      <div class="card-image" data-header-animation="true">
+        <div class="ribbon green" *ngIf="product.views > 100 && product.sells < 100">
+          <span>POPULAR</span>
+        </div>
+        <div class="ribbon red" *ngIf="product.sells > 100">
+          <span>HOT</span>
+        </div>
+        <img class="img" style="max-height: 160px;" [src]="attachmentServer + product.attachments[0].url">
+        <span class="discount" *ngIf="product.activeDiscount">{{product.activeDiscount.percentage}} % off</span>
+      </div>
+      <div class="card-content">
+        <div class="card-actions">
+          <button type="button" class="btn btn-default btn-simple" matTooltip="View" [matTooltipPosition]="'below'" [routerLink]="[ '/product/details' , product._id]">
+            <i class="material-icons">art_track</i>
+          </button>
+          <button type="button" class="btn btn-primary btn-simple" matTooltip="Add To Cart" [matTooltipPosition]="'below'" (click)="addProductToShoppingCart(product)">
+            <i class="material-icons">add_shopping_cart</i>
+          </button>
+        </div>
+        <h4 class="card-title" style="height: 50px;overflow: hidden;">
+          <a [routerLink]="[ '/product/details' , product._id]">{{product.name}}</a>
+        </h4>
+        <div class="card-description truncate">
+          {{product.description}}
+        </div>
+      </div>
+      <div class="card-footer">
+
+        <div class="price">
+          <h4 class="text-primary was" *ngIf="product.activeDiscount">${{product.price}}</h4>
+          <h4 class="text-primary" *ngIf="product.activeDiscount">${{product.activeDiscount.price}}</h4>
+          <h4 class="text-primary was" *ngIf="!product.activeDiscount"></h4>
+          <h4 class="text-primary" *ngIf="!product.activeDiscount">${{product.price}}</h4>
+
+          <span *ngIf="!product.rating">
+                <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
+              </span>
+          <span *ngIf="product.rating">
+              <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+            </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    </div>
+  </div>
   <div class="product-description">
 
     <div class="card br-0" id="productDetails">
@@ -329,9 +425,7 @@
             </div>
           </div>
           <div class="card-footer">
-            <span *ngIf="product.rating">
-              <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
-            </span>
+
             <div class="price">
               <h4 class="text-primary was" *ngIf="product.activeDiscount">${{product.price}}</h4>
               <h4 class="text-primary" *ngIf="product.activeDiscount">${{product.activeDiscount.price}}</h4>
@@ -341,6 +435,9 @@
               <span *ngIf="!product.rating">
                 <bar-rating *ngIf="!product.rating" (rate)="0" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> (0)
               </span>
+              <span *ngIf="product.rating">
+              <bar-rating [(rate)]="product.rating.average" [max]="5" [readOnly]="true" [theme]="'fontawesome'"></bar-rating> ({{product.rating.total}})
+            </span>
             </div>
 
           </div>
