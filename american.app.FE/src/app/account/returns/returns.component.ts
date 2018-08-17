@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConversationApi} from '../../common/BE.SDKs/Messaging';
+import {ProductReturnApi} from "../../common/BE.SDKs/Products";
 import {UserService} from "../../core/services/user.service/user.service";
 import {Router} from '@angular/router';
 
@@ -12,6 +13,7 @@ export class ReturnsComponent implements OnInit {
 
   constructor(private router: Router,
               private auth: UserService,
+              private productReturnApi: ProductReturnApi,
               private conversationApi: ConversationApi) { }
 
   alive: boolean = true;
@@ -22,11 +24,11 @@ export class ReturnsComponent implements OnInit {
 
   loadReturns(): any {
 
-    /*this.productComplaintApi.getComplaints(this.auth.account.id).takeWhile(() => this.alive).subscribe((response) => {
-      this.complaints = response.complaints;
+    this.productReturnApi.getReturns(this.auth.account.id).takeWhile(() => this.alive).subscribe((response) => {
+      this.returnsList = response.returns;
     }, (err) => {
 
-    })*/
+    })
   }
 
   openConversation(receiverId): any {

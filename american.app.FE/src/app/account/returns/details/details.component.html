@@ -1,0 +1,29 @@
+<h2>Returned Product</h2>
+<div *ngIf="returnItem">
+
+  <div class="col-lg-6 animated-250 fadeInLeft">
+    <h3>Customer Images</h3>
+    <div class="images-slider">
+      <div class="main" [style.background-image]="'url('+ attachmentServer + selectedImage.url +')'">
+      </div>
+      <div class="thumbnails">
+        <div class="picture" *ngFor="let image of returnItem.customerAttachment" [style.background-image]="'url('+ attachmentServer +image.url +')'"
+             (click)="selectedImage = image" [class.selected]="selectedImage == image"></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6 animated-250 fadeInRight">
+    <h3>Product Name</h3>
+    <div>
+      <h5>{{returnItem.product.name}}</h5>
+    </div>
+    <h3>Reason</h3>
+    <div>
+      <h5>{{returnItem.reason.name}}</h5>
+    </div>
+    <h3>Description</h3>
+    <div>
+      <h5>{{returnItem.description}}</h5>
+    </div>
+  </div>
+</div>

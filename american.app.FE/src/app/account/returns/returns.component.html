@@ -18,9 +18,9 @@
     <tbody>
     <tr *ngFor="let row of returnsList">
       <td>
-        <label>{{row.owner.accountData.name}}</label>
+        <label>{{row.customer.accountData.name}}</label>
       </td><td>
-      <label>{{row.text}}</label>
+      <label>{{row.reason.name}}</label>
     </td>
       <td>
         <a [routerLink]="[ '/product/details' , row.product.id]">{{row.product.name}}</a>
@@ -32,8 +32,13 @@
         <label>{{row.creationDate | amDateFormat:'LL'}}</label>
       </td>
       <td>
-        <button class="btn btn-primary btn-sm" (click)="openConversation(row.owner.id)">
+        <button class="btn btn-primary btn-sm" (click)="openConversation(row.customer.id)">
           Contact customer
+        </button>
+      </td>
+      <td>
+        <button class="btn btn-primary btn-sm" [routerLink]="[ '/account/returns' , row.id]">
+          Details
         </button>
       </td>
     </tr>

@@ -12,6 +12,7 @@ import { RequestsComponent } from './requests/requests.component';
 import { CustomersComponent } from './customers/customers.component';
 import {ComplaintsComponent} from "./complaints/complaints.component";
 import {ReturnsComponent} from "./returns/returns.component";
+import {ReturnsDetailsComponent} from "./returns/details/details.component";
 
 
 export const RegisterRoutes: Routes = [
@@ -74,5 +75,9 @@ export const RegisterRoutes: Routes = [
     path: 'returns',
     canActivate: [AuthGuardService],
     component: ReturnsComponent
+  }, {
+    path: 'returns/:id',
+    canActivate: [AuthGuardService],
+    component: ReturnsDetailsComponent
   }
 ];
