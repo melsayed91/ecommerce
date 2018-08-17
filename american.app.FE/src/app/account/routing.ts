@@ -11,6 +11,7 @@ import { QuatationDetailsComponent } from './request-for-proposal/details/detail
 import { RequestsComponent } from './requests/requests.component';
 import { CustomersComponent } from './customers/customers.component';
 import {ComplaintsComponent} from "./complaints/complaints.component";
+import {ReturnsComponent} from "./returns/returns.component";
 
 
 export const RegisterRoutes: Routes = [
@@ -68,5 +69,10 @@ export const RegisterRoutes: Routes = [
     path: 'complaints',
     canActivate: [AuthGuardService],
     component: ComplaintsComponent
+  },
+  {
+    path: 'returns',
+    canActivate: [AuthGuardService],
+    component: ReturnsComponent
   }
 ];
