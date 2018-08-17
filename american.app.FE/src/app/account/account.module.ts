@@ -26,6 +26,7 @@ import { OrderDetailsComponent } from './orders/details/details.component';
 import { CustomersComponent } from './customers/customers.component';
 import { BarRatingModule } from "ngx-bar-rating";
 import { SaleComponent } from './profile/tabs/products/sale/sale.component';
+import { ProductReturnsComponent } from './orders/details/returns/returns.component';
 import { FieldErrorDisplayComponent } from './profile/tabs/products/sale/field-error-display/field-error-display.component';
 import { ComplaintsComponent } from './complaints/complaints.component';
 import { ReturnsComponent } from './returns/returns.component';
@@ -61,11 +62,12 @@ import { ReturnsDetailsComponent } from './returns/details/details.component';
     OrderDetailsComponent,
     CustomersComponent,
     SaleComponent,
+    ProductReturnsComponent,
     FieldErrorDisplayComponent,
     ComplaintsComponent,
     ReturnsComponent,
     ReturnsDetailsComponent],
-  entryComponents: [SaleComponent]
+  entryComponents: [SaleComponent, ProductReturnsComponent]
 })
 export class AccountModule {
 

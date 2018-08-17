@@ -119,6 +119,10 @@
                       (click)="filingComplaint = !filingComplaint">
                 File a complaint
               </button>
+              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'" class="btn btn-raised btn-default btn-sm"
+                (click)="openProductReturnDialog(item.product)">
+                Request Return
+              </button>
               <form *ngIf="filingComplaint">
 
                 <div class="row">

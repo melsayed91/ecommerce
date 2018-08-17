@@ -1,4 +1,8 @@
 /* tslint:disable */
+import {
+  Product,
+  Order
+} from '../index';
 
 declare var Object: any;
 export interface ProductReturnInterface {
@@ -21,8 +25,8 @@ export interface ProductReturnInterface {
   customerAttachment?: any[];
   vendor?: any;
   customer?: any;
-  product?: any;
-  order?: any;
+  product?: Product;
+  order?: Order;
 }
 
 export class ProductReturn implements ProductReturnInterface {
@@ -45,8 +49,8 @@ export class ProductReturn implements ProductReturnInterface {
   customerAttachment: any[];
   vendor: any;
   customer: any;
-  product: any;
-  order: any;
+  product: Product;
+  order: Order;
   constructor(data?: ProductReturnInterface) {
     Object.assign(this, data);
   }
@@ -187,16 +191,16 @@ export class ProductReturn implements ProductReturnInterface {
         },
         product: {
           name: 'product',
-          type: 'any',
-          model: '',
+          type: 'Product',
+          model: 'Product',
           relationType: 'belongsTo',
                   keyFrom: 'productId',
           keyTo: 'id'
         },
         order: {
           name: 'order',
-          type: 'any',
-          model: '',
+          type: 'Order',
+          model: 'Order',
           relationType: 'belongsTo',
                   keyFrom: 'orderId',
           keyTo: 'id'

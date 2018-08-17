@@ -198,5 +198,9 @@
         }
       }
     }
+  },
+  "productReturnTransaction": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }
