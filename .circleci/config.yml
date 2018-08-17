@@ -365,11 +365,10 @@ workflows:
   build_docker_images:
     triggers:
       - schedule:
-        filters:
-           branches:
-             only:
-               - master    
-           
+          filters:
+            branches:
+              only:
+                - master      
     jobs:
       - build_common_image
       - build_syscode_service:
