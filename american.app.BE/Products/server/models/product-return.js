@@ -13,7 +13,7 @@ module.exports = function (ProductReturn) {
             {vendor: 'accountData'}
           ]
         };
-          query.where = {vendorId: accountId};
+          query.where = {or:[{vendorId: accountId},{customerId: accountId}]};
 
       ProductReturn.find(query, function (error, result) {
           if (error)

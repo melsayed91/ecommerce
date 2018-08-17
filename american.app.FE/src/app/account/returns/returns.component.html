@@ -12,6 +12,7 @@
       <th>Product</th>
       <th>Vendor Name</th>
       <th>Date</th>
+      <th>Status</th>
       <th></th>
     </tr>
     </thead>
@@ -32,11 +33,12 @@
         <label>{{row.creationDate | amDateFormat:'LL'}}</label>
       </td>
       <td>
+        <label>{{row.status.name}}</label>
+      </td>
+      <td>
         <button class="btn btn-primary btn-sm" (click)="openConversation(row.customer.id)">
           Contact customer
         </button>
-      </td>
-      <td>
         <button class="btn btn-primary btn-sm" [routerLink]="[ '/account/returns' , row.id]">
           Details
         </button>
