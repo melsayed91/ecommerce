@@ -28,6 +28,7 @@ import { BarRatingModule } from "ngx-bar-rating";
 import { SaleComponent } from './profile/tabs/products/sale/sale.component';
 import { FieldErrorDisplayComponent } from './profile/tabs/products/sale/field-error-display/field-error-display.component';
 import { ComplaintsComponent } from './complaints/complaints.component';
+import { ReturnsComponent } from './returns/returns.component';
 
 
 @NgModule({
@@ -60,7 +61,8 @@ import { ComplaintsComponent } from './complaints/complaints.component';
     CustomersComponent,
     SaleComponent,
     FieldErrorDisplayComponent,
-    ComplaintsComponent],
+    ComplaintsComponent,
+    ReturnsComponent],
   entryComponents: [SaleComponent]
 })
 export class AccountModule {

@@ -74,6 +74,12 @@ export class NavbarComponent implements OnInit {
       showTo: 'Individual'
     },
     {
+      name: 'returns',
+      redirectTo: '/account/returns',
+      text: 'Returns',
+      icon: 'undo'
+    },
+    {
       name: 'settings',
       redirectTo: '/account/settings',
       text: 'Settings',
