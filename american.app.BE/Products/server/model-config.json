@@ -189,5 +189,9 @@
   "productReturn": {
     "dataSource": "americanBizDB",
     "public": true
+  },
+  "productReturnTransaction": {
+    "dataSource": "americanBizDB",
+    "public": false
   }
 }

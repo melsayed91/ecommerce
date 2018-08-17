@@ -66,7 +66,7 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
 
   loadUserProducts(): any {
-    this.ProductApi.updateAttributes("mm", {})
+    // this.ProductApi.updateAttributes("mm", {})
     this.ProductApi.getUserProducts(this.account.id)
       .takeWhile(() => this.alive)
       .subscribe((response) => {

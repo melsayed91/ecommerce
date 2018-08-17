@@ -5,6 +5,7 @@ import { Order } from '../../models/Order';
 import { Shipment } from '../../models/Shipment';
 import { ProductReview } from '../../models/ProductReview';
 import { ProductComplaint } from '../../models/ProductComplaint';
+import { ProductReturn } from '../../models/ProductReturn';
 
 export interface Models { [name: string]: any }
 
@@ -17,6 +18,7 @@ export class SDKModels {
     Shipment: Shipment,
     ProductReview: ProductReview,
     ProductComplaint: ProductComplaint,
+    ProductReturn: ProductReturn,
     
   };
 

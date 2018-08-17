@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Request Product Return</h2>
+
+
+<mat-dialog-content [formGroup]="productReturnForm">
+  <mat-form-field>
+
+    <mat-select placeholder="Select Return Reason" formControlName="return_reason">
+
+      <mat-option *ngFor="let reason of return_reasons" value="{{reason.id}}">
+        {{reason.name}}</mat-option>
+    </mat-select>
+    <control-messages [control]="productReturnForm.controls.return_reason" [display]="'Return Reason'">
+    </control-messages>
+  </mat-form-field>
+
+ 
+
+  <mat-form-field hintLabel="Max 200 characters">
+    <textarea matInput #input placeholder="Description" formControlName="description" maxlength="200"></textarea>
+    <mat-hint align="end">{{input.value?.length || 0}}/200</mat-hint>
+  </mat-form-field>
+<div class="ulpoad-area">
+  <ng2-file-input [id]="'multiFilesInput'" [show-previews]="true" [multiple]="true" (onAdded)="onAdded($event)" (onRemoved)="removeFile($event)"
+    extensions="['jpg', 'JPG', 'png', 'PNG', 'jpeg', 'JPEG']" [browse-text]="uploadIconHtml" [drop-text]="'Drag and drop files here or click the button below to upload product pictures'">
+  </ng2-file-input>
+</div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+
+  <button class="mat-raised-button" (click)="close()">
+    Close
+  </button>
+
+  <button class="mat-raised-button mat-primary" (click)="save()">
+    Save
+  </button>
+
+</mat-dialog-actions>

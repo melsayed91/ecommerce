@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import "rxjs/add/operator/takeWhile";
-import {MatDialogModule} from '@angular/material/dialog';
-
-import {UserService} from '../../../core/services/user.service/user.service';
-import {OrderApi, ProductReviewApi,ProductComplaintApi} from '../../../common/BE.SDKs/Products';
-import {SysCodeApi} from '../../../common/BE.SDKs/sysCodes';
-import {LoopBackConfig as attachementApiConfig} from '../../../common/BE.SDKs/attachment';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ProductReturnsComponent } from "./returns/returns.component";
+import { MatDialog, MatDialogConfig } from "@angular/material";
+import { UserService } from '../../../core/services/user.service/user.service';
+import { OrderApi, ProductReviewApi, ProductComplaintApi, ProductReturnApi } from '../../../common/BE.SDKs/Products';
+import { SysCodeApi } from '../../../common/BE.SDKs/sysCodes';
+import { LoopBackConfig as attachementApiConfig } from '../../../common/BE.SDKs/attachment';
 
 declare var $: any;
 
@@ -28,13 +29,16 @@ export class OrderDetailsComponent implements OnInit {
   userAccount;
 
   statusOptions = {}
-
-  constructor(private auth: UserService,
-              private orderApi: OrderApi,
-              private productReviewApi: ProductReviewApi,
-              private productComplaintApi: ProductComplaintApi,
-              private sysCodeService: SysCodeApi,
-              private route: ActivatedRoute) {
+  returnReasons = {}
+  constructor(
+    private dialog: MatDialog,
+    private auth: UserService,
+    private orderApi: OrderApi,
+    private ProductReturnApi: ProductReturnApi,
+    private productReviewApi: ProductReviewApi,
+    private productComplaintApi: ProductComplaintApi,
+    private sysCodeService: SysCodeApi,
+    private route: ActivatedRoute) {
     this.userAccount = this.auth.account;
   }
 
@@ -44,6 +48,14 @@ export class OrderDetailsComponent implements OnInit {
       .takeWhile(() => this.alive)
       .subscribe((response: any) => {
         this.statusOptions = response.sysCode;
+      }, (err) => {
+
+      })
+
+    this.sysCodeService.findByParent("5b76de6846cda24e0c6448f5")
+      .takeWhile(() => this.alive)
+      .subscribe((response: any) => {
+        this.returnReasons = response.sysCode;
       }, (err) => {
 
       })
@@ -92,19 +104,19 @@ export class OrderDetailsComponent implements OnInit {
 
   updateOrder(status) {
     this.order.status = status;
-    this.orderApi.updateModelAttributes(this.order.id, {statusId: status.id})
+    this.orderApi.updateModelAttributes(this.order.id, { statusId: status.id })
       .takeWhile(() => this.alive)
       .subscribe(response => {
         $.notify({
           message: 'You successfully changed the order status to <b>' + status.name + '</b> !'
         }, {
-          type: 'primary',
-          timer: 1000,
-          placement: {
-            from: 'bottom',
-            align: 'right'
-          }
-        });
+            type: 'primary',
+            timer: 1000,
+            placement: {
+              from: 'bottom',
+              align: 'right'
+            }
+          });
       });
   }
 
@@ -127,19 +139,17 @@ export class OrderDetailsComponent implements OnInit {
         $.notify({
           message: 'Thank you for the feedback!'
         }, {
-          type: 'primary',
-          timer: 1000,
-          placement: {
-            from: 'bottom',
-            align: 'right'
-          }
-        });
+            type: 'primary',
+            timer: 1000,
+            placement: {
+              from: 'bottom',
+              align: 'right'
+            }
+          });
       });
   }
 
   submitComplaint(product) {
-
-    debugger;
     let reviewObject = {
       orderId: this.order.id,
       text: this.complaintDescription,
@@ -157,14 +167,62 @@ export class OrderDetailsComponent implements OnInit {
         $.notify({
           message: 'Thank you for the feedback!'
         }, {
-          type: 'primary',
-          timer: 1000,
-          placement: {
-            from: 'bottom',
-            align: 'right'
-          }
-        });
+            type: 'primary',
+            timer: 1000,
+            placement: {
+              from: 'bottom',
+              align: 'right'
+            }
+          });
       });
+  }
+  openProductReturnDialog(product) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      return_reasons: this.returnReasons
+    };
+    const dialogRef = this.dialog.open(ProductReturnsComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      function (val) {        
+        if (val) {
+          var data = {
+            productId: product.id,
+            orderId: this.order.id,
+            vendorId: product.accountId,
+            customerAttachmentIds: val.attachmentIds,
+            reasonId: val.form.return_reason,
+            description: val.form.description
+          }
+          this.ProductReturnApi.requestProductReturn(data)
+            .takeWhile(() => this.alive)
+            .subscribe((response: any) => {
+              $.notify({
+                message: 'Product Request Return sent successfully!'
+              }, {
+                  type: 'primary',
+                  timer: 1000,
+                  placement: {
+                    from: 'bottom',
+                    align: 'right'
+                  }
+                });
+            }, (err) => {
+              $.notify({
+                message: 'Error Occured While Processing Your Request!'
+              }, {
+                  type: 'error',
+                  timer: 1000,
+                  placement: {
+                    from: 'bottom',
+                    align: 'right'
+                  }
+                });
+            });
+        }
+      }.bind(this)
+    );
   }
 
 }
