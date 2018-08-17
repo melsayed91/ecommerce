@@ -185,7 +185,7 @@ export class OrderDetailsComponent implements OnInit {
     };
     const dialogRef = this.dialog.open(ProductReturnsComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
-      function (val) {        
+      function (val) {
         if (val) {
           var data = {
             productId: product.id,
@@ -193,7 +193,8 @@ export class OrderDetailsComponent implements OnInit {
             vendorId: product.accountId,
             customerAttachmentIds: val.attachmentIds,
             reasonId: val.form.return_reason,
-            description: val.form.description
+            description: val.form.description,
+            customerId: this.userAccount.id
           }
           this.ProductReturnApi.requestProductReturn(data)
             .takeWhile(() => this.alive)
