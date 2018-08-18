@@ -15,6 +15,7 @@ export interface ProductReturnInterface {
   "customerId"?: any;
   "productId"?: any;
   "orderId"?: any;
+  "shipmentItemId"?: any;
   status?: any;
   reason?: any;
   vendorAttachment?: any[];
@@ -23,6 +24,7 @@ export interface ProductReturnInterface {
   customer?: any;
   product?: any;
   order?: any;
+  shipmentItem?: any;
 }
 
 export class ProductReturn implements ProductReturnInterface {
@@ -39,6 +41,7 @@ export class ProductReturn implements ProductReturnInterface {
   "customerId": any;
   "productId": any;
   "orderId": any;
+  "shipmentItemId": any;
   status: any;
   reason: any;
   vendorAttachment: any[];
@@ -47,6 +50,7 @@ export class ProductReturn implements ProductReturnInterface {
   customer: any;
   product: any;
   order: any;
+  shipmentItem: any;
   constructor(data?: ProductReturnInterface) {
     Object.assign(this, data);
   }
@@ -135,6 +139,10 @@ export class ProductReturn implements ProductReturnInterface {
           name: 'orderId',
           type: 'any'
         },
+        "shipmentItemId": {
+          name: 'shipmentItemId',
+          type: 'any'
+        },
       },
       relations: {
         status: {
@@ -199,6 +207,14 @@ export class ProductReturn implements ProductReturnInterface {
           model: '',
           relationType: 'belongsTo',
                   keyFrom: 'orderId',
+          keyTo: 'id'
+        },
+        shipmentItem: {
+          name: 'shipmentItem',
+          type: 'any',
+          model: '',
+          relationType: 'belongsTo',
+                  keyFrom: 'shipmentItemId',
           keyTo: 'id'
         },
       }

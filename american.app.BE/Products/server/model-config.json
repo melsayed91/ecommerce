@@ -194,7 +194,9 @@
         "sharedMethods": {
           "*": false,
           "getReturns": true,
-          "getReturnById": true
+          "requestProductReturn": true,
+          "getReturnById": true,
+          "updateStatus": true
         }
       }
     }

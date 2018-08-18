@@ -61,8 +61,8 @@
         </h4>
         <p>{{order.shippingInfo.address.recipient}}</p>
         <p>{{order.shippingInfo.address.address}}</p>
-        <p>{{order.shippingInfo.address.city}}, {{order.shippingInfo.address.state}}.
-          {{order.shippingInfo.address.zip}}.</p>
+        <p>{{order.shippingInfo.address.city}}, {{order.shippingInfo.address.state}}. {{order.shippingInfo.address.zip}}.
+        </p>
         <p>{{order.shippingInfo.address.country}}</p>
         <p>{{order.shippingInfo.address.phone}}</p>
       </div>
@@ -72,6 +72,7 @@
     <div>
       <h5>
         <b>Shipment 1 of {{order.shipments.length}}</b>
+
       </h5>
       <div *ngFor="let shipment of order.shipments" class="shipment">
 
@@ -112,15 +113,15 @@
                 <button class="btn btn-raised btn-danger" (click)="toggleRequestSpecification()">Cancel</button>
               </form>
             </div>-->
-
+            <p *ngIf="item.returnStatusId&&auth.account?.accountType == 'Individual'" [class]="'status '+ item.returnStatus.class">
+              <i [class]="'fa '+ item.returnStatus.icon"></i> &nbsp; {{item.returnStatus.name}}</p>
             <div>
-              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
-                      class="btn btn-raised btn-default btn-sm"
-                      (click)="filingComplaint = !filingComplaint">
+              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'" class="btn btn-raised btn-default btn-sm"
+                (click)="filingComplaint = !filingComplaint">
                 File a complaint
               </button>
-              <button *ngIf="order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'" class="btn btn-raised btn-default btn-sm"
-                (click)="openProductReturnDialog(item.product)">
+              <button *ngIf="!item.returnStatusId&& order.status.id === '5a89aaca9fcea8171cb0f0d8' && auth.account?.accountType == 'Individual'"
+                class="btn btn-raised btn-default btn-sm" (click)="openProductReturnDialog(item)">
                 Request Return
               </button>
               <form *ngIf="filingComplaint">
@@ -178,12 +179,10 @@
 
           <bar-rating [(rate)]="rate" [max]="5" [(ngModel)]="reviewRating" [theme]="'fontawesome'"></bar-rating>
         </div>
-        <textarea *ngIf="reviewRating > 0" class="form-control" type="text" rows="3" [(ngModel)]="reviewText"
-                  placeholder="Write your review!"></textarea>
+        <textarea *ngIf="reviewRating > 0" class="form-control" type="text" rows="3" [(ngModel)]="reviewText" placeholder="Write your review!"></textarea>
       </div>
       <div class="modal-footer">
-        <button *ngIf="reviewRating > 0" type="button" class="btn btn-primary" data-dismiss="modal"
-                (click)="submitReview()">submit
+        <button *ngIf="reviewRating > 0" type="button" class="btn btn-primary" data-dismiss="modal" (click)="submitReview()">submit
         </button>
       </div>
     </div>

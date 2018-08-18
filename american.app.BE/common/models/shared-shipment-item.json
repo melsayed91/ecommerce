@@ -19,7 +19,13 @@
         }
     },
     "validations": [],
-    "relations": {},
+    "relations": {
+        "returnStatus": {
+            "type": "belongsTo",
+            "model": "SysCode",
+            "foreignKey": "returnStatusId"
+        }
+    },
     "acls": [
         {
             "accessType": "EXECUTE",

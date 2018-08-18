@@ -73,19 +73,25 @@ export class OrderDetailsComponent implements OnInit {
                   "seller",
                   {
                     relation: "items",
+
                     scope: {
-                      include: {
-                        relation: "product",
-                        scope: {
-                          include: {
-                            relation: "attachments",
-                            scope: {
-                              fields: ['url'],
-                              limit: 1
+
+                      include: [
+                        {
+                          relation: "product",
+                          scope: {
+                            include: {
+                              relation: "attachments",
+                              scope: {
+                                fields: ['url'],
+                                limit: 1
+                              }
                             }
                           }
+                        }, {
+                          relation: "returnStatus"
                         }
-                      }
+                      ]
                     }
                   },
                   "status"
@@ -176,7 +182,7 @@ export class OrderDetailsComponent implements OnInit {
           });
       });
   }
-  openProductReturnDialog(product) {
+  openProductReturnDialog(shipmentItem) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -188,13 +194,14 @@ export class OrderDetailsComponent implements OnInit {
       function (val) {
         if (val) {
           var data = {
-            productId: product.id,
+            productId: shipmentItem.product.id,
             orderId: this.order.id,
-            vendorId: product.accountId,
+            vendorId: shipmentItem.product.accountId,
             customerAttachmentIds: val.attachmentIds,
             reasonId: val.form.return_reason,
             description: val.form.description,
-            customerId: this.userAccount.id
+            customerId: this.userAccount.id,
+            shipmentItemId: shipmentItem.id
           }
           this.ProductReturnApi.requestProductReturn(data)
             .takeWhile(() => this.alive)
